@@ -1,0 +1,1012 @@
+WEBVTT
+All right, let's get started. We have a lot of work to do today.
+Let's get started. So oh, all right, welcome back, welcome back
+to. Yeah. Welcome back to our big data class in spring, spring 2025.
+One thing that somebody mentioned to me earlier today.
+They were like Pascal. This class looks a lot like an engineering class. Am I wrong about this? And the answer is, No, you're not
+this class of all the classes in our portfolio. In data, science and master's program is by far
+the closest to an and data engineering class we have.
+So why are we offering it in data science program
+to answer. It is if you want to be a full stack data scientist. Yes.
+you need to at least speak the language of the data engineers
+so that you can. You know what you can ask them reasonably. You need to speak their language so they're not messing with you. Yes, if your big flex is that you are a full stack data scientist, a lot of you want to be that you have to at least know a little bit about the data engineering side. But you're right in another school. This this class might well be offered in the engineering program or the data engineering
+class, or at least this is the most on the engineering side that we're going to get. Okay in this program.
+But again.
+it's not like the whole program is like that. This is as far as we're going to go.
+or to that level. Yes, infrastructure, infrastructure data, infrastructure, hard hats. Yes, pipelines.
+Yes, all right.
+Good.
+Today we will
+get into the class for real. So last time we talked a little bit about our philosophy
+today, we'll talk about centralized systems. Yes.
+and I want to be very clear. This is mostly going to be a foil.
+So what most of the class is going to be about is what
+distributed systems like in every which way parallelization, distributing, computing, distributing, storage.
+anything clouds you name it. We're going to distribute everything as much as we can. However, as a foil we'll we'll talk about the advantages and disadvantages of 2
+things are still commonly used file systems
+and relational databases. By the way, this is the international symbol for a database.
+It's like a stack of disks. Yes, stack of platters. So whenever whenever you see this symbol think database, it's a stack of disks. Yes.
+internationally recognized symbol for database.
+Anyway, those 2 things, at least as far as they're with us, will always be with us. Yes.
+so yes, we will. By the way, today is the app. Today is the end of add drop.
+Yes. So tonight tonight is a night. Maybe tomorrow we'll see, I need to sleep sometime, right
+tonight or tomorrow.
+All of you are going to get an Hpc. Account, all of you.
+So you're going to have access to the high performance computing cluster. I always have the shell on our side. So all work we're waiting for. Hi, Richie. All we're waiting for is the add drop to stabilize, so we can make sure who is in the class and who's not in the class that ad drop ends today. So you know. Maybe I'll add it tomorrow we'll see.
+But anyway, so my point is, even though you will soon see how to do things on the cluster, how to do things in the cloud. If you get to it, how to do things with Gpus? In my opinion those things will always be with us, and you will see why today there are some advantages of file systems and relational databases
+that are just hard to beat even with the most distributed system. Okay, some announcements. So lab today, lab, this week is going to be Lab 2 SQL. By the way, sequel, that's how it's pronounced.
+Do not say SQL. In that interview. The interview will end right there. All right. SQL, that's only professionals called SQL. All right in the industry. It's called SQL.
+As you already saw the office hour schedule is in full effect.
+so all students can go to all Ta's office hours. They're not keyed to your access. All people of the teaching staff
+are on achieving teaching staff because they excelled in the previous year. On this class they're fully qualified to handle all of your questions. So if you want to talk to anybody. Go to anybody's office hours. Okay?
+We have a new version with now working links, whoever that was last night. Thanks for bringing this to my attention, that some of the links were not working. You never know
+anything is working now. So download the work code version. And then, finally, in a week from now, homework one is due. This is more like a Hello world homework. So this should not be a big ask to get it done, but do make sure to get it done. Otherwise we can't give you credit. This homework's actually quite, quite a lot. So, as you know, I'm starting a class with Cds confusion, doubt, struggle, session. Yes.
+Question for you is a large array that came from a random number generator data for the purpose of this class. Something like that for the purpose of this class. Is that data.
+Max?
+Yes, but it would not be for any other class. Why why, go ahead.
+It's literally well, bits, bits and bytes. Yes, okay. And in this case, yeah, no.
+This looks like, actually an it looks like a signed integer. Yes.
+Co. 255. Yes, okay.
+So again, this class will make more sense if you understand
+this. So this came back from Moore's law. By the way, I have not been. I have not responded to everybody's tripplay yet, as some of you know. But I will. I'm backlogged because of a little baby at home, which is 3 months old. I will get back to everybody. But this confusion, doubt, struggle, thing, comes from the 2 player. My response to it. So some people were like, I don't know what a transistor is or why that matters. Okay. So I'm here to plug a critical hole in your education.
+Okay?
+So if you hear transistor, by the way, feel free to correct me because you know the physics of this, although I don't want to, because it's
+how do we go into physics afterwards? Because it's not relevant for the class. If you hear transistor think electronic switch, it's something that allows you to switch very fast. As Max just said, the whole point of this is to turn things on and off. That's what bits are for bits as a binary digits, either on or off. So one transistor can have one switch. It's either on or off. Yes.
+right
+so. And it's actually thanks to these gentlemen here, Bard Britton and Shockley at Bell Labs. They got the Nobel Prize for this. So they figured out, they, they, these 3 guys.
+create the 1st transistor in a lab, and 1947,
+what? Lab bell lab? Not that far from us. It's actually New Jersey. It's hallowed ground, sacred ground. If you want to visit, you should visit. It's not that far. It's almost walking distance.
+almost walking distance from my house. That's a separate story, all right, anyway. This invention obviously created the digital revolution. Because once you have a digital switch that's very fast before that people did this with, does anyone know what what do people do before that
+somebody before the transition? What did they do?
+You can still switch. What do you use anybody quickly? We have a lot got to cover Darren.
+That was a couple 1,000 years ago. Yes, Adam.
+that came after actually Punch. Cards came after this. Somebody quickly. Yes.
+what say that again, Morse code. Yes, but that's 18 hundreds.
+Tell me some lamps. Yes, correct lamps, light bulbs.
+Any idea what could be? Go wrong with light bulbs?
+You have, you have like. You know what a light bulb is.
+That's it. So they already had like
+before that they had to have people on site to fix them they were always down. Yes.
+anyway. So the big flex is that these electrons, which are not only fast, but they're very reliable. Yes, as I said so it's like binary logic. Either something flows or doesn't flow. Yes.
+and so the whole point of this is not. Is that, by the way, this was literally you could see it. Look at this, you could see this one with the naked eye. This is the 1st transistor. Do you see that you can see, it's like this big. Yes.
+that's the 1st one you could touch it.
+Piece of silicone. Yes, we can talk later. Why has to do with, you know semiconductors?
+Why, it has silicon to be silicone. But anyway, or Germanium, but the point is that since then you can no longer see it like it's now nanometers nanometers. So we are actually fast reaching the limits of how many we can put on a chip. But we're still in Moore's law. We can still do it
+all right. As I said, if you want to talk to me about the physical limitation, I actually used to be a physics major feel free to talk to me about that. But in my office hours, not in this class. This is beyond this class, all right, basically you can. As I just said, I just said all this right? So you open a gate where the voltage opens up once you have too much.
+and and if you're a physics, major yourself, you probably can find it otherwise. It's close. Let's end with that. With that
+idea where you apply a voltage, opens gate or not mix of current flow or not
+forgot who did that. But it wasn't Shannon, but somebody showed in their master's thesis, forgot who it was
+that you can now implement binary logic, binary logic? Yes, all of the classic logic and switches, or switches and gates or gates.
+Do you remember that?
+Does anyone know whose masterpiece this was
+in a master's thesis. Someone showed that you can now do logic of that. And then we were off. Because then you could. You know, it was amazing. Yes, I'm going to put it on some of the materials. I forgot who it was.
+All right. So people ask, What's the CPU? Okay? So remember, we talked about this. The reason Max is right that this data is data from the perspective of our class is because anything
+that you can feed to a processor
+that generates with instructions. An output is data
+which raised the obvious question, What is a processor? Yes.
+And well, again, this is very colloquial. It's the brain of the computer. It's kind of like saying the mitochondria is the
+powerhouse of the cell. Yes, but it's true.
+The idea is that you are. You are arranging your transistors in an integrated circuit.
+And the idea is you have some data that you store locally in l 1 or L 2 caches more about in a moment
+and then, together with instructions, any input can result output. And this is going to be important.
+So there is a CPU signal that's generated by the CPU clock
+that in today's days I can look at my machine. Several gigahertz several 1 billion times a second.
+A clock cycle is generated each clock cycle. The memory is read out and processed with instructions. Yes, that's going to be a rate limiting step. The CPU.
+This brain of the computer can only do one instruction at a time, or can only do one thing at a time. Yes, that's going to be a rate limiting thing. That's why we have Gpus. We'll talk about it soon.
+Okay, I just said that. So each clock cycle.
+one CPU one core can do one operation. So, for instance, you could do a memory read.
+or you could execute instructions, or you could write data. That's it. You cannot do more than one thing at a time, and we talked about last time. Why, this is a rate limiting step. Does anyone remember these clock cycles as fast as they are now?
+Been? What in the last 15 years in my lifetime but what
+stagnated? Yes, at about couple couple low digit billions of cycles, hertz per second.
+That sounds like fast.
+but unfortunately the data has not slowed down. So that's now a hard bottleneck. Yes, we cannot make it any faster, because it looks like it's already glowing. So it's getting hotter and hotter, as you know, so can make it faster. There's like physical limits to that. And I'm going to put this paper online. But basically this is the logic unit. So basically you have these wires. And these are 2 input wires. And there's a voltage carrier. And you carry the signal out. And you can compute with that. I'm going to put this online.
+You get some inputs from memory and together instructions. You compute some up. These are the famous as Max, like bits and bytes.
+mostly bits
+that the computer is doing under hood. It's all zeros and ones. Right? Let's say, this is a 0. This is a 1, and then instruction is, and the output is also 0. It's it's not both. Yes.
+one and one is one. Okay.
+so how does it work? So you have to see, by the way, so so this is going to be a schematic.
+It's not going to be to scale. There are architectures. I'm also not going to show any non-class relatives. For instance, there's a fan usually in there.
+The power supply.
+I'm going to not show any of that. So the heart of the computer, the brain, I guess, is the CPU
+that has these days multiple cores.
+and each core has attached to it. An l. 1. Cache. Okay, it's very important, because
+it is the most local cache. So in general distance is time. So so you have some trade-off like, if you send the data
+to the computer. So basically in this cache, you want to have stuff that's often used. So I don't know something that's commonly used. So you don't have to look at the bigger box. Then they all talk to the L 2 cache. That's kind of farther away, but still on the chip.
+The entire CPU lives on the motherboard. Okay, the motherboard has your graphics card and other things. It also has your main memory. That's your RAM, someone said. This last time your random access memory. So that's still fast. But farther away than the caches. Okay?
+Then the computer houses, the motherboard and the hard disk.
+and that's where your major storage is. So so my machine, for instance, has. So my machine has the the l 1 l. 2 cache is like megabytes. If that small number of megabytes
+the this machine right here as that one that's projecting has a 64 GB main memory
+and a 2 TB solid. No. 4, 4. Terabyte, solid state. Hard disk. Okay.
+but there's a trade-off. So these disks get bigger and bigger, but they are like slower and slower. Yes.
+right?
+And then, finally, I might be part of a network.
+and there might be some net storage that I'm attached to. That's going to be the slowest of all that's going to be the biggest of all.
+For instance, I have access to Nyu box.
+Do you know about envy box.
+No? Well, N. Value box is something that you have access to, or should have access to, which has effectively unlimited storage. But it's very slow.
+all right.
+So why does any of this matter? Because a lot of the things that we're going to discuss today, but in part probably next time.
+what you want to call it
+will depend on like speed. So, in other words, a lot of the computation
+will be limited by how long it takes.
+and these are the the bits and bytes, as Max said, are on one level, logical.
+larger than concepts, but in a very real sense. And, by the way, don't ever forget this in a very real sense.
+I mean, you can't see them or touch them or feel them.
+But these are literal, actual, physical signals. As a matter of fact.
+does anyone know what? What carries, what, what what flows.
+what flows somebody, what actually flows in your computer?
+Somebody.
+The reason I'm harping on this is because don't forget that physical
+things have to move around. Does anyone know what carries carries the charge into your say that again.
+Okay, and what are they made out of of
+electrons? Yes. So there's actual electrons flowing.
+And they are moving fast. Right? So 50 to 75% of the speed of light in vacuum is as fast as you can go right? So half of that, maybe. So that's fast.
+right?
+It's a lot.
+So, in other words, every nanosecond, every 1 billionth of a second, they can travel but a foot.
+That's a good reference point. So every 1 billionth of a second.
+your electrons can travel about a foot, but, as you can see, this cooper is about a foot, so you know it's going to take some time for the signal to flow around.
+That's what it's going to come down to at the end of the day. So in general, when you can minimize this need for ideally, you would like to have all data right there at the core in the l 1 cache, so they don't have to flow around. But if they have to flow around here. That's going to take finite time
+to do that. And then it's gonna yeah, it is added up. It sounds like, you know a nanosecond is not that long, but it adds up because we all have to do this a lot. Okay.
+in general.
+it's going to go faster if you have to like, go less distance right? And in general, this is time. Okay. So you got to be careful because the whole cloud is going to be designed to minimize the data that has to move. And this is why? Because these are actual physical signals. They are constrained by the laws of physics. They cannot go faster than
+then. This. And, by the way, this depends again, it gets higher. If so, if it gets hotter
+that she slows down further.
+So I've got to be careful. All right.
+Okay, so today.
+So that's just the background. By the way, this is still. So every every time we do this, I'm going to do a little bit of intro where we talk about
+the things you asked me about. And last time you asked me about what's the CPU,
+how does the computer work? What's the transition or things like that? So I will respond to your questions. Okay.
+let's start with the actual class. Today, we'll do 4 things file systems, then relational databases, then SQL, and then transaction integrity. Okay, let's just go right into it. Service file systems.
+so yes. So the idea is obviously, before we get to mapreduce spark dask.
+it actually makes sense to understand what problem was solved with fatherism. And, by the way.
+wasn't you, Adam? Who said punch cards?
+Yes. So this, these file systems actually solved a problem that punch cards had. So we're not going back to punch cards
+because,
+I'm only covering things that we still use, including file systems. And you all still use file systems.
+but let's talk about it in a moment. So in a moment, let's talk about what problem files be solved
+that you had with punch cards, or even before punch cards where you had to. Just
+does anyone know what you guys did before punch cards? Does anyone know what punch cards are?
+What are punch cards? Nobody. So, Max, can you tell everybody what punch cards are?
+Kind of like that? Yes.
+right in machine code series ones? Yes. So the idea is that, how do I say this, that a program a program was encoded on cars. I fed the computer one at a time.
+And you basically spelled out the actual machine code zeros and ones. And if things are punched out as a 0, otherwise it's 1. Does it make sense?
+We don't do that anymore, because that's very cumbersome, obviously.
+so, file systems are advanced on that. But just as a very brief aside, even punch cards advance over what they did before any idea what they did before. It was literally
+hardwired. So it was like a hardwired connection. So the punch cards are flexible
+program. A computer with these punch cards. But before that you had to physically move tables
+plug in this way or that way. So
+anyway, we're going to start file system because it's the oldest innovation we're still using.
+But I see blank faces. So let's start next week with a brief history of computing from from hardwired
+cables to punch cards to file systems. Just as a context. Okay.
+anyway. So this is it. This is what our files look like. Those of you who are in my lab, as some of you are in the lab can see this. We study music. So we have like thousands of musical files. And here's the advantage right there. So, for instance, we have, like
+Song 4 is Beethoven's for release, and we have different sections. So what's the advantage of these file systems? Anybody, by the way, how intuitive this is. By the way, I'm sorry my own videos in the way of this.
+How intuitive this is to you depends on
+how do I say this when you were born. Okay?
+So what I mean by that is so you're all the Dean told me. You're all digital natives. However, you were also born in the age of apps, so you might not be aware of your files under the hood. If that makes sense, do you? I don't know, do you? Are you aware that
+there's files underneath your like? What are you doing?
+Yes, anyway? So how intuitive this is to you depends on
+how deeply you're interacting with these files. There are plenty of people who use like
+ipads and stuff where all this is abstracted away from. You don't even know you have files. Yes.
+is it clear what I'm saying?
+Okay, so anyway. So the whole big thing is, you have these directories. So this might be the music
+we have for one study in one directory.
+What's a directory?
+Hmm!
+What's the idea?
+You see right here? What's the idea?
+And why not put all them in one big pile.
+Yes. So basically, if you organize things by directories, you put like with like, yes, so the and this is by the way, it's called a file.
+It's like a file cabinet, you know. You have little folders. It's an analogy to the to the physical paper version. As you have a file cabinet. You have a little paper file, you pull it out, and there's papers in there that are like all of your receipts from like some year. Yes.
+yes, it's like we're in the on the hard disk. Is your memory?
+I want to make sure this is absolutely correct. Yeah, that's that's correct so, but this is also abstractive for you. So under the hood, the operating system has to know where it says consecutive blocks of memory. But for you. This is a pointer of where that where that is
+all right, anyway. So for you, for the data scientist, that's just where you put your data. Yes.
+and so this is a big one. So with these punch cards, it was like one, and
+it's gone. You have to do it once afresh. This persists, it lives on your hard disk. It's like a hard storage. It's why it's called a actually, that's not why it's called a hard disk.
+But but anyway, so but it's like permanent. Yes, unless you touch it, it just lives there. Yes.
+What else? It has a lot of great properties. So 1st of all, as you will see
+very soon when we even when they go to mapreduce. It's a lot to even understand the basic implementation of mapreduce. Yes, spend a lot of time on that. This is very intuitive. Yes, it's literally an analogy to a file system like a physical file system in your office where.
+you know, folders and files and
+a file cabinet and papers is great.
+This one, as I just mentioned, in contrast to the old computers from the 19 fifties where you turned him off, and it was gone, and the whatchamacallit, the Punch card where you do it again.
+This is permanent. It's there you don't have to have current flowing through it to it doesn't vanish.
+This one.
+some of we'll revisit Json files later in the class. But basically it's like a tree, a file structure. This is what's your answer with the Directory, Matt, okay, this is Mark. This is Matt.
+Yes, okay, Matt is right. So there's like a directory structure. There's a tree. C, double CC. Colon backslash.
+I don't know. Username.
+I don't know. Desktop.
+whatever whatever else is. Next fall 2025. Sorry. Spring 2025 big data slides something like that. Yes, this is a tree. Yes.
+this one is big. Don't get used to that. I can just copy that to a flash drive, yes.
+and give it to you, or on a CD, if you know what that is.
+So so this has 1, 2, 3, 4 properties that punch cars did not have
+whatever they've used before. Like, if these light bulbs yes, so it solved specific problems
+before we go to it. Any, can you see any downsides of this? What's the problem of it from a data science perspective? So why? Why did we ever
+move beyond that, because they were
+one second. I'll get into it in a moment. But I just want to say one thing. You will see
+in this class that every solution to a problem. So every solution was introduced
+came as a solution to some of the shortcomings of previous systems
+that then usually introduces new problems, and then
+it keeps going like that. So, for instance, as you will see.
+the relation databases, I will introduce in like 2 min.
+solve some problems that the file system had or used or was unsolved.
+Then the reg database have some problems that Mapreduce solved and then Mapreduce introduced some problems that spark solved, and so on. So what do you think? Some of the problems are? File system? Yes, up there.
+Very good.
+That's exactly right. This is kind of all create equal. There's no metadata. Right?
+So in a relational database, you have metadata, you can search, you can organize it better from a data perspective. Yes.
+what is metadata?
+Go ahead.
+So yeah, I'm implying this here, right?
+Like artist.
+Right?
+Right?
+You could do that. But what if the user doesn't know that. Yes, whereas in a relational database you could say artist
+album song
+year, and so on. Yes, so this is very like hard coded. This is not good. So so so yes.
+Adam, what you were saying.
+Yeah, so we that's right. This is flat. It's all one, everything for every file in a folder is.
+okay, go ahead.
+Jay, yeah.
+that's very good. So so one of the big advantages of the distributed system is going to be that
+you don't lose data. If if if your heart is, what did you see that
+if you're if you're if you're
+Yes, as as Jay just said, let's say your heart is fails. God forbid!
+Everything might be gone.
+They might. You might want to design systems that are what you call it, fall tolerant.
+anyway, those are 3 great, great, great, great, great things. Okay.
+So yes, as I just said, Why do we have to go beyond that? Let's just do this together. So, as I just said, so, this is what I guess.
+You know.
+I'm not sure which one that was. What's your name up there
+point or Adam's point or both. But this is basically we kind of have to brute like this could get this. Could this could get.
+If you have a lot of files.
+This could be painful. Yes, all right.
+So this one is also true. Right? So it's kind of everything has to be done bespoke right.
+but something like in SQL. As we'll see in a moment. You can reuse the same code over again. And this one we talked about this force everything kind of in a folder. We might want to organize by different properties, maybe different data class or something like that. You want to splice the data in ways that is not obvious from the file. So the file might not be the best way to organize this. You might have a logical organization of the data. And that's where the database comes in.
+All right. So that's sort of we just said we talked about. So here you might want to split the data in different ways, not artist, and
+what you would call it song. But who knows what properties of of the of the of the
+of the song. Who knows what we'll talk about that soon?
+This one? We'll get to that when we talk about relational databases. And yes, I just mentioned that. So in other words, relational databases solve all of these problems, I'm not going to say solve. But they were designed to solve. They believe something's unsolved, as you will see today. And then again, this is like a never ending quest, as you will see in this class, as we go through all of the tools
+as you introduce one.
+some of the problems are solved, sometimes the implementation, sometimes it's a good idea, but the implementation is not great.
+and sometimes you introduce new problems. And then you have to do the new tool, as you will see soon.
+Okay.
+so yeah. But I want to be clear about this data's data. The file system are still around. I'm using files every day.
+I might have sent you files.
+some, all of you downloaded a file from me, the city, but it's a file. Yes.
+so so I would argue that we kind of keep adding tools.
+But we don't really like ever, at least in the last 50 years or so replace them, although we'll see in a moment.
+Yeah. So so to this day that is but, as Nina said, if you don't include an index or metadata that can be very painful if you have big big like data to share. Like, if I share terabytes of data with you.
+Unless I share an index or the metadata with you, it's gonna be painful.
+Okay, yes. So Hadoop will distribute the file system.
+We will build databases on that.
+But in general this is a philosophical point I want to mentioned right now.
+As you will see how we implement is there when you do it. But right now I'll mention this right now in general, will gain power
+by restricting ourselves in other ways. That sounds counterintuitive, but it will have to be like that. You will see when we get there. For instance, in Hadoop. Does anyone know already what one big restriction is?
+I will accept many answers to that, but like more like a logical restriction.
+how about your files are read? Only you can only add to them once they're written, they're like written in stone. You cannot change them anymore. Immutable as an example. Why, it has to be like that. You will see when we get there. I'm just saying there's no free lunch, every advantage that you get by distributing your files.
+There's a price we'll talk about them when we get there all right.
+So.
+so like. I said, so. This is straightforward. You already know about this, so most of the files live on your hard disk, and you can just read them into memory. If it's too big, you have a bunch of options that I don't want to spend too much time on, because we'll mostly solve this. The easiest one is, just buy more memory
+like buy more RAM, which is doable these days.
+But the other ones are depends how good of an answer you want like, for instance, if an approximate answer is fine, you just sample from it, right? Maybe down. Sample your data.
+If you have like a lot of time samples time series, maybe 44,000 Hertz. Maybe you can get away with down sampling that. Okay.
+we'll talk about the stream processings of like. We'll talk about it later in class. Maybe you do it one at a time. Yes, you stream it.
+or you build an index, or you use parallel computation. Okay?
+But as I said, we'll see a lot of these strategies throughout the semester. Okay, so now
+let's go to the database systems. So the reason we have databases is.
+let's be clear. Though, database management system. We're actually merging 2 ideas. One is database management system dbms, what that is. You have a standard interface to store load and process data. So all this bespoke stuff. I just mentioned that Nina and I just mentioned it where you have to write your code to process my file structure and someone else's different file structure bespoke. No, if we all speak the same language, which is this, you know
+this database. Whatever database language is, there's different dialects. We'll talk about it soon. Well, then, we can interface now. Yes, so that's all standardized. That's gonna be great. So now we, you know, have a currency. We have a language we have.
+we have, you know we can. We have. We have a dialogue. I guess right.
+And we'll talk about in a moment. So so, as I said.
+there is going to be constraints all around.
+So today we'll talk about constraints on data, organization
+constraints and organization is is going to be tables
+mostly. Actually, we'll talk about tables for that.
+So today, we constrain tables
+next week we'll constrain the types of computation we allow
+next week we'll allow only 2 types of computations, mapping functions and reducing functions. And that's it.
+By restricting computations to that. We'll we'll be able to distribute the process. Yes.
+in 2 weeks we'll just we will. We will constrain the storage
+by putting risk constraints on storage, we're able to distribute the storage.
+So what the overriding philosophy is.
+If you constrain something today, we're going to constrain the organization that buys us something
+price to pay for efficiency will be. There will be constraints all right. So in English
+file can have any format you want.
+you can literally create it as as you want
+the price to pay for that, it's not interchangeable, it's not interfaceable, it's bespoke. It's just yours. Yes.
+good luck with that right, whereas if you have hard constraints on how it can be organized and that's standardized. Now we can talk to each other, but then it can't be anything. There's very hard constraints on what can go in there. It's going to be a schema. We'll talk about that in a moment.
+Schema, all right.
+and if you put these ideas together. So one is the database management system, and one is the relational model. Then you have the Rdbs, which is the relational database management system.
+These 2 merged. I'll show you in timelines shortly. In the 19 seventies or so
+today all the ones are still in use are this
+Rdbms, all right. That's what everybody uses. That's good. Because then you can talk to other people and share data. And all of that.
+Okay, all right, there's a lot to see here.
+Cassette tapes are like dinosaurs.
+Nobody used them, and you see that.
+like they went out of they were they? They went extinct. Nobody's using cassette tapes. Yes.
+Cds also went extinct if you see that.
+But Vinyl is like the alligator of I don't know.
+Wine was like the alligator off
+audio formats. Yes, it never went away just like alligators. Didn't go away. Can tell later if you want to, why alligators survived when dinosaurs didn't. But the relation database is like that. It's still around. It's
+thinking about this. Yeah, the relational database is older than the professor.
+I think that's the only thing that I'm very old, Luca, and that's the only thing
+where I can say that this semester everything else that we'll talk about. This semester is younger than me.
+including all of you.
+But in all seriousness the relational database precedes even me.
+But it's still around. We still use it. It's the oldest piece of software
+framework that we'll use in this class by far. Yes, but it's still used every day I make a wild prediction.
+SQL. Bill will will sequel will be on your interview that's going to come up.
+It's very useful.
+It's I had some talk with some alumni over the break, I guess.
+and they told me that in their actual work life, SQL. Is by far the most useful thing they use of anything that they learned. The whole program. Forget this class, the whole program. See? SQL, is it
+all right? And you will see today hopefully, why.
+very powerful? Yeah. Why? Why? Why is it still around?
+How did it survive the extinctions of the 19 nineties
+and still with us. Yes, when everything else went extinct. All right.
+So there we go. So, as I said so the
+system of the database. So the job of the database measure system to provide all of these things. So 1st of all.
+data integrity, right? So consistency. In other words, it needs to make sure, and we'll talk in a moment how it makes sure of that, that there's no ill-formed data in there in your file that could be corrupt data in there, right? And if you enter that enters your stream of your processing stream, everything is screwed up. Yes, the database will protect you from that
+concurrent access question for you is that going to be straightforward in a file? Concurrent access? Is that straightforward in a file.
+What does it mean? What is concurrent access? Somebody. What is concurrent access, jolie.
+different users can access the same file. Is that a good idea?
+If that's happening in an uncontrolled way. Yes.
+right? So in a way, that's a different downside of file system, either, you can lock the file and nobody else can use it. Or if you let multiple people write in the file, that's basically a guarantee to get versioning issues, which is like different people might have different version of the file that they're working with.
+So, in other words, the database should handle that for you.
+This one we'll talk about. I'm not sure if we're going to today. But basically, there's ways to store the data in database that is actually efficient by itself. We'll talk about that. And again, there's a standardized way to talk about it. And we're going to have a standardized query language. It's going to be SQL,
+yeah. SQL, that's going to be our
+our standardized query language. That's what SQL stands for. SQL.
+Stands for. Standardized query. Language. SQL,
+all right, is that then, Dan? No, yes, okay.
+anyway. So and there's a lot of lot of them we will mostly talk about in this class about this one, the relational model, because
+for okay, the other ones might be of interest. For like computer scientists, obviously, but for data scientists, you'll see in a moment why the relational model is is
+what you want, what what's most useful to us? Hi, Jason.
+all right. So what is the relational model? The relational model?
+So the relational model is a concept that's like a logical concept.
+and this might be hard to wrap your head around if you've never seen before.
+So try to pay attention.
+So the idea is that data processing consists of 2 parts.
+One is the representation, and one is the competition. Yes.
+all right, and they are logically separate processes.
+And there's a trade-off.
+You can prove that any computation can be implemented by
+degrees of freedom in other one. Yes, so just extra steps.
+So what the relational model does is puts hard constraints
+on this one. Okay, the relational model puts very severe constraints, as I already mentioned earlier, by using schemas. And, by the way, if you're wondering what schemas are I'll talk about in a moment.
+And, by the way, just as an aside, I'm aware that half of you, according to you.
+use SQL. Already. But today it is like, we'll talk about conceptually what we're doing
+anyway, what we're doing, what what SQL is doing, what the relational model is doing is to restrict
+how data is represented.
+But it gives you pretty much free range over competition.
+Next week we'll invert that.
+We will put very severe restrictions on the computations again, we'll only allow mapping and reducing functions. That's it.
+But we'll let you represent any way you want. So it's kind of the opposite.
+Okay?
+All right.
+So
+what is it? So, as I said, you probably have all used tables. Those are spreadsheets, data frames. Numerical is whatever you want.
+Exploration model high on a high level.
+So the idea is that every column of a table
+set this is going to be important. The relational model is all about sets. This is going to be about set logic, and I need to pay attention in a moment. Set logic
+could be could be, some possibilities. So if it's defined, as numbers can be, numbers, strings and strings, and so on. Okay.
+so here.
+So a relation over some set is a subset
+of their Cartesian project. Here we go. So relation is a subset of this Cartesian project. Does anyone know what a Cartesian product is?
+What is a Cartesian product up there is that Dan?
+Go ahead.
+20 rows. So in our rows all possible combinations. Yes, he's right, that's correct.
+It's a full cross. All possible combinations. So if you hear Cartesian product think all possible combinations. Yes.
+that's right.
+And so then the rose are then the elements of this relation, which are, are, then
+the Tuples. Yes. So basically, one particular combination.
+So in SQL, this would be like doing a cross chain join between 2 tables. We'll talk more about that in a moment. But those of you who are into combinatorics I know some of you are
+will like this, because the relational model implements combinatorics in you know this framework.
+Some examples, pachyderms. So let's say we have.
+This species is a string. Yes, could be elephants. Woolly mammoth mastodons. Yes.
+the error could be. Well, there's only 4 actually, Miocene, Pleiocene, Pleistocene Holocene. Yes.
+then diet they can be carnivores, herbivores, omnivores, you see.
+and they can be extinct or not. Yes, so far, so good.
+Okay?
+And obviously, species could be, you know, anything
+but this combination. Does not need the any actual relation.
+This is a table does need not to contain all combinations, just a subset of the possible combinations. Look, you look like I have a question.
+Say that again.
+No, it's it's like the A row. It's like one. It's 1 combination.
+You see, the relations are all possibilities.
+But then a Pre. X, and then one given like relation is a subset of that.
+Huh? Oh, yeah, that's 1 column. Yes, that's 1 column. a 1 is a column, a 2 is a column, a 3 is a column. A 4 is a column. Yes, and I define here 1, 2, 3, 4
+possibilities.
+I mean, let's do this. Forget a 1, for now let's say it's this one, this one, this one, this one. Let's say you've got a dot dot
+4, yes, times 1, 2, 3 times 3 is times 2 is yeah.
+So so you would have 24 possibilities. Yes, that's a relation.
+Yes.
+Oh, yes, go ahead. Firstly, does that
+apply that for each row each value.
+No, it doesn't have to be defined just just because each each is like a subset of the existing ones. This is like, each existing database
+is going to be a a very small subset of the possibilities, this is about the possibilities, they're all possible values yes.
+yeah, sure, yeah, yeah, it has to be defined. Yes, that's the important point. So we are restricting what you can put here. So, for instance, let's say, if you've got a dot.it has to be one of those 4 errors. You cannot live. You cannot have an animal living out of this organism living outside of dot. Yes. So this is already going to be the schema right? This puts very hard limits on what the values can be. Yes.
+what was the second question.
+Okay, any other questions?
+Oh, yes, Richie, yes, you can have. No, that's just you don't know.
+Okay, yes, all right.
+So yeah. So this is kind of like
+you notice as tables. But this is the abstraction of that. Yes, we call it a relation, all right.
+So so a table is like an as we tested. I think this is what the confusion is about. A table is what you know or you're familiar with. It's an explicit instantiation of this. This is a logically abstract
+concept, right? It's the. It's the abstraction of that.
+It's like an idea, right? A table is your explicit instantiation of that.
+And, for instance, does everyone know what a view is
+in a sequel up there? Yes.
+right? And and exactly. So. We're going to show this in SQL, in a moment. So basically, you could create a view on your data
+in real time. Yes, dynamically right. But that's also a relation. It's but it's not a table.
+and then you could write a temporary table as a result of your query. So there's many relations there, not just tables. So it's like the general logical.
+a logical thing. And honestly, I think we'll do this more in the lab this week. I'll ask the tas to add this this, if you have never thought of it like that. It will take a while to get
+wrap your head around what a relation is in relationship to a table. Yes.
+So, for instance, again, this is not trivial. Let's say you set A with 5 elements set B 3 elements.
+By the way, this these well, I just this is Dan. This is Cartesian Cartesian product, right? But what are these
+absolute value bars? They're not absolute value bars
+sometimes that's given in in conditional probability.
+sometimes as a value in like just, I don't know algebra, I guess.
+and sometimes in like, when you talk about set theory, what is it, Adam cardinality?
+So cardinals are involved. What's a what's a cardinal? And what's cardinality?
+Hmm.
+yeah, it's just how many elements there are. Yes, so cardinality of this is 5. This is that so? The Cartesian product, as density is 15. Yes, so far so good.
+But so what about the number of possible subset of that? Do you see that is
+this or that being part of that or not? Yes.
+right? So now, the cardinality of that is a lot larger than larger than that. Yes.
+that's the possible number of combinations, right? Which is much, much bigger than that.
+So what if? What if? What if? You know the order matters right? Then you need to count both. So that's a lot bigger than that. Yes.
+is it?
+These are Tuples, these are Tuples.
+So Ab is not the same as BA, Ok.
+So the order matters always in these relations.
+But we're not quite done yet.
+We need to subtract one, because one week double counted the null element.
+not the empty relation counted twice, but that's a large number. So even even just with, if even just with 5 in one and 3 in the other. You can have 65,535
+possible unique Tuples.
+Yes, if this is murky
+in your head, I don't blame you because you don't usually think of it like that. But these are all possibilities. And that's why I said earlier to Luca and everybody else.
+this is just a number of possibilities. Any actual database usually has a much smaller number of real existing
+instantiations of these possible relations. Yes.
+but this is best for you to practice, which we'll do more of in the lab I just want to show you. Yes, Jay.
+in this case we have discrete ones. Yeah, if we have strings or something like that, then it's much bigger than that. Yes, for sure.
+This was just an exercise, if it's countable. Yes.
+but the relational model in general is transcending that. But
+your relational database implements the relational model. Okay?
+Salt, as we said. So let's be clear.
+So each row out of is a tuple.
+but the Tuples itself are not ordered, so the rows are not inherently ordered, although we'll talk about in a moment how we
+trick the database into ordering it right
+importantly. Again, the Tuples are unique. You cannot have duplicates and we usually will use
+set logic to retrieve data from the database or order it or arrange it or something like that. Yes.
+Okay, okay.
+So force uniqueness to force uniqueness. Because, okay, let's just be clear.
+How do I say this?
+Each role in the database has to be unique.
+But what if you happen to have?
+2 animals that you know, have the same properties. It's not the case here. But let's say you have that. You could have that in real life. Yes, where you have some data set, and you have some users, and they have the same Zip code, the same name.
+Everything is same. So you force the uniqueness of each row by adding a column
+that with some identifier. Yes, it's often shared automatically.
+We don't consider part of the data this is called, or actually, I should be careful.
+It can be used as a primary key.
+All right, we'll talk about keys in a moment more in detail. So often
+the rows are numbered by the database itself, and that id
+forces uniqueness. Does that make sense what I'm saying? And then you can use that to order to order everything it has is not inherently ordered, but it gets ordered by the database, which also enforces uniqueness because it has to be unique. Yes or no.
+Okay, great.
+I mean so far, so good.
+All right.
+So now let's talk about schemas. So in practice, in practice,
+the relation is defined by a schema. And here here's the idea. So
+this goes back to what Nina said. You could consider this the metadata.
+and this is also what makes it inherently like whatchamacallit.
+consistent and coherent, and all that. You cannot enter anything in this table that is not
+follow the schema. Yes, so, in other words, the Id has to be an integer
+has to be an integer. Yes.
+the species has to be stringed.
+The error, I guess, is also a string.is a string, and if it's extinct or not is a Boolean. Yes, so it has to follow this, this, this, this schema. Yes.
+and you, as a data scientist, will have to design a schema that works for your data. Yes, so so every table has to have a schema that's very carefully find. Yes.
+and then you know that what you would call it.
+that the data is valid. That's in there. However, what valid means is purely
+purely syntactical. In other words, you know for a fact, all the data in your database
+is properly formed. Yes, in other words, it follows, it follows a schema. Otherwise you can literally not. You can literally not enter it in database.
+But what do we not know?
+Does the data have to be like true.
+you know, for instance, does data finder even exist
+does not exist. Yes, so it does not check on that. So you know.
+Yeah, the other one's not true, although
+not sure if the mastodon is
+is a ruling member of a carnivore. I don't think so.
+anyway. So so it only checks
+formal adherence to the schema, not if the data is actually correct. Yes, that's up to you. We'll talk about that later. Yes.
+okay, yeah. There we go, all right. So it's hard to make them. So so when we.
+When Brian and I were co-teaching this class, we spend a lot of time here like asking people to design schemas. It can be very, very hard to do that. So, for instance, let's give some customer database.
+Would it be a good idea to allow all strings? Would that is, that is, that is, that is that a good idea?
+Why not?
+Okay? But but could you
+think of some? Yeah. What constraints could you add to make sure it has integrity?
+Okay, but but like special characters. Yeah, some people.
+What length? Yes. So what would you want?
+What if someone has a long name like the count? The count of so and so. What if someone is Elon Musk's kid right then special characters should be allowed
+of?
+What about what if someone doesn't have a last name, like I've seen that
+there's a somebody said. They have only one name. There's a Uni name movement. They have only one name.
+Psi S. AI is one of their proponents.
+So, anyway, my point is, you'll be hard pressed to think of a schema that works for everybody here. Yes, what if you're like, have some weird umlauts, or even Germany. Imagine some weird characters in your thing. It's hard to design. All I'm saying is that there's nothing trivial about this, okay?
+And it can go very quickly. Yeah. So we talked about this if it makes too short.
+What if someone's name is A or B or I, or something like that. Yes.
+We talked about this so and then it's gonna be
+awkward. So you got to be careful. Okay.
+so what else can I tell you? So yeah, so
+so the whole point. By the way, the whole point of having a relational database is, you don't usually have just one table.
+but you have multiple tables that are related to each other. Yes, so so far you have not seen the power of this yet. Yes.
+with one table
+the relational database becomes powerful if you have multiple tables. So, for instance, you could have a table of like
+animals. Yes, in which area they lived.
+And now you have a second. You know what you call it a second table with like, I don't know movies that the animals in. And now you can use that to search like, give me all the movies where, like an elephant was in there like you could do that. Do you see what I'm saying, and that that is very powerful to God knows what else like. Say, you want to make a list of all the movies where elephants were in there. Yes.
+it can search by.
+We'll talk about a moment how to query this database. Give me all movies
+filter by elephant or something like. Yes, Ethan.
+now joining them, joining them. We'll talk about it in a moment, joining
+so logical logical thing. But anyway, so you see him saying, like, you can say filter by elephant. Yes.
+and anyway, yes, so you can. It's on the slide. See? Ethan joining on shared attributes. Yes, basically. Give me give me all the elephants here, this one, give me elephants here. Movie stumble. Yes.
+we'll talk about that.
+Okay, so keys. As I said earlier, they make things unique. So you could have otherwise, you know.
+if you didn't have the Id. Yes, this and that
+would be conflicting. Yes, so that's what determines the identity of a row.
+and, generally speaking, most keys are simple keys. It's a single column, but you can define compound keys, say 2, 2
+2 columns together. Yes, what? As I said, this helps you
+disambiguate. I bet you right now there's somebody in this class. I'm not sure who
+who shares the same last name. And 1st name, what this
+ambiguates you in the database of the university is your student. Id.
+That's that's our. That's our key. All right.
+right. Your net, id, I guess.
+Okay.
+Yes. So we'll talk about this soon. There's a lot going on with these keys. I think this is best. If you have an example of it.
+Yes.
+So yeah. So foreign keys are. How do I say this? Very important.
+So the idea is, you can use a key from one relation
+as a column in another one, you know. So basically, can you use the key from one
+database? Let's say, this is your general table of all the species as you key for the second one. That that's what allows you to link them. That's how you link tables between each other. You have the shared
+key. So use the Id, the primary key in one table
+as a column in another table forward key.
+Okay, that's how you do the linking of the databases.
+Okay?
+And you need to do that. You need to like, define in your schema. We're going to have a column
+that has these constraints where that accepts these primary keys of the database as you form keys in that database. Okay.
+normalization. How do I say this?
+oh, let me ask you, what is normalization? What is normalization? Usually in data science, what is normalization in data plans? Usually
+somebody.
+If I say, normalize your data, what does that mean?
+Say, what tier to one?
+Sure you could do that. What else?
+Hmm!
+By some metric. Yes.
+Say that again.
+Sorry one second. What is that I couldn't hear you equal, Major. Equalize them.
+What do you mean by that, Richie?
+Bring them some scale? Yes, use some norm
+to bring them to scale. Yes, yes, okay.
+that's not the case here. Okay, that's not what this means. What this means is in your database.
+You cannot have any redundant information.
+Every every every piece of information, exists in only one place.
+Otherwise you can't meant you can't. You can't
+can't maintain it. Yes, so every record is only contained once
+to be clear, you have to do this yourself. You cannot just call some normalized function.
+And yes, Max, except for keys. Well, the keys are not.
+I don't know how to say this like
+Think I was best if I could give an example, so keep that thought.
+But but but but we'll talk about this going forward.
+Okay, so anyway. So this is relations. So so we do this a lot.
+And yes.
+So basically, this makes data easier to work with because it provides a level of safety and validation. Okay.
+so let's talk about our SQL, most of you are noticed. We'll practice more in the lab this week. But basically it's it's our like
+standard way to talk to the database. So once you have the database that implements the relational model of your schemas and has your data. How do you talk to it? And the answer is SQL structured query, language, and this is going to be a very important distinction. Those of you have not used SQL. Before, and you told me half of you have not. Really.
+it's very different in C or python. It's procedural. You tell it what you want.
+how you want it at the line you want it at.
+This is more like, Hey, I want these rows logically, but you figure out how to do it. You do not spell out.
+You do not spell out how
+you let the database do that.
+So it's actually quite nice. So basically, you tell the database with SQL, I want all records that have these properties, maybe elephants or elephants that are in these movies. Elephants are in movies that are more than 2 h long. Elephants are more than 2 h long that have 5 stars on like.
+I don't know rotten tomatoes or something like that, and it will do it for you.
+How it does that is under hood. Forget about it. So it's a declarative language. It's very nice for most of you. It's very nice unless you're like, really like coding.
+This actually is very nice. It just implements logic.
+Yeah, it's more like a protocol like, it's like, you are implementing logic of it. Okay? And the good news is that it is standardized. That's good. However, as you probably know, it has many, many dialects. I myself, Pascal.
+learned 20 years ago. Mysql.
+Luckily for you, Python, comes with sqlite.
+That's actually very nice. Everything's in one big database file. And this is very user, friendly. Yes, every single of these dialects has their own
+quirks. We can talk about it after class.
+unless otherwise specified. I will just talk about sqlite.
+because that is by far the most accessible one, meaning you don't have to be a database engineer
+to really get to the bottom of it. It's very usable user, friendly. Yes.
+all right. We talked about this already. So you already know this. So how do you get all rows from a database? So that's select
+star from pachyderms that this but okay, this is the table name pachyderms
+from is word table. You from star means all select gets you all of them. Yeah. So that's fetches
+all of the all of the records. Yes.
+generally speaking. You don't want this because your database might have billions of rows.
+So you usually get that. No, don't do that. Okay.
+all right. So get some rows that is like select star from. But that's the entire row. Star means the entire row. Stack star from the database
+pachyderms. Oh, no!
+Came. This was pushed into the next by Powerpoint.
+But anyway, where you have a second condition, where
+extinct is true and these 2 are extinct. Yes, so basically, filter is a filter. This, Ethan. This is a filter. This is where you filter. By some conditions logical. It's like an if statement, if and only if they're extinct, then you get those rows. Yes.
+okay.
+what if you want only certain columns? Then you say you want the error and the species from pachyderms were. And this you can. Someone asked this earlier. The key can be like in the condition where the Id is born.
+larger than 2, something like that. Yes, it can be part of the part of the statement.
+But look how nice this is. You just tell it what you want.
+The implementation under the hood is
+up to the SQL. Yes, you don't have to specify that, whereas in in an actual coding language, you would have to write a for loop, go through all the records check the record.
+Have an if statement or 2
+or joint, if statement and like a NASA, if statement or NASA loop.
+don't worry about that the database will do it for you. You just tell you want all of the records with these properties. Ok.
+what else is this? Yes. So where filters
+you can reorder them. This is another relation. As I said, the result of a query can be a relation. Yes, or is a relation, so relation is the general concept. It doesn't have to be a table.
+Yes, and this is a good example of this. The good news is the practices in the lab. It's always like dB, if dB is a point to your database, dot whatever, and it goes in here. So in other words, you might not even know that you're talking to a database. This might look just like innocent python code, but it's not sqlite is built into your python. So it comes natively. So it's very nice. You might not even know you're having database behind it.
+and all of all of the all of the files.
+the whole, all the tables. I apologize. All the tables
+are in a single file, the database file where I say in Mysql every table has its own, has its own file
+as an example of the difference of dialect.
+All right, what else can I tell you? Oh, now it's about joins.
+so join is probably the most common thing you do.
+That's when you combine information with a logical intersect 2 databases. Yes.
+and that's that's really the joint is is most of the power of SQL for most of us.
+So, for instance, here, as I said, you might have one relation that is the species and what it eats, and where it lived, and all that. And another another table might be
+a prominent member of these species being in a prominent movie or something like that. And you want to find out
+which one is both, or something like that. Yes.
+and so then you select star from pachyderms, and then you join like some kind of like from the character database. So
+so what kind of joins are there? So when we say joins, it's actually like what you call this, all kinds of joints.
+and but I'll show you in a moment which one are the 2 most commonly used ones. So a cross join
+is all combinations of the rows. Yes, so it's literally as Dan said again, the Cartesian Project cartoon product.
+Do you think this is going to be commonly used
+no way. Why not? You're right. What logical operation does it implement?
+Say that again?
+Okay. But but like, wow, like.
+like, how many will that make like a lot? Yes, yeah. So so this is not specific. Just gives all possible combinations. So that's
+theoretically possible. But for what you want to do, it's almost never used. What about this one here, like all of the shared columns, must match. Yes, that's very specific. Yes.
+so so, in other words, the inner joint and the outer joint are the most commonly used. Let's see.
+So here.
+Let's see how that differs so.
+What you want to call it. So the left join right
+or the right join. What does that mean in English like which one is which somebody
+have you done this before?
+Max website? And you're right side would be the opposite side.
+Right?
+Right? You filter by this or by that. Yes, so basically intersect. And one is the full set, and one is a subset. Yes.
+and you can have a left version, the right version of that. Yes, okay.
+And here
+you have the. As Richard mentioned, the nulls are part of data in this one and this one.
+it's without it. Yes, okay, all right. So you can also modify data that's with insert into table name.
+which column you want to insert, and the and the value that you want to do. And you'd update table. You set that where that is. Okay.
+what else. This was. This is a big one. Be careful.
+What do I mean by that?
+fanatizing queries. By the way, how long does the class go 8, 25.
+We're gonna be good. Okay, okay, what is going on here? So why is this dangerous?
+Why is this dangerous?
+So why is this dangerous. And why is this safe? Anybody code? Sql. Injection attack?
+Can you elaborate? Mark? You're right. The 1st one makes this liable to a SQL injection attack. Yes, let's say you're a malicious actor. What could be your name? Your name could be
+drop table. Your name is Drop Table.
+What would happen next you would drop the table. Can you retrieve the table once it's dropped?
+No, it's gone. Yes, that's bad. Yes.
+How about this one here?
+It doesn't become part of the
+it doesn't become part of the code. Yes, it just becomes a parameter to the code. Yes, so this is down here.
+This is a sanitized query. It is an unsanitized query. Yes. Do you see how SQL. Right there can help you?
+I said earlier. It makes your code safer or makes your data access safer. Yes, here, if you write your queries properly.
+will not allow you know malicious actors to, you know delete data inadvertently. Yes, Luca.
+I'll say it again, I guess I guess so. Right. So this this becomes part of the whole.
+that if you put like, if this queries the like name
+Field. Yes, and, as Mark said, if his name is Drop table, it just literally becomes part of this query, yes, and it just drops the table then, yes.
+whereas here it doesn't, it just becomes a parameter to this condition and doesn't execute that. Yes.
+by the way, don't, it has not happened to me.
+But it hasn't happened some someone I know.
+And this is not something you want.
+All right.
+If you drop a table accidentally. Yes.
+the file. Okay? So like, I said, so let's be very clear. It depends on your actual. The question was, by the way, I was asked to repeat the question because it's hard to hear. Yes, for the people online. The question was, Where do these tables get saved? And that depends on your version of SQL. As I said in Mysql, every table is its own file on hard disk
+in sqlite. All tables are part of one file.
+one big file, the data, the database.
+All right.
+Okay, okay, let's talk about aggregation.
+So so here, you can summarize the result of multiple tuples in one result, this is going to be a good example. So let's say you find the average height of some people within a Zip code.
+So you could do something like this. Select the zip code. Yes.
+and then the average height from residence, and you group by sip. So these are your like residents. Yes, species. Height, address, Zip code. Yes.
+and then you would have the average height of of the residents in that zip code. Yes, so
+the good news is this will very quickly allow you to compute
+the results of very like, if you give it a billion rows, you just ask for the average value, and we'll just average for you. You don't have to code anything you just ask for it.
+So it's kind of like waste, genie. I guess the SQL. Database you don't have to like specify
+how to do it. As long as it's a recognized operation like averaging, we'll just do it for you. Give me all of the give me the average height of all of the
+records that have this have this constraint done?
+Yes, so this can be very useful. Yes, okay, all right.
+Like, I said, average sum. Min. Max Max, all right.
+So that's literally like off that column, the average
+of that column, or some of that column, the minimum Max can count like like how many unique values there are, how many rows there are in general versus how many null nulls there are again, Richie. This this on left includes nulls as per data on the right, it excludes nulls.
+Right?
+All right.
+Concatenate strings.
+Join them. Okay?
+All right. So so this
+importantly applies to the input conditions, not the output. Okay.
+so this is you, you. The output applies to the group conditions. So for some like having. So, for instance, you could say, if you want to have the, you want to get the sum of all the heights
+from this table group by the Zip code, but you want to only keep.
+The heights, if they're large intent, or something like that
+that that is using the halving, having keyword. Okay, it's talk about indexing.
+Okay? Oh, it happened.
+Yeah, what is that? So what's an index? So the
+like, I said, the relation schema provides you a view
+that might not be the best way. So, for instance, you could organize by column.
+Okay, we'll talk about hash tables and trees later.
+So again, it does not.
+Show this to you natively, but you can like
+lead to it. That's what the indexing is for.
+So here's the idea. So an index is a data structure, right?
+That can make your queries faster. Yes.
+So, for instance, let's say you, as you see here, table has some view
+values that just read a million times.
+and let's say you might want to get all the rows with one value, so you could store this.
+Like that instead of searching independently. Yes, there you go.
+What else? Some drawbacks of indices? You have to make them. Okay, as you have to call make index right? That can take a while to do. Obviously.
+if you have some you know. What you would call it index that has multiple columns.
+That's gonna what I'm trying to say is, this is actually going to take up space.
+The index itself takes up space in the hard disk. Yes.
+and of course, once the index is constructed updating. That might be even time consuming. Yes.
+all right. And sometimes it might not help not help.
+Okay. So when should you index?
+When you read more often, you write right? Let's say you write the data once, but you have many, many reads on it. Then an index can be helpful. Okay? And if you can predict
+what query you'll use.
+And again, if you only, you know, have few attributes like extinct, something like that.
+Or it's this or that works. Okay?
+All right, let's see. So so far again, as I said, this is like a wishing genie. You just tell it what you want.
+It is literally magic, I mean, that's not true, but figuratively
+like you don't have to specify it. How you do it. You just tell it. I want this this the other thing. It has these conditions, and it's going to be very flexible.
+I'm not sure.
+I'm thinking.
+Yeah, I mean, let's say, let's say you want to study music as we do.
+It might be very hard to
+do this by hand where you have where you have, like, you know some user interactions with music like, how often you listen to something and how much you liked it and all that.
+And then you have a table with the music pieces like
+how long it is when it was written, by whom it was written. All the frequency spectra it has properties of is doable, but hard to do to do an analysis this way or that way by hand, or you can have 2 tables in SQL. And just
+natively.
+sometimes look at that from the user perspective and sometimes from the music perspective. So anyway, so to summarize
+again, it's a standard interface. Very nice. So you don't have to write your your bespoke code.
+Yes, often, like, I said, it comes natively, like, in data frames.
+And this actually allows you to to go ahead. Okay, we're next. Okay, this is going to be important. And this is the last thing we'll talk about today. So as we said earlier.
+if your file systems are. It's kind of like a no, no win situation. If you have
+multiple things going on, you could
+have versioning problems, you could have other issues. You might lock the file databases ensure.
+if you do it properly.
+the integrity of of transactions. Natively, this is very important. Does anyone here work in finance? I mean as a database person. Ish. Okay?
+So
+you will see in a moment. I'm going to use the classic example everybody uses to show what could go wrong if you don't do that.
+Okay?
+So so yeah, so like, I said, consistency
+is going to be a big problem in file systems. Yes.
+So look at that.
+Let's say you have.
+Let's say you have a a what you will call a graph
+that needs to be connected. You will see in a moment. Why, you might want that.
+Let's say the vertices are stored in nodes. File, and the edges are sort of the edges file. Yes, let's say I want to add a new data point.
+which is in is a vertex and 2 edges. Yes.
+let's say you add the vertex first, st
+and let's say, then the power goes out.
+then your your system is in a state of like a disconnected graph. Yes, it's now corrupt, all right.
+If you add the edges 1st and the power goes out. It doesn't like
+point anywhere. Yes. So in file systems, it is quite possible
+that whatever you're trying to represent
+is in a state of like whatchamacallit.
+what do you call it? State of like corruption like it's not.
+it's not working. Yes, whereas in a database you can ensure that. Yes, we talked about this. So you might.
+and of inconsistent data. Yes, and as I, as I just said so logically, here.
+you need this to do them
+simultaneously. But in practice, and this is actually important to know how a computer works.
+You cannot do it.
+A file system cannot do things simultaneously. It's 1 thing after the next. Yes, so it's possible that the power goes out right after you, added the the
+the edges.
+Yeah. And now he's just pointing nowhere. By the way, if you think this is theoretical, I'm sure you all, I hope not. By the way, had a largely corrupted hard disk. You ever had one.
+Let's say you were saving something, and the power went out.
+You might still have the files there, but it's now largely corrupt. Yes, and you can't even read it. It's very sad, all right.
+So we need to add something to that. And the good news is all modern relational database management system. Rdbs, have this. And let me tell you what a lot, what the what, the.
+what, the and we talked about this already. Right? You could
+use the same file. This is fine, by the way, right?
+2 users reading the same file is fine. Yes, concurrently. That's fine, right? This is fine.
+What about now. You talked about already up up there like. Now, if this
+organism reads and writes to the file.
+the other one might read an outdated file, or whatever. Yes, so this. So this is a problem. So so concurrency.
+Okay. So if someone ever asks you.
+what are some drawbacks of file system, consistency is not guaranteed. Yes.
+what else is not guaranteed? Concurrent concurrency? By the way.
+keep these thought. We are introducing these concepts today.
+Consistency, concurrency. This is going to be something that is going to be with us for the rest of the semester.
+Like, let's say, we distribute our data.
+You need to make sure that your system serves always a concurrent version that's not outdated data or something like that. That's not gonna be trivial and Hadoop, for instance, has
+Sadoop has, like mechanism in place that ensures concurrency.
+But, as usual, it's going to be a price. It's going to be a price to pay for concurrency. Mat.
+Natively. Yes, but yes, exactly, Matt. Yes.
+So, for instance, I'm actually not sure I kind of transitioned away from Microsoft.
+But what I can tell you is that my Mac sometimes produces
+duplicate files. It says something like it adds to the file name, this is a. This is a
+conflicted version of the same file, and is flagging it for me. So yes, modern file systems have these processes that I'm going to mention in a moment built onto them. But natively file systems do not do not provide for this. Yes, and again, I don't think they have a good way of to handle this. What my, what my Mac operating system does is it produces like conflicted versions, not great.
+But then it looks like you figure it out.
+The good news is, as I'll show you now for databases and for rest. SMS message for distributed systems like Hadoop.
+It automatically takes care of that for you. There will be no conflicted version. You don't have to like. Adjudicate yourself. It will do it natively. It will not accept
+version. I'll show you how it does that. But there's a price to pay. The good news of your file system is, you can read and write at will. Yes, that will not be the case, for hadoop
+constraints on. Who can write, or how you can write to it, we'll talk about it. Okay, this one, of course, is the worst. If both users read and write, then it's chaos. Yes.
+and as you, as Matt said, there are ways of
+to handle this. But it's not trivial.
+if you use something like overleaf right, Hamza. It allows multiple users to compile the file
+concurrently. Yes, but it's not trivial. There was other constraints that come to it. We'll talk about it.
+But anyway. So let me just 1st tell you today, now, like 5, 10 min, what the principles are
+that you need to observe. And, by the way, Matt, it is entirely possible that modern systems as a extra layer.
+provide something like this in their selling point in their marketing. Our new system is Asi compliant, or something like that. And, for instance, a lot of systems are using banks or financial institutions have to be Asi compliant.
+Let's talk about what that is.
+So if your system is acid, compliant.
+it has the following 4 properties, acid a is atomicity.
+So, in other words, no partial credit. Yes, either the either the operation executes or not
+as as a whole. So it's like a package deal. Let's say you're let's say your transaction is a column. Transaction
+consists of 5 operations.
+if not, all 5 are like executed, let's say 3 out of the 5 executed, and then the power goes out.
+Then they're rolled back. Then all of them are rolled back, so none of them execute. Yes.
+That's a that's a safeguard
+problem that we just saw. Yes, and yes, you, Matt is absolutely right. You can build this on top of a file system.
+but not natively. Yes, and has other costs
+consistency. This is important. You can only move from one valid state to another valid state. So that's the second. So A is atomicity. C is consistency. So so, and this is something that you already saw. If you define a schema, a database will always be in a valid state. Yes, that's not necessarily true for a file system.
+Isolation. This is gonna be very important. This is like independence, like it's like, there's no
+the rose, you know.
+The the operations are yes, right.
+A balanced, a valid state is like syntactically valid state like there's no.
+I don't know no random like. Remember the schema.
+It has to follow the schema. There's no data in the database that is not compliant. You can't even enter it, whereas in a file you could yes.
+or a corrupt version, or something like that.
+this one again, you can execute them in any which order.
+And this is usually implemented automatically. That's like, once the transaction is complete, it is durable asset and the full set of all 4 is, you would expect in a modern database
+system. Yes, and frankly, in most of the systems that we use. Yes, and a file system does not usually have that? Not not natively. Yes.
+yes, no.
+Anyway. If someone asks you ever in an interview, hey, what are the 4 asset properties. And why do they matter?
+They would. They expect you just know that it's like, you know.
+data engineering 101. Yes, all right.
+So let's just go through all of them in detail before we end the class.
+So yeah, so this is what I said. So at the beginning you have when you modify your tables, you basically write a wrapper. Yes, you
+have a begin transaction. And then you do your queries.
+And you know, rollback function. Yeah. So the idea is that
+if if if an exception is thrown, you roll back. As I said earlier, we'll give an example in a moment. Yes.
+okay.
+so there's different versions of this. We'll practice this tomorrow with sqlite. What sequel? Some of you. Some have to start some of these begin
+syntax. That's depending on dialect. Okay, but this is important.
+If, between you know, the queries and the commit. Yes, opportunity queries. And during the rollback anything that's not
+committed will not be done as I just mentioned. Yes.
+so that means to someone just asked. Here was you?
+I think it was you
+that Davis is always in a valid state, so you can't just add the vertices or the edges. It always is both. Yes.
+right. Otherwise it rolls it back to the status quo ante.
+All right.
+So so like, I said. I just mentioned that it's like, try accept, or
+what is it in Matlab? Try catch
+right? So basically, it's like a try, catch. It's like, try this if you and if you
+encounter any issues, then do that. Yes, yes, right?
+And then you can roll back to the database before you did that. That's very important. That's what makes it asset compliant.
+Okay? And then you commit that to to to disk. Okay, the classic example that everybody uses that I'm going to use is again, this comes from banking
+does come from banking.
+Let's say you have. You know, 2 ids. You have 2 balances.
+Imagine transferring $20 from account 2 to count one. Yes.
+importantly, there's a constraint. This is the schema.
+To leave the database in a valid state. You cannot have
+negative money. You have to have money. Yes.
+depends on your bank. By the way, sometimes you
+can have a what is it called?
+Like an emergency? $500. What is that called
+overdraft protection? Yes, that's right. Overdraft protection. But if you don't have overdraft protection, what happens if you.
+a check comes in that is higher than that
+bounces, hurts your credit, bounces, and you have to pay a fee. Yes.
+it was bad play protected database. Yes.
+So so the way it works is again, we start with breaking transaction.
+and then we update the account.
+set the bounds in 2 to minus 20. Yes, because we subtract 20 from that.
+and then we update the new one with 20 to the 1st one. Yes, that's what the transaction looks like under the hood. Yes, don't do this right now, but so your checking account, you can say, make a transaction right? Make a transfer to yourself. Do you know, maybe from your savings account, your checking account, or vice versa, that's what's going on under the hood. Only if both transactions
+execute.
+Do you actually commit this to like department record? Yes.
+and it's important to either both or neither. Yes, and
+let's say we, and but it can. But it could work right, because this is valid. It's either, you know, because this would return to 0. But 0 is fine. No, having no money is fine.
+right? It? It works.
+Okay.
+How about this one?
+Let's say you want to transfer $20 from one to 2.
+This now involves a schema constraint. Yes, and if this one fails.
+then the whole thing is rolled back
+because you encountered a encountered a a thing. Yes.
+so otherwise. Otherwise, you know, you would be problematic. Because.
+let's see, going back here, imagine the power goes out here.
+What would would the problem be?
+The money just disappeared? Poof! Yes, that's bad. Yes.
+so so that cannot happen. It has to go somewhere. Yes.
+and this one. What if you know this would make it negative like you can't, you can't do it otherwise. The money?
+Why? Why does it have to fail? Because that second part we come out of
+nowhere. Right? You don't have the money to transfer. Yes, so that's why it has to bounce, because otherwise it will be infinite money glitch right? Because you are
+taking that from nowhere. You have no money to give yourself right? So in other words.
+it has to be like that. Yes, okay.
+what else? So, as I said, the schema maintains, someone asks you in an interview, okay, great. So how is this? How is consistency implemented? And the answer is, the schema protects you. That's 1 of the key features. I said it earlier already, but I'll say again
+the schema by its own definitions protects you, it always makes it consistent. There's no way. If you have a well-designed schema, there's no way to enter invalid data. The data is always in a valid state. The database. Yes, table's always in a valid state. Yes.
+yes,
+You can also check for integrity, like maybe if it's too small, maybe it's not a pachyderm. Yes, there's no small pachyderms. They're all big.
+all right.
+Yes, and then you just
+can do it. Yes, so basically, it will not accept the the data, whereas
+a file doesn't care, it could be anything.
+Yes, there's an advantage.
+Someone asks you what's a fundamental advantage of a database over a file system.
+A database and ensures consistency. Natively comes, comes comes with the schema definition. Yes, how how consistent it is with what you want to do
+depends on how smart you are of making a schema we talked about this earlier could be hard to make one with names that works for all names. But
+once you define one, you know that your names that are in the database are valid. Yes.
+okay. What else?
+Any thoughts, doubts, questions.
+Okay, isolation.
+This is important. And it's going to be a problem. This is this, right here is going to be one of the ways in which we transcend this with these distributed systems
+to to ensure that to work.
+We lock the database all right.
+Not sure if you tried this, but it's true.
+So as one as one entry is modified. You cannot do anything else
+that makes it isolated right? And it's going to be an issue, right? So we can't do that in our distributed systems. We can't do that. That would block the whole database up. We have to
+be able to work in all records in parallel.
+That's gonna be a challenge. Yes.
+and as I'll see, as you will see next week, Mapreduce doesn't solved this problem. It does not solve this problem.
+but it sidesteps it. We we avoid the problem altogether.
+and you'll see. Oh, yeah, Luca, for isolation.
+Oh, yeah, at least that table. All the tables that are all the tables are affected. Yes, Jake.
+okay. But whatever records you're using right now, but that could be a real issue if you want to. If you want to put if you want to. If you want to look at different columns of the same record
+again, I think
+I mean, it's a good point, but in general databases have issues with that mapreducer does not go ahead. Absolutely.
+Okay, all trying to.
+Yeah, it's gonna be a yes.
+yes, and that's gonna be a real problem.
+So, in other words.
+that's not going to work for like, let's say you have a let's say you have a
+I don't know. What do you have? Some game that a million users are accessing concurrently. Right?
+That's not going to work. We have to find a better way to do that. So this would not work for that. Yes.
+all right. Yeah. So we saw this either in Ids already or in the lab last week.
+Get is a distributed database. Okay? Non non-relational, though, all right.
+And so you know. So you have atomicity.
+and but the git makes them atomic. So either it's committed or not. Yes.
+you you will get merge conflicts. By the way, did you guys, did we? Did we demonstrate last week the merge conflict or not?
+No, we should.
+Basically, it forbids it. It detects and forbids the merge conflict. So basically git is one way to keep you
+safe all right, because it forbids these
+these things. And yes. So basically, you get branches or clones, that that's what in source isolation is.
+And your durability is your local repository received. Okay, okay. Now look.
+Now you can do it. You see that like when we now look at the graph problem.
+you can now do it. If you have asset compliance. Yes.
+like a question for you, which of these properties would be most useful to solve our problem? Anybody
+which one? Yes, Muchava, that's definitely true, right? Because if it fails, you just roll back. Yes.
+What about another one? I mean, definitely optimistic. What? What else?
+Consistency?
+Check check that? Yes, if you see a violation, you could just
+make sure that it doesn't conflict. Yes, or doesn't do that, maybe even isolation exactly.
+All right. So to summarize that this is powerful.
+Powerful. Say that multiple times.
+So
+it's very nice. So it it like it provides an abstraction on your data with your relational model. It gives you a language to talk to it.
+and it manages concurrent access carefully. So that so you don't have conflicts.
+We have to, because it's acid compliant. Okay?
+So what we'll do next week is we will do mapreduce again
+from what I can tell from like the intake survey. Thank you very much for filling it in. Half of you are familiar with SQL, so it's mostly a review, which is why we could go fast.
+but only a very few of you like 10% or so are familiar with mapreduce. So do the reading for next week, because otherwise it will not make sense.
+Okay, so any other. We have one more minute for one more question. Any questions.
+Yes, Jolie, yep.
+it doesn't.
+No, it does. It does. If it's fully sequel as a compliant. Yes, we're saying.
+yes, yes, all important systems are fully asset. Compliant. Yes.
+no. Just dialect, just just implementation differences.
+Sergey.
+One of us.
+Yeah. Labs in session. Yeah, one second, Sergey.
+hold on
+one moment.
+It's a lot of slice.
+for sure.
+Was that no problem?
+The package?
+They say that if I this louder.
+Yes, Papa Dumbo's friends.
+why, so I couldn't hear. I can't hear you
+come, come down here anyway. I was talking to you tomorrow. No, you mentioned that there can't be duplicates of the data of the rows of the rows. But what if I wanted to work on just a subset of the database like is that just not? That's fine.
+But then, wouldn't it save?
+No, no, it doesn't save it.
+It's it's a dynamic query result.
+Don't worry about it. We'll I'll show you more. What's your name? I reached out to you regarding the permission.
+Sure, what about? Yeah, you have my full permission. Yeah, yeah, here's the problem. I have 2 questions. One is that I'm enrolling. I was on the on Albert. I was enrolling for this, and then it said that I need to go here for permission.
+and then I go over here, and it says, publishing materials from it says
+it's not allowed like I thought 30 was the final day to enroll for the course. It says the permission form is closed.
+Stay there, let's do it right now.

@@ -1,0 +1,1098 @@
+WEBVTT
+All right. So welcome back. Take a seat
+a lot of work to do. This class will live off audience participation, so don't hesitate to participate. If you have something to say hopefully, the animations will be a little bit more smooth today.
+we'll see.
+All right. Welcome back to this big data. Okay? And today, we're actually going to be started with this. Yes, we're going to have the big leaf. And we're going to divide it into small pieces, and then we'll put the pieces back together again.
+All right.
+And specifically, we'll talk about mapreduce
+1st impressions. What is mapreduce about is a map
+and we're reducing it like, yes, like that.
+And obviously not. But this is my theme. Slide has nothing to do with maps.
+We'll talk in a moment what it's actually about. Let me just say one thing.
+Most classes of this type big data classes teach mapreduce like.
+1st you press this button, then you press that button. Yes.
+and we will do that in the lab in the lab. We will teach you this week. By the way, this week we'll teach you which buttons to press, and in which order to do mapreduce. But I want to teach this class from a principal's perspective, because it's a university level class. Not a technical college. Yes, so we will do the which buttons to press, and why and which order in the lab. But today is all about principles. Mapreduce? Yes.
+some announcements you should, did, did Hpc, email you? No. Okay. But you have it.
+So everybody has an account now. And in the Mapreduce lab this week we will test. Drive this. So you should have an account already.
+and we will show you all of you if you're here
+this week. How to use that account.
+The homework is due tomorrow, please.
+if you have not done it yet.
+commit commit to it. Yes, because it's a git, Github Github homework.
+There will be a quit. Yes, sir, no, not green. Dataproc.
+Green is the resource cluster.
+This is state of proc.
+We have our own slice on dataproc as a class.
+Anyway. So there will be a class that we are in live in in Lab quiz this week.
+About what I'm going to talk about today.
+By the way, the design philosophy of the quiz is, if you paid attention in this lecture, this should be obvious. We're not asking anything weird.
+And then the next homework will also release this week. And it's going to be due in 2 weeks. Okay.
+so before we get started with mapreduce. I do want to briefly, very briefly, this, because this came up. By the way, anything I do in the prelude, it's all by request.
+So we talked about vacuum tubes and punch cards a little bit
+informally. So I decided to make a slide on this. Okay, very briefly, because, by the way, I'm only going to mention things as far as they matter for this class.
+Very, very briefly, the prehistory of storing, managing assets, access, and data. The reason I mentioned this just in one slide is this, history is often played fast and loose. In other words, people, even professors, say things that are not entirely accurate, probably because it doesn't really matter. It's like you will never touch any of this. This is now
+in the past. Okay, maybe I should say one word about the pre prehistory before that
+people were computers, but they had a big room of people, and a math professor would give them instructions. They, they would compute it. Then we had looms computing looms.
+But for real computing starts in the 1940 s. With the Eniac.
+The Eniac is based on vacuum tubes, as I colloquially called them last week. Light bulbs.
+But that's what they are. There's an anode. There's a cathode, and if you look at this question for you. What's the biggest? Why don't we use that anymore? They're actually quite nice. What's the biggest failure mode of those Macs?
+They pop all the time. So this machine that they built this is the machine is the Eniac. You see how this little, all these little like what you want to call it all these little vacuum tubes sticking out of it on the
+motherboard. I guess
+it was down more often it was up and more downtime uptime, because every time one of them blew
+you have to stop the thing and and fix it. Yes, and
+the second part of this is plug boards. So you had a room full of people who would literally
+put a wire here or there to connect this or that, what you would call it vacuum tube.
+So in other words, this was an all hardware approach. There was no software. It's just literally this is a branch of electric engineering. It was like, you take a wire from this part to that part? Okay, you have to literally a wire, and then voltage and current flows. And
+it's amazing. Yes, so far so good. The reason we don't cover it anymore. Because if it's all hardware you have, like purpose-built machines like they cannot. They're not flexible. Yes, you have to literally rewire the whole machine
+to do something else. Yes.
+that's why, in the 1950 s. And again, I want to be clear about this. It is not true that punch cards were invented in the 1950 S. We used them in the 1890 census
+we used we I mean, not us. It's even before my time. But society used
+punch cars in the 1819 census on Hollarit machines. But it was a purpose-built device to do only census.
+What did what people did do in the 1950 fifties was using punch cards
+to put the data and the programs on there.
+Now, you could feed a stack of punch cards like that
+to a computer like this is the Ibm 701.
+And that's what the program. So that introduced the idea of software. The idea is the hardware. The computer doesn't does not change anymore. Computer sits there. It's by the way, now, transistor based because the transistor has been invented. In the meantime, one second.
+What?
+What was that?
+What do you mean? I should share the screen screen is shared.
+Can you say that again online, because I am screen sharing.
+I didn't see the announcement, what's going on?
+Hmm, so I share my screen. This is what people are seeing online, too.
+Let me see, one second, yeah, it's visible.
+So this is a
+skill issue, personal personal problem. Everyone else. But you can see the screen. So the students here can see it. Everyone else can see it.
+So yeah, thank you. All right. So anyway, where were we? So
+so listen. The idea. The idea is that we now had programs. The computer did not change anymore. It was a transition based computer. Yes.
+But the good news is this is even this, this stuff is even older than me. We don't use it anymore.
+Now, just briefly.
+we started with file systems that started in the 19 sixties. Yes. Now, software is actually soft. Yes, it's no longer a Punch card. That's why I put software in quotation marks. That software is still pretty hard. If it's on a punch card.
+Think about it! Yes, when I was genuinely software, right? So now you can write your custom software for each application query.
+In the 19 seventies the relational model was introduced. Now the idea is, as for all the reasons that we discussed, tables are good. Yes, that's the philosophy. It goes beyond by the question for you, what does a table do for you that goes beyond the file system that's going to be a theme today? What does the table do for you? That is better than a file system. Somebody quickly hurry up. We have a lot of work to cover. What does a table give to you that the file system does not necessarily have Max
+structure. Very good.
+And it's literally in the title, Structured query, language, SQL, yes, okay. And then in the eighties those Rdbmss really took off. So even though there were these relational models introduced in the seventies in the eighties, you know, these things really took off. You had companies like oracle that became like dominant in the space. Yes.
+and again it was standardized. Then in the nineties the web became a thing. And we'll talk about this part today, actually distributing parallel computing really took off.
+And then the philosophy was like mapreduce tables are bad. So basically what you will see in this class throughout. We're going to be seeing a seesaw. First, st we have file system that's like the Wild West. Anything goes. Then tables are good. Sequel then. Now in the new mapreduce philosophy. In a moment tables are bad again, and then in the new era they are good again, if you call them data frames. Right? So the idea is that we are seeing a seesaw effect in concepts throughout history. Yes, so far. So good. Okay.
+So just to remind you, so relational database management system does give you a lot of stuff. So for instance, this is going to be important, not in like a file system. Anything goes. Relations and schemas standardize what they looks like.
+The SQL standardizes the interactions with data.
+The good news is all the implementation is
+hidden from you. As a matter of fact, this is probably as close that you're going to get in this world to a wish, Genie, you can just say I want all the rows with certain properties. Go, and this gets them for you. It fetches them for you.
+That's quite amazing. You don't have to tell it how it's doing it. Let the let the database figure out how to do that. That's do you understand how amazing that is? You don't have to write a for loop or anything like that. You just tell it. What do you? What you want?
+As long as you write a logically valid query in this language, which, by the way, is the reason
+why this will probably never go our style. I talked to a lot of students who do interviews. Sequel always comes up.
+That's the number one skill we want to see.
+And then finally, we talked about asset principles. It really helps you with what you'll call it
+transactions that are like safe, particularly if it's like something like
+financial transactions or something like that. Okay, and be prepared.
+List the asset properties in your interview, and why? SQL. Makes it asset compliant. And what could go wrong if it's not asset compliant all of that? Okay, but it's just a review.
+What we do this week is I want to address some of the. By the way, this is why we do the triple A, even if I have not gotten back to you personally, and I have not to everybody yet. I am reading them and putting them in the lecture. So please do tell me about your confusions and doubts and struggles. Cds confusion, doubt, struggle. Yes, that's our brand. Yes, Cds.
+all right, and then we'll do the reproduce.
+That's going to be the bulk of the lecture today, and then we'll do a little bit of a assessment. We did read papers on both. This. This is the original Mapreduce paper. And this is the original Mapreduce quizzes. Okay?
+One thing that came up already is what exactly, is a key, and a key
+is worth mentioning, because that's going to come up a lot. It came up last time already. It's going to come up this time again in a different different kind of keys. And it's going to come up again next week.
+you know, different guys. And is Kubara going to come up
+in a week? After that it's going to come up a lot. Keys are central central Cs concept. Yes. And unfortunately, if you do not have a Cs background, you might have an unfortunate or unhelpful association
+to most people who don't have a Cs background. A key is something like that. Yes.
+Is this a good metaphor to what a key is for for Cs. Somebody from Cs, what's a key in Cs, it's not that
+in key. A key in the world is something that was bought.
+What does a key do in the world up there?
+Open the door.
+What about cs, it's more like, yes, up there.
+that's it's just an identifier, an id. So think if you hear Key
+think like identifier. Yes, it's just like an id, all right.
+what? It's an id. Okay. So so if they had been like
+better at naming things, they would have not called the key they would cause just called an Id. Okay, an identifier, a unique identifier. Okay, that's all. It is all right.
+Okay.
+another concern we had was about normalization. And again, most of these most of these confusions are about unhelpful associations.
+So before taking this class. And if you're not a Cs person, what does a data science person associate with normal? What's normalization in data science? We talked about this last semester with.
+let's say, yes, sir, and remind me of your name.
+You're Matt.
+That's actually not bad scaling, scaling, or rescaling data. Yes, you have it on some scale. You want to rescale it to say 0 and one. So it's so it's C scores. Yes.
+Then we just normalize our data. By the way it does not put them in a normal distribution. It just puts them on a Z scale. Very, very good.
+Now let me ask you something. Is there a button you can press for your database
+to normalize or command?
+And the answer is, no.
+So so let me just be clear what that means in database. And again, if you have these associations like I do, this is very, very hard to unlearn in database or in Cs normalization means something very different.
+Let me tell you what it means.
+So 1st of all, it comes to us from 1970. In that paper I just told you about the relational model.
+They already introduced 5 normal forms, and we'll cover the 1st 3 today. Forget about the higher order ones.
+The idea is a normalized database does not have redundant information, or does not have needless duplication of information. Yes.
+And, by the way, why, why would you not want that? If your database is in normalized state.
+It does not have an ounce of fat.
+No duplication. Why would that be good in a database?
+Yes, sir. And what's your name again.
+You're Ryan. That's Matt. You're Ryan. Go ahead.
+That's a really good point. Let's say you have the same information twice somewhere in database, and you delete it in one place, but not the other place. Oh, no, I can already see you could have that could be a real problem, or, like you Update one value, but not the other one. So what Ryan is alluding to is, if you have a non-normalized database, it's going to be a nightmare to maintain that. Yes, or update that. That's a really big no-no.
+all right.
+And I just said that. Yes, and also, by the way, if you have no extra stuff. Then it's also, if you have a gigantic database, you have actually gigantic space savings everything only once. Okay.
+now. The the one and F standard as a very simple requirement.
+Every row has to be unique.
+Let me show you. Let's say we have these people. Alex.
+Alex is another Alex here.
+I think there is. There's Alex, okay, 2 Alex's. They're both data science majors.
+Then we have Brett, the computer science, Major Corey engineering drew business and Emory, mathematics. Is this a well, sorry? Is this a normalized database? And why is it not normalized? Why is this not normalized?
+Why is this database? This is our database. Why is it not normalized? Someone else? What's your name up there.
+Matthew?
+That's mapped, are you, Matthew? Okay, go ahead.
+Oh, no, this is not unique. Yes, right?
+So if someone ever asks you, why is this not normalized? Every row is not unique here. Okay, how could you make unique?
+That's right. The reason we provide a primary key like N, number is. Now we have the same information. But and now it's normalized. Right? Okay, so in one and f 1 and F by the Nf. Stands for normal form
+and one and F
+so something as simple as putting a primary key on there, which is why you all have, and why you all have an N number, by the way, because all of you live in a database
+in an interview system, including me, actually.
+all of us. Not just all of you, for that reason. So now you can say there's normal. But even here there's no button you press to normalize database. You have to do that. In other words, in this case, Matthew, you are, notice you have to add a unique key, a primary key. So far, so good. But there's more.
+So. Okay, beyond one F, so once it is one in F compliant.
+does it make the higher orders? So one of them is in higher orders is all non-primary. Key information should fully depend on the primary key. There should be no transitive dependencies. What does that mean in English, what's a transitive dependence? Does anyone know what a transitive dependency is?
+Luca, okay, well, say that again, if A depends on B+B depends on
+great. That's true. And why is that bad?
+Maybe I should just give you an example and then do that together.
+So so here. So the idea is, it's a but this is not an algorithm. It's heuristic.
+In general, a table is normalized. If it has information only about one entity.
+and they do relate to each other. So so they're not the tables relate to each other. So, in other words.
+let me show you this. So let's say we, we augment our hip a little bit. We have N number with the name, with the major, with the Gpa. We have the gender. We have the phone number. And intuition
+is this database normalized?
+I mean, it's normalized by 1 1 and F, yes, but it normalized in the higher orders.
+Why or why not?
+And why could it be problematic?
+Why or why not? And why could that be problematic?
+Anybody be brave?
+Not a trick question.
+Have you already took a database class, or so you told me.
+Sure, but you can have more than one.
+So what a scandal!
+Yes, is it normalized or not?
+One thing at a time, is it or not? And if it's not, if it or if it's not, why or why not go ahead so first? st I've had Mustafa.
+It's not normalized and Mustaf is correct. This is not a normalized database in by the higher orders than one. And F. And why not?
+So what? That's not a problem.
+But yes, go ahead. It's gonna
+tuition depends on that's exactly right.
+This is a transit property. So it should be in its own table. Matthew, where are you going to say that?
+Well, let's let me give an example. Let's say data. Science decides to increase tuition. Yes, as they might.
+Would it be a good idea to
+add all the tuition like sorry change all the tuition like manually, or or what
+you have a table that has the majors and you update it once in the data science table. And then it's updated everywhere. Does it make sense what I'm saying?
+Let's let's do that. So? In other words, this is not normalized, and what you can do
+is you, would you? By the way, you so again, there's no button you press to normalize you, would you would have to create a students table with the student information? Yes.
+a majors table with the majors.
+and then an academic records table where you have that refer to that. So this is the how do I put it? Like the N number? So this key
+from this table is now a field in this table. Yes.
+and this major idea is now a field in this tail. Do you see that you see what I'm saying one second, Matthew.
+And now I can easily update. Let's say, data. Science wants to raise tuition as they might. I can now change it in one place. So this is the same philosophy earlier. I think it was right, Ryan.
+Ryan said. This principle, you only want to have one place where this is. And now, if you want to update it here now, it's broadcast everywhere. Everybody who has this Major Id has now the new tuition. Yes, the same is true, for, like, say, Gpa, or something like that, you want to have this information only in one place, and then say broadcast to everybody else who has that identifier, Matthew, you were saying something.
+Does it make sense, though? What I'm saying before we go with questions is, does this make sense
+or not? Matthew?
+Sure. But then, by the way, I'm not saying this is the only way to do this, but this is a normalized way. Yes.
+so I'm not. This is not prescriptive. You can do whatever you want.
+However, if your ask is, say by your job that we only use normalized databases, and most people do, then this is the way to do it. And here's why, yes.
+And what's your name?
+Rich up? Yeah.
+I think this is 3 and F, this is 3 and F. 2, and F is a little bit weird. I will send you a paper on that. But it's in my opinion, for data scientists there is no reason to go into inside baseball. If the heuristic is that I said earlier is true, you have transit stuff like that.
+break it down into different tables and make sure everything is is only there once, and then
+you will cover all the bases. Okay, so where was I?
+If you want? Let's talk afterwards if you're interested in this, but I don't think there is virtue in discussing this further. But the important thing to see here is you have to create these 3 tables. And, by the way, Matthew, you're right, there's other solutions. Yes, so there's not a normalized button. You have to create the database. Such, or engineer database such that it is normalized? Yes.
+exactly, and also will take more space.
+I would recommend to you to normalize your databases. But how you do that you can even make a 3rd table. As I said, I have other exercises on this, but interest of time. Forget it. Forget it. So I just said that we could put the tuition in the academic records table. But let's not get carried away. Yes.
+okay.
+So this is my advice. When in doubt, make a new table, and then use the keys of the other tables
+as a field in the new tables. Yes.
+and that's exactly what the music brains. Database was about that I showed you last time. It's like 30 tables for tracks and artists and songs, and
+God knows what else. Yes, because it gets very big very quickly. Okay.
+yes, no. Again, this is like, we're speed running here.
+The normalization part of a database class.
+I don't have more time for that.
+But that's that's good enough. Okay, index. What's an index?
+This is the last one of these confusions, by the way. So
+again, I just mentioned this last time in passing, and I was like, Hey, by the way, in your database you could you could make an index. Yes, and that could speed things up.
+but nobody stopped me and said, Excuse me, Pasca, what do you mean by that? But people did in the Triple a. And now I'm going to address it
+so?
+Again, you should always have one eye on the clock in this class.
+You should always think with half your brain, how much time is this going to take to execute?
+Because that's literally what the class is. If if time was not an issue, we wouldn't even have this class, you could just do it in your laptop.
+So so if someone ever asks you what an index is, it's something that makes
+things faster. Okay, let me show you in a moment. Why?
+So it's a lookup. So basically, it makes it makes search faster
+because it press a shortcut to look up the information. You basically tell the database where the information is.
+All right. Now, this is something you to build. So, Ryan.
+what do you think is the trade-off? This is going to speed things up. What is it going to cost?
+Yes, it's a time, space trade-off.
+so it will speed things up. But it takes space. This will take physical space in your in your memory. Okay.
+it's a lookup table. Okay? My analogy is, that's not, you know. That's why it's called an index. So this is the index from my book. Look at that
+Kaiser window kernel, l. 1 l. 2 lasso. Look at that wonderful. So this is my second textbook. And Luca, this is a second textbook. It's the index.
+Let's say you want to learn about L. 2 regularization. Where would you look, page.
+That's right. So you don't have to look for the whole book. I'm telling you in the index where that information is, and in the indexing database it works exactly the same way. Information about Romanians say, is in this part of the database. Yes, you don't have to search the whole database.
+Yes.
+Ok, so that's the idea. So you still have to search the index. But it's usually much faster, because it's usually much smaller than looking at all of the rows. Yes, so the index is usually smaller. Yes, and what's your name? Again, Sean Sean is an index, a type of key.
+You can think of it like that if you want to. Yeah.
+like these, these, these Sean, these are the keys.
+And these are the values.
+That's exactly right.
+All right. So so in other words, I'm not sure who's mentioned this but you. So you narrow down your search space, you save time.
+but you have to build it.
+So basically, it's like a portal like it tells you where to jump. It's like a stargate or something like that. Yes, it's amazing.
+Okay. And it's helpful. Like I said, if the data is located in the same neighborhood, like all the people, live in a certain area of the world, they're in the same part of the database. Yes, the same zip code, maybe the same phone number things like that
+and forget this. We'll talk about it later.
+And this is how you build it. Okay?
+All right. Now. Finally, sorry. Sorry, Luca, what's up?
+Yeah. See, I was gonna I was. Gonna I was gonna
+gloss over that on purpose, but since you mentioned it, this makes sense. If you have a situation where you
+write wants but read many times.
+because every time, let's say you have a situation where you update the database a lot. It does not make sense to build an index. We need to rebuild the index each time this index. Oh, Hi, Jordan, this index is most
+useful.
+If you're gonna write once, read many times. Scenario. Yes.
+because it does take time to build it.
+If you have to rebuild it. Each time you build new new, you add a row in your database.
+That's a problem. Yes, but we'll talk more about that later.
+I'm now happy to tell you that we're finally adding, entering mapreduce. So let's just do that. We'll talk about indices and space and time all that later after class. Happy to do it. But let's focus on on the thing. So look. 1st of all, I have seen all of these spellings. Mapreduce, Mapreduce, mapreduce mapreduce. Okay, there's all the same thing. There is no
+convention. Okay? And you will see me use all 4 spellings
+in this class. It's the same thing.
+It's I'm not being inconsistent. I'm deliberately using all 4, so you can use to all 4. I've seen all 4 in the wild people use all 4
+interchangeably. There's no difference.
+And again, half you told me last time that you already know. SQL,
+as far as I can tell, you're going to learn something today, because most of you.
+by the way, this is about Hadoop. Yes. So I didn't ask about mapreduce. But if you use mapreduce today, you would use in a hadoop
+framework. So I'm taking this to know to mean that 95% of you do not know what this is.
+So you're going to learn something today. Yes.
+are you ready to learn something today?
+Okay, good.
+Okay. So let me just first, st you show you a typical use case, a typical use case is something like
+Google's engram viewer. What the engram viewer is you type in a by the way, it's a clickable link.
+You type in a keyword like machine learning or big data, or AI or data data science? Oh, no. And New York.
+And it gives you the proportion. This is a relative graph off books that that use that keyword.
+Whatchamacallit per year. Okay.
+I can tell you, with a high degree of confidence, that this graph was made with mapreduce Mapreduce under the hood.
+And as a matter of fact, I'll tell you today how it was made. You will learn today how this was made.
+But it's a big ask.
+You have to read all the books, all the books that were ever published or ever published in (201) 012-1416, and so on, and then
+search those books for those keywords.
+And this goes lightning fast. By the way, you can do this Google Engram viewer right now, and you can do it. You can look for any word. It's quite amazing. Yes.
+but there's a lot of books right? There's millions and millions of books. So the big issue here is, this is already doing what
+you know. The point of the class is, there's too much data. You could not do this on your laptop. There's no way you cannot read in all the books in your laptop.
+And just do this you have to
+do. You have to distribute this this problem. And, by the way, this is already a good
+example of this, and I think I have a slide in this later I do.
+But the conceptually, algorithmically, this is actually very simple.
+All of the hardness of the problem comes from scale.
+This is a hard problem, just because this is such a big, like a big
+scale of the number of input documents.
+If you had a small corpus
+you could use on your laptop right? You just count the number of words. There's an index of that, and that's it. You're done
+trivial. I shouldn't be saying that I'm not a math professor. This is not trivial, but it's straightforward. You could do it on your laptop. Yes, all right.
+So yeah. So that's the challenge. You have a tremendous collection of documents.
+And to do this you need to research it. So prior to mapreduce, this could not be done. As a matter of fact, as you. As I keep saying I was there, say, 98.
+You know you did not see this. This. This came to us in like 2,008.
+Yeah. So I guess.
+since it's on the slide. Would it be a good idea to implement the database? Would a database? Would this be a would this lend itself to be to use of a database. Would a database be a good.
+you know?
+I guess I already said it. But let's say, ask him, Jolie.
+Yes.
+yes, exactly. And what's the problem? With that? You do a linear search. What's the problem with that? If it's a collection of
+yes.
+and my biggest concern would be. There's no way you can build this database. There's too many documents. You don't have enough memory on your machine to do that, and once you have it, it's going to be not possible to search that.
+Exactly. So. So in other words, database is not a good way to do that.
+So yeah. So, as Asha said, the algorithms are straightforward.
+All the complexity comes from this saying. By the way, this is the actual Adam.
+Have you heard that quantity has a quality of its own.
+Have you heard a saying?
+It's usually Admiral Stalin
+or Napoleon? No, that's not true. It was Thomas Callahan in 1939, all right.
+and if you do a if you do, and there you go. If you do a Google N-gram. Viewing of that, then you can confirm that. Yes, that was not in the literature before that you see that.
+Yes.
+and yes. So this is jolly, this this is at overwhelming scale. Yes, you cannot do this. I mean, you could.
+But it's very hard to do this in a centralized system. So this is the key T
+paradigmatic use case of a distributed system. This is probably going to come up in your interview if you have some kind of like interview for Palantir, or something like that, and they have this large scale problem. And the answer is, we have to distribute. Okay, if you have a problem that is large in scale.
+but straightforward in the computation solutions distribute the problem.
+And yeah, and if you ever see that map reduces to y, it's it's you don't. Okay. Here's the good news.
+Let's say you have this insight that the distribution is the solution.
+You would have to do this by hand before 2,008 you have to do, and you could. You can do it. But the good news is, as you will see in the lab this week. You don't have to reinvent the wheel. This tower exists, you literally have to just push a button and put the data in there and just let it run. And it's fine.
+So what today is about is to you to learn what that is. Yes, okay.
+And, by the way, just to show you this can be very interesting. So this is the professor. This professor uses a lot like there is
+the way the the reinforcement learning works with the Chatbot.
+It's not this, but this, this skew is not in the training set the way
+the human reinforcement learning works.
+The Chatbot uses some words 1,000 times more often like reimagined than humans do, or delve
+300 times. Yes.
+Tapestry 150 times. Yes.
+So basically you can before you say word counts are stupid. Don't be so sure. Word counts can be very diagnostic if you know of where that something came from. As you know, this is the classic
+classic assignment in a basic Nlp class.
+2 documents. Sorry we have a bunch of documents, a bunch of potential offers
+who offered which document we use word counts and styles to decide. Have you done that the Federalist papers no
+cryptocurrency, white paper. No.
+Is it clear I'm talking about? You assign provenance. Who wrote it based on how often they use these different words. Yes, so you can use word count. Okay?
+So so just to be clear, every every one of these is going to come to us from a big tech company, for instance. Hadoop is going to come from Yahoo. Of all places. I'm not lying to you. We'll we'll see this next week.
+But but Mapreduce comes from Mapreduce comes from Google
+in the mid 2,000 s.
+And you will see
+now why, by the way, so what was Google's task in the mid 2,000 S. What did they want to do? Look at? What did what did Google want to do in the mid 2,000 s.
+Or somebody else. Does anyone? Yes, that's right.
+Right. They want to index the whole web.
+Jay, you guys, yeah, Jay's right.
+So you have N documents. And the web is very large. Yes.
+this is a very large billions and billions of pages. Yes, maybe trillions of pages.
+And you want to create an index, right? That if you type, in a word, it points to the documents that that contain a word like the data science or center for data science, I know. And by the way, we'll address this later in this class that
+today Google works a little bit more sophisticated than that.
+But this is still the backbone. The backbone is an index of which
+words are contained, on which websites, yes.
+and as Jolie already mentioned, if you have one machine she already mentioned this.
+this takes O of N, and if N is very large, that's a real problem. Yes.
+too much too long sometimes. Yes.
+And the the good news is.
+this problem is almost I will talk about. It almost is about embarrassingly parallel. By the way, embarrassingly, peril is
+acute. Cs language. For what does anyone know? What does it mean to be embarrassingly parallel? We'll see this term today and next time, and next time a lot that something is embarrassingly parallel one second Matthew. That's kind of like iid in statistics.
+The Cs professor will often say, let's assume the problem is embarrassingly parallel to for the exercise of math. What does it mean to be embarrassingly parallel? Go ahead.
+that's right. So, in other words, that a piece of the data is independent
+and can be processed independently of every other piece of data. Yes, both
+spatially, but also temporally so stateless. But it means there's no temporal context
+you can take a you take. You can take a piece of data and has no memory.
+There's no state, there's no side effects.
+there's no dependencies, there's no dependencies whatsoever. There's no spatial, conceptual, or temporal
+dependencies between 2 pieces of data. Yes, that's what it means to be embarrassed in parallel. And, by the way, there's a reason why I mention it
+in analogy to Iid. If your problem is embarrassingly parallel, life is good, then you can do it.
+But I'm going to tell you today if it's not embarrassed apparel, you usually can't.
+But something like this is embarrassing parallel. Like as you, you build a website and you build a website and you build a website.
+you, you know, I can process those websites independently of each other. So this actually is a situation where
+it actually applies to be embarrassedly parallel.
+So we should be able to do that and then later combine the results later. Does that make sense? So we should be able to split this
+process it and then put it back together.
+All right. Yeah. So now, if we have
+and machines, Jolie couldn't be cut that time.
+And this is. Yes, in principle. Yes, although there's going to be a little bit of overhead. But yes, we should be able to cut the time down to n over M. If you have N machines
+and then the name of the that's our goal. We're going to get there hopefully.
+The name of the game will be to do that. And then you just have to do build up. And then you just have to buy a lot of machines. Which is what Google did.
+That's what Google did in the mid 2 thousands. They bought a lot of commodity hardware, like millions of machines.
+to bring this time down.
+Yes, and now we need to find a way to do that, to distribute
+the work or the data, and then later to put it back together.
+And so, as as I. As I keep saying so. This was introduced in 2,004
+by Dean and Gilbert by of Google, and they were by 2,008.
+This became like established as the standard way of doing this.
+And, as I just said, today proposed 2,008.
+You will be mostly interacting with hadoop in the hadoop ecosystems. Okay, today, mapreduce is a open source or
+is is part of the open source implementation of it.
+And also all kind of infrastructure that we'll talk about next time. Like, so basically, it's part of an ecosystem now. So before that you had to run it yourself today, you would run it as part of hadoop that builds an ecosystem for you. We'll talk about more about next week.
+all right. But let's talk 1st about the philosophy.
+So as I said, data processing, because it's 2 parts, the representation that's the content and the format of the data.
+And, by the way, there was some confusion about that, although I didn't make a slide about that. What does it mean for data to have the same content but different format? Can someone give me an example of that
+representation means content plus format. Can anyone give me an example of the same content that could be represented? Different formats? Yes.
+say that that's a good example. Yes. Sure. Any other examples.
+How about images?
+Could you have the same picture premises as Jpegs, which are waves
+or vectors as an Eps or Bitmaps, could you?
+Yes, you could. Okay.
+And then you have the computation. And last time, last time, as you recall, we restricted the representation. Yes, we're like, you have to have a certain schema. Yes.
+today, we're going to represent restricted computation. You can have any competition you want
+as long as it's a map and a reduce.
+All right. It's kind of like
+model T, you can have any color of car you want
+as long as it's black. Yes, so you can have any computation you want here as long. It's a mapping and a reducing step.
+All right.
+and we'll talk about in a moment what that is. But just to be clear, we are gaining power
+by restricting something, and that's going to be a theme throughout the class. I'll show you this in another slide in a moment, but we're gaining something
+by restricting ourselves purposely, which is a weird thing to do.
+Oh, yes, Sean.
+no, not you can do. The rotation can be anything you want as long as you make asterisk. This works well, if it's embarrassing parallel. So if basically, the data set is independent, if that makes sense. If the if the if the data the content can be cut into.
+there's a good point, I should add as asterisk. As long as this is embarrassingly parallel or lends itself to that like websites. Okay?
+All right. So why do we do that?
+Imagine you have a sage, and that represents competition.
+And you have a mountain that runs the data.
+should the mountain come to the sage.
+or should the sage go to the mountain, which one is more efficient.
+This is why we're doing this. I know you laugh, but this is no laughing matter. There's a lot of money behind this.
+Should the sage come to the mountain or the mountain to the sage, they need, the sage needs to go to the mountain
+to meditate there. But should the sage mount come to the sage or the sage to the mountain, somebody?
+That's right, this is no good. It's too much work. Yes, we could, we could move the mountain
+to move to 100 stage.
+But in the modern day there's a lot of data. We don't want to move the data, it's easier. And, by the way, this is not entirely a joke. This is both. Some pro. By the way, in the old days, when I was your age. It was easier to move the program. The program was bigger
+then the
+data. But now the data is much bigger than the program. So now it makes sense to move the program, not the data. Does it make sense, I'm saying.
+and what about this? Is a second mapper, by the way.
+correct? And, by the way, just to be clear, just like most of you, they took a vow of silence right?
+So there's there's no complication, right?
+So in English, or in like the domain in the art.
+This is called data locality.
+this, this is a slide of the principle of data locality. So basically, every every piece of compute
+has just the data it needs. Yes, the program comes to the data. Yes, and it acts on the data. Yes, and that's what we do so. If someone ever asks you why we do mapreduce that allows us to distribute the data. Just so. But in a way that the data does not come to the sage. The sage comes to the map. And again, by the way, why do we want to restrict communication or get away with as little communication as possible, because communication is
+is what there's going to be. A need for. A little bit of communication in general communication is wasted effort. Yes, we want to spend as little
+effort on communication as possible. So you want to restrict data movement that says very expensive. And you want to restrict communication. Okay.
+what?
+And in general, I just mentioned this. So you can see here, Max, you're growing this
+vine here on trilate. That gives you certain kind of power. Yes, over here, restricting the flow of water that gives you power. Yes.
+that's going to be the philosophy of the class. It kind of sounds or valiant, but it's true.
+Gaining power through restraints.
+through constraints and restraints, we are empowering ourselves in other ways. Yes, so, in other words, we're getting something by losing something or giving something up. Yes.
+and let's talk about, we lose up what we give up. So in file systems, in file systems we are talking about. We have flex maxing, flex maxing. Okay? In file systems, in file systems, you have
+the content and the format could be anything. Yes, in a file, anything you could have a virus in there. If it holds a host of viruses, you could be images. Music doesn't matter. Yes, in any format you want.
+You can apply any computation to your file. Yes, in principle, you can
+rewrite it all at once. It doesn't really matter yet. You can do whatever you want, and finally.
+you can
+do you have, I mean, by the way, I know you can restrict this. But but let's say in a normal, do you have full read, write, access in a file system, you have full read, write, access. Yes, you can, or you can rewrite and overwrite, and all of that. Yes.
+the overall philosophy is, that's fine. So this is Flex Maxing.
+What's the downside of that? As we already talked about? What's the downside of file system
+great. And what? Why does that hurt us great?
+So
+we could constrain the format so we could give something up. We could give up this this first, st the 1st one right. We could give this up.
+We have to say it has to follow a certain format. And how is this format in Rds enforced by a
+schema. Very good. Someone said that I heard it
+so, anyway. So we give up the flexibility of the content format being anything. Now it has a
+it has to follow the schema. Yes, that gets in the Rdbms. Yes.
+Now, today, we're going to give up the competition again
+in a file system, you have fully flexibility. It can be anything
+in mapreduce. It can only be a mapper and a reducer. That's it. It cannot be anything else.
+And next time is a preview.
+We're going to give up something about the storage properties relative to full file system
+that will lead us to Hdfs. The Hadoop file system.
+But, as you will see.
+you are going to be used to storage on like a file system, you're like, why can't I do this in Hadoop, and the answer is, you have to give something up.
+unlock some power. Yes, but again, this is counterintuitive. You are used to file systems, and how the full read, write access. That's not going to be the case for Hdfs. Hdfs files work very differently than in files. Yes, go ahead, Brian.
+Yes.
+I mean, Mapreduce specifically does. But if you use Mapreduce as a part of hadoop, then you also have the storage layer. There's 3 layers. We'll talk about them in this class today we'll do this, the computation layer. Next time we'll do the storage layer, and then, after we'll do the resource layer.
+The ecosystem has 3 parts container.
+All right. So why do we do that again? As you can imagine, this is really really hard, because you have to like synchronize everything while minimizing minimizing communication. So
+before Mapreduce, this was like hard. If you had to do this by yourself, only a few companies could do it.
+if you don't do that, you just follow what they already figured out.
+It's actually very straightforward, and you will see this in a moment.
+And again this is something I'll show you in a moment.
+All right. So why, Mapreduce specifically.
+does anyone here speak Lisp Haskell or Haskella anybody? You don't have to demonstrate it just up there. Matthew. So those are functional program languages. What does that mean in English?
+Okay, so somebody else. I know you all took it. Somebody. Do you remember? Lisp? No.
+what are those? You know? No, no, nobody wants to be brave enough.
+Well, anyway, they come.
+They come to us from these function programs. Let me give you some examples.
+So the map, the map function in a function. Proper language, like list
+is, you apply a fun. You give the map function 2, input, 2, input, put arguments
+function and a list of values. Do you see that?
+And then the map function in lisp, or Haskell or Scala applies this function to all elements
+element wise. Do you see that?
+And then you get a list of values out, do you see, do you see this?
+That that's so. So functional languages use functions to program?
+And so it is. So. The map function
+in all of these languages has this channel form. And so the idea is in analogy to that. That's where it comes from. By the way, just to be clear, you do not have to learn Lisp, Pascal, or Scala in this class to do this anymore. That's why we have mapreduce before that you did before Mapreduce. You would have to use. Usually Scala actually to do this.
+And the good news is this is now something so standardized. You don't have to do this anymore. You can do this with python. They'll do this in the in the lab.
+all right.
+And as you can see here, if these list elements are independent, you can just do that. Yes.
+the second one, the reduced function.
+give it the some, some aggregating function and some values, and then this would then recursively say the adding, so the function could be adding function. G could be add.
+and then you recursively reduce this by adding to that. Do you see what I'm saying? And at the end is one number. We're adding all items. Does this make sense to everybody?
+Do you know what recursion is?
+Yes, now I want to be very clear.
+In Mapreduce, the reduced function is very rarely a recursive function.
+It's just used in analogy. Okay? So so in case you ever someone ever ask you an interview?
+The in in Liz, Pascal or Scala the reduced function is usually a recursive function almost always.
+but in mapreduce it is basically never
+a better, a better word would have been aggregator.
+It is not working recursively usually, unless you ask for it. It's very unusual, so but you can think of something like adding, give it a list of values. The function is adding the reducing function, and it gives you one number out. Yes, Luca.
+that's just how it works. And have you ever done these list diagrams Matthew has like it's all but L recursively. It's amazing. You have these trees. It's beautiful.
+No, we'll talk after class.
+But anyway, so in my defense, it's also been 20 years since I've used lisp. But we did used to do that before python. Okay.
+you can do something very effectively, but for now just know that they use the reduced function in analogy to scala and lisp.
+It is today not a recursive function, for all the reasons that you might might mentioned.
+but it's still called reduce. I would probably call it aggregate.
+but map aggregate doesn't have to have the ring of mapreduce. So whatever? Yes.
+okay. So the conceptual framework is like this.
+you have to give it a mapper function that applies a function to each of the inputs
+and a reducer function that aggregates inputs.
+The reducers usually add, multiply something like that. Yes, average
+you can. It can be anything, but in practice simpler is better for obvious reasons. Yes. So in particular, we want to keep this simple. You will see in a moment why
+there we go.
+Each mapper takes some input and then emits
+a key value. Pair. What does it mean in English? What do you mean? It emits that. What? But like what
+this is. This is why it's important. Why we talked about these keys
+because it has nothing to do with keys. It's just called a key. What does it give out?
+Somebody a tuple? Yes, of the id
+of the item it saw. And how often it saw that item. Okay.
+And the reducer takes, then a key in
+and a list of values, and then produces more values us.
+As I said, I just mentioned, this reduce is not applied recursively.
+Let's just use an analogy. I just mentioned it. Okay, all right.
+And look at this. This is the. This is the figure from the actual paper a lot of forks.
+What do you think about that looks good.
+I actually disagree. I think they were much better at coming up this framework than presenting it. This is terrible. Also. There's a spelling mistake.
+Map, Phaser, what?
+You see, that phase phase.
+So so here. So there's a mapping phase where you distribute data to mappers. Then you generate your key value pairs, but we we call them intermediate results.
+Then you do a sort or shuffle phase more by the moment where you assign
+the immediate results to be reduces by key. And and, by the way.
+look at that. We remove data. This is the only by the way, this right here.
+I was going to ask you this. But interest, I'll just tell you. This is the only time where data moves
+that's going to be very important because this takes a lot of time. This is where most of the time this this part here takes most of the time, because moving data is slow. Yes. So you want to minimize this.
+But importantly, the data only move at 1 point.
+and then you exect, execute reduces and then collect the output. Okay?
+As I just mentioned, I don't like this diagram, because
+if you already know what it is, then yeah, this is
+clear, but not if not, then it's not so. I made my own hopefully be better than that.
+Let's find out. Yes, okay.
+So here's my schematic.
+So you start with a large collection of documents. This could be all the books. This could be, all the websites
+something like that. Yes, this is the international symbol for document. Right, Luca.
+Large collection of documents.
+All right, yes, and then we split them into as many pieces as we have mappers.
+although that's not necessarily true. But
+something like that we'll talk about in the lab. There's different trade-offs with different splits. But we split the data into different pieces. Okay?
+Then comes computational step.
+The mappers apply the map function
+at this at this stage. Yes, and then
+they each mapper emits a key value, pair
+like key one and value key, 2 value key and value.
+Okay?
+And then, look at that.
+You see it right there on the slide. This, do you see? This this is gets it gets wild. Yes.
+it's called a key shuffle key shuffle
+that already. Looks like it's going to take a lot of time, it does. Yes.
+that's the key shuffle part, as I said.
+blue. By the way, data data compute red
+compute red. Okay, so far, so good.
+And that's the reducing stage. So that's that's mapreduce. Yes.
+if this is a little bit abstract, we'll do an explicit example in a moment. But does this make sense for? Oh, yes.
+but in the Keisha, let's do it together.
+Okay. But before before we do it, let me just write. Read this out. So the whole point of this.
+There's actually no communication. You see that there's no communication needed. Do you see this? There's no communication between computation needed. So no
+effort, energy, time wasted in idle chatter. That's great.
+Okay?
+And you see how you can parallelize this. So basically, if you want to finish this faster, if there's too many documents, you just need to add more mappers and more more nodes to then build more mappers and more reducers. Yes, so far. So good.
+Okay, but let's talk about what Prena asked, and this is a great question. Let's do it together.
+1st of all, look at that. This is Sora Key. Shuffle some player here. But
+when you hear key shuffle, that's kind of what I also imagine. Yes, so what's the key shuffle? Yes.
+We actually
+In the interest of time. I am going to
+short circuit. This some people call this key sorting.
+Neither shuffling nor sorting is happening. When you hear again. Cs people are probably better in doing this than naming things.
+They should have called this grouping the keys by their identity. Yes, so that's what's going on. You're you're you're you're you're you're sorting the keys, I shouldn't say sorting. Sorting implies order. Yes.
+that's not what's happening.
+Sorting, Max implies. Some keys are smaller than other keys. Yes.
+this is just identity. It's just grouping like with like. So it's not. It's not sorting or shuffling.
+Let me ask you something, Trina.
+when, as a data scientist. I know you. I know you're a data scientist. When you hear when you say shuffle when you hear shuffle. What's your immediate association
+like this? Right.
+Some guy.
+I don't even know what this is. It's Sora. Yes, it's my my attempt at in like, you know, Random, shuffling from like Bootstrap, or something like that. Yes.
+there's nothing random about this, so I don't like I don't like that. They called it that. The reason I tell you that they called it up is because they called it that.
+And someone asks about the key shuffle. Step in, Mapreduce. You need to know that this is just grouping. Okay. But they call this shuffling.
+and I found it as confusing as yeah as you.
+I'll show you.
+I'll use. An let's use an ex.
+Let's use an example. Let's let's use an actual example.
+And this example is very small data.
+The ballad of the Enchanted Twilight. Yes. Have you heard of this before? Luca.
+Okay, good.
+Let's just be clear, Jolie.
+You do not need mapreduce for this, Julie. You do not need mapreduce for this. This is something you can compute yourself. You don't even need a computer for that.
+It's just 14 words, 10 lines, something like that.
+3 lines. Let's get the idea.
+I think it's 3 lines, 14 words, 10 unique words. But let's let me just show what the does anyone here know the battle of the Enchanted twilight. No, you know. Okay.
+magic sparkles in enchanted Night.
+That's the 1st line, brave knights fear no knight. Second line, knight whispers, magic
+magic sparkles. Hamza. That's poetic, isn't it is it not?
+Thank you, thank you.
+And now let's say so. This is the 3 lines of the poem.
+and we feed those 3 lines. So we split the poem into these 3 lines. It is 3 lines, and we feed those 3 lines through different mappers. Yes, sir, sure
+no. No. One document. We split the document into 3 pieces. 3 lines. Okay.
+and we feed each of them to a map. Look at that. There we go. It's mapping right now. Look, look! It's happening. The mapping is happening right now. Do you see that?
+And there you go. Magic. How many magic is in the 1st line?
+One sparkles. How many is there one
+in one enchanted one night? One. These are the keys you see the keys. Magic is a key, fog is the key in is the key enchanted is a key. Knight is a key.
+Second one. By the way, one mapper, 2 mappers. This is the this is the emission. This is the emission of the key value. Pairs.
+Brave is one. Yes, night is one. Fear is one, no is one, and night is one. Yes.
+one second, let's just finish the poem first, st
+and then one is night. The 3rd mapper whispers, is 1. 0, 0, 0, look what happened here!
+Magic magic sparkles.
+What do you see here?
+Say someone say something.
+Well, we don't know there yet. This is what this mapper saw. This is what that mapper saw. They don't talk to each other
+one thing at a time. So so you had a question right?
+These these are intermediate results. Write these right here. Yes, okay. Now, Max, what? What's up?
+We're not there yet. This is the intermediate results. This is just the emissions of the mappers. Yes. Now, what
+what's the next step, tea, shuffle!
+There we go! There's my key shuffle. Look at that.
+although again, there's nothing random about this. I used a random
+international symbol for randomization. But there's nothing random about this.
+What happened to the gun?
+What happened? One second. Whoa!
+So now, now, what what happened to the key? Shuffle
+somebody. And this is the only place where data moves
+and where there's when there is communication. You want to call that communication somebody quickly. Yes, Max.
+we have a group like with like.
+And so now this reducer was given all of the keys with magic.
+this reduce was given all the sparkles, key, all the in keys, enchanted knight, and so on. And now our reduce is just summing. That's it. And this is the final result.
+And now we have our word constantly.
+Is that not nice?
+Like, if like, yes.
+yeah, no, no, no, always, no, no, no. One key goes to one reducer. Now you can give multiple keys to the same reducer. But all of the instances of one key need to go over to one reducer. Otherwise, otherwise you're in a world of pain that would defeat the whole purpose.
+Keep the thought? Yes, yes, keep the thought. Yes.
+Oh, yes, up there.
+Yeah, exactly. And what's your name?
+Shivangi? Would you call this shuffle. Are you sure shuffling is like random like of cards? Right?
+No, it doesn't filter it. It knows.
+That's that's how it has. It keeps track of has which map?
+Yes, yes.
+We'll talk about this in a moment. But yes, usually. Yes. I mean, by the way, just to be clear, you can apply any Mac function you want, but some, for example, like word count. Yes.
+you can. But just be clear. You write a mapper, and we'll write mappers in the lab. It's kind of
+words, right?
+So you see. So you were like, how does this one know which the key is? Yes.
+Well, that's what I'm saying. That's that's what the hadoop framework keeps track for you for you. You don't have to worry about that.
+Yes, good question.
+File scheme.
+Yes, always. That's the whole point.
+It groups the values by the key, or it groups the keys together
+again, Rena. The confusion is because, you know, shuffling from cards or bootstrapping. Is this a shuffle?
+This is not a shuffle, it's the opposite, whatever the opposite of what's the opposite of a shuffle kind of like a unicorn.
+It's exactly not a shuffle. It's grouping identical keys.
+Someone here asked, how does he even know that from a scandal
+it has to know it has to know that otherwise you can't map the same key to the same.
+It cannot give the same key to the same reducer. Yes, Hamza.
+we're not worrying. By the way, this is amazing.
+We're not concerned. Go ahead.
+No, okay. Here's the beauty of this. No, no, no, let me explain something to you.
+It's not random. Let me explain something to you. You write the mapper function.
+You write the reducer function. Okay? And you have to do this in the lab tomorrow. Whenever your lab is that's on you.
+you have to give it the the document.
+and then you press enter, and that's it.
+That does everything else for you.
+It's amazing.
+So that's why I'm saying I wasn't being coy, that we're not worried about anything. We're not concerned about anything. It's amazing.
+In 2,000 you have to write, you would have to do that. Now you don't. You just
+define what the mapper function is. You define what the reducer function is, give it the data and press enter. That's it.
+I mean, once you load the data into hadoop.
+Okay? Oh, yes, Luca.
+profile no, no. Go to the lab, Judy.
+The data does not move.
+What's what? What this is? Actually another good insight, Judy. Thank you.
+This is a lot of data. Yes.
+there's a lot of data here. It'll be a pain to move that
+what actually moves the receipts. Basically, right? These emission receipts. That's small data.
+So not much moves.
+Look at that.
+I feel good about this. It took me 2 and a half hours to make this slide, and I think it was time well spent. Hamza
+have to has to
+between the like. Otherwise how would you know which one to which one to send it to?
+That's necessary. Is that clear to everybody.
+Now I feel good about this. This is, to my knowledge, the best representation of how Maptus works that I've seen.
+Right, Adam.
+Thank you, anyway. Mustafa, big flex, the professor. Go ahead. Mustafa.
+Yeah, what about huh?
+Here the reducer function is just sum. You see, that's the reducer function. It's just sum all of the
+values values they're called values.
+That's it.
+And but for something like word count, that's all you need.
+Keys are the words, the unique words and the numbers, am I taking crazy pills? I mean, this is, there's not much more to this. Yes, and now you can do. Now you can do Google. Yes, and you can make these work, these n-gram stuff. Yes.
+it's not trivial. Yes, that's why I said earlier, most of the time that's used is used in this
+in one second.
+This whoops in this step. Yes.
+because at that point, and, by the way, something else you might have already seen this, but I will. I'll revisit, revisit this.
+This is very, very awkward, but it's true.
+Imagine I should add this. I should have another line.
+but you can kind of see it.
+This line and this line is longer than this line. Yes.
+the problem is, no reducer can start working until all the mappers are finished. That's going to be the biggest problem. So imagine there's 1 laggard mapper, and we'll see in a moment how this could happen.
+Then the whole thing just sits there until all they're all finished.
+That's the biggest problem. And the second problem is, once they're all finished.
+Because, by the way, is it clear why you have to wait for everybody?
+I will be happy to explain it. But maybe I want to hear from you.
+Not necessarily you, but everybody else. Why is why? Why can the reducers not start until all the mappers are finished? Yes.
+you might not have all the data you have to wait for everybody until we have all these receipts. We cannot
+shuffle them. Yes.
+how would you do that? No, you cannot. No, because you don't know where you don't know. No, no, and this is something that you will see tomorrow whenever your lab is no mapper. Sorry. No word user can start until all the mappers are finished. By the way, there's a big limitation, Ritchie, if someone ever asks you name one limitation of mapreduce, a good answer would be.
+no reducer can start work until last map has finished. Okay?
+And then someone would say, That's amazing. And what do you do about that spark? That's what you do about that. So that's why people use spark. Because in spark, which is the next framework we cover after hadoop.
+you can. Then the the well they're not reduces. But the next level can start
+before all the maps are finished. Yeah. So this is a big limitation of Mapreduce
+who just asked that Hamza, was it you who asked? So this is one bottleneck.
+That was a shuffle. Then, once they're all finished.
+the shuffling takes even more even longer. Yes, okay, any questions about this varun? You look excited.
+No questions. Okay.
+all right. So let's move on. Okay, so why do we restrict ourselves to mappers and reducers.
+Oh, sorry I didn't see you
+just watching the time. Yes, what's up the shuffler? And no?
+No, I mean, it depends what you mean by Google. They were obviously okay. Google was around for a decade already before they started.
+It's just that they didn't do it like that.
+They they built it by hand.
+Okay.
+so, Dei, look at that. There it implements the philosophy. And of Dei. Does anyone know what that is?
+That's why that's why we're restricting ourselves to maps and reducers.
+It's old, it's 2,000 years old.
+It stands for divide at Emperor. Yes, divide and rule.
+Have you? You must have heard of this.
+My Roman's. Not that good, no Latin, by the way, not Roman.
+So the Romans in their foreign policy knew that if you have a bunch of barbarians say, and you divide them against each other, you can rule them. Yes.
+that was the philosophy. This has been, in effect, since at least 90 BC. If you want to know more about this talk to me after class, I think about it a lot.
+but it's probably beyond the scope of this class.
+anyway. Divide at Impera. Yes. So mapping and reducing implements, this framework. Someone ever asks you, okay, divide at Impura. So you division divisiveness? Yes.
+okay, so here's the idea. And this goes back to what? What? What? Matthew? Said Matthew.
+By the way, this should
+this is bad English. It's my fault.
+The map function is not, is not embarrassingly parallel. It. It utilizes the embarrassingly parallel property of the data. But I was in a rush when I made this slide.
+And the idea is you apply it to the piece of the divider. That's where the divide comes from, input data. And it's important. And Matthew said, or is earlier
+independent of the others and stateless. That means there's no memory. There's no temporal, spatial or conceptual or statistical relationships to
+pieces of the data. Yes, that's what it means to be embarrassingly parallel.
+if that's the case. And we talked about this before with Hamza, there's no need for the mappers to talk to each other ever.
+This is amazing.
+You can have as many mappers as you want a billion mappers. They don't have to talk.
+The reduce function relies on. Soc.
+okay, let me just be careful. Associativity question for you.
+What does that mean in English?
+I mean, it's precisely right here. But but how do you? How do you read that?
+If you combine A with B,
+and then they combine the result of that with C, it's equal to
+combining A with the result of B and combination of C. What does that mean in English?
+Somebody.
+Oh, Jay, that's right. And why does the reducer? You know what I apologize. Somebody email me about this.
+The map function relies on this, and the reduced function relies on that. I guess I did say it here. It relies on association. Why does it rely on that? Or why is it important that it can rely on that? And something like this? Imagine this, you have your distributed computation. Yes.
+that's right. The keys are not ordered anyway. So that's why I refuse to call key sorting. You're not sorting the keys. It's not sorting sorting means
+arranging by magnitude.
+Can you let me? Let me ask you this? If it's if it's distributed? Can you guarantee that it's
+executing in any given order at any given map or finishes in any given order. That can you guarantee that that the results come in in this way or that way?
+And the answer is, Matthew.
+you cannot guarantee that. So you have to rely on this. If the order of operations matters, you cannot reasonably use a reducer. Yes.
+does it make sense so? Then we can do it right.
+So if we can assume associtivity, then our partial results can be merged in any way they come in. Yes.
+does that make sense?
+The good news is, the good news is.
+for something like summing is summing, associative, summing
+wonderful. So that's why, I said earlier.
+heuristically, you want to keep simple mapper and simple reducer function, so you can rely on embarrassing, perilous, and then you can rely on associativity. If you have complicated ones, you might have to prove that this or that is associative or not. Yes.
+and then this is also big. If this is true, you have determinism. What that means is, if you have the same, input gives you the same output
+without side effects. What are side effects in Cs.
+What are side effects?
+Side effects?
+No, no. In terms of the ripple. You don't see the stone, you see the ripple.
+What are side effects but a side effects. Yes.
+off off target effects. It might be some unexpected outcomes. Okay?
+And then this is now finally answering jolie.
+If this is all true, if this is all true.
+then you just add more, add more computers.
+more mappers, more reducers. Life is good. Yes, ham and pre oh, no!
+All right.
+Good generalizing it great. I'm glad you asked, because I have a slide for you. The next slide, actually.
+So that's exactly is this just word counts. So Cs people are all excited about word counts. Right? Or are there some data? Science applications? Yes, yes, that's what you're asking. Right? Basically, you're saying, Pascal, I understand, Google can index the web. But you're not Google. And we're not even computer science, but data scientists. Yes. So I'm glad you asked because I have a slide for you.
+So imagine you have a large collection of sales receipts. Yes, let's say you work for life insurance company, or whatever sell life insurances. And here it is.
+These are your I don't know customers, I guess.
+and these are the sales they made. Yes, and you want to know who your best customer is.
+So what would the splitting look like?
+Let me do it together in a data science application. Your your task is to find out
+the your best customer who spent the most money on your products.
+What's splitting? How you split Charlie
+Mappers. But actually, let's be careful. Usually it's a little radical. You usually don't have that many mappers, but some integer divisible. Yes, we'll talk about this in the lab on Tuesday whenever you have it. But yeah, we split it randomly
+in some by division divided by M. Where M is the number of mappers you have. Okay.
+how about mapping? What would you do?
+What we? What will your mapping function be?
+Yes, not yet, not yet.
+Customer data.
+That's correct. We use the customer name as a key.
+Okay, it's all kind of Easter eggs bird here, by the way. But anyway, so and then what? And we
+what's our value?
+It's not the number. It's not the number of how often you saw it. It's not true.
+It's the amount is the is is the value. Yes.
+What about key shuffle?
+Oh, yes, by the key. Okay. And then finally, our reducer here is not a sum. It's a
+Max, you know what I should have given it, Max.
+But, Max, yes.
+Does it make sense reducer is Max. Yes, one number.
+Ha! Ha! You're funny.
+Ben? Well, I'm glad you asked. I have. I have a bunch of slides for like practical considerations that's not good.
+but could happen to you. Yes, but keep that thought very good.
+So see, see, this is for you. This is for you practical considerations. Yes, all right.
+So let's see, yeah, we're good.
+So 1st of all, in general, don't use floating point or real numbers for keys. They don't hash consistently. Always use integer strings or tuples. Okay.
+all right.
+This is as I just said, earlier, like, let the framework do the work for you. Yes, you don't have to write anything weird like that. Okay, keep it simple.
+And this is always a good exercise, and we'll do this. We'll do this on the in the lab this week.
+part of something small. Right?
+You can try it with your simple
+single core solution on your laptop right
+to see how much speed up you get by distributing it. Yes, because there is some overhead
+to do that.
+all right. So yeah, so that's the idea. So someone who asked this earlier. This is, I should have said, as a slide coming up. But I just told you you said that right? So this is this is important.
+All values for some key have to go to one reducer. Yes.
+Is it clear to everybody why, I already mentioned earlier? Ray, Jay, Ray, wait, you're Jay, you're Ray
+Ryan. Where's Ray Ryan? Go ahead.
+One reason.
+So, yeah, that's right.
+That's right sum. And then, Max.
+But again, in this depends what you. But let me ask Hamza, hey, Hamza? That was a data science application. Are you happy with that
+content? That's good. By the way, in case you're wondering about other data science applications.
+It's actually not great for data science. But I'll have some slides coming up. Why, that's why you spark.
+There's a reason to cover this, because spark is like a twist on this. It's like, Hey, it's like mapreduce. But now with this added twist.
+yeah, so yeah. So this is also logically follows. Yes.
+yes, this is also true. So you probably already can imagine what a problem with that is. Let's go back to word counts.
+Key skew and look one second.
+These consequences that I'm announcing here, happening right now. So what happened here? Did the Professor misspell input impotence?
+Does anyone know what I dempotence is?
+What is that? It's important big data concept?
+And are you Googling? It? Does. Does anybody know what it is without Googling it.
+It's a very important concept. It might come up in your interview.
+Lots available.
+That's keys. That's key skew. That's key skew. What about idempotence? That's so what's your name?
+Stephen told us what keys queue is, so keys queue is.
+Some words like the are going to have many, many instances. Yes, outer keys like
+idempotence is going to have very few. Yes, nobody used that ever. Yes.
+so that's called key skew. We'll talk about in a moment. But what's what's idempotence? And that's going to be important in a moment.
+No.
+what?
+What? What do you think it is?
+No, all right, let me just let's start with Psq.
+So this is the issue. So in practice, Stephen
+hit on one of the key problems most
+let's say something like word counts most.
+Words are not equally common. It's not a uniform distribution. Yes.
+So there you go, for instance, like, look at that. I looked. This is actually real data. This is a histogram of how often the word is is in some corpus of English, and how often the word idempotence is. You see that
+this is 5 orders of magnitude will come.
+Why is this a problem given given that this is true?
+Given that this is true? Why is this a problem?
+Oh, up there. Sorry?
+Yeah, Matthew, sure in the interest of time, go ahead.
+You're right. But why is it a problem? It's right in this, in this, in this, Richie
+some reducers are going to get is the auto reducer gets idempotence. Yes.
+And why is that a problem?
+Some some producers have a lot more work to do.
+Yes, right?
+Okay, all right. So that's exactly the problem.
+Iffy.
+So very different workloads. Yes, and that's called cheese skew, and it causes much delay.
+Yes, sir, so see that a lot of this helps us with
+beyond that, like.
+like like crazy descent. Yes, things like that.
+You're right.
+Can you keep that thought for 10 min.
+because I have something like 5 slides for you.
+But you're you're right. There's gonna be a real problem in a moment.
+But let's 1st see what this problem is. Do you see what the problem is here?
+So far, so good.
+Can we? Can we now also solve what idempotence is. And why that matters. Okay. Imagine you're in the elevator in 65th Avenue.
+and you press the button once.
+whereas you, you press a button 3 times. Do you get the same result?
+Yes, right? That means your elevator button is idempotent. You get the same
+outcome, no matter how often you press that the reason that matters is mapreduce is idempotent. What that means is you. If your mapper fails
+and has to run the same thing again, you don't get different values. You get the same value.
+Write, write that down.
+Does that make sense what I'm saying? This is important for fault tolerance. You might have a million mappers
+and a million splits. It has to be idempotent, otherwise you would get in trouble. Yes, huh!
+It's for fault tolerance, like if you run the same batch twice. You get the same, the same outcome key value pairs. That's that property is called idemp idempotence.
+not to be confused with impotence.
+And it's for it helps with fault tolerance. Yes,
+I guess it's the same idea I need to think about logically how they're related, or if they're an isomorphic mapping of each other. I think the idea is that this is used in the context of fault tolerance.
+It's basically it reruns it again. It don't. And you get the same result. I think identity is a corollary of determinism if that makes sense
+consequence.
+Okay? Oh, it's talk about combiners. Okay, I forgot to mention that. Okay, before we address your issue, and we will address your issue, I promise you. Let's talk about combiners again. So this is a problem. Yes, this keys queue is an issue.
+And that's also a problem. Yes, because shuffling takes time.
+So here's the idea.
+So imagine imagine you anticipate this problem, because
+your mappers encounter word that is very, very common. Yes.
+and they're still working on that
+while others sit around idle. Yes, if they sit around idle.
+They can already start reducing intermediate results a little bit.
+Those are called combiners before the shuffling. And the idea, then, is you have to send around less data. So does it make sense. I'm saying, Hamza, like you have
+less to shuffles. By the way, Grena, I apologize. If you want to call it shuffle. I don't think we should call it that.
+but let's say you're going to call it that you have to do less to shuffle if you
+pre reduced it. Yes, okay.
+And then you have to have
+for this to work. You have to have multiple mappers living in the same machine, right? So they can combine
+their results.
+I'm going to skip this slide in a digit of time. But the idea is you have to
+recognize that summation is both commutative. That's this.
+And as Sergio, we already worked with us. Yes, so now you can really reuse your reducer code
+to do combining. And let me show you what that looks like. Let's do our
+files again. There we go.
+What's different? What's different now?
+One second
+there's a lot, SIM. One second it's the same palette. There's a lot similar. But there's 1 key difference.
+because can anyone spot it up, Jay? Where? Where's the difference?
+It already combined this? Yes, exactly. And now, Hamza, instead of having to send 2 keys around, we have to just just shuffle.
+Just have one key.
+You see that and text.
+Imagine that at scale. Okay? Like, I know, this is not really helpful here, because we're sure sure.
+Would it only do that if the yes, in that case
+of the key skew. No trying to get out the door, and everybody
+like, oh, that person's doing this. So I'll do this
+while they're doing that. Oh, they're just waiting until you get a signal to to shuffle
+the the combining happens as you idle.
+that only works. If the if the data is in the same machine. We'll talk about that
+next time. So so this only works with the hadoop in this infrastructure system. And we'll talk about that next time. Sorry
+that I think sorry it's idle, because the other ones are
+combining. Yeah. But then, what if one of the other ones finishes while it's combining? And then
+well, that my my answer remains the same. Hadoop handles that, and I'll show you next time. How do? How it does that?
+We'll literally cover that. Oh, yes, oh.
+no, no! Let let Hadoop do its thing. We'll talk about it. It's an elephant. By the way, we'll talk about it next time.
+All right.
+So some heuristics. Okay, so this is very important. Right? So, as I said to Jolie earlier, actually don't have as many mappers as you have inputs have less than that. And then, of course, the concern about the prime number becomes a thing.
+But yeah, so so generally, you want to have like a hierarchy. Yes, more data than mappers, more mappers than
+What you want to call it. But you converge conversions. Yes.
+and yes, we'll talk about that, too.
+And that's also true.
+All right. So to summarize, mapreduce, it simplifies this real computation. Again.
+this is Orwellian thing. You're more empowered by constraining yourself more.
+So that sounds very suspicious. But it's true. Right?
+And yeah. So basically, it's kind of a gateway drug to everything else that comes after. So it's the 1st like standardized
+framework.
+But Hamza's criticism stance. So we'll actually want to address it now. Yes, so 1st of all.
+1st of all, there are some. So we're actually good in time. So there are some downsides from the Cs perspective
+and some downsides from a Ds perspective. Hamza already just hit on that. Yes.
+all right, let's do 1st the David and Stonebreaker criticisms. I want to be very clear.
+David and Stonebreaker have the right name for this particularly stonebreaker.
+Right? The stonebreaker. Criticism. Yes, but they're both database guys. As a matter of fact, Luca, didn't you send me a stonebreaker book the other day. Yeah. So maybe I'll make it available to the class. So these are like hardcore database guys. Now, imagine, what do you think database guys say when they're coming up with this framework.
+That's right. That's exactly all of these criticisms. Boil down to. This is a bad database. Okay? Or this is a step backwards.
+So, for instance, they were like Bro. This does not even have a concept schema that it.
+So I want to make this short because I want to get to data science criticisms. But if you read the paper that made is available, it's like
+this is like a throwback to the 19 sixties. You don't even have a schema here, you know, this is a step back. So Stonebreaker was. But like.
+this is a big step backwards. Okay.
+all right, of course. By the way, I'm not sure if you're aware of this, we'll talk about this more also next time.
+This is not even true anymore.
+So in the modern age with the pig. Someone here about the pig Apache pig.
+Anybody know about this pig, Matthew? You know about the pig, Matthew?
+We've heard of it. Anyway, there is now a layer
+given to us by the pig.
+We'll talk about it next time that addresses this, so you can bring your skin up back in the back door. This one is like Bro, you don't even have index. Right? So so
+basically, the file names are the keys other people than before.
+There's all these features are missing transactions. Basically, this like this is what what the hell is going on. Right? They're like. It's not even database right? It's not asy compliant.
+By the way, Max, what do you think is a problem? It's not asset compliant. It's not supposed to be right.
+could be but for word, count for word count.
+anyway. So and then this other thing is there is no, you know, it's a it's a bad team player. It's a whole ecosystem of databases, and it's not playing nicely with them. So, anyway. But as as Max just said, all these data, all these all these
+criticisms boiled down to the database guys being salty.
+that this is not a database or a bad database. Yes.
+and I want to screen it.
+Yes.
+thank you. Yeah, my, my point, my response, would be exactly what you just said. Like, what are you talking about? This is a different domain, you know, absolutely. And so I don't want to spend too much time on this. We used to spend more time on this in the past classes.
+but I think that this is going into the like
+history. Basically like it's done like this is no longer relevant. As you said, it's different domain. The pig addresses some of these concerns. And so what if it's not a database? It's not supposed to be?
+But let's talk about what Hamza said. Well, 1st let's talk about where we're successful, then why? Why we're not done, why this class doesn't end with mapreduce.
+So why was it so transformational? And, by the way, this did change everything. By the way, that's why we're covering it.
+I believe 2 things. So 1st of all, it made like distributed processing accessible to the common
+man on the street. The proverbial
+manage the street right. Everybody could now do distribute processing. Yes, before that, you had to be a Phd. In distributed
+computer science to do this now, a random person could do it just by using the mapreduce.
+And this one is true. So let's say, you want to build an index of the web or word count of the web.
+That's a 1-shot thing.
+You don't have to build a database. Yes.
+so so this was actually very versatile.
+But there are, as we discussed some problems, latency, scheduling intermediate storage. We'll talk about this. These keys have to be stored somewhere. We'll talk about this more when we talk about the storage level, which is next week.
+And this one is this one's Hamza's point no way, no way.
+You would not do grainy descent with anything iterative.
+This will be a pain to do you. By the way, when we get to spark.
+I will show you that how you could do it.
+But it's really, it's really, really, really painful.
+I will show you.
+So anything that is like iterative
+or interactive like data. How about this Eda explore data analysis. No way. Right?
+Question for you. How often do you do iterative methods or interactive methods in data science?
+How often do we do iterative
+or interactive methods and data science
+all the time. Yes. So this is
+better suited to do Cs stuff like word counts indexing the web, the data science stuff.
+Okay? So that's why we're. That's why this class is not done. It's not a great general purpose. Distributed computation engine. Yes.
+there is too much too many problems.
+Anything that has clear parallelism like we discussed anything that's embarrassing is a parallel. It's great.
+Anything that's like one shot, one done ballistic. Does anyone know what ballistic means?
+What's ballistic as contrast to what was ballistic?
+What does it mean?
+What's that in contrast to?
+If you hear intercontinental ballistic missile. What does that mean?
+Once you fire the interconnectable ballistic missile? It just does what
+orbit? No, does not go in orbit.
+that's not orbit. That would that would be something else.
+It means fire and forget you. You put in the coordinates where you want to go and it goes. It's not adaptive. It doesn't, course correct like a cruise missile. Yes.
+So that's like you want to index the web done.
+Yes, anything that's recursive or iterative. Or oh, we're going to do alternately. Least squares soon, but not with mapreduce? Yes.
+anything like that. This is no good.
+Does it make sense? Why, Hamza, you are intuitiveist. How would you explain everybody else? Why.
+it's just not, doesn't fit that framework. Yes.
+doesn't suit itself. You can, but you can do it. I will show you. When we do. When we go to spark, I will show you how you could
+do recursion or iteration with mapreduce. But it's going to be a pain. It's going to take a very, very long time. Yes.
+but you don't save anything, and we can do better. That's what Spark is for. Yes.
+sort of maybe, but again, it handles these large collections. Well, that makes sense whenever the
+problem comes just from scale.
+But it is embarrassingly parallel.
+Then this works very nicely, and it's 1 shot.
+So why do we do it? Why do we? Why do we uncover this?
+So let I should mention this. So it's it's if you have these batch job. What's a batch batch job? What does that mean in English? What's a batch job? Where are the Cs people.
+What's a batch job, Sir Luca
+asynchronously. So you just run it.
+Not in real time. Yes, just runs at night, for instance. Yes.
+like all of that feature, extraction, data transformation
+constructing a data structure or index for that. It's great. Yes, you just let it run. Be done. Yes.
+they have a large number of
+let's say, a large corpse of text.
+And you want to do some vector, embedding. Yes, for your Nlp, Nlp class, you could do that. Yes, transcriptions. Things like that doesn't make sense
+for anything that's dated January data, science training.
+data, exploration search. Not not so good, yes.
+but good for this. Not so good for that, but again hums up. We're still at the beginning of the class. There's more coming, that is better for that.
+Yes, so why do we do it? 1st of all, this was like a big step
+and distributed computing you. You have to know about this. Yes, it's kind of like, I don't know you have to do it. Yes, kind of like not covering
+greatness. And even though we now have a better version of it like Adam, or something like that.
+This one is going to be very, very important.
+the other things we're going to cover is like, Hey, it's like, it's like mapreduce. But I believe extra steps or something like that, like spark, for instance. Yes.
+Or, yeah, you have to basically know this as a foil
+to see how you can do better. Yes, because if you go straight to spark, it's going to be very confusing. Spark does pipelines. We'll talk about that. But it's like what? So it will make sense. Why we do spark once we do spark.
+If you already understand mapreduce and also understand the limitations of mapreduce, because it was designed to overcome these limitations. Yes.
+and this is another big one. So Hadoop is actually much bigger than Mapreduce. So we'll talk in the next couple of weeks about hadoop.
+of which mapreduce is only a part. Yes, so mapreduce is the computational layer of hadoop, but Hadoop is much bigger than that, so we'll talk about the hadoop ecosystem
+next week, and then in the coming weeks.
+And this one is also a big one. You might in your job get mapreduce code.
+So the 2 thousands.
+So you might want to know how to what's going on.
+Okay? So, as I said, next week, we'll do hadoop and the hadoop lab hadoop distribute file system. Hdfs.
+In other words, we just did distributed compute. Now we're going to distribute storage, and they go hand in hand before you leave.
+Now we reduce the map.
+Are there any question, Sean, you solve
+key skew. We address the key skew limitation, but
+the item potency limitation I don't think was addressed. It's not a limitation, it's just, it is what it is. It's a feature. It's a feature of mapreduce. It's not a limitation.
+It's not a limitation. Oh, so it's
+it's not that. It's not identical.
+it is, it is, it is yes, it is Mustafa
+and load.
+And if it's not. Then we do something else later.
+Amazon environment, like, if you wanted to run mapreduce in Amazon. Oh, yeah.
+oh, yes. In this case the reducer is the Max function? Yes, some, and then Max, some. And then, Max, it depends what you're looking for. If you're just looking for the biggest spender. If we, Max, I remember, like, you need to have a
+reducer to act on every single values which is key. Yeah. But if we are doing a Max function. We're just just having one reduce in it.
+You can do 2 in a row.
+Hi, is Adam potentially the reason why it's scalable.
+No. I then present the reason why. It's fault. Fault, tolerant fault, tolerant. No fault. And what's your name? Me here? Great?
+No, okay, okay. I'm sorry. Also, this assumes that the table is not changing. So that's why. Yes, that's right.
+we'll do. We'll
+there's a lot of people like.
+So.
+oh, yeah, that was fun.
+I did so.
+How was you?
+Oh.
+alrighty!
+I'm not sure.
+so let me think about it.
+Hello!
+You know.
+like when it was doing your account.
+Oh.
+children, in your office.
+let's say
+my opinion I heard about this.
+I don't read under all of all of the there's no work.
+There's no way, no worries, no idea.
+Don't know. If you want that, you have to know.
+So that's why in practice, change points.
+Say that. But my voice is clear, so don't worry.
+What's up? What?
+Fair enough?
+my mom cloud.
+you want to know that it's not.
+But that's like, why, it's like.
+Yeah.
+you have a good night
+myself.
+Oh, that's so sick! Wait.
+Oh, yeah.
+Why are you saying nothing?
+Go ahead.
+So I'm not really sure about that.
+Tell you what
+on the
+respond to it? Because of the down? Okay.
+yeah.
+which
+no
+no longer here.
+The idea is that basically.
+oh, my God.
+how would?
+Oh, that's good.
+awesome copy to
+no problem.
+But
+so
+is it a technology?
+Thanks for reminding me, have a great night.

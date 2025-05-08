@@ -1,0 +1,1149 @@
+WEBVTT
+All right. Can you hear me? Can you also hear me, Lexi? There's always a little bit of awkward stance like right there. I can't even see it on slides. But you can see you can hear me up there. You can hear me up there. Okay, great.
+wonderful. So let's get started. Welcome back for those of you
+who are back like 5 people showed up out of 200.
+Judy.
+There will be a homework released like tomorrow or something. Yeah, that's that's on my last slide. And the capstone project will also be released this week.
+That's what he was going to ask. Yes, as promised. What does the city of a promise Captain, will release on April
+1st is today. April first.st
+Has April 1st come yet?
+When is April first? st It's tomorrow.
+A what? No joke! No, no, no, never!
+No!
+It's gonna be great. Care carefully, carefully curated.
+all right, anyway. Welcome back for those of you who are back. Remember, you guys said you wanted to be more attending lectures because you failed the final last time. What happened to that? To that
+intention, I guess real real life happened.
+I don't know. I guess we'll see what happens.
+It's a resolution New Year's resolution, like a new semester resolution that lasted for like one week.
+But anyway, it's not my life, it's yours. So let's get going all right. So
+we are actually, really. So this actually worked out really well. So for some reason the spring break was late in the semester this year, which means we got through all of the frameworks before the spring break, which is unusual
+because we're now going to do something completely different.
+And we'll start. I hear some beeping. Do you hear that.
+anyway, we'll start a similarity based, search and let me just orient you in the class.
+So this is a
+decision point is not the right word, but like a inflection point, a juncture decision point.
+I don't know something something big, because we spent
+two-thirds of the semester on all kind of frameworks
+to distribute work efficiently right if there's too much work to do, just for one worker and worker is like your CPU
+or your Zen, or you're like memory. Yes.
+if there's just too much going on. We spent the entire semester on that, like, you know, we talked about
+mapreduce and Spark and dask and Hadoop and Hdfs, and all of that. Yes.
+and honestly, that's fine, like spark is totally serviceable.
+you know, if you work in big data or anything
+that is a big data application. You probably use spark. That's totally totally fine. By the way, I'm still trying to fit like cloud computing, or something like that, into our last lecture, but that kind of depends on what we have available here at Hpc. I'm still working with them on that.
+Anyway. What I'm saying is, there's no point in
+talking about something that you can't try yourself. That makes sense. But we're working on that, anyway.
+And just to be clear, that's a sound like what we did is sound. All the frameworks that we discussed
+afford scaling reliability. Remember, with Hadoop, for instance, you have these redundancies? Yes, and maintainability right?
+And so that's fine. We distribute storage. We just do computing. Everything that we covered so far is totally fine. There's nothing wrong with that.
+I know some of the stuff was like for historical reasons, like Mapreduce, but everything else hadoop spark. Dask.
+SQL. You'll probably use for the foreseeable future.
+I don't think that's going to be obsolete anytime soon. Also, as you know, they are constantly being updated.
+But there is another approach.
+and that's what we're going to now spend the last 3rd of the class on. That's like, instead of doing that, if you have a really really big problem.
+maybe you can save yourself some work by just being smarter. I know that's a big ask.
+But I will try to try to help you with that. Okay, so that's the idea.
+And
+problem is. And this is why we're going to focus on some specific applications that are that you will be encountering. For instance, search.
+I have a pretty good feeling that you're probably going to be involved in some search task at some point. Yes, of a large of a large collection.
+or maybe some recommendation engine.
+Those are standard tasks. So the idea is that
+what working smarter means is highly highly task specific. Yes, that doesn't
+spark. Generalizes. Hadoop generalizes das generalizes SQL generalizes. This does not generalize. Smarter is very, very task specific. So we want to teach you some tricks how to make search and recommendations and other things in a moment, I mean, in a couple weeks
+more efficient, just by being being smarter about it.
+But again, because this won't generalize, we'll focus on on the most the highlights search
+recommender systems, privacy things like that. We'll talk about that. Okay?
+And let me tell you why. Imagine you have a big problem. Imagine, like you're looking for a small needle in a large haystack. That's obviously not practical practical for one person to do. Yes.
+or would take a long time
+now is your only option to hire more workers, and then to distribute the work into smaller piles. You could do that. Yes, you could do that. You could hire more workers
+and then distribute
+the job into smaller piles, and then each, and then you can search the pile in parallel. Yes, and whoever finds the 1st wins. Yes, you could. You could do that. The downside of that is obviously what that costs a lot of
+money, and the distribution might not be trivial, right? And in this case I guess it's fine. Once you found it, you found it, but often it's hard to assemble the solution. Yes.
+what else could you do? I need creative solutions, Adam?
+A. What?
+Yes!
+Yes, you you burn, you burn the pile, and if it's a if it's a you know metal?
+Or was it a needle, a needle metal needle in a haystack?
+You recognize that the material properties in this case, the burning point
+of a of a needle is much higher than of hay, and if you don't need hay you can just burn it off.
+Is that the only solution? What else could you do
+anything? What else could you do? Be creative?
+What is it? Brian or Ryan?
+And you, Ryan? Okay, great thanks.
+Yeah.
+So you you could realize that. And, by the way, yes, that's what I've been doing over the break. I've been making a lot of images as you can imagine.
+I don't know how to say this. But
+are you aware of this? By the way, I mean only one.
+Are you aware that last week the
+visual design will forever change. Probably. Are you aware of this? Yes, okay, great.
+Yeah. So anyway. So you could use a magnet? Yes.
+and that will also solve the problem. Of course. Then you need a big magnet.
+and I guess what we'll do for the rest of today is we're going to build these big magnets or making a fire. That's the idea. So. But again, this is only going to work for this problem. What if you have a different problem? For instance, let's say you're looking for a really hard problem, like a specific needle in a stack of needles
+that's not going to work. Neither of those things are going to work unless you know something about the needle. Yes, all right.
+anyway. So that's the idea. So in general, in in data, science.
+everything gets better with bigger data. We'll see some examples of this today.
+But you also have a bigger problem. Yes.
+And as we talked about all semester, just to remind you, because it's been a break. Who knows what you guys did during the break other than making images?
+But anyway, so that brings a whole host of its own problems. Yes, some solutions we discussed. You could divide the problem to smaller problems and then solve it in parallel. Yes, that's the whole point of dividing your big data into smaller pieces of data that you give to the compute nodes and then solve in parallel. That's the whole. That's the whole point. So far
+we talked about this a little bit. You could use parquet or something like that as as a storage format. Yes, that's also inherently more efficient. Or you could use SQL, or something like that. Or that's what we'll talk. Now.
+we will work smarter. Okay?
+And so the specific problem today, and we'll see how far we go. How far we get with this
+is finding items in a large collection of documents. That's the that's the task.
+It's a standard Cs task. But increasingly
+also used in data science. We'll see some data science instances of this today.
+But so it's even relevant for you.
+And we'll talk about recommender systems in 2 weeks. But basically, they're both based on similarity. The only question is similarity between what and what.
+So the idea is that as a user, you provide a query. Although this doesn't have to be a query. We'll talk about this in a moment what it could be a search string. Or you could give an example, or you could give some vector, representation if you search it in a vector, database of what you're looking for? Yes, that's the query. So query is, the generic
+doesn't have to be a search stream could be something else.
+And then the system then returns from some database
+the list of matching documents. These are technical terms. So the query
+is compared to the documents, and we'll find some top K documents. Okay, so far they're good.
+And there's lots of examples. As I said so, a text search is literally, you have a search string, and you compare it
+all of the websites that you might have. This was the classic Yahoo problem
+I didn't want to ask, probably before you were born.
+but a long time like in the late nineties
+recommender systems. We'll talk about this soon, not not next time, but the week after that you have some kind of represent your user.
+and you want to find what
+Youtube video and I present them.
+This one, you, of course, know. You know you have some photo. And you want to find similar photos. So you want to find if someone stole your art. As a matter of fact, you could look for that. Yes.
+copyright detection. So this is actually big these days. Right? You upload a video
+and they want to check if you stole it from somewhere.
+And this one is an interesting use case. We'll use this for most of the class today. Let's say you have some assignment that you did.
+But I, as the professor, need to check if you plagiarized right.
+and that, by the way, as a funny, I'm not sure if it's funny. But as a true aside.
+what I'm going to teach you next today
+on how to do the plagiarism, detection. We used that in 2023,
+20 instances of plagiarism in this class I mean, not you, but
+your predecessor from 2 years ago.
+So it was kind of ironic, I guess.
+So this actually does work all right. So so the idea is, you can
+basically see how similar it's all based on similarity, how similar some documents are to all documents. And then, if you have a highly.
+highly unlikely by chance match. Then you probably you know you have to explain that. Yes, all right.
+So we'll see how that works.
+So in other words, you will probably be faced with this, or chances are high that you might have to do something like that. These are all very common standard use cases.
+Okay.
+and conceptually similaros, is extremely straightforward. This is, this is conceptually probably the simplest thing. We're going to cover all semester.
+So you have some query.
+Yes, and you have a collection of documents.
+You just compute the similarity between the query and the document. Yes.
+and you just order your collection by decreasing similarity.
+and then you return the top K documents, as I said earlier, so like 5 min ago, yeah, that's that's very, very straightforward.
+It's not hard.
+This is. I don't know it's not hard. It's very straightforward.
+So far, so good.
+All of the complexity, or almost all complexity of this, comes from what if you're
+collection, is really, really, really big, like all of Internet, or something like that, all books or all words
+that could be that could be overwhelming. Yes, all right.
+So the question becomes, not, how do we do this? A child could probably do this.
+but how do we do it efficiently? So that's what today is about how we can do it smarter. Obviously, you could also do what we did earlier with mapreduce. Right? You could just
+distribute that. You could have a thousand machines and search the web in parallel could do that, too.
+and that you can always do that. But today we want to see, can we do this smarter. Can we solve the problem or sidestep the problem?
+Okay?
+And the 1st thing we need to do to do this
+is we need to quantify a metric set similarity
+and the standard metric. This is good for your interview. This comes up in your technical interview. Someone asks you, hey? Give me a metric of set similarity.
+A good answer would be Chakcar similarity, and I'll show you in a moment what that is. That's a good answer.
+Let's see the following, the following situation, you have a set, A and a set B to
+collections of documents, yes, or queries, whatever we'll talk about in a moment.
+and then you have the intersection of A and B here.
+and you have the, you know, union. Yes, off A or B there. Okay?
+And so like, like, we said so items could be anything. Words, users
+keep that thought. We're going to use items as a technical term throughout this this lecture.
+It's going to stand for all kinds of things, elements of the set. How about that? Write this down? An item is an element of a set.
+It could be anything, images, words users
+latent representation. We'll talk about that later.
+But an item is a technical term for an element in a set.
+So let's let's like like you discussed. So this could be, words contained, users interacted. Okay? So that's that
+and yes.
+And then the Charcarson letter is literally defined, I should probably say.
+is, the ratio is or is, is defined as the ratio not derived like that. It's just, it is. It's just defined as the ratio between what?
+So this is read as the following.
+this part here is read as the Jacquard similarity of sets A and B
+is, is what what is it? It's it's actually kind of intuitive.
+And, by the way, Amazon uses this to like, make, recommend items to you. They had a patent on this from 96 or something like that.
+Have you?
+Have you noticed this? Yes, let you buy something. What will then pop up? Is
+users also users like you also bought these other things. That's how this is done
+with chicar similarity. They have a patent. No, no, they don't have patent chicasimilarity. They have a pattern using that to
+give you this list of other things you might be interested in. Yes, oh, sorry, Adam.
+No, please.
+Keep that thought we will. That's a good question, but we will need that.
+We'll need to work on that. We'll we'll get to that in about half an hour.
+But this is the simplest part is like 2 sets.
+Just is it in there or not?
+But keep that thought. We'll address that shortly.
+all right, anyway. So the chicars of European A and B is what. So it's very intuitive.
+So what is in the numerator?
+It's simply what, by the way, these pipes here are not absolute value. What do you think they are
+be given that it's a set even?
+Oh, do you have a question? Go ahead.
+And, by the way, everybody, not just Ethan. I applaud Ethan
+for being brave and asking something.
+I really appreciate that. What's what's your question?
+Yeah.
+yeah, this is just a visual representation of the set like, but the item is a element of the set. Yes.
+I see what you're saying. This kind of clashes with what's on the slide.
+But
+it I guess it depends what you mean if represented as I just wanted to draw it for you represented.
+No, they're the sets. They're the sets. The words in the document, the users in interpretive. You see what I'm saying.
+There's just sets. There's just sets A and PO. Sets.
+So in set notation. Is this absolute value.
+It's not very good. What is it?
+Cardinality? That's exactly right. Okay, so what do we say in English here? The cardinality of
+of what of the in the intersection over what
+elements in the Union. So it's actually very intuitive. Yes.
+as the intersection, I should make an animation as the intersection approaches the
+approaches as it becomes a circle, then the customer goes up to one. Yes.
+and what if there is no intersection
+goes to 0? So this makes sense, right?
+This is.
+That's why there's no even no point even to define this. Sorry to like derive this. It's just. It's an intuitive definition of of that. And if you have any questions about this.
+please ask me now, because the entire rest of the lecture is going to be about your car. Similarity in some way, in one way or the other.
+Charcosume is always going to be under the hood always, always.
+I mean, not always. There's this multi-set situation, but we'll get to that.
+Anything else.
+Okay? Well, maybe you can change your mind later. But for now
+again, straightforward and just. By the by the way, this is one minus that. So that's called the car distance metric, although we will not use it in this lecture. But it's it's like
+straightforward yes, similarity versus distance. They just
+one minus that. Okay. But if someone ever asks you
+expresses the distance, you can now do one message. Scandal.
+No, no, no, no, it's this ratio, the number of items in the intersection
+over the number of items in the Union.
+and that's going to be a ratio as Adam intuitive between 0 and one.
+it's very straightforward. Cannot be anything else.
+Okay?
+Oh, yeah.
+Number one.
+Well, it depends what you're looking for, what we want. Imagine I computed, your structure cost similarity, which I could, by the way.
+of all of your code submissions in this class.
+and if it was literally one, how would you explain that unless you copied from your neighbor? Yes.
+so you don't want. You don't want that me to realize that right?
+But so what you want depends what you're looking for. Yes.
+But again, if if it's like you were making recommendations, we're gonna you could use this to make recommendations like, hey? Again, you are, you know, have the same
+items in your shopping cart like this other user.
+Except for one, we probably should probably also have the last one. Yes, maybe you were buying like Blue and the Dremel. And I don't know.
+you know, for some homework project that you forgot. Okay.
+anyway. So but yeah, what you want depends on what what you're looking for in the use case, we'll talk about it in a moment.
+Okay, so anyways, the scale is the issue. Okay? So so if N gets very large, you need N comparisons. Yes, because you need to see is
+in similarity in a similarity in a similarity, similarity.
+Context, like, is your target item.
+you know, similar to this one or that one or that one. By the way, it's at least N, if you do plagiarism, which we'll go in a moment. The number of pairwise comparisons you need actually explodes very quickly. We'll talk about them. We talk about it. We'll get there shortly.
+but it's at least N, so this could get very big.
+because particularly because N is already usually very large.
+Then this one is something that also matters.
+You know what, if you compare something in a high dimensional space? Yes, what if you have a thousand columns or 2,000 features by which you compare something
+each. Each of these comparisons could be very complicated. Yes, right
+then, in general, there might be more to this than charcar similarity, atom or intuitive problem. We'll do more about that in a moment.
+So in other words, we need to do
+this is our. This is going to be our like baseline.
+just computing the jakar similarity for all items
+between your target item and the other items. We're going to call that brute force. We just try all of them. All right.
+That's our baseline. The question is, can we do better than that? Okay?
+And as if if we didn't do what we do today. What we would do
+again is simply, if it's a really, really but big collection, distribute this problem to many workers and just do it in parallel. And you can always do that.
+But again, we'll try something that might be a little bit weird at 1st glance.
+if you've never seen this before.
+But let's see how far we get.
+Okay. So the idea is, instead of doing this full tracar similarity computation.
+which is brute search, brute, all brute comparisons.
+We're going to do an approximate search 1st filter by that.
+and then we'll do the chikhar. Similar completion on that remaining candidate set. This is a little bit odd.
+I promise you it actually is common sense. As a matter of fact, everything we cover today. I should have said I should have said this on on the 1st slide. Everything we cover today is common sense
+comma, but mathematically precise talk about that in a moment.
+All right. So the idea is that we're going to use some fast method, and we'll start with Minhash. Have minhash before. Has anyone heard of Minhash?
+Nobody. Nobody. Okay. Oh, you learned something.
+so we'll use Min Hash to do our fast search to identify, and this is
+lowercase and on purpose. A much, much, much smaller candidate set of the large of the large set. Okay.
+that's the idea. We do a 1st pass with that fast search method, and then we do later, a full search on the candidate. Much smaller candidate data set.
+Okay, that's that's what I just said. So true similarity means Ethan Jakar, similarity, the actual similarity.
+Okay?
+But we'll we'll do some kind of like approximation of that.
+and I'll show you in a moment by its approximation.
+And, as I said, this is common sense. You do this
+all the time. You yourself do this all the time, and people do this all the time institutions do. I'll give you an example next slide.
+Yes, that is also true. We'll talk about that in a moment.
+Right? So that. So that that's the idea we want to. We want something that is much faster than just N.
+O of N is slow. If N is very large, we want something like that O of log N, or square root of N,
+and that's what will be provided by what we do now.
+Okay, so let me, before we do this mathematically, we have min hash.
+I'll give you a real life. Use case off.
+Why you want this.
+I'll give you something that is that you have
+domain knowledge with at least from one side.
+Imagine a large tech company.
+Whoop!
+But do you see this? What is that?
+I'm not doing this, by the way, anyway.
+or an academic department like this one
+like in New York. That's very attractive to work for
+has a lot of applications like a thousand, or
+for some position. This is actually realistic. Yes, imagine you have a thousand applications for some position professor, an academic department, or
+or some attractive job in some tech position. Yes, big tech.
+And for the company it's a good problem to have.
+because the sample size is large. So the ideal candidate is probably in there.
+There probably is an ideal candidate in such a large set. Yes, that has everything you're looking for.
+Okay. But there's a problem, this ideal Candice, obviously
+a good match on many dimensions, right? Maybe technical skills, social skills. They're good, a good cultural fit. They're very proactive, all of those things. Yes.
+And you figure this out by doing many interviews. We do that we hire a professor. And as if you have done the tech interview circuit, you know, that's also true for
+protect jobs. You do. You want to get many perspectives from many different departments. Yes, that's fine.
+Is it feasible to put all 1,000 candidates through this process? Georgia Ryan, who's next to you, Nicos?
+Why is it not feasible?
+Because that's right.
+Just takes too long. Right?
+It just takes too long. Nicos, right?
+There's just too much. It's just not not possible. Now, what could you do?
+Following the logic of what we have done so far in this class? Could you not just hire?
+No, no, no, that comes next from what you've done so far.
+What could you do?
+Hire more interviewers, and have each interview a small batch.
+an interview parallel? You could do that? Yes, oh.
+so anyway, that's 1 solution. Yes. What's the downside of that?
+If someone has to hire those.
+they are not cheap, and what else?
+How would they even compare notes?
+Different people interview different people. How would you know that your impression is the same impression that you're creating the same scale? It's actually not a good solution. So what do people do? Instead, you just mentioned it. What do people do instead? Practice?
+Yes, they do. A resume scan filtered somehow with keywords, maybe.
+and then you only interview far far fewer, maybe 10
+candidates that are likely a good match. That's an approximate search. It's called an approximate search.
+So you do the full search, meaning the full interview circuit for your candidate set of people you think are going to be good.
+and you do some fast, approximate search? Oh, sorry, Ethan.
+but but but with a well, how do people do it? Do you guys know about this? What's it called some what's it called acronym als, or something like that.
+A. What?
+That? That, and what's this descend for?
+But it's like AI, actually like they have machine learning. They scan like.
+No, it takes all 1,000. But it's not a big deal. You can do that quickly because they don't do interviews, you just see, do you have spark on there? Do you have Mapreduce on there? Do you have hadoop on there?
+I don't know what else you have on here, maybe. Lms, now.
+Yes, right, that's fast. But but is this perfect? By the way.
+what's the problem with it? There's going to be what?
+Yes, you're going to miss some good candidates. Maybe someone would have been a really really good candidate, but they don't know how to write their resume. As a matter of fact, I've seen that a lot.
+I'm not looking anywhere in particular. But but no, it's pretty shocking. Actually, sometimes you have. You have people who know how to do the job, but they do not know how to how to write a resume. It's shocking. Actually, you're going to miss them right?
+What else? What should also get
+false positives. Some people look good on paper, but when they show up, you realize they
+yeah, they're not that good. They just had somebody. They put all the keywords on there.
+Why not? Doesn't cost anything right. By the way, don't do that
+but anyway so so that's the idea. So with an approximate search. And this is going to be true for our approximate search.
+You might have problems. You might miss good candidates, and you have false negatives. It's not a perfect search
+to do the perfect search. You have to do the full full. Jakarson Blaird. Yes, which
+which is not going to be practical.
+just like the interview is not practical.
+But does this make sense? So before we go to Minhash, how do we do documents?
+The idea
+is, I guess obvious, right? It's like, what else will you do? You have to do that right? No.
+and we could. By the way, I'm not going to do it, but we could spend the rest of
+you do this all the time.
+Dating people? You do approximate search. Are they tall enough? Are they attractive enough to make enough money. That's an approximate search. You might miss.
+You might miss somebody. Yes, all right, but anyway.
+but that's fast, and then you only do the full interview in the candidate. Set
+that matches your keywords. I guess you you fast search. Okay.
+anyway, let's do this mathematically. It's called Minhash. And as I said this was introduced in the late nineties.
+and we but we still use it.
+It's now to understand Minhash.
+Well, it's in the name. Right?
+Hash functions are back. Not that they ever left us.
+but because it's like, been the break. I'm going to remind you one more time
+what a hash function is because we're going to use it all throughout today for rest of today in a moment.
+Okay.
+so so what is a hash function actually remind us, what is a hash function? We're going to use them
+a lot to that. What is a hash function?
+Somebody.
+Quickly.
+Adam.
+Okay, all right. All right. Well, what I wrote is this, use a function.
+Take an arbitrary input right? And you map it to some deterministic output, but usually fixed fixed length.
+Yes, very generic.
+Now, what's a half collision? This is something we're going to use a lot today.
+What's a hash collision?
+Somebody. Oh, yeah, up there.
+that's exactly right. Let's say this for everybody. Different inputs are mapped to the same output that's called a hash collision. Now, same question as before. Is that good or bad? That depends what you're looking for. Will
+in cryptography is not what you want.
+Usually.
+Yeah, you laugh. But that's a problem. But we'll use this today to actually detect something we are looking for. So we're going to use hash collisions to find like plagiarism, things like that.
+Yes, and I'll give you an example, the digit root function is basically a hashing function. Does anyone know what a digit root is? It's 1 of my favorite functions. Actually, in all of life
+I really started to appreciate when I was like 9 years old. I still remember it.
+It's amazing. It's amazing.
+No, all right, let's do together
+the digit root of 12 is 3.
+There's root of 15 6.
+This root of 18 is 9
+digit root of 21 is 3. What what's digit root?
+You just add all the digits until reduced to 1 1 digit.
+Take digits, add reduced to one digit. Yes.
+and the reason I this is my favorite one of my favorite functions that I realized
+at age 9 that 9 always in base 10 always maps to 9.
+The basic root of any multiple of 9 is always 9
+that has to do with the the base. 10.
+But it's an amazing function. Yes, so this will always collide. Yes or no.
+There's an example, you keep doing it until you reduce it.
+you recursively. By the way, it's also, if you want to teach your kid how to code, it's a good example of recursion. You keep doing that
+until you have a single digit.
+Okay, so you can use this root function as a hash function makes sense to everybody.
+Okay, all right. And let's use. As I said, we're going to use it for plagiarism, detection.
+The reason plagiarism, detection is a good example is because
+God, envious uses this. What is it called? Does anyone know what enviuses for Brightspace? What is it called? This? Is this what
+turn it in? Yes, turn it in uses this. So they're comparing.
+They're comparing all documents to all documents.
+And let me tell you why. This is a problem.
+1st of all serial scans are inherently slow. What's a serial scan? What is what is a serial? Scan
+anybody?
+What? What is a 0 scan you're comparing one document at a time. Yes, to another one.
+one pair as comparison. Yes.
+And it's not just like data systems. You have that problem.
+This is a paper from the 1966.
+They looked at
+scanning in your memory, and they say it's fast. But in reality it's actually quite slow. So if you try to remember something. You try to
+find something in memory.
+People do a serial scan, and the slope of that is the number of items, half because, you know, it could be in there or not. So. But this is actually quite slow, all right.
+And the second problem is, you do need a lot of pairs comparisons. Let's say you have 2 documents.
+How many pairs comparisons do you need to make to compare 2 of them?
+How many pairs comparison did you make?
+Just one.
+What if you have 10 documents? Why is it? 45.
+Say that 1 1 of you? Yes.
+Okay.
+Good. Good. Good! Yes, yes, yes, I couldn't hear you. Yes, don't you love combinatorics?
+Yes, no. And let me tell you why commentators is so amazing. It's the art of the possible. What could be
+right. It's amazing. And if you want really big numbers very quickly, think about combinatorics. It's amazing.
+And this is a good example of that right. And, by the way, let's say, I'm sure Turnedin has more than a million documents. They probably have billions of documents. Yes, but very quickly. You cannot do this. Do you see what I'm saying? This quickly becomes to a point where
+going to exceed the number of atoms in the universe something like that. It's not possible. Yes, right.
+but they have to to to provide the service. Turnitin has to
+has to do this. They have to compare all documents to all documents. Otherwise this is not going to work. Yes
+or no.
+Okay.
+So we have a problem.
+And let's tell, let me tell you what the solution is.
+So let's talk about Minhash, and there's a lot going on this slide, and if you don't understand this slide, the rest of the lecture will make no sense at all. So so please stop me if anything on the slide is unclear by the time you move on the next slide.
+So let me tell you what's going on here.
+So we're gonna have a bunch of items. So so the items, Ethan, are like words like.
+and dinosaur computer chair table that those are items. Yes.
+and we have a table. We have row, we have, we have a table of them, and we have rows.
+and then you have a bunch of documents. Okay?
+And this table simply represents is this is this item, this word in this document or not.
+Yes, there's a there's a 1 it's in there.
+If if there is not one, it's not in there. That's why that's why that's why sets work here so well. Either your document has the word, or it does not have the word right like I don't know. Let's say you code something up.
+And you. This is a good example of pleasure protection code. Imagine you name all your variables the same thing. That's very suspicious. If they're all the same
+names, for instance. Yes. Well, how would that be possible. But anyway.
+let me just look show you. Here's the words we call them items, and you have the documents in the columns and the one and the 0 means, is it in there or not? So far, so good.
+Now, there's a pie here.
+What does Pi normally mean?
+No pie?
+Yes, like that right, but they just needed a Greek letter, Nicos.
+and they use pi for permutation. Pi is literally just the Greek letter P. Yes.
+yes, a. P. For permutation. So don't be. Don't be. Don't be thrown by that. Okay.
+it's just Greek for
+P, which P. Is for permutation. They probably didn't want to use. P. Because P. People think probability, which is also not true.
+It's just a permutation.
+I'm not sure if pi is a improvement, because people think pi.
+It just means permutation.
+So the idea here is, we have some permutation, some ordering. We have some ordering of the items. Yes.
+So you see, items, boards.
+but we have some ordering. It could be another ordering. As a matter of fact, we'll we'll order it
+differently in a moment. But let's just for what this is, just for one permutation, one random permutation, one random ordering is one permutation. Yes, could have been ordered in different ways
+of all possible words.
+and this, as I just said, is a table of set memberships. So it's either a member of the document or not.
+So far so good.
+Now for each set we're going to. We're going to define a hash function such that the hash
+of this of this set, given the permutation pi
+is the minimum number of the index of this index.
+Okay, which is the 1st item that is not 0.
+That's in the set. Now, that's a lot. So let's do it. Let's do it together.
+Document one. Yes, will have what min hash value.
+It will have one. Y.
+Why is, why does document one? If you. Okay, if you if you feed the entire document one.
+2D hash function for this permutation.
+why is the hash value? One? Because, Adam.
+exactly. That's the. That's the 1st index. That's the lowest index value. Yes.
+Now, document 2 will have what hash value 1, 2, or 3,
+3 very good document 3 will have value 2 and document 4 will have 1, 2, 3, 4,
+5. Yes, ta-da, ta-da.
+So far, so good.
+That's literally min Hash. This is min hash you have. You have a table
+set, memberships. The word is in the set or not.
+Yes, and then you put it in the hash function and the hash function returns the lowest
+value of the index. That's not 0 for that.
+For that document.
+One second scandal.
+Yeah, you know what? Go ahead.
+So
+that's coming next. This is one permutation. I just great question. What about, you know? Is this the only one we could order these, these these items? No, no, this is just 1 1 instance, and we'll literally do this on the next slide.
+But before we go there
+is what's on this slide clear to everybody, because we're going to do 2 other permutations in a moment. But is it? Is this at least clear? For now, now, why we want to do this we'll talk about in a moment. That's a good question. Why would you do such a thing? That seems like you just complicate this for no reason.
+and that's a good question we will address in a moment.
+But does this make sense to everybody? I understand you don't know why we're doing this yet, and it does seem
+weird and bizarre to do it. I agree with you.
+but it will make sense in a moment.
+Somebody say something, just to make sure you're on the same page as you are, at least here.
+Okay, you good. So far, so good.
+Great. Okay, let's move on, then.
+So here's 1 example of this. So imagine you're talking A, BCD.
+Okay. You see that T-rex. So this is this document has 3 3 words, T-rex degosaurus, pdp. 11.
+Document B has apples, bananas, pine cones. C. Has T-rex bananas and penguins, and D has apples, turtles, and pine cones. Yes.
+But which of these documents, just you, as humans looking at them is most similar.
+which which of which 2 of these documents are the most similar? Just looking at them?
+B and D apples.
+Pine cones. Yes, that looks very similar. Right?
+Okay, so let's see, let's see. So here's our random ordering of the words, just one permutation.
+And let's see what it maps to.
+what would be the yeah. I mean, you can see it. What would the min hash of a
+okay and of BC, and D,
+and do you see any collisions?
+Yes, namely, P and T, which is exactly what you
+thought would be more similar anyway. So that's the idea. So we'll we'll prove this in a moment.
+But the bottom line is that Min Hash collisions are a good approximation or similarity.
+Instead of, instead of computing the full
+Ricards, and we have the full set which is going to be slow, we can just do the min hash, and if there is a collision. There is a collision that's a good candidate for something we have to check more carefully.
+Yes, all right.
+Yes, Ryan.
+because hash functions are very, very
+fast, although there is something. There is something.
+There is something computationally expensive about this.
+which is why we're not done done yet.
+But can you can, so we will. As kind of said, we'll have to do this a lot of times in a moment.
+So, Ryan, your intuition is correct. There's something fishy about this, and we'll talk about it in a moment.
+Hash functions themselves are fast. That's not the problem.
+But we'll have to do this a lot, because one permutation is just one permutation. Yes.
+we'll have to do a lot of quotations.
+And how computationally efficient are permutations.
+Imagine a very large step.
+Sure. But even one permutation of a large set is not going to be cheap.
+Yes. So that's the solution. That's the problem. So Ryan's intuition is spot on.
+We will not be able to do this in practice.
+because our approximation is still too slow. We have to do an approximation of the approximation
+which is called approximate min hash. So the idea is that approximate min hash doesn't approximate Chicausa molarity.
+Minhash approach approximates the cosmolarity. Approximate min hash approximates min hash
+it's a second order approximation, and it's exactly for the reason Ryan just said, the hash is fast.
+but the presentation is slow for large. N.
+Yes, Secunder.
+the 1st 2 are different. What's different?
+Oh, here.
+Aha!
+Exactly so, for this particular ordering. You're right. They would get away with it. Yes, but that's why we're going to do more than one rotation. And on average, and this is something's happening.
+I don't know. Yeah. So let's do this. Let's let me. Just 1st let me prove this to you, and then we'll do more permutations.
+Okay, so so all I want to see here is that our intuition is correct. Hash collisions are more likely if they're more similar.
+But 1st I have to prove it to you, and then I'll show you the benefit of many permutations, because it's just one permutation.
+All right. So look at this. So yeah.
+so what what we're going to prove on this slide, what we're going to prove on this slide is
+is that the probability of a hash collision.
+the probability of hash collision is equal to what Chicago molarity.
+So that's the idea. So the idea is that the probability and I'll prove it in a moment. We'll do it together.
+The idea is that the probability of a hash collision is equal
+to the jakar similarity, so that way we can then compute the
+compute the probability of hash collision, and then use that as a proxy for
+but a provably good proxy for Jacquard similarity. Yes.
+so this actually does make sense.
+But to compute the probability of that, we have to do more than just one permutation. We have to do a lot of permutations.
+and that's going to be expensive.
+And so for that reason we cannot do what we would want to do. Which is this?
+But in principle you could, if you have infinite compute.
+Yes, yes, sure.
+yes, correct. Which is what we want. Right? We want the jakar similar molarity to determine it.
+Whether we want the high one or a low one depends what we're looking for, but we at least want to determine what it is for each document, yes, for each set of documents.
+and let me walk you through this. We have to distinguish for 2 sets s. 1 and S. 2,
+we have to distinguish 2 sets, 3 sets of rows. Sorry
+the 1st one is straight up
+that they're they're intersecting. Yes, there's intersection, but there's a 1 in both. Yes, there's a 1 in both sets.
+Yes.
+and then this. Does anyone know this is called the intersection? Does anyone know how this is red, this delta.
+basically. But anyone know how to read this, any math people?
+Yeah. Say that again, Slot, that's right. There's a symmetric difference. Yes.
+that's exactly right. That's symmetric difference between the sets.
+I'm impressed, and but I would have accepted Delta delta of the 2,
+and that's the someone's at the exclusive or
+and then finally, if it's neater, yes, so it's 0 and 0. Yes.
+Now, here's the big insight. And this is literally just an insight. Sorry?
+Yeah. What's exclusive or like, for instance, turtles is in is in D, but not be. Yes.
+Why is that a type? 2 row?
+Okay?
+The question was, what is exclusive? Or.
+1st of all, what's inclusive, or what's inclusive or eater?
+I should probably should probably call the eater right eider eater, eater eider, eider.
+So what's exclusive? Or it's yeah, it's non-matching the opposite of matching. Yes, okay.
+like, for instance, why is bananas?
+A a type? 2 row in for B and T.
+Because, yes.
+it's 1, but not the other. That's maybe an English way to think about it, like I mean, not English, but an English language way to think about it.
+It's 1, but not the other.
+Yes, so intersection means it's in both.
+The second one is. It's like in one but not the other.
+And you're exactly right mathematically. And then the last one is neither 0 in both.
+Okay, those are the 3 possibilities. Those are the only possibilities so far so good.
+And, by the way, this exclusive or or symmetric difference, or delta
+by definition excludes the intersection. Yes, obviously, yes, can be now
+is this insight clear? But what does this arrow mean?
+It's all the mathematical notation. What does it stand for? How do you read this.
+Say that again.
+That's 1 way of thinking about it. If, and only if
+what? What we are, what we are. But that's true. You can. You can use that.
+What was meant here was is logically identical to.
+Is this insight clear to everybody? A collision is
+happening if and only if or is happening. If or is a collision is the case. If a type, one row occurs.
+all type, 2 rows, does it make sense?
+If there was a you know what somebody
+I mean? Maybe Judy, Judy, email me.
+I have this on a slide just like, Hey, look at it. But I think I should show you that it cannot collide if there's a type 2 row before
+I but I haven't shown that yet. You just imagine that.
+But does it make sense to everybody that you can only have a collision by definition, if and only if, as you said.
+a type, one row precedes all type, 2 rows, yes or no.
+Oh, sorry, Sean, for type. One room like one room.
+the 1st type row, a type, one row. No like there has to be a 1 in both.
+It has to be one of both.
+That's a type. One rule, any type of Monroe doesn't have, to be
+sure, sure. Sure. But if apple's here, you know, like you just increase the probability of it if you have more than more than one.
+But yeah, yes, no.
+So that's the insight. Now.
+Now we can weaponize this insight by mathing this out. We can now compute the cardinality of these of of these rows. How many of these rows are there? Yes.
+so the probability of a collision is again, the number of this is where this is, where your insight comes comes from, like, if you have more than one, you have a higher probability that it's happening.
+Think about it.
+So that's why that's why this is an important insight we just said, is the number of type one rows over.
+Have one rows, plus all of the type 2 rows. Yes, right?
+That's what the probability of collision is.
+Well, and how would you compute the number of type? One rows? That is the
+cardinality of the intersection. Yes, and then
+the carnality of the intersection, plus the symmetric difference, the symmetric difference.
+the cardinality of the intersection, plus the cardinality of the symmetric difference is simply the
+it's the kernel of the Union, isn't it.
+And how is chikara? Similar? Defined?
+Same thing? Exactly
+right.
+So now we just proved together.
+Thank you that this is the case.
+Right?
+So, in other words, instead of computing the jakar similarity, which is hard and slow and cumbersome
+for all. For all items, we can simply compute sorry. Detect these collisions.
+and if you have the most collisions, you have a high likelihood. It's not clear. By the way, it's a probability it's not like, you know, it's not
+deterministic. It's a probability it's the probability, because we permute.
+And to compute that probability, we actually have whatchamacallit to do more than one.
+And that's what's going to be.
+That's what it's going to be the complexity in a moment. But before we move on with that is everybody clear on. This
+is a critical point.
+I told you it's all about your car's similarity and collisions and hashes today.
+Any any thoughts, anything, please.
+Yes, thank you.
+Great.
+In this case we're saying, hmm, well.
+okay, so this is for one of them. This is for a given permutation. So one to 8 is good.
+Yes, and good question. I'll show you this on the next, on the next slide.
+It's the next slide.
+We're going to. Now, this is for one permutation. Yes, for one permutation. We can create this table. Yes, that's simply a table of
+set memberships for a given permutation.
+Right?
+And then we can apply. We can apply a min hash to that, and we can determine.
+We can determine the min hash of these
+of of A, BCD, given its permutation. And that and that role, those min hashes
+that's called the main hash signature.
+and each each permutation has one min hash signature.
+As a matter of fact, what would be the main hash signature of this
+this permutation we already computed it.
+It will be what the meanest things are. 1, 3,
+3, 1, 3, 2, 3. That is the main hash signature of this permutation.
+And now we're going to permit it again. And we're going to get a new signature, and we're going to make a table of those Min hash signatures. And then we're going to count
+the collisions in that table. And that's it. That's going to be a good approximation of that the probability of that we're going to estimate the probability from the number of predictions we do.
+Yes, any doubts or anything.
+Oh, yes, Connor.
+all right.
+So.
+But how could it collide? How could it collide if that was not the case?
+Because what does Min Hash okay, the beauty of this is in the min hash, what is Minhash? It's not just hash, it's min hash.
+So if if there was a
+imagine again, this is why I said to Judy to email me to put an example there where that's not the case.
+but maybe A and C are not colliding. Yes, and why are A and C not colliding. Imagine there's a 9, th a 9th row.
+What could that be of a computer? Okay, and
+A and C both had a 1, so that we type one row for A and C. Okay, now.
+would that change the Minha's signature?
+This is because we take the Min hash.
+so only if and only if
+that's why this is an if, and only if, as you said.
+a type, one row is above all type, 2 rows. Can it possibly collide because it's min hash not Max hash, or something like that. Where's Max? By the way.
+all right.
+Yes.
+Okay. So let's do this again. Let's do this all together. So let's start with this table off
+item set memberships. Yes, let's start with that
+1st of all. Yes, so so the so. So what min hash is.
+you take the index. Given a certain permutation.
+which is 1, 2, 3, 4, 5, 6, 7, 8, yes.
+And then you take the minimal value where the index, the item is not 0.
+Okay.
+And for each document you get one value out 1, 3, 2, 3,
+and that is the minh signature for that permutation.
+So mini signature is the value of all of the main hashes of all documents for a given permutation.
+Skanda, please no, go ahead.
+No, but don't be sorry. This is great.
+Let's talk about this. If A and C. Collided anywhere anywhere here.
+actually it does. Yeah, there it is.
+And why does it not matter?
+Say that again? What?
+What's a type? 2 row
+row one I see. So
+just to be clear, these are labeled from the perspective of B and D, because B and D are like we suspected them.
+But you're right. Okay, Judy, email me that, too.
+Let me relabel them from the perspective of like different documents.
+Yes.
+But now it's understand. It's clear. Yes, yeah. What a type 1, 2, 3 row is obviously depends on which 2 documents you're thinking about. Yes.
+you know what I've I'm I'm glad you asked for this, because I bet you right now, if you had that question.
+So did a lot of other people just didn't care
+or brave enough to say anything. But you're right. This is an important clarification which is not in this slide. This labeling is with respect to
+documents we were we were thinking about.
+Okay, any final thoughts on this? Because we're going to now
+go crazy with this. We're going to 1st do a lot of permutations.
+And then the second thing that we're going to do is we're going to do an approximation to that.
+And it's gonna be really wild.
+Okay, well, I'm glad it's clear.
+Okay, okay. So now, to make this to make this
+so look, the question is, where does this probably come from? It can't come from a given permutation.
+A given permutation has a certain
+main hash signature. Yes, it either collides, or it doesn't collide. Yes, right?
+So like, I said, here we have, you know, have them collided. Yes, right.
+We want the probability of that, for all possible choices of that.
+And, as Adam already said, there's no no shot. We cannot do this. There's no way
+we can't do all of them. But why can't we do all of them? What strikes again?
+Combinatory strikes again? Yes, there's no way. If you have a large number of items, there's no way
+cannot do this.
+By the way, why not?
+Yeah, exactly. If you want to see really big numbers profactorial in there, that's why there's an exclamation mark
+that's for like really large numbers. Yes.
+So in other words, we cannot do this. So what we're going to do, and that's why this is an approximation. This is like a an estimate of the probability. We'll do a random subset of all possible, a large but random subset of all possible combinations, but we can't do all of them. There's no way.
+Otherwise we just made it worse.
+All right.
+So yeah, here's the idea we're going to do a bunch of, we're going to do. M. Of them M is some number M, maybe for 1,000 middle, you know Latin
+middle a thousand, and we index them
+pi, one pi. 2 until pi m.
+and we literally just count hash collisions between the documents we were, you know, having over all of them.
+and then the tricard similarity between A and B is literally approximate. There's it's approximate because we don't do the full permutation. We just do the we do do the estimate of that with the number of proportion, the number of collisions over over. How many times we tried. Yes, that's it.
+And here we go. So this is one.
+This is one table of set membership as Judy just asked, this is one table of the set memberships
+of one particular permutation. Pi.
+Okay, what I should have added, is
+1, 3, 1, 1, 3, 2, 3. Yes, that's the signature.
+And it's actually not in this table. But imagine you create a table of of minhash signatures.
+Right?
+You know. Do this a lot of times.
+This is not a slide. This is like a new permutation. Again, this is not the world's best slide
+email. Me to Gd, like this needs to be. I need to do another one. I need to do another permutation where the 7. So I should show you where the 7 came from. It's like, imagine if we did. But you know what I just show it to you. I apologize.
+Yes, and but look, there's a collision here. You see B and D collide here.
+Wellsley, collide here here, so we don't. We don't care about the
+hashes, or even this hash signature. What do we care about? We should probably flag this Judy email me that, too. What do we count? What do you flag?
+The what did the proportion of collisions like I see for this 5 of here
+between B and D. It's already 2 collisions. Yes.
+you see that you see that or no between B and D, and so anyone else collide
+were, oh, yeah, look at that, because they did also share some of these, some of these words, you're right. They did also.
+And and the probability of that happening is literally the jakar similarity. And if they're all the same, then it's 1.
+Make sense or not.
+Again, this slide deserves some work.
+Lectures are always a always a work in progress. There's no way to tell until you bounce it off the heads of some students, and then
+you iterate.
+It's like stand-up comedy. You can't do it at home. You need an audience, Adam. You may already
+in a moment. Keep hold. Keep going
+a bunch of items. Yeah, that's coming. Okay?
+Sure.
+But good question, yeah, that whole is coming. Yes, I was right.
+How big. Should them like like a thousand?
+Don't, don't quote me on that it depends. But but something reasonable.
+Yeah, it needs to be. That depends what kind of granularity you're
+you were like comfortable with, you know. Obviously, you know, the independent so central limit theorem strikes and
+something reasonable.
+Oh, yes, Kenda.
+say that again.
+So forth.
+Oh, yes, that's coming up in a moment. So that's a problem. This is not going to work. Well, if you have stop words
+that motivates what we're going to do next. So wonderful. So we're going to do multicase. And we'll do subwords. Great.
+Where were we? Oh, yeah. So this is the so. This is the table of minor signatures. You see that these are the minute signatures, and each of them is one, and we should have a like.
+you know, a little index. I don't know.
+Biscollides, A. B. And D collides here, A and C. Collides here. No collisions here.
+C. And t collide here, look at that.
+and then P. And D collide here.
+Yes, Kim.
+can you have what?
+9?
+Well.
+again, this is not good. Yes, because because I'm not going to go back. But this dot dot there's more words than just 8. Yes, Sam.
+Huh?
+Well, that's too bad, because I didn't see it.
+Let's see, at least people online paying attention. Let's see.
+Oh, Max is here. Okay, how does this approach? Rich is also here. Approach. Consider the ordering of items.
+Yeah, it doesn't. Why does it? Why does the yeah, it doesn't. It doesn't. It's just, is it there or not?
+We? I think this goes in the same way that that thank you.
+So give me give me oops.
+Give me a chance to do that coming up. This is just set membership. This is just set membership, not ordering.
+Just had a membership.
+Okay? Good question. But we are going to complicate this in a moment.
+And I'm glad you asked, okay. But before we do that.
+we need to, we need to speed up a little bit.
+Okay. So the 1st thing you need to do is
+for all the reasons to be just discussed, cannot do this.
+Hashing is fast, but permutation is slow, particularly if you have a large number of
+items, and if you have to do a lot of them. Okay?
+So the idea is, okay. You're not going to believe this. But it's true.
+In approximate min hash. We're going to replace the permutation.
+All sort of a hash.
+Yeah, it's true.
+It's going to be hashes all the way down.
+It is where it is, but not wasn't. Wasn't my idea
+all right? But that's the idea. Hashes are fast permissions slow. So for the same reason that we replace jakar similarity, which is also slow with a hash. We're also not going to replace
+the permutation itself of a hash.
+All right.
+So I just mentioned that. Yes, so we replaced the quotations pi of I with hashes. H of I.
+We just talked about this. So if if the and here's the difference, so permutation is perfect
+distinct elements cannot collide for all the reasons we just discussed. Yes.
+cannot have a collision if they're not the same.
+right? There's a type 2 row. Yes.
+the cost is that the hashes
+can collide because it's not a perfect hash.
+It's a hash of a hash, all right, but
+we still need as long as this is still unlikely collisions, unlikely, we can still do it.
+Okay, this now is a second order approximation.
+but that's the one that you can do in practice, because the other ones are just too slow for any for any what you call it
+for any particular, for any
+appreciably large number of items. That's not just something that fits in my slide. By the way, it's usually going to be more than 8 words. It's like
+100,000 words or something like that.
+But
+yes. So in a moment you will see if someone asks you in an interview. What's the difference between approximate min hash and Min hash, we're using hashes all the way down. And you can use hashes
+relations. Also, in case someone ever asks you, okay, so let's do it.
+So this, as I said, is called approximate min hash, okay, so here's the idea.
+So this this Min Hash signature table is initialized at infinity. Okay.
+before you panic. Just hear me out, all right.
+We we have.
+So instead of instead of permutations
+being in the what you call it in the singer table
+in the rows that in that orders them. It's now hash one hash, 2 different hashes. Can you know.
+map to different numbers? Yes, and here it is
+so. This is hash one that the document was mapped to, and this is hash 2. Yes.
+and so let's go through this.
+So it's 0 in both for a here.
+So we are now replacing. So again, it's min Hash. So we're going to replace the number.
+If the number is lower.
+I can tell you. Look alarmed. Let's just do this step one step at a time, and I might not be explaining this. Well. But but let's do it together
+is 0 is 0. Is 0, what you call it less than less than infinity great.
+So we put 0. Okay, now we look at the second one.
+And, by the way, this is like talking Abcds before this is the word being present or not.
+and that's what this is. The min hash is of that that makes sense.
+So now, C is in various.
+And it's updating this value with it.
+It's not infinite. It's it's a number. Yes, yes.
+values. Yes, so so this is the same signature tables.
+So let's see, maybe I should say Min hash signature table.
+Right?
+This is the same Min hash senior table as before.
+Okay, what?
+And like this 1 1 second. This one.
+We're going to make the same table. But instead of like a thousand permutations. We're going to have a thousand hashes, but in the interest of time and slice and slide real estate I'm going to show 2,
+because it generalizes to as many as you want.
+Yes, yes or no, all right.
+You look like you're in pain. I can see it. But I promise you.
+if you spend 5 more minutes, it can actually be understood.
+All right. So let's see.
+So this is mapped to 0 and 0.
+And that's less than infinite. Yes, right?
+This updates. The C column, right?
+Because this hashing function maps, penguins
+one and 2, 2, 2. So it's going to get a 2 and a 1. Yes, sorry.
+What was what stand for?
+It's just numbers.
+It's a hash function, not randomized, just some like like the digit root.
+If you feed that document in it maps it to whatever it mattered to.
+Right?
+It's a hash function. It's just another hash function, the dehashing.
+Okay. How do I explain this, the hashing takes the takes, the the hashing takes the place
+of the permutation. What's the purpose of the permutation? Actually, what's the purpose of permutation?
+Randomized groups.
+right? So that you don't always get the same value. So you can compute the probability. Yes, probability of a collision. Same thing here. If you had, if you had more hash functions.
+Sometimes they map into the same, sometimes mapping different, just like the permutations.
+What does it mean to approximate permission of the hash. So let's say this again. What's the whole point of a permutation?
+Do we do we care what what's the only thing
+in the permutation we care about, say what?
+No, in this case, in this case, in this case, one second.
+So do we care about what the order is that that's what I'm trying to get at.
+Not really. What's the only thing we care about the
+yeah. The main hash signature which we can then use to correct. That's it.
+So the question sorry?
+Well, determination is just a means to end. It's not an end in itself.
+So, in other words, the the trick here is what if we could get numbers like that
+without doing a permutation.
+These numbers
+well,
+Let me ask you, what does it mean that there's a 7 here? What would that imply for a
+is all 0 0 0 0 until there is one here? Yes, and that was the lowest one. Yes.
+right?
+1, 3, 2.
+Yeah, correct.
+The Min hash signature of this permutation is 1, 3, 2, 3.
+But we don't care about anything else of this permutation.
+So so the next step is, what if we? What if you could get what if you get numbers like that
+but from a hash function?
+Then we could still do it right or not.
+What?
+No, not like. Not like Bootstrap.
+No, not even not even bootstrappers like that booster is not permutation.
+You can imagine. Go ahead. What
+I mean, how does it always work? You take the inputs and you get some number out?
+Huh?
+I guess so, is it?
+I don't know.
+But as it's kinda
+the input is the document.
+I'll show you
+no a new hash function. There's this, there's a second hash function. There's a new hash function.
+right. And you know what you're right in your defense. I didn't show you what it is. It doesn't really matter what it is
+as long as it's a Yeah.
+I I God, I'm sorry I apologize. Can you stay there? For one second? I might have written this down somewhere. There is. Yes.
+murmur Hash, murmur, Hash mer! Right, Google, this Mermur hash Murr! Merrh! Hash! What?
+That's what we use. Yes, you know what. But I shall
+show you next week how it works. I apologize.
+Yes.
+yes, it correct.
+That's correct. You're right, and I will show you next week, I guess how it works.
+But the reason I didn't was, it doesn't really matter. You don't have to use Murmhard. You can use something else. The whole point is, you need something that if you feed the document in it maps it to some value, and sometimes it collides, and sometimes it doesn't collide. That's all you need.
+all right, and and and look fear.
+You know it is what it is. Yes.
+now let's let's go through it
+if I do want to, at least do that. And honestly, I don't.
+Well, not happy about it. But let's see how far we get.
+We'll see how far we get.
+We can always catch up next time.
+It's a look, 0 is less than infinity. So we update the senior table. Yes.
+and then here. But this is. There's penguins in here in the document. C,
+and it's mapped to one by this hash function mapping.
+So this needs to go to guys on one.
+And then here, let's see pine cones.
+pine cones updates. Yes, B and D again, look at that
+to the same numbers. It is in both you see that, and then turtles
+is now 0, so it's less.
+And then these, but nothing, no updates, because one in 3 in A and C are
+not not less than the values we already have, and then bananas same.
+And finally.
+and there we go. There we go. And what do you? What do you notice? What do you notice
+for these tutors, at least?
+What do you see what collides.
+what? What? What what collides?
+That's right. And now and now we can compute like that
+same thing, because we only care about the number of collisions. That's all thing we care about.
+So so in English, it doesn't matter where your where your
+you know numbers come from. The only thing that matters is is that that how you get the collisions? But you know what
+I apologize.
+This is definitely a candidate for confusion, doubt, and struggle.
+Next week, so we will start with that.
+because it's a fair point. I haven't explained to you how Murmur Hash works. The reason I didn't, because it's arbitrary. It doesn't matter. You can use another one. You don't have to use Murmurhash, but I will do it with Murmur Hash next next week.
+because I do want to address what Adam? And asked earlier, which is the multi-bag situation? And in order, that's what? Rich asked online. And also
+something awesome about something else. Independence, I think.
+Order. Yeah, okay, just. But let's retrace our steps. Okay.
+so yeah. So in principle, similarity is extremely straightforward. You literally just compute the Chokhaw similarity
+between documents in your collection and some target. And that's it.
+And if the highest similarity that's suspicious.
+but you can't do it, because because computers require similarity for large collections
+doesn't scale. Well, it's too slow.
+If you do it, I'm going to mapreduce, sure. But again, the idea here is
+what if you don't have to do that work because we're looking at Min Hashing?
+That's the idea. So instead of doing this full on search.
+full comparison, which is inherently slow, will identify a candidate set first, st
+just like you filter your resumes by keywords before you invite people.
+and you can do that mean Min hash, because we proved that the probability of the hash collision is
+the jakar similarity.
+If someone ever asks you why that's legit.
+And conceptually. We can do this with random quotations, because the number of collisions
+in the Minh standard tables is the choker similarity right? Of course, you have to divide by the number of permutations.
+and that's that's your that's your that's your like candid set. Yes.
+but and this is what we're going to do again next week
+instead of just using min hash, we use hash functions instead of the permutations.
+just because permutations are also too too expensive.
+And same same idea actually Hashing is fast, and Chicago there is slow
+and same thing. Hashing is fast, and permutation is slow.
+all right, but I owe you that.
+But here's here's just to be clear after you. Do Min Hash approximate or not.
+you have this much reduced candidate set.
+and now you do the full similarity. Search
+with Jakar similarity, just to be clear. Yes, guess or no, so far and so good.
+Now. Oh, you activate, stop words. Yes, let's do it. Let's talk about that.
+So 1st of all, you know.
+Why. By the way, why is that the case? Scandal? You're right. You're right. Can you explain to everybody?
+Right? It's not plagiarized. Necessarily, it's similar, because language is similar. What else are you going to say? Right?
+So you might have higher values, and that would create.
+Why would the problem be? Why? Why is that a problem? Because.
+yeah. So the whole point was to reduce your data. Set your candidate set. But that's going to mess with that. Yes, you. So you can't reduce it that much.
+By the way, you see that it's called permutation minhash. So the full min hash that's used in permutation is called the permutation minhash.
+The other one is called approximate right?
+And obviously, that's just, you know.
+So this this is what's kind of just said. You have a higher probability of collisions, you have a large can set, so retrieval is so slow.
+Now the idea is
+you want to. You want to be very, very. So you want to set a slice
+to to solve the problem.
+Okay, listen to this. This could come up in your interview.
+Here's what could come up.
+You have a lot of stop words in your in, your, in your, in your corpus.
+but you need a small, candid set. What could you do?
+What could you do to make it small, even though you have a lot of words, Adam?
+But let's say you don't do any of that just by a threshold where? Where you have to set a threshold.
+you just have to rise your threshold right.
+But and then the next question is, what's the price of that right on the slide?
+What's the price of doing that?
+No, not compute because you you you did reduce the candidate set. Say again.
+yeah, you just. I was going to ask what the recall means. But thanks. You just said it. So you have you? You throw out the bay with the bathwater. There was some some actual
+collisions in there, some actual similar documents, but you missed it because of the stop words.
+But let's now address this kind of question like, so stop, words are screwing you up because it
+creates a lot of collisions when there shouldn't be.
+And what can you do about that? You can raise the threshold. What's the price to pay for that? You can have lower recall. What does that mean? Fewer, true positives.
+All. Yes.
+Okay, which is what we are now going to address, which is, can we? Can we do both
+reduce the size of the concept.
+but maintain high recall, and this is a tall order, but it can be done.
+and the name of the game is called L Lsh.
+Locality. Sensitive hashing, because more hashing, by the way.
+because so far we have only done the hashing independently. We have not taken any neighborhoods into account.
+Now we're going to take the local structure of the hashing into account neighborhoods.
+That's where locality sensitive hashing comes in. Someone. If someone ever asks you, why do we do Lsh or locality sensitive hashing? The answer is this, we want to make our. The stoppers are screwing it up.
+If you want to make the Kenset small.
+But if you do this naively.
+that that's going to drop, recall too much instead of to do. Lsh.
+and let's see how far we get to this.
+This is something else we might have to revisit
+at the beginning of next lecture, depending how the how this goes, we'll see.
+Okay.
+So the whole point of lsh, as I just said, is, it's like Min Hash.
+but naive. Min Hash has issues because of the stop words. We want to make it more efficient.
+So the idea is that I just said that the idea is that the Min hash by itself, with the random interpretation
+just randomly permits everything. There's no
+there's no respect for for anything like that. Yes, it literally doesn't matter. Yes, all right.
+The big idea of Lsh or local. By the way, nobody says local sensitive hashing. They all say, lsh, for obvious reasons, it's too much to say.
+The idea is that inputs that are near each other, that are neighbors
+should have a higher probability of a collision than far, far away ones. Yes, right?
+And there's a lot going on. So we'll just cover the basic idea, all right.
+So the idea is that we are now
+gonna take our signature, matrix or signature table and guess what
+we put the block. The blocks are back.
+It's always about blocks. Yes, it's just that the blocks here are not.
+you know, Hadoop or Hdfs blocks. There are blocks in this matrix.
+So we're going to divide our matrix of the signature table into blocks and rows.
+Okay, yes.
+And then we're going to hash each of those
+with some standard hash function. W. And again, it doesn't really matter what hash function is. It could be anything as long as it produces some
+deterministic output, 5 or 7 or 10 or whatever.
+And all you need to do is you want one? That the collisions, if it's not identical, is low.
+We talked about someone. Functions like that that are collision resistant?
+I don't know.
+Couple weeks ago.
+Okay?
+And so if there's any collisions in any roadblock between items.
+then that becomes part of our candidate set.
+Here we go. So so the idea here is, we now have roadblocks.
+Sorry we have rows and we have blocks. Okay.
+the idea here is that you see how this is one block. This is one block, and this is one block. Do you see this?
+Yes, 3 blocks.
+So our original table has, and this is hash approximately hash, because we use hashes instead of instead of
+instead of permutations. Yes, and we are carving them into blocks. Yes, you see that?
+And so here.
+We we you know, we you know, reduce this block
+that you see, we have the input of 0 1
+to this hash function. And the output is 2,
+whatever it is, whatever the whatever it's another hash function doesn't doesn't matter which
+which which it is. Just a hash function.
+Okay?
+But we now have a reduced reduced representation of this.
+Okay?
+And now the idea is that we now compute the probability
+that there's 1 block where the hashes
+all of the rows match. You see that.
+So, in other words, so so look at this.
+so Min Hash, you have the probability of a single row. Collision. That's just a car simulator. Yes.
+So in Lsh, what's the probability that all of the rows in a block collide? That's J to the R. By the way, why, why is that just from combinatorics, maybe.
+Is this clear? Why, if they're independent in a block, why would be the J to JJ. To R. If R is number of rows.
+because just probability theory right?
+Right?
+And then the probability of at least one non-collision in a block is one minus that. Obviously, yes.
+And then, obviously, if we're looking for them in all blocks, then that's this 2,
+the power of B. Yes, the number of blocks, yes, and then
+The probability of at least one block collision on all the rows is one minus that.
+Okay?
+And let me tell you why this matters.
+We can now get collisions.
+That if the check limit is high.
+gets more likely and less likely for low-charism, this also helps with the stop work problem.
+Let's look at this in more detail, make this bigger.
+So this is from the paper that I assigned this week. So let's look at this together. Okay.
+and this is realistically the last thing that we're going to talk about today. Because.
+Adam, this is for you. But we'll have to do next week.
+This is the multi-set situation that you asked about an hour ago. We call it bags.
+So I'm going to owe you this.
+But let's just understand this. What's on the X-axis to account similarity.
+And what's on the Y-axis?
+The probability of collision?
+Why is the blue dotted line that represents Min Hash on the diagonal.
+Why is that perfect? Because we proved that. Because why?
+Because the probability of a collision in min hash is what
+is the jakar? Similarity? Great? So this is just a sandy check. You can call it that.
+Yes, and we laugh all right.
+Now, what's going on? Let's say we have. Lsh, with 4 rows and 3 blocks.
+Wow! And then we have. Let's see yellow, and then
+green is with 4 rows and 5 blocks.
+I'm not pink. Is that pink?
+That's red? Okay, if you so we we are clamping the rows here 4 rows and 9 blocks.
+Why, how do I say this? Why is it like that like? So, in other words.
+what do you see here?
+So let's see.
+So this, this, this addresses this whole trade-off between recall and recall and lack of recall.
+false positives, false negatives. Let's look at that
+for a given jakar similarity. Say 6. Do you see that 6 5.6. Say.
+yeah, it's 2.6. For now
+let's say for a given Jakarta similarity of 0 point 6, which means there is a set similarity of 0 point 6, which is pretty high, actually, yes, between 2 documents.
+What if you want to increase the probability of collision? Even? What if you want to increase that.
+should you, for a given number of rows in lsh.
+should you increase or decrease number of blocks, say what increase number of blocks.
+If you increase the number of blocks, the probability of a collision goes up. And why is that? Because you have a chance of colliding in
+in each of the blocks. You could have a collision, this block or that block in that block. So if you, if you increase the the probability that a collision happens.
+you can just add more blocks because you have more chances to collide. Yes, right?
+And let's see what else? Yeah.
+Why is it that.
+You see over here.
+Why is this so much lower over here? Even though Chicago's molarity is 0 point 8,
+the probability of collisions all the way down here. What happened to those that's let's see.
+Deep purple, light purple. And
+why did this drop it so much?
+Because we're we're only counting a collision in a block. If
+all rows collide, all rows have to collide
+right. And that's just very unlikely to happen by this this equation, this one here
+the number of rows. Right? This goes. J to the R.
+Okay, so so what do you do? If you want to lower the probability of false positives.
+say, it's your interview. And we ask you, we just went through the stop word issues.
+And you say, that's a real problem, a real good issue. What could we do?
+Avoid false positives? We do what we decrease rows, decrease rows.
+How about increase rows?
+How does it increase rows? Yes, that's the most the most efficient way to lower false positives. We're going to ask for collisions in all rows, so we increase rows. Yes.
+but now the the problem is, we're down here now.
+So what what do we do to retreat a little bit? We increase the number of
+blocks blocks because we're going to give it a higher chance to collide in another block if you don't collide in this block. Yes.
+yes or no.
+Great.
+So that's really all there is to understand about this, if you understand it.
+But I'm not sure if you do understand it.
+Okay, great. So let's in the last 2 min.
+1 min and last minute. What's the question like, like
+hash of a hash? Okay, we have to revisit next time. But what about this one?
+We don't increase. Your customer is what it is.
+That's it is. That's what that's whatever it is.
+What we want is for a given jakar similarity. We might want to detect documents that have this jakar similarity. Yes.
+sorry, Ryan.
+Yes.
+yes, in a in a nutshell.
+But there's a price to pay. Yes.
+and let's let me let me address Grena's issue. So you might want to think, because because you don't know what schase model is ahead of time.
+it's just a simulation. So in other words, you might want to set some threshold. I'm I think, all documents
+with some.
+I know what you tell me
+where the probability of collision is. 0 point 9 is suspicious, I don't know. And then you need to see
+to calibrate this. Basically, you see what I'm saying.
+Not necessarily. The digital Carson letter is just what it is. But as scandal said, that might be high because of the stop words.
+Right?
+So
+we can't do that. Then maybe all of our documents have a high check. How similarity! And then we don't. That defeats the purpose. That that will. Then we'll have a we'll have a not so much reduced
+reduced candidate set so to to drop that, even though, look at this, even though Chuck's military is high.
+we can drop the probability collision by just asking for a number of higher number of rows
+that make sense.
+So that's the answer to your questions, condo.
+A collision in all rows is low, correct?
+Does this make sense?
+Yes, but that's that's a pathological case.
+all right. So here's so here's what we're going to do. It's about our time.
+So we'll do 3 things. Now, 1st of all, this stuff
+I will show you next time, which is what happens if you, if you have multi sets. That was your question, Adam.
+And then you can also do this spatially beyond sets, basically.
+But we'll also do the murmur hash example in more detail.
+We'll do the allocation more detail. There's something else. I will review the recording, anyway, I understand.
+maybe working smarter is working harder.
+It feels like it right.
+All right. We'll we'll we'll we'll revisit this. We'll just use mapreduce

@@ -1,0 +1,1004 @@
+WEBVTT
+All right. So everybody we welcome back. We ended our.
+We ended on the Dremel last time, just briefly to recap, to recap what that is, and
+you know how it works, and then I'll tell you in a moment why you should care. It is true that I have not told you yet why you should care, because we didn't get to that. But I'll tell you why you should care in a moment. But anyway, so briefly what the Dremel does. It goes through this decision tree for each record, and I know there's a lot of rules. But just bear with me. 1st it asks. And, by the way, several people came to my office hours last week and
+press me on this, and we confirmed. Yes, there was no mistakes on the slides. It was just complicated.
+all right.
+So anyway, so the 1st questions it asks, Is it a repeated field?
+And if it is not, it's new, then the repetition level is always 0, and then otherwise
+I'm so sorry this is going to be awkward.
+For some reason, for some reason.
+if we are ahead of the lecture. Let me see.
+this is just not gonna work, all right. So
+anyway, then you you need to check
+at which level of the hierarchy?
+Because a lot of people came to my office hours with this question like, Why is the R level here? One? Why is it here? 2, and and so on. The answer is.
+you need to ask yourself, is the name Field repeated.
+or is the link Field repeated, or whatever? Yes, it might help you to draw the tree yourself. So you can see what how many children does the website have in this field, you know, because the website is is a tree underlying underlying it. Yes.
+And again, we use this as a website, because that's what Google used to.
+That's that was a use case just like.
+I don't know. Beer was a use case for William gossip. The tea test or fertilizer was a use case for the fisher's anova. There's always a reason why people came up with whatever we come up came up with here. It was websites. But this does generalize, which is why I'm telling you to data in general all right.
+and after that the question is, if you feel required.
+this is going to be a problem.
+and if it is, then you just literally count how many
+nodes you had to to do.
+You know, we traverse to get to it, and otherwise over here.
+So you ask yourself it's optional if it's present, if it's present, you need to default the full
+full one, you know, and if it's if it's, you know present.
+then you just do plus one, because it's actually there if it makes sense. Okay.
+this is just a repeat from last time. And this is the full full decision tree. And if you
+print this out and put it next to the all the examples in the
+in the 20 slides that we have
+filled in all of those those
+fields from all the websites. This should this should be understandable. Yes, okay. Guys don't know.
+Let's just review.
+But now comes what matters which is after you flatten the
+tree-like structure of your data set, or or the website, or whatever it is you can you get up? You get a tabular, a tabular, what you call it, a tabular
+structure. Out of that tabular means rows and columns. Yes, and that's very useful, because
+these are obviously highly compressible. Right? It's just
+low digits. Yes, usually you don't have many. This is not gonna no floats, and it's not.
+It's not high level. Yes, it's not like high, but
+5 would be already a very deep hierarchy.
+In other words, in other words, this is going to be
+highly compressible. By the way, why are columns that are of the same type, highly compressible, just as a reminder.
+Just briefly, because we already talked this last time. Why is why are columns highly compressible? That's if someone ever asks you. By the way, one thing we'll see today beyond spar and beyond parquet column r, and the storage has become the default.
+and somebody might ask you why. And one of the one of the answers is, columns are easily compressible. So, Adam, why are they compressible?
+And how does that help?
+Basically,
+there's gonna be some regularity in columns that it's not going to have in the same. This information, looking through columns, is going to have regularity does not have 4 rows, and
+that's just more compressible. Yes, and this is now the last part
+that is going to be particularly efficient. Okay?
+So in other words, you can.
+So block blocks are, gonna be a.
+We're not going to mix this, this this columnar storage with the concept blocks.
+What? How have we seen blocks so far in this class? What are blocks
+in hadoop? Anybody? What's a block?
+A Max.
+a piece of data?
+Okay, that has by default how like
+1, 28 MB! Yes, all right, very good.
+And now we're going to blend the concept of blocks with the column stores. It's going to be row blocks.
+No, not the game row blocks and columns. Okay?
+And that brings us to parquet. In other words, what comes out of the Dremel can be stored with parquet. What that means is, and this is a slide. For that you can always apply the Dremel to all of your data, and then you can always store it with parquet. That makes it very, very flexible. Yes, so it's a general purpose.
+general purpose, storage format. Okay?
+And it's also called kilometer in nature, although there are roadblocks as we'll talk about in a moment.
+As I said, so the Dremel comes starts from Google Hadoop comes just from Yahoo.
+and of course, finally Twitter gave us
+gave us parquet. So in 2,013, faculture is developed at Twitter.
+And again. It's now
+an Apache project, as we'll see. There's some other ones that we'll talk about today. We'll talk about Apache error a little bit.
+but it and it's but that's where it originated. It's now Apache, where it's an Apache pro project, but it started with with Twitter.
+And it's true that it's unless you change something is the default.
+but also recommend it for a reason. You'll see in a moment
+storage layer of spark. So by default you will be using spark with parquet under the hood. Okay? And it's kind of the industry standard for many reasons that you will see in a moment. It's actually
+extremely fast, extremely flexible.
+There's let me say this right now. It's going to be extremely fast. It's going to be extremely flexible. It's going to be extremely compressible. All of that.
+however, there was one big downside. It is not human readable.
+and so a lot of people are a little bit like scared of it, maybe, is the right word. I don't know
+afraid of it shy away from it, but it is the default, and and for good reason for resume.
+As I said, we are using the Dremel to flatten everything.
+put it into columnar storage. We don't use the engine or the query mechanism for Dremel. So if you read that paper that we posted of the Google people
+that Mark's friend? Basically. By the way, say, Hi.
+we're using the flattening mechanism, not the query engine or the search search engine. We don't use that.
+We use just a flattening
+the front end. And again, if someone ever asks you, why is parquet? Called per K, because, as you see in a moment.
+there are columns. Yes, but the columns also have a substructure like this block-like substructure. You see this.
+and that's why it's called parquet
+like this is what parquet is. Yes, so it's a it's a certain kind of floor tiling.
+Oh, yeah, sure.
+it's it's stored as binaries, and and you'll see in a moment why, it it is very structured in a very interesting way.
+But anyway, it's now open source. It's an Apache Open source project. It's no longer proprietary by Twitter. So it, as you know. Usually when you make something open source, it becomes more common. So this is another thing that hypercharged its adoption. But let me just give you
+an example of what you just asked. Why, per K is faster, better, and all of that.
+And I'm going to use an example from my life music, data, science. Okay, imagine a database.
+We're off music. And I I there it is. Let's say you have 8 titles. Beethoven is the artist
+title is for Elise, and then so on. Yes, and then you have classical music, country music, electronica
+pop music, more classical music, more pop music.
+more country music, and then finally of sandstorm by the root. Yes, always sandstorm, isn't it?
+All right?
+And then you have the release year spends a wide range from like 70, 91,
+2011, yes, 2014.
+And then how long it is? Yes, that's a typical.
+I mean, it's a snippet out of
+my database that we use every day.
+And so in a row oriented format. Again I apologize for the oh, this is very sad.
+In a in. If you store this data row based
+even slower than I thought it would be. Look at that.
+not me. It's coming very slowly.
+If you go row, row, wise. Yes.
+how many records do you have to scan? Let's say you look for something. How many records do you have to scan?
+If you have 8, 8 titles or 8 records, you have 5, 5
+columns. How many do you have to scan. Yes.
+on average 20 will actually see exactly. Well, why not 40, by the way? Because N, divided by because you could on average hit it in the middle. Exactly, but 40 of the scan and 20 on average. Right? So so this row-wise linear scan is just very, very slow. Yes.
+all right, that's the 1st thing to see here.
+So this is very human, readable, right?
+You can literally just look at it.
+But it's going to be slow, all right.
+And one second. Yes.
+So let's say you want to find some record. You need to literally read everything, and that's going to be slow.
+But what if in contrast, you're just interested in a question like the average duration
+by genre. Yes. Do you need all of this information? You do not.
+This is a, you know. Partial view.
+So let's look at that.
+So now, 1st of all, this is now a column by storage.
+The 1st thing you note here is, and this is just a a what you'll call it a look at the colors.
+It's now
+column. Wise. Yes, it's no longer row bias, all right, and you see how these columns a little bit
+offset from each other.
+Yes, that's supposed to represent that under the hood on the hard disk they're literally stored differently. Necessarily.
+one whole column is stored contiguously, but different columns are not necessarily stored next to each other. Yes, yes.
+okay, they're physically separate.
+But now we just need to scan
+scan these 2 columns. Yes, right, if we wanted
+the. In other words, how many cells do we now have to scan?
+Just 16. So we cut down to 40 cells. We have to scan, and no, on average, it's less than 40. If you were just looking for something
+much less. Yes, and usually you only want partial records. Yes, you want whatever query you have.
+So so this cuts down on like on, like
+the need to scan. This makes it faster. You ask for time complexity. You can get tremendous speed ups. If you have a complex database, you don't have to read in the entire records.
+You just go. Column. Wise. Yes, that's a speed up from columnar storage. That's so far. It's just another example. How column wise orientation is faster than row-wise. But we're not at parquet yet. Parquet adds a level to this. And here's what here's what parquet adds the concept of a row group.
+The idea here is, parquet uses a uses metadata
+metadata. Here. It uses genre. Yes, genre.
+it doesn't have to be genre in real life in real life can be anything. I just used one here that is understandable to humans. You could say, I'm going to put all of the instances of one genre into one row group. Yes, you could do that.
+And now you could. Let's say you want to know.
+let's say only for say controversy, Pop
+were or like, basically where you assemble, a part of you based on that attribute. Yes, some, some specific
+specific predicates like where it is
+country or pop. Now you can only reach into the row groups where that applies like this one and that one yes, and now you cut it down again more by cut it by half again. Yes. So 16. Now it's 4. In other words, in parquet.
+the data is not only column oriented
+under the hood, it's under the hood also partitioned into row groups.
+Yes, in other words, and they're going to map on in a moment onto an Hdfs block
+in a moment. Yes, any questions about this. This is the big idea.
+Yes.
+Somebody. Adam, great
+anything. Yeah.
+One broker don't know.
+I see so you're saying, this is kind of like the co-partitioning. So it's mutually exclusive. Yes.
+it can get quite complicated. But again, this is just a a human, readable example. It's actually under Hood, usually partitioned by access pattern like you said, like, whatever you think is the access pattern that you are needing the most, whatever that is, Judy.
+whatever you want. As a matter of fact, I will show you this in a moment, and we're probably going to practice this in the lab this week. Yes, Jay.
+we could. But but even if you don't, it's it's like organized, you can specify it. But you don't have to. There's this default, some defaults that it thinks from your access pattern could could speed it up. Yes, I'll explain that in a moment.
+Yes, and this also helps with data compression. I'll give you an example.
+Let's say, let's say,
+this one, the genre you could. That's if you have only these 4 genres, right? You could literally do the dictionary encoding on that one. Right. You replace the
+this, the strings just with this dictionary. Yes, you see that.
+and then you could do Delta encoding with bitpacking on D's. By the way, what? What? What do you mean by that? What? As a reminder for ourselves? What is what is Delta encoding here? What is? What would that mean?
+Some max plus minus, or between some common baseline? Yes, like, for instance, with with music
+I don't know. Probably hard pressed of anything in there before 700.
+So maybe you you use use 700 plus
+plus that. And then with Delta encoding, what about big pattern? And then, if you only need to encode the last 2 digits, you can put those into the
+the feedback. Yes.
+So in English
+parquet also natively allows for that. So you have a highly optimized, highly compressible, highly specific data interface that makes sense what I'm saying, like, it's natively compressible. It's natively organized in logical row groups. It's natively data.
+It's kilometer. It's like having your cake and eating it to Adam.
+Yeah, run length encoding. You can do whatever you want. And again, maybe we'll practice in the lab. But it's just in this example.
+That's what it makes sense. Yes, say what?
+No, it's the same thing. It's just that it's natively supported. You don't have to do much. It's it's inherently compressed.
+I don't think so. It just allows you to select a piece that is relevant. Yes, for your analysis.
+So any other questions about any of this? Oh, yes, scandal.
+Say that again
+back. Who's back or spark? Sorry I couldn't hear you. I apologize now you can. Yes and no. So basically it. It does some defaults, but you can also set it. I'll show you in a moment. We also practice in the lab.
+So look, this is the this is, I think this is the is the
+This is what you've been looking for. Right? This is the slide that I've been asking for all of you just now. So the idea is this, so you have this Row group organization. Do you see that. So you have your columns here, A, B, and so on. Right? They're subpartitioned to row groups and again
+starts with 0 to Cs, and then one, and so on.
+And then each row group contains this structure of like
+columns, and then column, and then page where you have the deficient representation level and definition levels. And then the actual data. Yes.
+Now, importantly, in the footer, in the footer, that's where this is what you've just been asking for is the metadata.
+That's where it's specified, what the row groups represent and how that is laid out.
+how it's laid out! Yes. And so you basically have to modify this, this footer right of the of the file.
+And we just talked about that. So basically, the metadata allows you to figure out which group is where what he can skip, what he has to scan to get the result.
+You can compress these pages independently.
+They are column wise.
+And yeah. So then you can read a record right?
+Because it's small. But this is important.
+Your life is your life is best. I'm not sure if that's the right word.
+you minimize your troubles if the row groups
+fit into one Hdfs block. Because then they're going to be
+you know what? Why, by the way, you know you already know. Why.
+Why do you think that is? Imagine we're doing this on a cluster? What? Why would your life be easier if a row group is at most on in one block.
+Because Renna.
+then you don't need to. Yeah, all you need is is already there. So basically, the data you need to compute whatever you need to compute is already on your, on your, on your data node.
+So and that's on the Hdfs block. So right? So that's. But again.
+okay, is smart about that. So it it would. As long as it fits into
+the block. It'll do it. That makes sense.
+So yes, Sean.
+Yeah, sure. Yeah, if they're small enough. Yes, but not bigger.
+because that then then that defeats the purpose. Ryan or Brian brine with a B
+okay, fine. Go ahead.
+A page is in one row group in one. Yeah.
+or sub a subpart of that right?
+Any other questions, anything else.
+That's 1 second, this right here again, this is the default
+data format that most of you will be using in real life because you use spark and spark uses parquet. Yes.
+yeah. One second. Where do they come from?
+Where do they come from?
+From? The drama? Yeah, that's not part of the
+no, no, no, no, that's just come. That's not the metadata. It's part of the data.
+The metadata is like how this is laid out.
+You know, what is the file? Where is the file word, how does matter blocks? What are the row groups? How are the row groups organized by these? You know, by whatever grouping there is, and so on. So it has to be aware of.
+For for parquet to make, to make, to make sense of this.
+it needs to be laid out here in the footer, right? The the parquet needs to be aware of its own layout, otherwise it's pointless. Yes.
+no, it just stores them, it just stores them, but then it scans that later. Yes, if you if if but it doesn't do that unless you ask for it with spark. So you you run your spark. Query on this, but it's aware of it.
+How to, with minimal overhead, retrieve, retrieve the data you need for the query you asked.
+That's nice.
+No anything else.
+But if you want to know more, you can click on this. It's a click, the link this is constantly updated like, read me, file. Unlike
+unlike parquet.
+That's actually where this graph comes from. Yes.
+yes, it's logical. The logical layout
+of the data that is stored on Hdfs. Yes, yeah.
+And organized by row groups.
+But, as you can see, columns within the row, groups
+pages within the columns and within the pages, with the repetition levels, the definition levels. And then the actual data, the values.
+Yes, just like an I should bring a Russian nesting doll.
+No, there is the data. Yes, these these 3 are the data there instead of a page.
+But they're inside of a column.
+and they're inside of a row group, right?
+It's each page, each row. No.
+remember what was the page, mark, what's the page?
+The pages? D, yeah, all right.
+Okay.
+so let's because I do want to get to to what I actually want to talk about today, which is the which is the task.
+We'll talk about anything else after class. We'll talk about anything else, about parquet after class.
+All right. So here's what's good and bad. So 1st of all, it is, you can use whatever language you want is it is supported. Whatever your favorite language is
+this is we we just talked about is called partially coding. So you can basically say that you are just. You know, you just want this this column and this.
+you know, genre, or whatever it is that you're looking for reflection. You don't have to
+Gabe and everybody else you don't have to
+like in like in in row, oriented.
+retrieve the whole record. You don't you? Only what you need, which is very flexible. Yes.
+and we talked about this already? You asked just about this 2D implicitly. So basically, yes. So basically, spark is the processing engine.
+And Hf is the storage layer. So basically, everything else is like. Integrated. With that, you don't have to do anything right. You just can use your existing
+existing what you want to call it your existing cluster that you are aware of.
+By the way, I should mention this, I'll say now.
+in honor of St. Patrick's Day
+all of you have gotten access to the green cluster as of as of today.
+You already should have access to the, to the, to the data. Proc.
+you know, cluster. But you should have gotten green cluster access, and you will need it for what we talk about today.
+We'll talk about task in a moment. You will need Green for that.
+All right. This is the problem I just mentioned this already. So logically, logically, it is human, readable
+just in the last layout, but not not native. It's just binary. What does it mean to be a binary
+anybody? It's just here at once. You cannot just look at the file, and it's just it's just gobbledygook. It's machine machine
+just data, just series and ones. Yes, binaries.
+And by the way, you're going to see a theme of this today.
+many, if not most of these
+standards that were set by spark and parquet will be will be carried through
+to other things that are paralyzable.
+Storage layer by default, not human, readable, but faster.
+lazy computation, lazy elevation. We'll talk about those things. Yes.
+all right, and the good news is, or bad news depends how you think about it as of as of
+2025 you have. You've always been using columnar or storage.
+Pandas are under the hood. Use use column orange storage. They just don't tell you about it anymore, all right.
+But unless you use a Csv file, you're probably using
+column r and storage. Anyway, you just didn't know about it. So now you know, all right.
+So now let's wrap up. So, yeah. So the idea is that this is what I just told Judy. Yeah, the data representation matters, too. It's not just
+this, the physical hardware.
+It's also how it's represented logically. And by the way, we'll see a lot more about this
+After the break we'll talk about working smarter. So in other words, you have the same data on the same cluster. But we're going to work smarter with it to make it faster. Maybe that's a good time to talk about time complexity at that time.
+all right, and you can improve speed
+simply by looking at the same data column-wise as we do record-wise.
+Because then you can focus on certain attributes. Yes.
+that's an interesting insight, same data, same computers, same cluster. But looking at column, wise or row-wise, can get you dramatic speed ups.
+This is a good one. You can take the Dremel to grind anything down into a column, another presentation.
+and then finally,
+Have a re-implementation of the general format into into what you would call it, into
+a column order storage, and then with parquet. And then you can just use it because Dremel came from Google. Parquet is not open source.
+And then what we do now is today. Okay, now in the last.
+Oh, no. In the last.
+our! We're going to talk about Dask. That's the last new framework we cover, unless I, just before the class asked some requests. Maybe we'll cover some of the ones in the last lecture, like modern
+approach, is like cutting edge 2025,
+whatever. This is the last one that we're going to introduce into the frameworks.
+And after the break I will tell you all about that. If you can get speed ups
+not necessarily from a new framework.
+from being smarter about the algorithms you use. It's all going to be about hash tables and hashing and min Hash, and all that
+hashing is going to be involved. I can promise you that already, all right, anyway. So
+while I'm switching gears. Any questions about dremel or parquet or column orange storage, and like that.
+any anybody? Aria? You look like you have a question.
+No, Karuni, no, nobody has a question. Sean.
+yeah, one second. Give me just a second. Let me just make sure that we move on with
+with the lecture. I need to switch switch the thing. Yes. So one moment
+it's just a page is just the basic compression unit and encoding a parquet. Right? It's just
+cutting values in the column. If that makes sense, right is a page, is the smallest unit of data in
+in in parquet that
+can represent. I see where the confusion comes from. It came to us from web pages.
+but you can use it for and to you it's called a page in analogy of that. But it's just the smallest unit of compression. I see where the confusion is. I apologize.
+Judy, can you email me that I need to make that next next next year a point it's called pages in homage
+to do web pages. But it doesn't have to be Web Page. It's just the smallest unit of
+compressible data in in parquet. Good point. Thanks for reminding me. I I I almost didn't mention that.
+All right. Let's go to dusk.
+Good good point. Good point. Let's see.
+What was that?
+Did you hear that?
+Did you hear that?
+What was that?
+That wasn't me?
+Okay. I wish I could take credit. But I can't.
+All right. So what's weird is when I start a new presentation, the animations work. But if I jump into an old one.
+They kind of lag, which is very sad. And let's talk about task. So bunch of bunch of quick announcements. 1st of all, we will release
+the homework 4, which is a spark homework
+before the break. You can work it over the break or not. It's up to you you don't have to. We'll give you plenty of time, even after the break.
+Also, it's not slipped my mind that we still owe you some grades.
+I was the the graders have promised me to release them all before the break.
+All right, so hopefully they will be good to their promise.
+Right?
+All right. Let's just summarize where we are so far. So we talked about files, and here's the good and the bad.
+The good with files is they're very flexible. You can do whatever you want. Yes, the downside of files, basically everything else, the unstructured, I mean, that's maybe also a pro like you can do whatever you want. You can put anything you want in a file.
+but the downside is, you have to do all the coding yourself, and good luck paralyzing it, I mean, I guess you could. But
+you would have to be like a Phd level.
+I don't know. It's probably not gonna happen
+relation databases. We talked cover that next. So we restrict ourselves to tabular data, basically or structured data, and otherwise.
+and what we get from that in addition is we can now use a standard standard interface. SQL,
+but we restrict flexibility, but we get from that is all kinds of safety, features and stuff like that. Yes.
+we talked about. You can parallelize it. There are
+ways to do that, particularly in the modern age, but it's not straightforward. Yes, you have to have additional layers.
+you know. Pigs might be involved. We'll we'll we can talk about later.
+Then we talked about mapreduce and Hdfs.
+Here we again release the structuring of the data. You can do whatever you want.
+But now the coding is very restricted. It's just mapping mapping functions and reducing functions. Yes, but
+it's very parallel, right?
+Inherently, very parallelizable. Yes, and finally, spark is kind of a mix.
+You have structured data like in the Reg database.
+and you distributed H for Hdfs.
+The interface is sort of standardized. Remember, we talked about, seek, spark, sequel and spark. Api. But it's also very parallel. So that's where we are. So far right? So those are the those are the 4 things we have covered so far in this class. Yes.
+today we'll see a 15 all right. Source Park again
+integrates with the entire Hadoop ecosystem.
+You have your hfs, you have your parquet, you have your scheduler. So this is amazing. Yes, so you can really focus as a data scientist. You can focus on the data. In other words, you don't have to reinvent the wheel. And all this Cs stuff where you have to build your own
+paralyzer. Anything like that. You don't have to do that.
+And again, anything that involves data frames in SQL is great. We'll talk about graphs. Later graph graph processing comes, I think, in a month or so. Basically, it actually handles that, too. But but we don't know yet how. So it's very flexible.
+And it's very old over 10 years. So it's not like you have to learn scholar, and like that to do it. It's very stable. It's very mature. It's gonna be fine. So this is. This is why most of you will be using spark for most of what you do.
+And this is what I just said. So so, yeah, this is after sequel.
+Yeah, I'm I'm calling you right now. 95% of you will get by 95% of time with spark and sequel. Those are the 2 big legs. Yes.
+but there are limits.
+Let me ask you, can you think of something that
+spark would not be well suited for anybody.
+I mean, there's many options. But can you think of something? I want to get some audience participation?
+I know it's Saint Patrick's Day. But try.
+Can you think of anything that, given what we talked about, Spark would not natively be suited for?
+You can make it work, but it's not. Yeah. Go, Mark.
+what do you have in mind? By that
+I mean? Yes, so Spark has to be deterministic. So non-deterministic ones would would by definition, not work. What what do you mind by that? Like some kind of probabilistic stuff?
+What about data as opposed to processing so non-deterministic processing would probably be awkward in this part.
+What about data? Yes, def definitely. But that's that's always going to be a problem up there. Yes.
+Well, sure. Then, you don't need it. Then you can just do it on your own computer. But if you have only a small amount of data, you're in the wrong class like this is
+that you don't need this class. If you have no small data, you don't need any of this. Yes.
+almost. Let's go with that. So what about this? So what if you have data that is like spatial temporal data like time series.
+This is spatial. You see that this is temperature temperatures in different regions. You can do it with spark.
+But it's very awkward.
+So if you have natively time series or spatial spatial temple data usually, and you know what I'll accept image image a spatial temple data.
+then it's going to be awkward spark.
+But out of curiosity, how would you process this if you had data like that?
+Forget what if a small data? Let's go with that? Let's go with small data. But it's spatial temple. What would you use, somebody? What would? What would you use up there, or anybody else?
+What would you use right now
+if you had small data but spatial temporal data?
+Yes.
+sure. But what if? What if you have like. Let me see what if you have like. X. Sorry
+first, st like X coordinate y coordinate. That's your latitude longitude, and then y is the temperature. It's it like that. It's an what is that? It's N, that's an
+XY temperature. That's NA matrix. And what's the python way of saying matrix, what
+array some Google array?
+Yeah, right? It's not right. And how do you process arrays with a with what? With what? Library?
+Numpy? Yeah, very good. Okay, that's right.
+And so now that's right. The best way to process spatial temporal data. If you have small data is numpy, there's no question about that. As a matter of fact, I do that I have spatial temporal data, and that's small. There's no question I will use numpy, because that's an array. That's the best native representation of that. And it's blazingly fast.
+And now comes the problem, what if my data is giganically big? What if I have whatever I do have a tensor. So how would that become a tensor? Let's say, of XY and and temperature. And what? How would you turn that into a tensor
+time. Yeah, it's time series. Yes, maybe temperature records over time, which is exactly. By the way, what what your homework 5 is going to be. You're going to get temperature data from different weather stations over time.
+And that's going to be awkward spark. But it's gonna be so much that you can't use what you'll call it that you can't use numpy no way.
+and that is a perfect use case for Dask DASK. Dask.
+That's when you want to process an array because you have spatial temple data.
+But you can't use numpy because it's too big
+or a tensor. For that matter, a tensor is just an an n-dimensional array.
+All right.
+So yeah, so that's that's the idea you want to integrate with the scientific python stack. That means numpy.
+like Psych Sklearn and Pytorch, and all of those.
+And so briefly
+What you do instead is scaling down versus scaling out. So so far we've been doing. Scaling out what scaling out means. That means to a cluster.
+Scaling out means to a cluster what scaling down means means to a single machine. So we want to do this on my, on.
+on my laptop. And, by the way, you can, just to be clear, you can use Dask DADA. SK.
+Both for both.
+You can deploy it on a cluster as we just talked. Already decree clusters. So Dask will not run on. Dataproc dask runs on decree cluster.
+but you can also use them on your on your single machine both. It's very flexible.
+and that's and that's the use case.
+Your data might fit into your laptop storage, but it does not fit into RAM. Oh, no! What are you gonna do?
+All right. And look at that. This is actually right. Now, my machine, big big heart is guess
+big, hard disk. But
+more RAM. Yes. So this is typical. So almost any, almost any data set will fit into my laptop. Hard disk couple terabytes. That's nice.
+but the RAM is very small, relatively speaking.
+So so you we're all in the same situation. We have a big, hard disk. We have small RAM. So that's literally what desk is made for. That's the use case for Dask. If the if the storage is not a problem.
+that's just your hard disk.
+But either you have not enough processors, which is definitely true for me, or you don't have enough
+RAM, which is also true for most for most of us. Yes.
+so don't, don't, don't underrate Dask. So now I just told you that all of you going to use spark, and all of you use. SQL, you might also use Dask.
+If you have something like that where you have data that's just kind of middle middle-sized data. It's not big enough like petabytes where you need to go to a cluster.
+You know what I'm saying. If you have petabytes. You have to go to a cluster. There's no way. No one has a heart that's that big. But what if it's like this? A couple terabytes?
+So it fits in your hard disk, but not in your RAM.
+That's that's what task is for. Yes, so small data, numpy
+huge data spark, middle data. It's gonna be task.
+Yes, yes, no, thank you.
+So in other words, do you really need a cluster?
+And so if you have this middle sized data, you might get away with. Just Dask
+don't need a cluster which makes life easy, because, you know.
+as you probably can start to appreciate now that for a couple of weeks now, working with clusters.
+It's not as straightforward as you as you would hope.
+All right.
+So here's what Dask is. So this was introduced in 2,015.
+It's python based.
+And and this is what I said earlier.
+It's very interesting. We'll see this again and again and again, not just with Dask.
+The last slide I have today is about polars.
+polars. Does anyone know what that is? Does everyone know here might know what polars is polars. Is.
+Has anyone heard of that?
+No, no, not polar coordinates.
+POLA. RS.
+No. Gabe, right? It's like pandas, but parallelizable or paralyzed parallel, that scalable.
+And here's why I'm saying this. So Spark came up with all of these innovations. So 1st of all, what's a computation? Graph. What what is that?
+What is that?
+It's like a flow chart, that's great. It's a flow chart of how
+the computation would work. But let me tell you why that's cool. So, python. How does Python python execute the code
+literally line by line? Yes, so it's like, let's read the line and just does it? Yes, and then it reads the next line, does it? Yes, it's amazing, but
+not necessarily the most efficient way of doing it. What if we construct this lineage graph first, st
+and then does the competition. Only if what happens?
+That's an action it's called. We saw this in spark. But once Spark introduces. We're going to see this again with Dask and with polars also. This is very interesting. So these innovations that came with spark are going to be repeated in Dask, and it will be repeated in polars. It's basically once you have these scalable libraries.
+it's just a a standard.
+because instead of executing things line by line. The thing builds a computation graph which is a flow chart. Very nice of how the data flows, and then you just compute what you need when you need it and reuse it when you reuse the escape. Sorry.
+I mean, maybe, but explicitly, they became a paradigm in spark. Sure, these things all have deep roots. I'm not going to lie about that, but it became like a central corner piece of the whole framework in spark. And then, since then it's been a standard feature. We literally have libraries to visualize everything, and we'll see this again yesterday.
+and then you have these collection-based interfaces. That's very interesting. So in spark, the data frame. But today we'll have several others.
+And yeah, so it really works best for stuff like that's array based umpire like. And
+it's again you can do instead of spark, single machine out of core use. Just a brief definition. What out of core is that's like
+bigger than the memory of your computer, but maybe bigger than RAM. That's what that means out of core.
+So it has a very interesting ecological niche.
+It's like, you know, scaled up python.
+So basically numpy and Scipy are great libraries, but they're not.
+They were not created with parallel computing in mind. They were not.
+Now you can go to a language that was Julia. Does anyone here use Julia?
+Nobody.
+Oh, no!
+But anyway, so truly as a next generation language that was created
+with inherently parallelization in mind not like something that was not like Python.
+But what people have now done also is
+create these libraries for python that makes something that's not created with like parallel processing in mind that makes it parallel. That's like, what task is. That's what that's what
+Polars is. And that's what some others are. So, anyway. So if you use anaconda, you probably already have Dask installed you. Don't. You don't do anything. You just don't have to install anything you just can call. Yeah, Sean
+you?
+Then you will have to, sure and spark to do it. You have to do something in the cluster, or or you could, you could use Dask on a cluster
+with green. Keep that thought. It's just its real niche. Is this like middle middle thing. But you could use Dask on a cluster. It's just not as simple. We'll hopefully get to that today.
+Anyway. So tensors arrays.
+And yeah, one question.
+I did share the paper, the Dask paper this paper with, did anyone catch what that stands for? Did anyone catch what Dask stands for?
+Don't Google it now, anyone?
+Well, I'll tell you. Dask does not stand for anything explicitly.
+However, however.
+you will see today that what they probably had in mind when they called it task DASK is data task data task.
+or maybe even data. Ask Dask data. Ask.
+you'll see. You'll see in a moment why that makes sense. So when you hear Dask
+think, data ask or data task task data task.
+But again, it's not defined on purpose.
+They want a unique keyword.
+All right. So let me just jump right in
+the 1st of all. Again, the same, the same
+the same principle applies. You've delayed computation meaning the lazy evaluation meaning, nothing happens until an action is called right.
+And you have these visualizations, although
+it's called in Dask called a task task graph task graph. Yes.
+And so here's how it works. So nothing happens until you hit an action or take an action.
+The deferred computation, all chained together in a task graph. I'll talk about in a moment.
+It starts you, you import task.
+and then you could, you know, define your define, your function like, for instance, return X squared. Yes.
+And then you just have delayed computation.
+By the way, with visualize, you can literally draw that computation graph like that. That would be the
+that's what Dask will draw for you. Right? Right? It's just squaring.
+Yes, right?
+And so it's nice to visualize.
+And then here you could write another function
+delayed. These are just transformations, basically, you see that.
+But then nothing happens until you call compute. Yes.
+and this is how, by the way, you would compute the sum of squares. Yes, you can see right here is squaring a Y dependency, or that's the analogy of a Y dependency
+is squaring a wide dependency.
+If you have, the numbers squaring can be done in.
+you can square each number in parallel parallel.
+The only thing where you need all of all of them done is when you
+sum them. Yes. And so again, this is the the, this task graph that can be optimized. Yes, so nothing happens until you call compute.
+and then it traverses this task graph that you can look at. But if you call visualize
+to see which one is parallel, and the squaring is all parallel, and the summing is obviously not. Yes.
+make sense.
+And again we will practice this in the lab.
+So so I think this sounds
+is, I think this is sounds a lot like mapreduce. Yes, no.
+But you don't have to use Mr. Jobs and like that, you can. Just you can. Just
+by the way, does this, does this look like python?
+Doesn't this look a lot like python code?
+Yes. So, in other words, once you have the task library imported, you can just use everything else like use like you use python. You might not even realize what you're doing under hood. So it's basically
+being able to do all this stuff delayed late delayed computations, lazy evaluation task graphs in Python, natively
+or not natively, actually, but embedded in Python. Right? So yes, yes, the task graph and task is.
+is, it is a lineage graph and spark. It's a direct analog. So the people who made, Dask
+Gabe said. This linear graph is a really good idea.
+and lazy elation and delay. Completion is a really good idea. We should use that in our in our package. And they did. They just called it the task graph.
+Because it's data task.
+Everything in everything, in everything, in in task is a task.
+Oh, yes.
+J.
+Yes.
+no, it's only does what you ask it to. So it's only going to be late computation if you ask for delayed competition there. Yes.
+no, if it's within that, it has to wait for that.
+But again, we'll practice this in the lab.
+Okay, now, there's an important
+difference to to spark. And in spark, what was the data type in spark or the native data thing in spark? It was a
+very good, very good, RD. Yes, you have a. You have a
+analog to that in desk that's called a bag.
+a desk bag. BAG.
+All right, and it's very flexible, honestly, and I have another slide in this in a moment. But
+when I hear desk bag, I think, list
+the closest analog to a desk bag is a python list.
+What's a list in Python?
+Anybody?
+Okay? And what about the contents?
+Is it typed?
+No. Can be anything. Yes.
+and that's true for a task bag. You can put anything you want in the bag.
+Think of a task bag as a distributed list.
+It's yeah. Go ahead.
+Anything in a bag, whatever you want.
+It's literally the parallel version of a list, all right. That's a bad.
+Again. It's most similar conceptually to an Rdd, but it's a list. It's a distributed list. That's what it is.
+All right, then you have data frames
+that's most similar to a sprout data frame.
+But it's pandas instead of Rds, yes. So it's basically for tabular data. So if you have tabular data.
+you might want to use a task data frame.
+so you have. You have everything. You have task lists as a bag. You have a task data frame that's like
+like pandas. But for task.
+And then finally, you have, and dimensional arrays. So tensors.
+but they have some interesting properties. We'll talk about that in a moment.
+and they're like numpy numpy arrays. But distribute. Yes.
+So these are distributed. These are distributed. And this is analogous to data frame. Yes, okay, start the bags.
+So again, there are these, I think of them like a parallel python list.
+It's just an unordered collection of generic python objects. Again, you can parallelize the subsets sub bags.
+and you can do anything you want in these bags, mapping, filtering, joining, summing, and so on.
+And honestly, most people, when they use desk bags, use the bag. Sorry when they use desk
+is they use desk bags on the front end. Your data might come in like the temperature data you're going to get.
+And that's just a mess like it is. It is just gnarly. It's there's all kinds of stuff in there
+who knows what right? Some strings, some coordinates, some temperatures.
+some Timestamps. It's just a mess. You put all that into a bag because the bag can handle that
+right. Then then you reduce the bag we'll talk about in a moment, and then once you reduce the bag, then you can like do something later in a data frame or an array.
+Yes, it is.
+This is unordered. Yes, I guess so. Yes.
+as as Adam said, the Python list is is a vector the thing is, I guess it's analogous in terms of like, it's very generic. It can be anything. There's no type.
+all right.
+And here's how it works. You have. dB, is usually what we call you know, the aspect. But you can. However you want, and then you can do some kind of some
+of squares. You see that.
+You see this is your bag, this this is in the bag some sequence right from 0 to 0 to 5 4, actually.
+And then you square it. And then you.
+some of that is gonna be 30. Yes, make sense.
+That's how you do that sum squares computation in the dask bag.
+All right.
+Okay, of some similarities. Differences. So again, you can partition these collections across multiple machines or cores.
+There. This is important.
+They're both immutable. And this is another innovation. When we later talk about polars, POLA. RS.
+Most of these parallelizable data types
+are immutable, almost all of them.
+It's true for Hdfs.
+It's true for task.
+It's true of desk bags. It's true for polar stated data types, almost all paralyzable
+distributed data types are immutable.
+By the way, what's the general reason for that?
+Why? Why? Why? Why do you want it to be immutable?
+There's only one reason for that. It's always the same reason.
+And how does that help?
+That's partial part of the answer
+right? What if you both want to read the same data?
+You want to make sure that both you got the latest version of data? Yes.
+if if people were reading and writing dynamically, you could not guarantee that. So basically, immutability is a price to pay for all of us to access the same records concurrently.
+right, all right.
+And so you have these types. But the bags is untyped. Okay?
+All right. It's literally anything. So that's why I said, it's an analogy to the list. It's not a clear analogy, because it's, you know.
+but it's it's it's it's it's untucked, all right.
+And of course it's going to have all the downsides of untyped data types question for you.
+What's the downside of a list? So it's untyped. You can put anything in. Why not always use Lister. What's the downside of that
+from a Cs perspective?
+Why not always use lists? They're untyped, Max.
+That's only 1 1 down to what else.
+Yes, but there can be no type exception if there's no types, right?
+If if there's unexpected things things in there, what else?
+Yes, what else? Mostly.
+it's very slow. Yeah, speed. So basically, flexibility of the list is is paid for by speed.
+If if anything go in there, you can't optimize the underlying memory, whereas if it's an array, you know
+the memory layout. Okay.
+I just mentioned this. So most people and you will do this in your, in your, in your homework with Dask is you get the raw data. It is some terrible mess. It's just awful.
+But you put it all in the bag. No hate like whatever. Just put them all in the bag.
+and then once you have them in a bag, you can do some some bag in bag processing that reduces the data
+to a data frame. And then you can do your analysis on the data frame if that makes sense. So most people don't do anything in the bag, because, as Jay just said, it's going to be too slow and might have type exceptions and all kinds of other issues. It's really bad.
+It's type, exceptions takes a lot of space. It's very slow. It's awful hard to compress, so most people don't do the operations on the bags. They use the bag to read the data into task.
+but then they reduce the stuff in the bag to then turn to a data frame, and then you do the operations on the data frame? Yes.
+okay. And I just said this. So basically, and this is something you want to. Also, you know, how do I say this.
+there's a lot of lessons here. We'll we'll we'll re
+visit them in more like focus in more detail after the break. Basically.
+as a general principle for big data processing is.
+I want to reduce your data as as soon as you can.
+That's a general data processing framework for big data
+that we will see in a big way after the break as a preview.
+Your brain is doing that you are reducing the data as
+soon as you can throw most of it away. Data processing means throwing data away.
+And why? Because they need to deal with less. Right? So most of the reduction happens either on this stage already, or as it goes in the bag. But once it's in the bag, you can do a lot of reducing there.
+correct.
+And yeah. So that's just to mention that. So you basically want to, you want to do that in the bag which simplifies your data and then turns into like a data frame situation. Yes, as I just said, this data can be slow. So there's a trade-off between operations in the bag that are slow. But if you can manage to reduce most of the data you need.
+then you are better off later. Yes, yes.
+But again, Dask, the bag is the most flexible desk data structure. You can put anything you want in the bag. Yes.
+but you have to think about then how you make it faster. Okay.
+so far. So good. Okay, one thing we'll also explore in Lab. I just told the Tas to add this to the lab, we'll do this tomorrow.
+You you all know about group buy from SQL. Yes. What's group buy.
+or or anything else? What's group by Sir Max?
+Certain keys? Yes, some keys right
+whatever. Yes, some. Some is a good example. Yes.
+don't do that. Do not do this. Do not do group by in bags. You are definitely. That's that. This is by definition, a wide dependency in in Dask. Don't do it, just don't do it at all.
+Use fault by instead.
+basically. What that does is you reduce the need for shuffling, because I will aggregate things locally. Basically, you turn your
+mappers into combiners and you get that
+4 fold 5. Of course, it has to be able to fold it. It has to be associative and commutative, otherwise you can fold it just like in SQL.
+But
+you will see this in the lab tomorrow, or whenever your lab is whenever you whenever you
+whenever you want to do, group, buy in a bag, don't do it. Just use fault by.
+if you can, it's going to speed it up tremendously.
+And yes, right? So as an example. Here.
+for instance, here, if you wanna if you wanna, you know, you know.
+check. If a number is even.
+what? By the way, what's a lambda function
+that is executing in line? Yes.
+So what what about here?
+We just defined the function is even right here, right?
+Basically, if it's divisible by 2 evenly. Yes, then it is even.
+And then add, we just take 2 numbers and
+return their sum. Yes, that's what adding means. Yes.
+and then you can fold by that if the number is even. Yes, all right.
+all right. So let's so. That's so far bags any questions about bags.
+This is a tip. This is a tip. You don't have to do that. You can. Also, you can do group buys. You're going to be slow. Any final question about bags. Oh, yes, just kind of
+go ahead
+right inherently. Yeah.
+you might still do it because it doesn't know that you sorted it.
+It might not know that you sorted it
+so you might still get the shuffle problem, do faux instead?
+I don't think it's aware of that.
+There's there's no metadata.
+Okay, let's talk about data frames, bask data frames.
+So okay, let's just be clear to just orient you. There's 3 kinds of collections, interfaces, bags, data, frames and arrays. We just did bags. Now we do the second one. That's the desk data frame.
+as you can imagine. That's just like a spark data frame.
+which is just like a pandas data frame.
+But there are some critical differences.
+So here's the idea.
+So let me show you what's going on.
+Imagine I don't know how to say this.
+Imagine that
+you have some kind of like. I don't know. What are those temperatures, yes, or transactions in your in your business? How about transactions? These are business transactions. You have a business, and these are business transactions.
+and you had some number in January, some number in February, but a large number in March, and all of that it might not be possible that all of them fit into a pandas data frame. Yes, as a matter of fact, have you? I'm sure you have worked pandas, data frames. Right? What's the biggest downs of pandas data frames? They're very, very
+slow. And what else is the downside of pandas memory intensive.
+Have you not noticed this, that they are? Take up a huge amount of memory? Yes.
+so all of the transactions might not fit into your memory. Yes.
+but I have good news for you.
+The Das data frame is a collection of individual panel data frames.
+Yes, and sorry.
+Go ahead.
+That comes next.
+That comes next. So so in data, frames in the arrays are separate. This is not an array. We'll do that next. So in in task
+data frames the. As I said, here the parallelism is over the rows. Yes.
+you take a chunk of rows, and you call that your you know partition, and to partition
+is a is. Each partition is one pandas data frame.
+So internally it uses, which we'll call it pandas data frames.
+But let me give you an example.
+let's say you have 1, 2, 3, 4, 5, 5 partitions.
+5 is awkward because I have 8 8 cores. But I could ship each of these pandas data frames to be processed by one core now.
+and desk Dask could do that if that makes sense right.
+Yes, so. But again, this this parallelism is over, rows the partitioning it over rows.
+Yes, and internally.
+So so a desk
+data frame, it's basically a metastructure around pandas data frames. Does that makes does this make sense to everybody?
+Good?
+And yes. So basically.
+just like, here, let's say, you have natively data that lenses of that months, something like that. Yes.
+so you can see here you could import the data frame from some Csv file and then compute the mean
+of the rows or something like that. Yes, we mean sales or something like that. Yes.
+did they? Your Csv file might be too big
+to be processed as as a Pandas data frame.
+If you encounter that problem, just
+use a das data frame and you can do it.
+Does it make sense what I'm saying?
+The data frame might be too big to fit new memory. But the Das data frame has no problem with that. Yes.
+yes, it's 1 to one. It's actually amazing.
+Yes, it's amazing, right?
+Yes.
+you mean sparkly poke I mean in
+every way. I guess I mean, it's like
+this is not parked. This is like you mean, conceptually.
+how do I say this? It's
+conceptually different. It's like just row-wise partition of the row. Wise format it makes. This is not column oriented. This is just rows. Yes.
+yes, yes, you do. Yes, you do. As a matter of fact, I was just gonna yes, you do.
+So you you tell it how you want it to partition. But the whole, the whole point is that you
+that you? Before we do that, you, you
+can handle each partition as a pandas data frame.
+and then ship off the different partitions to different cores.
+And then you process in parallel nice. Yes.
+so in English, if you want to do pandas, but parallel.
+Yes, all right.
+No.
+Okay.
+So yeah. So so this is you. So you have to do this that you have to specify yourself. This is not automatic.
+Yes.
+So this is, you know, a challenge. Actually, we'll see this in Lab. But, for instance, like this is not automatic like, you have to partition your data yourself. So, for instance, here's an example where we look at some names.
+What if you looked at some exotic name? And you know you end up with some uneven partitioning that could happen quite, quite easily. Does it make sense what I'm saying
+so partition management is something that that
+is what you want to call it. Gonna be difficult.
+not difficult. But you have to do it. It's not automatic. And this is maybe, Jay. Another answer for you, Jay. You have to specify what your partitions are in Dask, whereas in in parquet it is auto partitioned into row groups by whatever metric is specified by default.
+Yes, anything else.
+Okay. Oh, yeah. Shawn.
+So not quite, indeed.
+Let me just make sure what? What? The what, the what? The what, the what? The
+Similarly, what the difference is? What was co-partitioning? What was the point of co-partitioning?
+What's the point of co-partition?
+And by by what? Yes, that's the that's the goal you want to turn it by depends on. So that's the ends. What's it? What's the means
+like, what what the means to an end. What's the means to do that, Max?
+Yeah, if you know ahead of time
+that you are, let's say you're registrar, and you are going to do a lot of by student analysis, you might want to make sure that the records of the same students end up in the same on the same partition. Yes.
+So that's co-partitioning, and make sure that we don't move any data that is already there.
+What about here?
+it's not quite the same. Basically, we need to make sure that our, the way we partition it
+is one data frame in pandas. So you have enough in the partition not to go over your memory, because each each partition has to be able to process in memory. If the if each partition is too big, you can't do it.
+but I was not empty. So it's kind of like an awkward balance. Trade-offs.
+Yes.
+but it's similar, but not the same problem. It's like you want to make sure it's parallel. But here the data has to move. It's going to
+different cores, particularly if you have the same machine. If you have in the same machine.
+Okay?
+Anything else? Because we're going to go to the data, to the, to the last one. Now, no, okay.
+So I'm actually going to skip the the skip the aside, because
+that is in interest of time. That is an example. Again, from my research on, like music, listening
+and evaluation like auto segmentation. Basically, you can partition some gigantic, some gigantic
+problem with 20,000 model outputs and 2,000 audio recorded into these different partitions. And then you can process them all them all in parallel. But and you can do it if that's data frames very fast.
+I think there's no point in doing that. But basically, as a as a, as a upshot, you don't have to use spark.
+This is all python. Yes, and if you have an embarrassingly parallel problem. In this case
+it was just some annotation of some music files. You can. You can annotate each record in parallel. You didn't. You don't need another record to annotate that record doesn't make sense. You can do this separately.
+Okay?
+And yeah, so basically, it's like, if you want to distribute your work.
+But you don't wanna deal with.
+And our job. Yes, it's just python.
+Yes, okay, let's just go back to a task.
+So this one is the big one. This is the reason why we use desk.
+and I think there is just no alternative. And that's task arrays.
+This makes sense. I'm saying you can use for for for task data frames. You can use spark data frames if you want to.
+or for desk bags, you can just use a list.
+There is no good analogy to Dask arrays in in
+in spark. And that's why I said, if you have spatial temporal data like an image or movies or anything like that or time series, data, financial data time series.
+You probably want to use an array. Okay?
+And it's like a numpy array.
+But
+here we don't just paralyze by rows. So the dask data frames are parallelized by roses, which is discussed. Yes, just you take chunks in rows.
+but here. You can define chunks in whatever dimension you want, and you have to define it. By the way.
+Chunk sounds like very colloquial, but Chunk is a technical term.
+All right.
+It's just the big array.
+some some gigantic array. And, by the way, array is used very loosely here. This is an nd array, so it can be a tensor.
+But it was a tensor and n-dimensionally right? Yes.
+okay. So you could have some gigantic array in a hundred dimensions.
+whatever chunk you cut that into. It's a subset of the array that's called a chunk, a chunk.
+and usually we want to process an entire chunk on an entire to you with some memory. All right.
+and that's the idea. Look at this! That's how you have some gigantic.
+gigantic array. It's just 2D. But gigantic. Yes.
+it might not fit into your memory. It just might not
+actually, as a matter of fact.
+the person who sent me the text message is not here today.
+but they tried to do this with numpy, and it crashed. And machine. Remember, on day one they sent me the text
+that crashed their machine it was. The array was just too big. Remember that
+they should have used a desk array.
+Then you don't have this problem. What the task array does is every chunk under the hood is a numpy array.
+but you need to make sure that the the chunks are big enough or sorry, small enough to fit in your memory.
+so that the guy had a had no couple 100 GB array.
+and it did not fit into their memory. It would not fit into my memory. It would crash my machine, too.
+but it would fit into, and it would fit into a task array.
+and all you need to do, and we'll talk about a moment. How to do that is to cut your
+data into chunks
+where each chunk is maximally as big as your memory can handle it was the numpy array. Right? So it's basically a way to do numpy
+with a bigger data size as big as you want.
+There's no limit to this.
+Yes, which is nice. Yes
+no. Well, I'll talk about in a moment. I have a slide, but I do have. There's 1 there's 1 catch to this actually next slide. But
+there's a star here. So most numpy operations, you can literally just run it right. Once you partitioned your data into chunks.
+You can just work with it as it as if your your dask array was a numpy array.
+However, there is one asterisk here. Can anyone think of an of a operation
+where you need to see the entire data set to do the operation that will not work.
+at least not natively. Can anyone think of. Think of one.
+So for most operations where you can, where you can process the chunks separately.
+independently. You don't have to worry about that. Can anyone think of operation where you have to do some kind of shoehorning to do it? Yes.
+determinants. What else? But think of other linear algebra operations? How about
+Eigen? Decomposition? Eigenvectors Eigenvalues? Yes, we need to see the earthing. So something like that. You have to work carefully.
+So most of them work
+work natively, but for something like that. Where you want to compute the Eigenvector and Eigenvalue, you need to see all of them. So you have to kind of like do it piecewise.
+Does it make sense?
+That's why there's an asterisk there.
+Yes, there, okay. But for most of them you can just do it.
+Okay. Now, Max, I asked about chunking. Yes, so chunking is something you have to do. You have to do chunking.
+Okay? So so I'll give an example. So you import, numpy as you would, and we import the task array.
+And then let's say we create some random noise.
+This is a big noise, Chunk. Look at that 2,000 by 6,000 by 5. So this is 5 dimensional. Sorry, 3 dimensional, but
+5 sheets deep noise. Yes, it's quite big, right.
+And now look at that. You define the chunks as 1,000 by 1,000, by 2 slices. Yes, in other words, this is our gigantic block of friend noise. Yes.
+1,000 by 5. Yes, and now what do you see here?
+It cuts into what? What kind of pieces? 1,000 by 1,000 but
+2. So the last one doesn't evenly go into that. It's just one. You see that.
+So it is where it is.
+But you can define chunks that it makes. Yes.
+do you. Do you see this?
+So yeah, sorry. So 2,000 by 6,000 is what 12 million? Yes, no, 12 million
+times 5 is 60 million. Yes, that's 60 million cells. If each one is a byte
+that could quite be, or 8 Byte, if double that could get quite a bit expensive, right? 60 million times 8. That could be quite expensive.
+These are basically 2 mega
+cells, 2, 2 million 1 million times 2. Yes, so each chunk is 2 million
+times 8 is 60. Megabyte per chunk that fits in your memory. Yes.
+Max, do you see? Do you see how the chunky works?
+You can specify the dimensionality chunks. Yes, oh, sorry, whatever you want
+this. Could we have cut them into?
+Imagine, this was like 2,000 by 2,000 by 2,000? Just to think about it.
+Could you chunk into a thousand, a thousand byte, a hundred or a hundred, a hundred byte.
+200, or whatever? And the answer is.
+Yes, you can do. It's it's up to you, whatever whatever you what whatever you want
+doesn't have to, doesn't even have to be uniform, as you can see here, there's like a single dimension still left 2 by 2 by one. You see that?
+Yes, go ahead.
+It's fine.
+This is justifying the maximal chunks that you can have less. So I go ahead.
+No, no, no, this is purely structural, like good point. Good point. This is not logical. This is like.
+you know, format like, where do you cut, or how many? So I got it
+correct. This is not logical. This is just straight up.
+How many rows and columns and sheets
+slices do you have in your chunk?
+Yes, it's up to you.
+You look confused.
+Say, what?
+No, no! Go ahead!
+Live like that. Oh, look! You see, this is 5
+does not go even into 2.
+That's fine, natively. It's just it just will cut them into 3 slices, one with 1,000 by 1,002, yes, 1,000 2, and the last one is going to be single. But that's fine. It just cuts it as long as it cuts it. This is kind of the Max. You can have less.
+you know. I'm sorry, anyway, Max.
+Does it make sense?
+It doesn't have to evenly go into that. You can have one like it's just going to make another chunk.
+Yes, Judy.
+Well, 3 free. 3.
+What what are those slices
+3 slices. Yes, it will give you 3 slices, because 6 divided by 2 is 3, 3 slices. Yes, the last slice is going to be a thin slice, because
+there, there's this is missing. Yes, there's No. 6. It's just 5.
+Yes, yes.
+I should. Yeah.
+Yeah. Go ahead. Anybody else. Oh, yes, it's kind of go ahead.
+A bad way of chunking would be one that still kills your memory or overwhelms your memory.
+You can do whatever you want. Good, good good point.
+but it also depends on what the competition is right. So, in other words, a chunk
+is going to be shipped wholesale to some core.
+So if your computations are more row wise or more column-wise, or more slice wise.
+that's kind of up to you.
+If the data is pre prearranged like, that depends what the data is. Yeah.
+I guess. So, right? I mean, you could. I mean, a lot of this stuff is actually, you're right? So a lot of the this in particular can be used for like big, big big data machine learning because you wouldn't use arrays. So all of the machine learning stuff.
+I'm not sure if I would
+make one chunk the training set and one of the the test set. But something like that, like whatever works logically. But it's not a. It's not a
+like labeled
+organization. You can make it so. But it doesn't know anything about that. It's just literally the index number of the rows and the index number of the columns is a question up there
+for?
+No, no, no, you will see in a moment. So. So again, let's say, I have 8 cores. How many short? How many chunks do you think I should make? Cut it into?
+Yes, yeah, because because I want each chunk to be processed independently by a core.
+Yes, of course.
+Yes, this is. There's 1 look you are. You are slicing it once once it's sliced. Then then it's later shipped off to
+in parallel.
+Yes, yes, no.
+no.
+Okay, all right. So like, I said, so this is this is what we talked earlier about scaling down.
+So? Yes. So the idea is that, by the way, when I was your age.
+Dask didn't exist, and you had to build this by hand. In other words, you could read in a piece of the data
+stream it
+compute whatever you're going to compute and then stream next piece. You can still do that. But the answer is, you don't have to. It just does it automatically for you.
+Does that make sense? So that's the nice part.
+Okay, you just can just literally
+do that. And by the way, you can still use a cluster. Later, we'll talk about the screen. Okay? So some some direct comparisons. So, as I said, like, if the data is not probably large, this is your example, but small data up there just use numpy.
+because numpy will outperform that. If you genuinely have small data.
+then just use numpy because there is some overhead here. There's some scheduling, managing threads installed. We'll talk about what those are in a moment. Threads and processes so numpy is inherently single thread, single process.
+We'll talk about a moment what those are.
+It's old single core to all right.
+And if your data is small like you, your data is small, just use numpy. Numpy is going to be faster than Dask, because there's no overhead.
+But if the data is bigger than that, I'm personally myself using a desk array
+because you are using numpy arrays, anyway, right.
+which are chunks which are numpy rays, but they can be smartly processed by different cores, different processes, different threats. We'll talk about that what is in a moment.
+And I just said that. So basically you can, you can parallelize the processing of each chunk with different
+course, or in a cluster or both.
+Yes, and as I just said, numpy is not inherently mother-threaded, but to ask is.
+and on a multi-core system you can often get near linear speed ups. If your if your task is in barrels in parallel, because then every core can can process a chunk separately.
+and you know some of you have now.
+machines with very many cores, right?
+Right?
+And so maybe you don't need a cluster.
+You can just get a say 32 cores. You can get 32 times the speed up just on your own machine compared to one
+core with numpy. Yes.
+so numpy is 2 things. I mean the reason that's why I mentioned this numpy is 2 things. 1st of all, if your data does literally not fit into your memory, which is often the case, you can use numpy sorry you can use Dask arrays to literally
+load into memory, and what you'll call it, and just chunk them.
+Want it chunked.
+You can get tremendous speed ups from Dask, because each core can process each numpy
+array, which is a chunk separately.
+He was nice.
+So that's you. Get both you get. You can handle. You can handle
+Data literally does not fit into your memory, and you can process it quickly.
+Yes, and you don't even need a cluster.
+Yes, when I say memory hours mean RAM Rem always mean rep.
+which is always in short supply.
+Yes, relative to hard disk.
+Yes, okay. Any other questions.
+But any of this, there's more coming. But this is important.
+Nope.
+No, no, no, nobody.
+It's flexible.
+So let's talk a little bit about scheduling this. So, 1st of all, if you have a single machine, you have several options. 1st of all
+inherently, inherently, you don't have to do anything. It's already multi-threaded.
+We'll talk in a moment what that is.
+but you can also specify that you want it to be multiprocesses, or both.
+I'll define what is in a moment does. Anyone from Cs can tell us what a multi-threaded system is, or multiprocess is. I will. I will say it in a moment. But there's a lot of people from Cs here. What does it mean to be multi-threaded? When I was your age
+this did not exist. Was everything was single-threaded, single process, single core.
+What is multi-threading? Yes, go ahead.
+Okay. And how?
+Distributing the processing of one process to multiple cores. Yes, right?
+Okay, that's multi-threading.
+What's multiprocessing the idea is you're literally duplicating the process. Let's say you have one instance of python running under the hood. If you've multiprocessing, you're cloning that you're cloning the instance, it has its own resources, its own, its own RAM, and all of that.
+But then you need to share that. You need to send the data around. Yes.
+but the good news is, if you have multi processes, you can literally ship them off to different cores, and they are strictly parallel. They're they're not blocking, blocking each other. They're strictly parallelizable. A process is a clone of the same
+program. I guess if you run python and you have 2 processes, you run 2 instance of python. Yes.
+go ahead.
+That's multiprocessing.
+Multi-threaded is you run one program, but underlying underlying it, the computation can be distributed in different threads, and they can be sent to different
+processes.
+But each CPU can only do one processor at a time. I'll give you another example in a moment. Yes.
+Why, why would you want that to be fully fully parallel?
+That's why
+the same thing in in principle. But why might you want to have more than one process. Mark.
+Okay, and why? And and and and but why? Why duplicative? To begin with, even though in principle, you're doing the same thing.
+2 processes can work on different chunks
+right? They can work in different chunks in parallel.
+Yes, and numpy. Can't. Numpy is uniprocess.
+so you can only use one of your cores.
+Right?
+So why, that's why it's low, because it was built in a time before multi cpus were a thing.
+But you can also run in a cluster.
+and there the schedules! I've yarn ish
+and everything is transferred automatically and as needed. Okay.
+briefly, the difference between multithreading and multiprocessing.
+So modern machines often have multiple cores like this is a snapshot of my machine right now.
+8 cores. You probably have more these these days. But I have 8 cores. They're actually not that fast. Look at that. They're relatively slow.
+2.4 gigahertz. We had faster ones 20 years ago. Yes, just one core. That's 3 or 4 gigahertz.
+but I have 8 cores in my machine that are
+2.4 gigahertz. But if I use vanilla numpy.
+7 of those courses are going to sit idle right?
+Because numpy is not multi-threaded, multiprocessed
+most machines. Yours, mine is a snapshot of my machine that I just took first.st Gabe. This is what I was doing just before the lecture. There's a snapshot of my machine right now, or just before the lecture. You have
+thousands of threads open and
+hundreds of processes running at any given time. That's a modern operating system keeps track of all. That's not a problem. Yes.
+all right.
+One thread runs in one core only. You cannot split that between cores.
+but each core can only execute one thread at a time. That's why that's why, if you want true parallelization, you want to clone the process, because otherwise these threads are competing with each other. Yes.
+make sense.
+So you should clone the whole process
+right? And then you can distribute that over. Cpus. That's true parallelization. Okay.
+2 more things. And then we'll close it out for today because we are almost on time.
+Just to be clear.
+You can do use das, which you can use dask with with Hdf, 5. That is not Hdfs.
+It's this is not an S.
+Hdf, 5 is the hierarchical data format version. 5, right?
+And that's a file system.
+And there's a package for it. H. 5 pi.
+and it's also a non-human, readable binary.
+And you have memory mapped file access.
+And you map the data to memory. It's not loaded. Okay? And we will show you this in the in the lab. Okay, so briefly to finish up.
+So it doesn't really replace spark. It's, you know.
+it's like more integrated with the Scipy stack, matplotlib, scalar, numpy, and so on.
+If you have multidimensional data, I would argue that it's better we'll talk about Gpus when we talk about it. But basically, this also lends itself to Gpu parallelization.
+But spark is obviously safer. You know, this is more more carefully organized.
+You don't need to think about all of this stuff that we just talked about it. If you do, if you do have data frames, spark is probably faster and graph data. As we talked about already is is better
+with Spark. We'll talk about Omega graph data, all right.
+So we use dataproc. So far as we talked about that the storage is Hdfs and mapreduce and spark yarn.
+The task runs on green.
+And
+in general you have less restrictive computation than these. This is very restrictive. Right? You have map and reduce and spark. Here, you can do whatever you want
+and including desk. Okay, okay, last slide.
+just to be clear. We are now in a. In a world of these there's more and more
+parallel versions of classic python libraries emerging. One that I've already mentioned is polars. That's literally
+a parallel version of
+Pandas. Most of you who have a multi-core machine should probably not be using pandas should be using polars.
+And it's implement rust. So it's very fast, but it's exposed to python, so you can just use python.
+You wouldn't even never even know that he used rust under your hood.
+and it's inherently multi-core, whereas Pandas is not.
+And it's oh, look at that! It's inherently. This is what I keep saying. These innovations from spark column and storage.
+Paralyzation, lazy evaluation, multi-threading multi-core is all is all in there just like that, just like
+spark. So it's like you see this in all of these repeated, okay?
+Oh.
+Panda's multitas are more immutable. Polars are not immutable for the same reason as the other ones, and so on. I think we should just end it here because it's getting late.
+But anyway, what we do what we do next time, not next week. Next week is spring break. We do next time is literally starting applications. In other words.
+now we did cover all the frameworks. We're now switching into applications, and the 1st application is going to be
+search.
+And we can start with similarity search. And we'll absolutely talk about time, complexity and space, complexity and time, space, complexity. All right. Well, so, yeah, so have a good lab. I will add some things that we just surfaced today. And other than that have a good spring break

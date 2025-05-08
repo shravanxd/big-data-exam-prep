@@ -1,0 +1,887 @@
+WEBVTT
+Fine, all right. Well, not doing it. Next time we'll see.
+All right. Welcome back to big data so where is Dean?
+All right, all right. So today we'll do column, ordered storage
+in a way, this will be the Storage park spark. So Spark, we talked about spark last time
+the competition part of spark today, hey?
+But today we'll talk about the storage part of spark.
+and I want to tell you up front that there was a lot of confusion, doubt, and struggle that I know, because you told me I do want to say
+something up front, which is
+I guess the most common
+struggle that I was informed of was, there's a lot of jargon in this class. Yes.
+and I'm aware of that. However, I assure you, number one, I'm already doing my utmost to make this as accessible as possible. Okay, like spending a considerable amount of time making that. So second thing is, I feel your pain like this is inherently probably the most jargon laden class in the whole department. But that's not my fault. That's on purpose. Yes, I mean, we talk about Dremel today. I didn't call it that. The people at Google did. Yes, Mark, all right.
+So just be aware that I am mindful of that.
+and just bring it to my attention into Aa. What? What, specifically was confusing! And I will probably pick it up in next lecture, and I'll do that today. Today. Actually, what I'll do today is co-partitioning
+instead of just me saying, Hey, don't forget the cooperation here. I'll actually tell you what that is in a moment. And again, and I do apologize. A 3rd of you are Cs Majors by background. And yes, I'm aware you already all know about that, I understand.
+but have mercy and patience for the two-thirds of you who don't. So this class is a crash course in in.
+I don't know. Cs, basically, Cs 101,
+what's going on today with the 50 clicker?
+It's not coming in.
+anyway. Then we'll talk about using spark a little bit. I will do more about that. In the lab, basically spark. Originally was written in Scala, a functional program language in 2,009. You don't have to use Scala to use spark today, and I'll tell a little bit about the abstractions that we have come up with since then.
+and then I'm going to apologize in advance. This is probably by far the most arcane lecture of the entire semester. Those of you who know about the Dremel already know about that, but it is important. At least one of your Tas
+told me that the Dremel came up in their interview, and they were expected to know how it works.
+So you basically have to know how it works. And they also told me that they passed the interview because of what they learned in this class. So it was a big flex, I guess, but it is all true. I will not reveal who it was unless they uncloaked themselves in the lab. But at least one of your tas had the German come up with the interview, and they had no idea what it is. I mean, they had read papers of it before, but they didn't understand it until the explanation is coming in a moment. But anyway, we'll talk about data structures today.
+But before I do that I want to talk a little bit about Cds and the number one, the number one, confusion, doubt, and struggle that a lot of people mentioned this time was this issue between narrow and wide dependencies and between partitions. And so the idea is, if
+your parent Rdd goes to like a 1 on one thing. Yes, one-to-one thing
+isomorphic mapping from one parent to most child to one child at most, then life is good. Then the data that you need to do the next step. Say, for instance, filtering after mapping is already on that partition. Yes. So so no. So no data needs to move. Okay? So, as we said since day one, if data does not have to move.
+if you just apply more computation to the data that's already there, things are fast. We'll see a lot more about this today. Whenever data has to move. That means things are, gonna be slow.
+Moving data is almost always the bottleneck of
+distributed computing and and storage. Okay? All right. So if you have narrow dependencies, life is good.
+Then, of course, there's some wide dependencies. For instance, you sort something by key, or you do some kind of join. Obviously, if you do that, what that amounts to is a key shuffle. In other words, you get data from all over the partitions
+and assemble them by something. And that's a wide dependency. And that's going to be slow because you're drawing data from all over the cluster. It has to move around. That's going to be slow. So that's what we want to avoid. And what I said last time, hey? If you co-partition.
+you can turn wide dependencies into narrow dependencies.
+So that's almost always what you want, although there's some exceptions, we'll talk about that. But if you have
+access patterns that you can anticipate.
+You should co-partition, and I'll show you now why I'll give you. I made I made an example. Okay, so anyway, what's coming next, including this slide is because you asked for it.
+All right. And so basically, how does a co-partitioning? Or how does co-partitioning turn
+wide dependencies into narrow ones. All right. So let's let's do it together. Let's see how it goes.
+Imagine you are the university, and you have a student table. You see that the student has a student. Id. That student table is S, and every every student has a unique Id. Yes.
+and they have a name.
+We have a major, although this is a foreign key. I'll tell you in a moment where that comes from, and then we have, by the way many other fields, but those are all the ones that I need to represent here to make this example work. Ft means they're full-time students. If they're either full-time students or they're not full-time students. Yes, all right, it's Boolean.
+And then we have a student, a major, a major table. We have 3 major ids, we have data science that's offered by Cds, we have Cs which is offered by current. And we have math, which is offered by Cas, yeah, so it's actually quite realistic. This could be a, I assure you. A table like this exists at at Nyu, all right.
+but maybe more than one, because we have 20 different schools.
+59 departments in Cs alone. All right. It's a big school.
+largest private university in the world, all right.
+And then. And by the way these majors are here used as a foreign key here, do you see that? Okay? Because we want to have a what kind of database normalized database very good. So every unique thing is only there once. Okay? And then finally, again, this is a little bit artificial, but I need it, for I need it for my for this to work. You will probably have different tables
+to actually make this work. But this is for the example of co-partitioning. Imagine you have an academic records table where we have courses, analysis, ideas, linear algebra, machine learning big data and and so on. Yes.
+and you have. Maybe this last semester you would have more fields semester. The student took that course. Maybe the professor that taught the course, although you might want to have a you probably want to have a
+courses table, if that makes sense where the professors in there, and and they what you call it the semester, and all that, for now this is just academic records, and we have their grade that they got. And we have the credits, credits that they that they that the course
+was okay. Again, for this, for the purpose of this exercise this will be fine. This is probably not how it actually works at Nyu. We would probably have a courses table, and then an academic records table that's constructed just as a view.
+you know.
+as we need it. Does that make sense as we need it like in real time. But whatever this is fine, let's say, let's say this was created on the fly. That's fine, too.
+How do we check. If full-time students take enough credits, let's say there's a threshold. Full-time students have to take 10 credits that semester. How would you check that? What? What query, what command would you would you use? What do you need or like? You don't have to write me the query. But in principle, logically, what needs to be done
+to check if the full-time students have enough credits. What do you need to do?
+Somebody quickly? Oh, Adam, you have to join
+the students table and the academic records table on what key
+student id key, right? And the student id key here is here. And it's here right? And that's exactly right. Yes. So you join them by student id and and absolutely. And what will that give you
+like? Well, how and well, how will it help you? Right and just just in principle. What's next step?
+You grew by very good
+student Id, and then accumulate the what you want to call it the credits, and then you would compare that some threshold say 10. Yes, so far, so good. So that's logically. Now imagine you don't have just 6 students like in our table, because that's all I have on my slide. But Nyu has 60,000 students, largest private university in the world. So Downside is that. And, by the way every student takes multiple classes. So this is going to be a
+sure, and that makes it a
+wide, wide dependency. And the problem with that that is going to require a key shuffle. And in English, that's going to be very slow, all right. So, in other words, it takes too much time.
+So far, so good. So this is the problem. Logically, there's no problem. You just join the student student Id table with the academic records table, and you can check immediately if if someone is in violation of their status and they get an email from the registrar, hey, what what happened? You know? We need to de-enroll you, or something like that, or an academic probation, or something like that. Yes.
+yes, that's how this works. So far, so good or bad.
+So logically. There's not much to this. Thank you, Adam, but it's slow. Let's talk about how co-partitioning can help with this. And let me 1st tell you what that is okay. So
+so 1st of all, principally co-partitioning, you can turn it away, depends on a narrow one. And the whole point is, we do not want the data to move
+back here. What Adam just said, there's a key shuffle implied. Yeah, we have to. We have to. We have to
+that. The join has to match all of these to all of that. So basically, we have to internally shuffle all the keys. Yes, for that to happen. We don't want that
+all right. So the idea is that if we co-partition properly and again, I apologize in advance for those of you who already know this, because this is like Cs 101.
+You already know about this. But let me just tell you, students who don't already know this. So the idea is that instead of
+doing an ad hoc key shuffle as you require them to join, let's make sure that the data is already there, just like with the map and then filter. Those are already on the same partition on the right partition. Yes, this makes sense from the parent Rd. To child. Rd.
+and this is an important point. Whether a whether a co-partitioning helps or hurts depends on you.
+You have to know ahead of time how you will use these partitions here, and I'll make an example in a moment. So here a good unit of analysis might be student. So that's how you're going to co-partition on student
+id on student id, I mean as a key. Yes, as a as a common key. You need to. You need to think about a common key
+that you will probably going to use in the future.
+A good one to use here would be student Id.
+Later. If we do something about Major, that's not going to work. So as a preview, co-partitioning is hyper specific. There's 1 and I mean one
+one key, although you can have a joint key, a compound key. But that's that's more complicated.
+And here's how it works. So you specify the name of the data frame.
+and then the the command is called repartition, although although there's another one that I'll going to introduce in a moment
+the most commonly used repartition. Then you specify the number. So yeah, the number of partitions you want.
+and you specify again which column
+you're going to use as a common key. All right. Here we would partition the repartition. The S table. That's the student id, the student student table. Remember, student table. Look.
+this is S, and this is AR. Yes, you see this.
+you would partition or repartition. The student I. And do, by the way, do this ahead of time before you do anything else.
+And we're going to create 3 partitions. In this case we have 6 students, so it lends itself to that. But in general it could be 10 or 100, or however many partitions you want to have, however, many parallel partitions you want to use. Okay, I use 3 here as an example, because it works for our example. And then you have this common key in this case, student Id that we're going to use to
+co-partition by. And I'm going to explain a moment why.
+So the idea is that. Oh, the hash functions are back. We're going to use a hash function.
+Remember, I told you what that is.
+and the idea is. The beauty of this is deterministically, it will allocate the same. The same number for the same input. For instance, you could use modelo here. Modular would be a good hash function. So, for instance, let's say we use MoD. That means one in the student. Id would be mapped to partition one. Yes.
+if MoD. 3 A/C.
+2 would be mapped to partition 2,
+3 will be mapped to partition 3, and then 4 again would be mapped to one and 5, 2, 2, and 6, 2, 3,
+and is 1st of all, this makes sense.
+Do stop me right now, if it does not make sense, because nothing else will make sense unless this makes sense. We pick a common key, and we repartition all tables that we want to use. By the way, I just use 2 here, but we can use others by that key. Does this make sense
+or not someone say something, even if it just just Richie? Yes.
+and and let me show you what? What, how does let's do it together?
+This student's record, all these students records, Alex's records will end up on partition
+one by the by, the by, the hash function right?
+And then over here all these 3 will also end up in partition, one right and then
+2 will be mapped to 2, and so this their grades will also end up on 2 and 3 will map to to 3, and this day 3 will also end up in the same partition 4 will go back to one. So the student the student
+drew will be in partition one, but so will with the academic records. 5 will have on 2, and so will their records, and 6, and so on. Does it make sense? Does this make sense?
+Somebody anybody great?
+Oh, sorry. There's kinda
+feeling better.
+4, 3, 1.
+Say that again.
+No, there's many ways. It's just one. This is just one way. But under the really
+you can hear me right up there.
+I don't know why, but anyway, under the hood, by the way, you actually don't, you actually don't set that it's happening. The repartition function takes care of that. What you give it is what table you want to repartition.
+by how many, into how many partitions, and what key you use. That's you, how it works under Hood. This is just an example. This does not necessarily work like that. But this explains the principle. Is it clear now how records from both tables end up in the same partition.
+Yes, okay, great.
+And so now, so now, and that's basically it. So basically. Now.
+if you join the records and needs are already there. It doesn't need to shuffle anything. Yes, so far so good. Yes.
+But now you could say, Pascal, isn't this like an infant regress like this. This repartitioning, yes.
+is under the hood, a key shuffle because it had to sort some keys over here and some yes or no.
+it is right. Okay, so yes, it is. So. What did we gain by doing up front? So yes, you have to shuffle, but upfront? Yes.
+and the answer is, if you use student a lot as a unit of analysis, yes.
+say, for instance, could you compute the Gpa. Of the same students per student with the same
+logic we just checked. We just checked. They have enough credits. Could we now check if they have high enough Gpa to.
+you know not, be put on academic probation or outright expelled.
+Question for you, Max.
+Yes, so, in other words, once they are on the same, in the same, in the right partition.
+You can do all kinds of joins as a narrow partition, because it's already on the right partition. There's no need for a key shuffle so shuffle once, but carefully. We call it co-partitioning, and instead of doing many ad hoc shuffles, you have one planned shuffle ahead of time, and you can then reuse it many times. Does this make sense
+right good?
+Please do stop me if it doesn't, I don't know. Oh, yes.
+sure this.
+What about?
+Yes, it's a hash function under the hood.
+So as long as you hash the same key value
+to the same function logically, it's going to end up the same number, and then and then it keeps track of that. It's beautiful.
+Yes. So, as I told you, there's dividends being paid to actually understand what hash function is, we're going to use it a lot. We're going to use it next week, too. By the way.
+actually, it's not true. We use it whenever we meet again.
+Right?
+Okay.
+Anything else?
+Oh, yes, Mark.
+sure. But why do you? But why don't you want to do that?
+You could. You could.
+Yeah, it's awkward, awkward to update that. I assure you, Mark, all nyu databases, if they're properly maintained, are normalized, because otherwise it'd be a nightmare, too. That's a recipe to get inconsistent data. Yes, someone forgets to update one field. Yes.
+yeah, you could do that, too. That's fine, too. I mean, again.
+that's a way of doing that. You basically denormalize database in a way. But but but it's a bigger issue. Which is this is this is very, very specific. So what we just did is only going to help you for all analysis that involve what you want to call it students as unit analysis.
+like only where you have a common key where you have that common key, you have a speed up. Okay.
+for instance, let's say we want to know how many students are in a given major.
+What would you have to do logically to do that?
+Let's say you're the university. You want to count how many students have a given major, what do you would you need to do? Let's say, I want to know how many students are data science majors.
+Mark, okay?
+And you said to J. Word, join.
+That's a why dependency is this co-partitioner going to help us?
+No, because our unit of Nas is now just major, not not student. Yes, you see.
+So what could we do?
+We could co-partition by.
+let's say, another administrator. University doesn't care about the students at all. They only care about macro level like this. The majors they could co-partition by
+by major. Yes, right? So this lends lends itself to specialization. Let's say, one division at the university. That's a student level analysis. Maybe the registrar
+and they have their database partitioned or co-partitioned by the student key as the organizing principle. Yes, maybe some governance. Has it organized by major because they care about the macro level, not about the individual doesn't make sense. So this lends itself to specialization because what you want to call it
+what you cannot, you cannot. You cannot have both one co-proditioning undoes the other one. Yes, so you would have to do 2, Max
+correct, correct. And how did it end up there? Because, yes, because that hash function, that that hash well in that hash value will be the same. Yes.
+this makes sense. So they end up in the same partition, but logically.
+by the virtue of the repartition function. Yes, no.
+Okay.
+So anyway. So we would have to re-partition by Major, the student table, by Major and the the major by major ideas, and then and then we again can guarantee that they are ending up on the same on the same partition by Major. Yes, you see.
+this would be 3, 1, 2, 2, 1, 2, yes, okay, let me just let me just count. Okay.
+all clear. Okay, so some notes on that. So, yes, we just talked about that.
+You optimize operations that use the same common key. So this is key specific. So the benefits of co-partitioning is very specific to your access pattern. It's only worth it. If you have a common key. If you reuse otherwise, you just shuffle ad hoc. Yes.
+and just to be clear, we'll also practice in the lab is 2 ways. So repartition that's like in memory, ephemerally like you
+turn the machine off, and it's gone versus a bucket by that's you. You do this by what you call it on disk. So you also have these partitions. But they're they're permanent. They're they're partitioned like that on the disk. Yes.
+just in case. And that's called this permanent. This permanent corporation is called bucketing right?
+And this is a good question. How does Spark know that you co-partitioned right? What if it's attempting a key shuffle, anyway. Let's say it doesn't know that you already co-partition. It might try to still shuffle. Yes, but it's already shuffled. How would you know that?
+And we still take the time. And the answer is, it keeps track of that from the metadata, and there's a there's a
+thing called the catalyst that's written in the underlying scala. You don't have to touch that. Just know that spark is aware of the partitioning information. So so it's basically metadata. Yes. So if you have co-partitioned. It knows that you did that. So you don't have to, so it won't attempt to reshuffle something that's already shuffled.
+Okay?
+Any final questions about co-partitioning.
+Anything like that, because this is all I want to say about that.
+and I feel good about it. That's pretty much all there is to it. Yes.
+probably. Yeah, because you can parallelize it right? Like it turns it into that. If if that key, the common key, is all there is sometimes. And this is what what mark intuited. And this is why this is not a great example, but it is where it is at the end. Here. You still have to aggregate after you did a measure by this by you still have to aggregate. So that's still going to take some time. But
+roughly.
+There's also trade. Always a trade-off, like depends how many you have available. Now here's Sean.
+Yes, you can have only one at a time, and up there's like, there's another question. I mean, logically, I just question about this or about that
+which is what I'm saying, that that lends us to specialization. You partition by student. You work for the registrar. Richie works for
+the Dean, or something like that, and they and they they want to know how many majors you have. Yes.
+if the hash function works properly, then you should not have much imbalance.
+Right?
+But that depends. Maybe stay away from prime numbers. Any other any other
+questions. Okay? Oh, yeah, it's kinda
+not really like, we just talked about. This depends depends on how many, how many
+you know. Depends on that. There's all kinds of trade-offs. Right? Depends on how much.
+how many data nodes you have stuff like that. I would argue.
+Right?
+Yes.
+yes, that's what I'm saying. It's not quite like that.
+I would say, you can have more partitions than you did in notes not less right?
+Right? It's it's but these are all implementation details. I,
+you know, depends on your specialty specific use case, right?
+But this is just a principle. Yes.
+Oh, yeah. Up there.
+sort of it definitely. They want to by the join. But, as as Mark said in the end, and, as Adam said, you still in the end, for instance, have to still like group by. You still have to
+add and group buy is also. You still have to accumulate. You know what I'm saying so, but it's like a local accumulation. So kind of
+yes, it helps even with the second, the second wide in principle, wide dependencies, because group by is in principle, y dependency. But if you call partition, this is also already on the on on the node right, but on the partition. But it has to. So it's like sort of, but it's not completely.
+It's not as fast as you think it is, but it's faster. If you was drawing this from all over all over the cluster. Does it make sense?
+Local local scale? Yes, exactly. And in general, the same principle is always. If you can localize your computation. Then you don't have the data doesn't have to move. And then you're faster. But it's not exactly
+divided by that number of partitions. It's not quite. That's why I was like, yeah, not quite depends on what what the exact computations are. But you should see tremendous speed ups
+if you have the same access patterns because no data has to move. Does that make sense? That's a big upshot.
+Okay? Oh, yeah. Sorry.
+No, no worries. But remind me, Brian or Ryan.
+Okay, Brian.
+No, no, no, this is not changing the records. This is where the records are stored.
+That makes sense. What I'm saying.
+You're not changing the records.
+The records are immutable, as you. As you point out, it's where they are
+right. I mean, they have to move, anyway, for the key shuffle. Yes.
+right. The only question is, do you do this ahead of time or not?
+Right?
+Yes.
+you could. But as we discussed, that's going to take longer, because you draw. You're drawing from all you could create a view as an instantaneous view. The academic graphics table could be an instantaneous view, right instead of a table, but that would draw from all over the cluster that's going to take.
+Okay, I'll say it again whenever data has to move. That's going to take a while is slow.
+right? Particular cluster. All right, let's move on
+But anyway, I feel good about this. This is all you need to know about
+about what you call it co-partitioning. Let's talk about spark using spark. And just to be clear, much of the lab will be about this this week like practical spark.
+But I want to say a bunch of stuff ahead of time. The 1st one is that the spark we're using now is no longer the spark as it was created right? So we created it in development. 2,009, introduced in 2,010, published in 2,012, and released it in 2013. That was in Scala Scala. Almost nobody here speaks Scala. Yes. Do you speak, Scala? Mark.
+Anyone here speaks Kala.
+Well, it's a good thing that has now evolved, because otherwise we'd be in big trouble now.
+because that's a functional program language that you know Cs people know. But most of us are not Cs people. Okay? So the idea is that again, this was this Rd framework.
+And it's as we discussed integrates nicely with Hadoop.
+and we use Hdfs. And, by the way, this is why we still use Hdfs, it's we are using again in practice. Spark. But we're using the Hdfs that was created for mapreduce, even though mapreduce was not.
+You know, we don't use that anymore, and we use our yarn for scheduling. So we use it. We keep reusing same things. Yeah. So that's that's why we're still doing that. And as I said, even though it's written in Scala, we now have Apis to pretty much
+any other common language. Pyspark will be using that in the lab Java R. Matlab, and so on. So basically, every major language has an Api to to the underlying scholar.
+So something important. So this is the underlying architecture that is still in place. In other words, so you have the driver here. Yes, the driver.
+and that's
+that's the head node or the login node. You are running on the login node and the head node, and we'll show you in the lab
+how to push.
+You know your your like job with your code to the compute nodes. Yes, one of the biggest
+mistakes, and a couple years ago they would. They would crushed sorry crash, the cluster each time
+when we didn't emphasize. This was that people would do their entire session on the login node.
+and that would just crash the cluster. You want to run your code from the login node, but then deploy it on the compute nodes and then collect the results again back to the login node. We'll talk about that more during the lab, but basically don't do anything on the login node and just run your code. Yes.
+because then the session
+connects that to the cluster through the through yarn. Okay, and we'll tell you in the in the lab how to do that? Okay?
+And like, I said so in the modern day, in modern day all of this is wrapped in a Java virtual machine where we where we interface. We don't use Kala. You will be interfacing to that, either with R. Or I think what we'll cover in the lab is mostly python, for reasons that you will see there, I mean you speak python. Yes, so we use python. So in English.
+for you life is good.
+Most of this
+is abstracted away from you. You can interface with this just like with Python, and we'll show you that in the lab, okay with Pyspark. All right.
+because it's no longer 2,013.
+That's good, all right. And so.
+generally speaking, there's Api. So in other words.
+you might not be in. Some of you are using spark. You told me this in every life. You're not even aware of the Rd structure, because they're now wrapped into a spark data frame. Yes.
+So in other words, in English. So you are, you all know about data frames. They're basically
+tables. But in that we don't call tables, yes.
+in our in pandas, and so on. And so, in other words, since Spark 2 point X, we now have the data frame Api. And so you might think, this is just pandas. But it's not. It's the. It's the spark. Api, okay?
+And so, in other words, there is more to the Rd. Than just the columns. So, as we know, that's what an Rd. Is. But, as I just said, it also has this partitioning information built in. So so the spark is partition aware. And that's how you can do these computations efficiently. Yes, okay.
+And and again, that's
+for Brian's question. It doesn't change the records, but it changes, how the records are stored or where the records are stored, how they're stored. How about that? Okay.
+all right.
+And now, what data frame is is more than one rd.
+in sequence. Yes. So each Rd is basically a column of the data frame.
+Right?
+Yes, there we go. Sorry. I.
+So yeah, so basically, the data frames are like the relations. So you have your schemas.
+You've rows as Tuples. And as I just said, once you did translate that? Then the
+then the yes, there you go. The column is one rdd, so a data frame is a collection of Rds or all your Rds are
+columns in the data frame.
+Yes.
+And so what you will see tomorrow whenever you take your lab is that we are going to. Instead of doing this in Scala with Rds, which it still is under the hood.
+you are going to interact with spy sparks. It's like pandas, and these are assembled as columns in A, in A, in A, in a spark data frame. All right, and you'll see that in in which I'm gonna call it in on the lab this week. And the good news is, you all know how to use data frames, right? It's like from pandas. So so basically reuse the cognitive efficiency from that. Because you already know how to do that make sense.
+Okay, so yeah, so so in other words, and this is going to also explain today
+why the column R&D storage matters.
+Yeah, we're gonna be going to be fine, basically. Well, I'll get to that, basically spark by default, and pretty much all other modern store systems have
+column or the storage as their default storage mechanisms, mechanism.
+and this that this ties in with this idea that each column is an Rdd, and you'll see
+what that means in a moment. Okay, all right.
+And then there's also spark sequel. So basically, we can now run SQL. Queries effectively, and you can run them on the data frames because they are as we discussed Adam. They're basic tables.
+But there are these not tables? But they act like tables. And so the query is under hood, optimized by by analyzing lineage graph as we talked about last time. Yes.
+all right. So briefly, you might want to run the explain method
+which gives you again the plan of execution. We will practice in the lab, and then you can maybe see where there's some bottlenecks. Maybe you should co-partition because we are using this key
+throughout, or something like that. Yes, or maybe we should turn this wide dependency into a narrower dependency, or something like that.
+You'll see this in the lab, and then this is a big big one. When you run. Collect.
+then all of your results come back to the login Node, and
+if you don't aggregate first, st you could literally crash! Crash! The crash! D login node. Okay, so be careful. So basically
+aggregate. First, st in case you have some aggregation like like Gpa or something like that, otherwise you are very likely to crash the login node, and then you crash the cluster.
+Don't do that, Adam, please.
+Yeah, I don't know. Not nothing good to make an email like
+is down. Someone crashed it. This happened a lot last not last year, actually. Lastly, I think last year we had this at all, because I had this warning, and we practiced in the lab but the year before that it happened all the time. So so just don't do that
+definitely. Your session is shot. But maybe for everyone else to mark.
+Yeah. But you'd be surprised.
+I mean, that was just the most common failure mode off.
+And and as you heard the the Hpc. People also said, Don't do that
+for that reason. It's just a pain, anyway. Let's now move on to the topic that I actually want to cover today, which is column or in storage.
+All right. And this again is a little bit arcane, but it actually will make sense as we go through it.
+And just as a historical aside.
+what I'm always reminded of is this Napoleon quote?
+I'm not sure if you're familiar with this, but this is actually 210 years old. It's true. The English in red here used to fight in rows in the polling wars, and the French
+14 columns here in blue. Are you aware of this?
+If not, well, then, the analogy does not hit.
+but those of you into history which some of you are are now nodding. Let me give another analogy.
+The standard directionality in English is left to right. Yes.
+Is that correct?
+Left to right, row-wise?
+What does this say.
+say that again.
+Very good.
+That's correct. Yes.
+So, in other words, you could read the same text if you had a matrix of if you had a matrix of characters. You could read it, row wise
+or or column, wise? Yes, yes or no.
+So which one is more efficient in in human language.
+It doesn't really matter right because it's matched. So English is is designed to be written like that. And Chinese is designed to written like that. By the way historically, because of roles. Right? Papyrus rolls. You wrote them up like that. Yes.
+top to bottom, so makes make sense.
+Well, let me now lay out why it does matter
+in data, science, or in storage, or in Cs, whatever you want to call it. If it's row wise or column wise, there's fundamental trade-offs. Yes, or actually, I guess not. Yes, but you will see. So in in language it is where it is. It's just defined. English is written left to right. Chinese is written top to bottom. Yes.
+And now we'll see that in data, you actually have a choice
+which one you want to do. And there's different trade-offs as a preview, as a preview. Human readability will be emphasized by row wise records.
+But machine readability will be emphasized by columnized records.
+And that's why I said this topic today is a little going to be a little bit Arcane, because it makes more sense to a machine.
+So you'll see, you'll see in a moment. All right. In general, this is all about speed. Okay? So so why? Why, you might want to store things. Column wise.
+It's faster. So a lot of jobs like the traveling salesman problem are hard because they're slow. As you add. N, it just becomes intractable. Yes, the Traveling salesman problem is not hard by itself. It's hard because it's slow. Yes, if you have a large number of notes, so far so good or bad.
+so the name of the game is always speed, because these things don't scale. Well, okay.
+So some some backstory. So it's not like
+we just came up with this.
+You see roots of this already in the seventies. Eighties. However, it came back in the 2 thousands.
+Why? Because of this this graph I already showed you. Basically, we, you know, while we had increased CPU speed, the speed of storage did not. Did not
+whatchamacallit keep pace with that? Yes, so storage capacity increased, but the speed of storage did not increase. As a matter of fact, I'm sure you know this like, if you are reading or writing to disk.
+that's often one of the one of the biggest bottlenecks. Yes, right? No.
+So we want to do. We want to find ways to do that more efficiently. So as as we discussed one bottleneck is
+communication. Yes. So once you distribute.
+it's actually kind of interesting, interesting dilemma, you want to distribute data right?
+Because you want to just be your processing. So you can use multiple processors. But then you run into the issue of communication and and moving it around. And we spent just
+a long time in this class, minimizing that
+now we'll talk today about oh, no. Storage speed is also a problem.
+or like reread and write speed, as you can see here.
+Remember this.
+See? So this is very, very slow.
+You see that?
+So we need to find there's 2. Okay. To make. To make a long story short, I'm going back to this graph from the beginning of lecture. There's multiple bottlenecks. Obviously, communication is the biggest one, and we just talked about the communication bottleneck throughout the class.
+And let's just make sure we're on the same page. What do we do in general to avoid that bottle like as a matter of fact, we just did. Did an example of that with co-partitioning.
+What's Max? What's the trick?
+That's right. Bring the program to the data, make sure the data is move at all, if possible.
+Now we are encountering a new bottleneck, which is oh, no, even if the data doesn't move.
+transfer from memory to disk and disk from memory is just very, very slow. Yes. And now we need to do 2 things. One is, we are. We are going to transfer fewer bytes. And that means compression.
+And the other one is we maybe we can use
+these access patterns, predictable access patterns to
+maybe prefetch some records. We'll talk about that in a moment.
+By the way, remember, I told you that
+this whole class. Big data is kind of a Cs 1. 0, 1 crash course.
+And this lecture, particularly called Orange Storage, is like a 1 on 101. We'll talk about compression today. Before we talk about compression, what is compression? What is data? Compression?
+What is that in principle? Somebody. What is that? Why do we do it? It goes to the 1st 1 1st issue here.
+What? What is compression?
+Someone else. I want to make sure everybody's on the same page. Oh, yes.
+Sorry.
+Say, what
+fence?
+Dense, sure. But what? What do you mean with density?
+Yes, surely. No. Yeah.
+Same information. I guess that's more information dense. Right? More information. Per byte.
+Okay, sure.
+But anyway, and ideally, you want to do is losslessly yes. So there's Lossy file compression formats like Jpeg, but we want for data analysis, probably something lossless. Yes. Okay. So that's an idea. You want to compress your data so that you have to. If if data. Reading and writing is a bottleneck. It is a bottleneck.
+Well, obviously.
+if you compress your data first, st then you have to do less of that. Yes, make sense. All right.
+So let's just talk about row and storage. First, st imagine you have data stored as rows of texts. Let's say you have some key.
+some name of the species T. Rex stegosaurus encosaurus, and their mass. Yes, and you could. You could have that stored as text, right? So that would be some kind of like. I don't know. Comma separate value, as you can see here.
+Yes, how would you access the 1,000th record? What's the problem of that?
+Let's say you have a gigantic database of dinosaurs.
+How would you do it?
+How would you get to the 1,000th record? Yes.
+you have to read the entire text. Yes, until you get to D 1,000th record. Yes, make sense.
+What if you just need the 3rd column of that, like the mass of that of that, and what the 1,000 row you still have to go all the way there, you still have to do it. Exactly so. So. The problem with with David, with what you call it?
+the problem with row, or the storage
+is number one. The records are variable length. Yeah, so this this name could be anything right? So there's variable lengths. You cannot predict
+that the 1,000th record will be 40,000 characters in the in the future. Yes, you cannot predict that.
+so it's hard to tell how much often, or if there was a there was a very heavy animal, or very, very light animal. Yes, you cannot predict
+where in the file you will find that record. Yes.
+so you need to do a full serial scan. What does that mean in English? What's a full serial scan?
+Yeah, you scan the records from the beginning until you get there. Right? I guess you count the number of commas right? Because that gets you, or like actually the in this case, the what you call it, the backslashes. Yes, the the file returns. Yes, the the carriage returns.
+And speaking of O of the O, the full series can has has a has a speed of O. Of N. Yes, technically. By the way, O of n, half, because once you hit it.
+if on average it's in half the file, then you can stop once you found it. Yeah, so it's O of N. Half.
+Yes, but that's not great. What if you have a really long file? So this is very, very
+slow. I mean, it's not O of N squared. It's not catastrophic, but it's not great. It scales with O of N, that's not great. That could be slow. If you have a gigantically long data file. Yes.
+so far so bad, I guess. Yes, that's comma separate values. It's literally just records, and it's separated by commas.
+The fields are sent by commas, and the rows are separated by carriage return. Okay?
+So yeah. So in other words, so you have these
+rows? Yes, and and so each record is a is a tuple.
+and so that's great. If you want to process the entire record at a time, let's say everything about some
+some person or some species. Yes, say a student, but
+think about it while that's good to you. Know what you would call it.
+represent everything at once. You think about it all the information about somebody at once. You probably rarely need all that information about, say, a student. If there's a student at once, right?
+Obviously, it's good to append right? You can just add a row at the bottom. Yes, that's trivial, and this is really good. As I said, it's very straightforward to read this. By the way, if you want to know some backstory about this, you can read this paper about all kinds of animals that are no longer
+living, I guess. Yes.
+But anyway, so these are straightforward to query. Yes.
+So basically you go, you know, row by row. Yes.
+to find some dinosaur with some properties.
+Yes, and index can speed this up. But in general this is going to be slow. So row or in storage is inherently slow. That's that's the bottom line. It's human.
+readable, that's good.
+It's the entire records on one place that's good.
+and it is easy to append.
+But it's going to be slow. That's a trade-off. So let's now contrast this with column orange storage. So the idea here is that we store each column separately. So if you look here. So instead of having them row wise, right, id Trex
+era diet and abundance, you now store the same information.
+This one Columbus. Yes.
+Do you see how this table.
+It's the same information as this table.
+But it's now read column, boys, do you see this guess?
+And I'm not sure that's interesting.
+That's too bad.
+I was going to ask, What's what's the what's the advantage of doing that
+about 0 right here in a slide? What's the advantage of doing that it's the same information. So, by the way, Brian, this is a good example. Another good example of the difference between content, which is the same
+format which is different.
+See that.
+So what has changed here? What has changed? And how does that help?
+How is this, or what's better, about the column-wise organization that is not there for the row. Wise one, somebody.
+Right?
+So so. So. 2 things, I mean. But that's coming next. But the point the point is, does. Every column has the same type
+by by schema. Definition. Yes, right?
+Right?
+So if you have a schema defined, you might have. I don't know
+small integer here you might have some string here. This could be a dictionary. So this could this and this could be just a Boolean. Yes, so, in other words by definition.
+Each column is going to have the same type.
+This has several important advantages, one of which is that we can now predict how much each.
+you know, it's going to jump ahead, for instance, if these are integers.
+then it's just 1 Byte. Then you know how many bits you have to jump ahead to get to the next one, and you can pick out the 1,000th ones immediately. You can, I can tell you right now, or computer can tell you right now which the 1,000th is going to be. Yes.
+and if if all you need is the Id. You can do that, and same for the other ones, and then the second. So this is what this means, the disk access regular. In other words, you can jump right to the, to the record you want.
+instead of having to scan it. And the second one is because these are the same, the same information, more or less in each in each
+column.
+You can now compress it nicely. Yes.
+in a way. Yeah.
+I know it's sorted.
+No, not necessarily.
+Yes, yes, you could do that. But this is just an example. We actually in practice, going to use something more. This is just an example of what common storage is. We will see in a moment
+something more sophisticated, how it actually works, which is for parquet, which is column art under the hood.
+But before we go into the details of this, and you're absolutely right to
+to question this. Is it clear to everybody why column earn storage is inherently more efficient for
+storing and and and finding records. Yes, retrieving records. Yes.
+So as we discussed. So here
+in in row oriented, you would have you would have the entire record. Yes, in one
+in one tuple, I guess, and here you would have all of the ids and all of the species, identifiers, and all of the errors, and and so on. Yes.
+yes, yes, Sean, sure.
+You would have known. You don't actually know that you'll just have to scan the file until you hit it.
+Huh?
+Yes.
+yeah. So here, let's let's say the ids, right. Let's say this is an integer and inches 4 Byte. I can tell you exactly at which location the 10,000 is
+40,000 Byte ahead.
+If it is, yes.
+but it could be, or you could have pointers, or an index, or something like that.
+Yes.
+absolutely. It's the same idea as the co-partitioning. Let me ask you, when does co-partitioning help? If you can predict what the access pattern is? Yes.
+the same thing is true here, if you know you're only going to need whether it's abundant or not. Right.
+That's Boolean
+that could be to help tremendously. And I'll show you this in a moment. You only pull out this column, and it's amazing. Yes, say, statistics about
+animals that have gone extinct, or something like that.
+You might not need the whole record. So it helps off with the computation. Yes, but the Second level is this.
+it's much easier to compress. So let me ask you, ask you about this. I should probably add a
+oh, no, I should probably add a
+Oh, no, I should probably add a
+couple 100 slides next time on the principles of compression. But let's just do it together. What's a fundamental principle of compression? Let's say you have random noise. Can you compress that?
+If you have very high entropy, can you compress that?
+Who set that?
+You're right? Peter is right.
+You cannot compress that. There's nothing you can do. What if you have a redundancy, basically predict predictability, then you can
+compress it. Yes. So in other words, column oriented the same information, and you know what we should do. An information theoretic analysis of this, the same information
+column, wise, becomes much more regular regular than row wise, in other words, becomes compressible.
+This is something that I should probably just show you as a simulation. You can. If you
+carved same information column-wise, it becomes much more predictable than row wise.
+it means becomes compressible. It means you can read and write the compressed information to disk, which means you can save a lot of time.
+But let me just show you
+all right. So yes, so again.
+This is the second thing. If you can compress it, and we'll show this in a moment. You don't have to store that much. Remember, storage is also the premium.
+We talked about that just now with Peter. Like, if you have mixed types. That's gonna be hard to compress. But the same type is is, you know, is compressible. Yes.
+So let's talk about that. Okay.
+which helps with with time done.
+In other words, column on the storage helps both with time and with space and space is time, because you have to
+save less and write less read less.
+All right.
+So let's talk about that. So here's our column bias organization of this.
+So as we said so, the record is heterogeneous. There's this, integers, strings, dictionary values, booleans, all kinds of stuff like that.
+Large integers.
+But one column is one type. Yes, by definition.
+So I just talked about that the lower your entropy.
+As for Peter, the lower your entropy.
+p. Times. Sum of P. Times. Log, p. Entropy.
+The the better you can compress it. Yes.
+in other words, you then take up less space. You can
+cheaper and faster loaded, and sometimes, and I'll show you in a moment. You can compute directly on that.
+So let's just talk about a bunch of compression schemes because you can pick those you get to pick
+what compression scheme you use, and same thing as usual, which compression scheme is best depends on 2 things.
+the whatchamacallit to data itself and how you want to use it.
+Let's let me just go go for it.
+By the way, there's a gazillion of them. I'm just going to talk about 3 or 4
+commonly used lossless ones that you might want to be aware of. The 1st one is dictionary encoding. Do you see here we have these, this era, Cretaceous Jurassic
+Cretaceous.
+when you have only a few distinct values. There's not an infinite number of errors. Right? That's just a handful. Yes.
+you can replace the string by the Id.
+And now you have a uniform width for each
+for each entry in that column. And now you have better cache locality. In other words, you can prefetch
+results from later. Yes.
+and now you can do this on the dictionary value. So, for instance, if you encode
+Cretaceous, Jurassic, and Jurassic as these 3 numbers, you can save a lot of space right?
+If you just save
+these these values as opposed to these values, does it make sense? So if you have a large
+string representation. It makes sense to just store the dictionary representation. In other words, a small number. It's called dictionary encoding. Yes, so far, so good.
+Use case if you have large
+strings, but only a few distinct ones to save that bit. Packing is
+As we just discussed it.
+integers usually pick up. Take 4 or 8 Byte. Depends on how long they are.
+You can use bitpacking to squeeze small integers together. So let me give an example. Let's say.
+this is, these are the values 0 1, 0 2, 1, 1, right?
+This is from just now those those were these values die.
+these, okay, the idea is, once we once we. By the way, these these methods are in principle independent, you can do dictionary encoding or bit packing, or you can combine them.
+For instance, let's say you've only small integer values like 0 1 0 2. Do you really need all 8 bits to represent those? Let's say you have only 3 errors. Sean, do you need all 8 bits
+to represent that? And the answer is.
+no, you just need the last 2, which the last 2 are 0, and then the one is 0 1.
+That's again a 0, and then 2 is a 1 0, and I guess a 3 would be 1 1. Yes, do you see that?
+And now you can in the compression store
+all of these values, as you know, just 2 bits out of the 8. So each
+each 8 bit integer can contain 4 different numbers. Yes.
+and and then you can, as we discussed.
+let's say, match or compare. If something is
+this error, that error already in the compressed? So you don't actually have to unpack it? Yes, so far. So good.
+Okay.
+run length encoding. That's when you have some constant value. So, for instance, let's say, mass is already always a 4, you know 4 digit number. You're often using DNA
+or methylation patterns. If long runs off.
+I don't know D, or
+T, or A, or C, or something like that, or series, and ones and methylation patterns. What you do is you literally just?
+Convert that to sequences. So, for instance, you, you note what the value is.
+Let's say, for instance, 8,000, and then you have 1, 2, 3, 4 times 4,000. So we just 4,000 comma 4. And then so basically, you, you do the value. And how often it appears. Yes, and so if your if your lexicon is only a few values like as is that DNA, it's just
+GATC. Yes.
+and you have long runs of those you can just say, here we have a GA hundred times in a row. Just write that down. You have then tremendous tremendous savings. Yes.
+or methylation. Is it methylated or not? It's just yours at once. Long runs all right.
+And again, it's just like just like that you can do. Say, if you want to an average, you can do that or count, you can do that on the compressed values. Right? 4 times 4,000 is the same 16,000 as this here. Yes, so you can in run length
+encoding. Do statistics right on that.
+Okay?
+And so there's a lot of them, you can combine them. I don't think I have.
+Okay, so how about frame of reference? Coding frame of reference coding is, let's say you have something like that? 1,000 4,000 5,006 you could just
+how do I say this?
+save the base? That's a frame of reference, and then say, plus
+plus 5 plus 6, for instance, most dates dates in most.
+I don't know what you would call excel. What is excel like a yeah.
+Spreadsheets
+have inherently frame of reference coding. So everything is, I don't know 1,900, something like that, plus whatever the date is. Yes, so we only represent the last 2 digits of date, or something like that of the year, because
+we have a frame of reference, say 1,970, or something like I forgot what it is. But whatever the frame of reference is that saves with
+space. If you just have the frame of reference plus minus whatever. Yes, so so far. So good.
+Okay, Delta. Coding is like you often have that for, like what you call it movie frames. So, for instance,
+Netflix, use delta coding for for
+compression. For transmitting frames for video. So each frame, the most of the pixels are usually the same. You just you just you. Just
+you just encode. How much it changed frame to frame.
+All right. That saves often a lot of space.
+and as many others. Hoffmann coding, for instance, you make the word length inversely related to frequency. So a word that's half, not half is a lot in, but in English, a I me, my! Those are short words that I use a lot.
+and then some words like idempotence use only very infrequently they make them very long. Okay, so that's Halfman coding.
+So when you should use which one? That depends on what you want to do.
+By the way, this is a good example. Most of you are taking machine learning class right?
+The fact that so many machine learning algorithms exist, logistic regression, linear regression support vector machines, trees.
+forests, bagging, boosting, neural networks. That just means that they're all relevant. There's just different trade-offs of interpretability speed.
+Whatever
+bias, variance, accuracy you name it same thing here, the fact that so many of them exist and all commonly used just shows it's all trade-offs. There's not not one that's dominant depends what you want to do. Okay.
+depends on use. Case, the data, what you want to try to do and so on. Yes, and often reasonable and unreasonable ones. Okay, we we talked about it just now, if you want to stretch your movie efficiently, you could use either a frame of reference encoding or delta encoding.
+but not Dj encoding. Okay. So to summarize, because I do want to at least get started. The Dremel.
+So pros of common columnage storage is.
+it's faster when you only want to access a subset of attributes.
+It's in general more efficient to store higher throughput, and you know.
+and enables better compression and better access patterns. Yes, cons are obviously, if you need the whole record that takes a while to reconstruct that.
+And that's slow right in the lesion, because
+how would you do it? You still need the same structure. And finally, it's actually really hard to handle non-tabular data. Yes. By the way, what is tabular data? What is tabular data? What is tabular data
+structured data like.
+okay? Yes. So what if the data is not tabular? And it's often not. And that is.
+And Mark is my witness.
+Google uses this.
+That's where Dremel comes from.
+So, by the way, this is the the floor in Courant, you see that that's parquet.
+That's the French name for that floor pattern. And hopefully we'll get to today. Why, it's called that.
+And then the Dremel! Why is Dremel called a Dremel? Well, let me see. I brought a Dremel and see if this works. You see a Dremel here? This is a Dremel. Has anyone used it?
+Do you know what it is? Is it, Dremel? See, Dremel? Yes, and so if he's you see.
+the idea is you can you can grind down anything with a Dremel. So that's why the Dremel is called a dremel. You can grind down
+hierarchical structured data into tabor data. So if someone asks you what we need to terminal for.
+you can convert any
+data structure into a tabular one. Why tabular? Because then you can use these compression schemes.
+compress them, and we'll do that. We'll do that. By the way, I'm not sure if we're going to finish with this. I hope we do. But basically parquet is the storage format of spark and parquet is column oriented and parquet uses after we dremelized our records.
+Those principles we just discussed
+get this parquet structure of the floor. We'll talk about what that means, okay.
+all right. So now let's do that.
+So 1st of all, the Dremel comes to us from Google, as Mark said, so, basically, it was designed as a query system. I explained that in the in the paper we read.
+developed by Google in the late 2,000 S,
+and we are actually going to focus on the door we are not going to use as a query system. We don't care no offense, Mark.
+That's for Google. But what everybody uses is the is the the record flattening aspect of it? Yes.
+and so that went into parquet. And, as I just said, unless you specify otherwise, that is the the reason you should care is because that is the the storage format of spark. All right.
+Okay, let's talk about that. So so we're not going to always have a relation. That kind of is going to cause all kinds of issues. So we need to want to
+turn our turn, turn our structured data, hierarchical data into
+tableau data. Okay? And we're going to use the tremble to do that.
+A typical example is trees. As we discussed, this is a slide I use in Ids.
+This is what an actual tree looks like. Yes, or at least as envisioned by Dali. I asked it. Yes, it has
+trunk. It has branches, it leaves.
+And this is what a computer scientist thinks a tree looks like. Yes, so there's a root node, parent, node and child nose. What I usually like to say is, they should touch grass more often. Yes, but in defense of the defense of the computer scientist, what they had in mind. Is not this tree but a family tree? Yes, there's a parent. There's a child things like that
+just to be clear. Does anyone know what object would look like that? A starts with J Jiu.
+very good. A Json file has this structure. So what we want to do. And this is this is what Google tried to do. And this is when the use case we're going to use is from Google.
+They had these Json files, right?
+Say, a website, a website. Peter might be represented as a tree as a Json file.
+but we want to store it with parquet. So we have to dremel it down.
+But then we want to be able to re unravel it. So basically reconstruct the website. This has to go both ways. So let's do it. So the idea here is again, this is from the paper.
+And, by the way, this does translate to data like, say, Json data.
+I'm just going to use the example straight up from Google
+because they introduced it. And they had a web document. So imagine a web document, and the document has some kind of Id. You see here, this is Id. 10 sign, and it has then some links.
+And, by the way, the Id is a required field of a website.
+And, by the way, the question is, Peter and everybody else, how should your browser, if encountering this, should render the website? Yes, it has to interpret these fields. Yes, and the 1st field is the Doc Id. That's a required field. Then there's forward links to other websites. Yes, but the optional you don't have to have links. You don't have to have hyperlinks, but you can have them.
+Then you can have backward links, sorry links divided into forward links. That's from your site to
+other sites, backward links that's to other sites, the link to you. Yes.
+and then you have a name field that has some language code, English Us. A country code, but you have to have the code.
+but the country code is optional, and so on. Yes, URL is also optional, and so on. Yes, makes sense. So every website has and other fields, every website has
+that structure.
+And if you're in, if you're in Google, the question now is, how do we store? We want your job as Google is to store the entire web. Yes, Mark.
+okay, you want to store the whole web. So you need to find a way to
+to do that. Okay, let's talk about storage of web documents again. As I said earlier, this does generalize to data. And after we do the basic Dremel example.
+I'm going to show you how this applies to data with a more data example. But let's just do this first.st So as you can see here, these field names
+are basically paths. So, Node, that's just the root node
+to talk. Id has one has one.do you see that that path from root
+to dock? Id has one has one.do you see this?
+Yes, yes, no.
+Okay, in computer science language, because they don't know how to count.
+This is the 0.so this is level 0. Yes, the index from 0.
+Then node dot links. What level is this 0?
+What one?
+And then this node.name dot language dot code is 0 1, 2, yes, yes or no
+good. So in other words, the field. The level that your field has in the hierarchy can be gleaned from the dot number. So far. So good.
+Okay, let me just remind you again, what the point of this is we're going to take this
+nested structure of fields, for instance, code is a subfield of language. A subfield of name is subfield of root. Yes, see.
+so, code is here. That's part of language. Language, part of name and name is part of the whole thing. Yes.
+we have to represent this hierarchical structure in a way
+that we can store it in a tabular format.
+but such that if our parser encounters the tabular representation, we can reconstruct the data, the the website, the structure of the website? Yes.
+so far, so far, so good.
+All right. And so
+this is an interesting ask, and a big ask. And last time I was teaching this, somebody was like, How did someone come up with this? And the answer is, I guess that's why they pay the Google guys the big bucks. Yes, it's already in the. It's all in the journal paper.
+So what we're looking for is a lossless representation
+of this hierarchical structure in kilometer format. Yes.
+we need to be able to to recreate this losslessly by parsing the columnar records.
+and the key challenge is.
+we have to unambiguously parse records that have optional fields. Some fields are optional, but are they optional because they're absent.
+or they opt or they're not mentioned because they're just not mentioned. Let's say you have a middle name.
+and I don't mention it doesn't mean I don't have a middle name, or doesn't mean my middle name is nothing.
+It's kind of like representing null. Yes.
+evidence of absence, evidence of absence, kind of thing.
+So so we need to keep.
+we need to be able to keep track of that also, if a value appears twice. Does that mean that's the same record twice is a repeat, or is that a new record? Let's say we have name twice. Is that a name field.
+for instance, our our example document had 2 name fields. But is that name Field?
+The second name field in the existing document? Or is that a new document? Yes, so we have to represent repeats. So there's those are 2 level complexity we have to be able to represent repeats, and we have to able to represent what you call it
+evidence, absence versus absence of evidence versus evidence. Absence in optional fields. Yes.
+and it has to again work with these data sets that often have missing values. Yes.
+with nulls. So far. So good.
+Okay, let's do it.
+So there we go. So we have our record here. And as you can see here, we do have multiple links. There's 3 repeats of links with multiple names, 3 name fields, actually we. And then sometimes the code is there.
+sometimes language there, some is not there some 0. This is, this is gnarly. So let's do it together. Let's Dremel, let's tremble. Tremble this this thing down. Okay, this record
+again. The key idea is we keep track of the repetitions of a field within a record. So now we're going to have a and by the way, it's going to be in green, we're going to have the repetition level. And that's at which level of the hierarchy did the repetition happen.
+and the definition level in purple. How many optional fields did we have to traverse to get to the the deepest nested optional one
+in blue?
+We're going to have required fields. Then the D level is just determined by how many we had to get there to to do it.
+And then in optional fields, we increment that level, but only if it's present. Otherwise we don't. Okay, if not, and it's optional. We just inherit the definition level again. There's a lot going on here, but we'll just do an example in a moment.
+So, as I said, I have taught this before, and this is not negotiable. I have to teach it, because this, as some several people already mentioned has come up in the interview, and I know this is inherently confusing, but it can actually be understood if you pay attention. Okay, let me address some misconception.
+The biggest one is this, the repetition level does not count. How many times it repeats, it does not count that it counts at which level of the hierarchy. The repeat happens, but the repeat is mentioned explicitly.
+Again, don't panic. We'll do it together.
+and that's what I said. We have to represent the values as well as the tree structure. So we're asking a lot of this of this columnar structure. In other words, the values, the numbers mean different things. Sometimes it means the values, and sometimes it means the
+tree structure. Yes.
+So we have to distinguish between required and optional fields, as shown, because different rules apply, whether it's required or not, for the R. And D's.
+And, as I said, we have to distinguish between things that could be present, but actually not versus things that are actually missing.
+Right?
+So, as I said, we will represent the hierarchy by these dots, so the number of dots indicates the level of the hierarchy, we are
+on index from 0. So 0 1, 2. So this will be 0 1, 2.
+And if you count this 1, 3,
+okay. So the reason we have to do that is because we can distinguish null values and absence all right, like a middle name. As I said, you might have a middle name, but didn't mention it versus you affirmatively. Do not have a middle name.
+Okay, before we go into details, let's just do an example.
+Okay, we encounter the 1st
+record, the 1st line in the record. By the way, we the it's it's read from top to bottom. This is the 1st line of the record.
+Where should this entry go
+this once it hits this Doc. Id 10. Where should that go? Let's let's ask Mark because he works for Google. Mark, where should that go? We have these 1, 2, 3, 4, 5, 6 tables. So we're going to represent this document uniquely, reversibly, with 6 tables.
+So Mark, where should you go.
+Doc? Id. And what's the repetition level? Does this repeat?
+No. So repetition level should be
+0 and definition level? It's right at the level of 0. Okay, great.
+That's correct. So Mark is correct. So we have the value is 10. So now we
+parsed our 1st line of the record, and that gives us a value of 10. It doesn't repeat, and it's required so straight up just just that so far so good, so good. We did our 1st line.
+So far. So good.
+Okay.
+Next line.
+Why do I say that this link, the forward link, this forward link, 1st of all goes into this table.
+and it has a value of 20. Which is another document. I guess this document it links to this document.
+And why is there? Let's do step by step. Why is repetition level 0?
+Because that's our 1st instance. So it doesn't repeat. It's a first.st
+It's not a repeat at all. It's the 1st time. Okay?
+And why is definitional level? 0.
+Sorry? 2.
+Why is it? 2. Why is it not 1 0 1? It does repeat at the level of links. Yes.
+is this happening at this is defined at level of link, so it should be 0 1.
+But wait, wait. Links is an optional field, but present. So
+by the rules, go back to the rules slide.
+If it's optional, but present, the definition level is incremented. Someone just said it.
+So if this was absent, what should it be? 0
+one. But it's present. It's optional by present. So it's
+2. Very good, very good, very good.
+That's how it's defined.
+In the metadata in the metadata here. So let me go back
+alright.
+So, by the way, let me just do it step by step.
+I'm so sorry.
+Oh, where is it? There optional?
+That's how it's defined. It's the metadata. It's in the metadata.
+and you might want to look at this. Look at this right now, docket is required. Code is required. Links is optional countries optional. And URL is optional.
+That's gonna be important in a moment. Okay?
+And the rule is, rule is
+all right. There it is, if it's optional, but if it's present.
+then it increments from what it should be. Yes, and that's why there's a 2 and not a 1.
+And right away we'll explain in a moment why, right now this rule seems arbitrary, but you will see in a moment why we need it. We need it to disembiate 2 2 cases.
+Sure.
+So let's do it together. So this is clear. It doesn't repeat, and it's required. So we just literally just write that down. Yes.
+right? Okay, this one is the 1st time there's no repeat. So the repetition level is 0.
+But it's defined at what level? 0 1.
+But it's present. So it someone said, Increments, what's 1 plus one
+2. That's why it's a 2.
+Okay.
+Now, the next 1 40. Where does that go? 1st of all, it's not a forward link.
+Huh?
+Okay? So all right, there we go.
+Why is there a 1 here? That's a critical point.
+No, I mean, sure it's not 0. Because it repeats. But why is there a 1 here?
+I apologize. Why is there a 1 here? Because it repeats at what level
+level one? Right? It's the links level that repeats. Yes.
+0 1. And why is there a 2 here again, for the same reason that there's a 2 before it's an optional field, but it's present. So it increments. Yes.
+and now comes something, mind blowing.
+What is going to be the next one?
+Yes, 61, 2 is correct.
+But this right here breaks a lot of people's minds. Why is it not a 2? Here we have 2 repeats, we have 2 repeats.
+and, by the way, the chart, the Chatbot will tell you, should be 2 here? I asked it. It's wrong.
+I'm not lying to you. It's wrong, Max.
+which I had my common misconceptions right? Exactly. Max speaks truth. The repetition level does not count the number of repeats. That's the most common confusion it counts at which level of the hierarchy the repeat happens.
+so Adam is correct, and the chapel is wrong.
+All right, make sense.
+Hmm, that's yeah. That just indicates that. That's that is the 1st time in this document.
+But then we have a repeat as long as it's not 0. That means there is a repeat. But then the question is, at what level
+level one?
+Because I built this and imagine you have another document. It doesn't know, you know, if this is here or here, or what you know.
+Okay, let's move on. Yes, it's kind of
+this 1, 40, 40, or 20.
+Huh?
+Download all of this.
+which is which is the point. Look, that's exactly right. This is defined at the second level. It's an optional field.
+but it's there. So we have 0 1. And but forward is there? So there's an implied another dot here, too.
+Great.
+yeah.
+But but it happened on a lot of links.
+It's a forward link that repeats and level of links.
+0 1.
+Okay.
+By the way, I think this is going to become more clear once we once we do more.
+How about this? Why do I write down here? There is a field backward links.
+But it's null. What does that mean in English? Backward links are, are they required or optional?
+They're optional. And this document does contain does not contain backward links.
+But you have to represent that right? No backward links. Yes, okay.
+And that's the 1st time. But why is there one now? Why not a 2, because optional fields
+don't increment the definition level if they're not present. Yes.
+so in other words, this backward is not there. So it's 0 1. Yes, it doesn't go all the way to backward. It just stops at links. Does it make sense? Kinda everybody else? Okay.
+what do we see next? Then we see what?
+Yes, and why is there? A code code code is required? Yes, code is required. It has to have a code, remember that.
+And so why is the repetition level 0? Because
+it's the 1st instance. But why? 2. Why not 1 0 1, 2. See that 0 1, 2.
+But why not 3?
+It's not options required. Aha! Required fields don't increment. It's just it is where it is, and that's defined at that level. 0 1, 2. So just write it down. Yes.
+Am I wrong? No.
+it's not one, because it's optional. It's not 3, because it's incremented. It's exactly what it should be.
+Okay. Yes.
+because it's optional, it's not required.
+but it's not there. It's optional and absent optional of O and a optional and absent.
+Okay, yes, only if present, if and only if present.
+Okay, next one.
+Now, country is optional. Right? So no. Repeat. So it's 0. It's the 1st time this country code. Yes.
+but one second Rishi, it's 3, 3. That's very aggressive. Why, 3 0 1, 2
+optional, but present so increments 3. Very good, Richie
+on both.
+If it's 2 or not present depends which one
+where.
+So it's it's if this was optional, what's optimal and not yes.
+no. You'll see in a moment. We'll we're doing. We're doing some at the moment.
+Keep it a thought. We'll do an example in a moment.
+So now why, why do we now have a 2 here?
+Because what it repeats in the level of 1 0 0 1, 2. You see, that language is repeating.
+Yes, so it's it repeats in love of language. Yes, and it's required. So that love that the repetition level is to. And the definition level is
+also 2. Yes, guys. Okay.
+then we have a country. But it's not there. You see that there's a country here, but country is optional, it's actually missing. So we will need to represent represent as a
+null value, and but the repetition of that. So it's repeating at level 2, which is the level of language. Yes.
+yes.
+But why is there a 2 now? Not a 3.
+It's optional and not and not present. Okay.
+then, URL. Oh, that's also an optional field, right?
+Yeah, it's optional, but it's there. It's optional. But there whoops! It's optional. But there! So what do you see?
+So why is there an r here? Sorry it goes into this. 1st of all, it goes into this table. Yes.
+and the repetition level is
+because it's the 1st time. And why is there a they have to have 2 0 1?
+It's present, it's optional, plus 1, 2, yeah.
+Oh, Cranna.
+which one?
+This one?
+Okay, let me show you.
+Do you see that this is the second language block?
+So it's repeat, okay, we're not counting the number. Okay, if this, if this was counted in the number of times it repeats, if we want.
+this is a second language block. Yes, in the same document.
+But we're not counting number of repeats. What are we counting?
+What are we counting? What are you keeping track of
+what are we keeping track of? Quickly? We are running out of time here. If only 10 min left
+the level in the hierarchy at which it repeats. And isn't that look 0 1, 2.
+Yes.
+I assure you it actually makes sense. I know it's amazing, but it does make sense. All the rules are followed, all the rules are followed.
+But please do ask if anything is unclear.
+Unfortunately, this is something you should know. Now the good news is you never have to do it by hand. The Dremel does it just for you, but you have to understand how it works.
+That is a favorite interview question all right.
+not by me, but of life.
+All right. So let's see, what's the next one? Here.
+what's going on here? Why am I writing down here.
+Codis required, but not stated. Yes, see that, you see.
+So it's level 1 0 1 that repeats at the name level.
+and because it's required, it's just which we'll call it
+one. It is what it is. Yes.
+and then over here country is also not there. So same same thing. This is for you. This is what you asked earlier. You see that
+then a URL. This is second URL in the same document. So now it's a repeat, but it's repeat at level one. Yes, that's 0 1.
+And then why do we put this in? Because it's optional product present? Yes, 0 1 plus one. Yes, okay.
+then, lastly, we repeat again, at the level of
+name, do you see that? And now the code is there? So that's just required field. That's just 2,
+and then finally, country is optional, but present. So this is 0 1, 2. Bing, bing, bing, 3. Okay.
+what, sir.
+were were, where is it? Because it repeats within this block. Here, you see that
+this repeats here, this repeats there.
+Let's talk about after us because we're gonna get free. Example.
+I see your point, but it's it's true.
+And then, finally, there is the last one which is URL is not there. But then, we have now encountered A
+was this mark? This is a and
+it's not repeating. So that implies we have now started a
+new document. Now we're passing this one. Okay?
+And I'm actually not going to go through this in detail because I'm going to.
+And on we went through it. That's good. So so I'm going to say a bunch of stuff. 1st of all, I asked the Chatbot before this lecture
+what it would tell you. And look at that. That's the latest version, O 3 mini high.
+And what did it say?
+What is the repetition level track?
+What did it say?
+What does it say? How many times it repeats?
+Yes, what do you think about that?
+That's wrong. It's like, Are you sure that's it? That's true.
+he said. Are you sure about this? Yes, it's like actually no, yes, he isn't a count. Yes.
+you see this.
+Yes, and I was like
+just to be clear. Your initial response is a house nation, because I'm going to, you know. Tell the students about this. Yes.
+and then it's like my initial explanation was an oversimplification and not entirely accurate. It should be a politician. Okay, no. This is a straight up hallucination. Okay, so my point to you is, I don't know what I would do if I was a student, because the Chatbot routinely mixes in just gross hallucinations out of nowhere. I would say one in 5 times. So be careful. That's right. Here in the slide. Be careful. You cannot learn this stuff from the Chatbot. He doesn't know
+it's Mark.
+We'll talk about that in a moment. Let me just finish this thought, because I made something for you that, in my opinion, is sublime, and will probably also answer your question. Max. I think it was your question. Max. Look at this, I made a flow chart for you
+for every new line
+it asks the following thing. 1st of all, it asks, by the way, this is color coded with the, with the, with the colors, from the rules for the rule sheet, it asks, is it a repeat? Is it a repeat? Yes.
+that's the 1st question it asks.
+If it's not. If it's new, then it points down a repetition level off
+0 0 means. No, there's no repeat. This is the 1st time we see this in this document. So it's either the 1st block in this document, or or if the Doc Id is a new document, or something like that. Yes.
+yes or no. Okay.
+Now, if it repeats, then it writes down, not how many times it repeats, but it writes down the level of it, because, by the way, it needs to do that, so we can later, if we read the records.
+put the tree back together backwards. Yes, we need to know at which level we are repeating.
+Okay.
+the second question is, it asks, is again, is it color coded by the rule? Is the field required, and again, Rena, it knows that from the metadata.
+and if it's required, then you straight up, write down how many dots you have to traverse
+to get to it. Yes, indexed from 0 0 1, 2, 3, whatever straight up you just write that down. Yes.
+if if it's optional, then it depends.
+Okay? And it does the same. Obviously, if it's if it's repeated or not. Yeah. So it's it's mirrored. Do you see that?
+Okay?
+And then asks one more question.
+If it's optional, is it present or not?
+And if it's present, sorry if it's absent.
+then you just write this the same thing as this, and if it's present finally, thank you, go ahead.
+you increment.
+You then add one.
+Yes, and you do the same thing on the other side, and that's it. That's your tree. That's this decision tree is that the Dremel traverses each time you what you call it.
+Each time you invoke the Dremel
+I'm going to entertain questions. Give me just a second, because you might reasonably ask yourself.
+Prena? Right, Pascal. I'm not a Cs major. I'm a data scientist. Why do I? Why should I care about this? And the answer is.
+now, after flattening, you have tabular data. Yes, and you have small
+byte values, small integers. Right? So you can basically highly compress this
+and store this as a kilometer storage. Yes.
+so this is highly compressible, highly storable as a column. It's all the same type. So this is de facto. How
+how dramaalized records are stored, and because you can apply the Dremel to anything.
+let's say a Json file, as Peter said, you can then have this universal storage structure or storage.
+It's not a structure. It's a storage engine.
+We just parquet.
+Okay? And I think in the interest of time, because we've only 1 min left.
+I won't gonna show you this next time. But basically
+basically, it's the default storage layer of spark.
+And I will explain to you
+next time how that works with music, data, science. But I have the slides prepared. Okay, now, in the last minute. Do you have any questions for any of this? The good news is.
+I am sure.
+that all these numbers are correct on the previous slide, with the Dremel example. But what I would advise you to do in case you
+you anything is unclear.
+Try it yourself. Apply the rules. Go for the record. It all does actually work. Mark.
+Sorry.
+That's correct. You want to get a say, a chase on file into a tabular format.
+Yeah, you have to. You have to feed that in. Yes, but the beauty of it, that number that's only after you dremelize it. The beauty of it is once you
+once you have it in this format.
+You can reconstitute the original file unique. Uniquely.
+Let's talk about that now.

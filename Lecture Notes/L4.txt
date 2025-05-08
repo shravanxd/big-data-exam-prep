@@ -1,0 +1,934 @@
+WEBVTT
+All right. So this is a 1 time. Only thing. Okay, anyway. Welcome back, please take a seat.
+Oh, there we go, all right.
+Hi, right now, please take a seat, everybody.
+All right.
+There we go.
+And today
+we're implementing the storage layer part of this. So last time we figured out how to distribute the processing
+today.
+We will also distribute the storage along with it. It will make sense when we get to it.
+And there's actually a reason today to talk about elephants.
+How do I say this? We'll talk about Hdfs today.
+What Hdfs stands for is hadoop distributed file system. And it is what it is. Right in the name. So Hdfs is a file system. So everyone, you see Fs that stands for file system. However, it is a distributed file system, so it will not have the properties that you would expect from a normal file system on your machine. It will not, it will.
+Honestly, it's more like an app.
+You'll see why it that's the case.
+and why we have these constraints.
+But yeah, and then Hadoop stands for an elephant
+so, and like, literally, the chief developer, Luca Doug, cutting at Yahoo of all places, I'm not making this up. So Mapreduce came out of Google.
+What remained of Yahoo is Hadoop
+and the chief developer, Doug Cutting, had a son, and he asked his son what to call the thing, and the son said hadoop.
+or that's what that was the name of the toy elephant
+of the chief developer, Doug Cutting. Yes, so someone ever asked you what Hadoop stands for. It stands for the name that the son gave for his toy elephant.
+All right.
+And it's nicely named because there was, you get Google unique. So if anyone. Googles Hadoop. That will come up like that. Yes.
+all right.
+Okay.
+Another reason to talk about elephants.
+Another reason to talk about elephants. One second hopefully. This will work
+as you recall the data data fan from from our introduction data science class.
+The more I think about it, the Introductory Science Class was more or less a statistics. Crash! Course. Not all of statistics, I know. So this is a whole field. But basically it was filtered by how it's relevant to us. Yes. So in data science, as you know
+what? Instead of you know, doing this axiomatically like in like in statistics, we say, let's just
+do this axiomatically, as I'm sure, Carlos told told you, we use the data this data as a stand-in for the
+axioms. Yes, this class is kind of like a
+computer science crash. Course? Of course not. You know, operating systems. Anything like that
+filtered by data science relevance. And this is going to come become relevant again in a moment. So, for instance, today, when we talk about Hdfs, the Hadoop file system or the hadoop distributed file system.
+a lot of the
+way hadoop is designed or the Hdfs is assigned as a solution to problems will make no sense unless we understand the underlying computer science problems. So there's going to be a little bit of Cs in this class. Okay, just as like. And some of you are Ds majors, and you already told me why you're telling us all of this. Well, you need to have some empathy, because not everybody is a Cs major. Okay, only a 3rd of you are.
+So it does need to be understood by everybody, otherwise the solutions will make no sense. Yes. So everything in this class, particularly the disputed stuff, is usually a solution to a fund or the attempt at a solution
+at a fundamental Cs problem. All right. So please have some patience. If you are. Yeah, this is trivial, it's trivial to you, because you're a Cs major, but not to the 2 thirds in this class who are not all right. Anyway.
+Last week we did Mapreduce.
+which is literally what you see here. You split the file, and then you put them into mappers. You do the key shuffle, put the reducers, and you collect the final results in some kind of
+final result. Stage. Yes, and it has all kinds of interesting properties.
+the Hdfs layer, and we'll see this
+in a moment, or today at least, is is
+goes with mapreduce. So basically, mapreduce is the is the processing layer
+and the the storage solution. Oh, I see it. The storage solution is, thank you so much. Kim
+storage solution is goes with that. So basically, if you don't have mapreduce.
+you don't have this problem. By the way, it's a month. It's a month up there. So at least one student in this class has already implemented mapping in their work since we talked about it. Yes, and you got tremendous speed ups in your in your workflow. Yes.
+as opposed to as opposed to what you're gonna call it
+as opposed to using nested for loops. So whenever you have an embarrassingly parallel problem, my advice would be, use use that. But, as I will show you, Samantha now is, you will get even bigger speed ups in your in your hopefully, this will work.
+You'll get even bigger speed ups in your
+yeah, you will get even bigger speed ups in your workflow if you match the storage with it. So distributing computing is one thing, but you get even more speed ups if the storage maps to that, and we'll see all kinds of design, principles, data, locality, fault, tolerance, and all of that. Okay.
+so again, last week we distributed computing. This week we're going to distribute the storage, and next week some of you are fans of the pig, for instance. Yes, next week comes the pig. As a matter of fact, that's not true. The week after that comes the pig. Next week comes the Hpc. People. Okay, let me say this right now, in case we don't get to it. Next week we have a guest lecture. I'll be here. I'll be here, but if I'll moderate. But if a guest lecture by the whole team
+by the high performance computing team at Nyu, it's amazing.
+So please think of questions you want to ask them. So they have a whole presentation prepared of how dataproc and green and all these things work, how the gpus work at Nyu specifically.
+but at least a 3rd of the lecture is reserved for your questions. So this is a
+once in a lifetime kind of kind of like opportunity to talk to leadership
+and workers at the Hpc. At Nyu. So please think of questions until next week next Monday. Yes, like that. You might have about how this actually works under the hood at Nyu. Yes, all right, and you will need all of this, because we'll we'll use it soon. So the more you ask them, the more you will, you will know. Okay.
+anyway. So that that's last week and next week. So what do we do this week? So 1st of all, do a little bit. Cds.
+then we do some data storage principles. And this is a good example. So we talk about data storage in principle, like, what are the principles of data storage.
+But then we'll talk about hey?
+Why like, why even distribute that? That seems like, you know why? Because you're going to have a lot of problems once you do that because you have to put that Humpty Dumpty back together again. Yes.
+so why do that in the 1st place.
+and then finally, hadoop is a solution. Hadoop is a solution. Hfs solution to all of that. So basically, there's some data storage principles. And they've been around for a long time. This is our Cs part.
+Then we talk about
+how distributed storage solves some of these problems, but introduces its own complexity, and and then the good news is Hdfs.
+for the most part hides this from you as a user.
+Most of this is abstracted away from you. You don't have to worry much about that. But you do have to understand how it works. Otherwise, you're going to have big problems. All right. Let's start with
+our ces part.
+Okay? So
+we talked about hash functions functions already. Last time. So this came up in our in the in the triple, A, a lot of people like. I have no idea what you're talking about.
+you know. Remember, I said, just hash it. Remember that I said the last time at this step. Just hash it. People are like what?
+And thank you for the feedback. So 1st of all, it is not this. What is this? This is a hashtag. Yes, hashtag. So that's not what it is.
+That's not what it is.
+Let me tell you what a hash function is. Let me tell you also why why we why we need them so 1st of all, hash functions already came up last time.
+They will come up again today.
+and they will come again next time, and the next time after that. So hash functions are kind of like a
+common Cs way to do lots of things. Yes.
+yes, it is worth understanding what they are.
+So let's let's let me tell you what they are. So hash functions are functions that take an input often called the message, and they output a fixed string
+of bytes. Has some fixed size, usually isn't as a number. It doesn't have to be a number, but it's usually a number. That's what it is.
+And the output of this is called the hash value, or colloquially, the hash.
+Yes, all right.
+And here's some nice properties that they have
+that you might want to have depending on the use case. We'll talk about some of the use cases in a moment. There will be heavily used in this class also for data science purposes, although I'm going to start with some cryptography applications, which is, that's where that's where this comes from.
+So 1st of all, it has to be deterministic. The same input has to yield the same output. So if the same message goes in, the same value has to come out. That's the 1st thing. Yes.
+this one is more like a nice feature, but this will only work
+well if you can do it fast. Yes, and it has to be worked fast for an arbitrary input
+this one is for for some applications is going to be very important. Small changes in input should yield large changes in the output, and you'll see in a moment how we can implement that.
+And then 2 other properties that are nice to have one is called pre-image resistant.
+That means if I if I give you the hash value that's hard to reconstruct what the message was.
+we'll talk in a moment. Why, that might be a good feature.
+and sometimes that sometimes that's a it depends. I mean, it depends. I mean, if this is a good feature or not. So, for instance, sometimes I'm not sure if you've seen this in old video games.
+your save location is only
+stored as a hash value. So once you put some code in, you can restore what? The where your it's kind of magical.
+and the way that works is this is not pretty image resistant. You can uniquely identify what the, what, the you know.
+what input yields, which hash file? Does it make sense what I'm saying? If you ever wonder why not know what those Japanese
+video games in the nineties you put in a code.
+and you can restore what the exact state of the of the world was. It works with a hash function? Yes.
+and in cryptography we usually want to make sure that it's hard to invert. So if I share my public key
+with somebody.
+You don't want that. It has to be pre-image resistant. We'll talk in a moment. Give some examples, and then there's somewhat related collision. Resistant means different inputs should very unlikely map on the same output. Okay, we'll talk about this later in the class. We talk about pigeonhole principles and all of that. This has to do with searching, searching, long lists of data, all right.
+So far so good.
+And if you have never seen this before. It is probably worth
+trying. This in kind of some examples. Yes.
+So let's say, this function. F of X takes x, MoD. 11st of all. What is that? What is MoD. MoD means? What Max
+modelar? What does that mean in English?
+Somebody somebody else? Yes.
+Is that jolie?
+Yeah, and divide X by 10 by the monolo and return what? You're right.
+The natural. Yeah, the remainder fine. Thank you, jolie.
+So, for instance, F of 7 MoD. 10 is 7. Yes, it is not divisible by 10.
+So you just return that. Yes.
+F. Of 42 is. Martin is 2. Yes, yes.
+By the way, it's been 2,777 years since the founding of the city.
+Rome. Obviously all right.
+So question for you is is F of XA hash function
+by the criteria that we just discussed. Some say some people say no. Some people say yes. Can you give me a reasoning, Luca.
+Yeah. Luca says, yes, and it's a bad sign for you, because Lucas is Cs major.
+Go ahead.
+Yeah.
+And it works for arbitrary inputs. And MoD is fast.
+Okay. Great. Yes.
+Wait. It doesn't have to have that. Whether whether that, whether you want that or not
+depends on what application you have. Sometimes you want pre-collision. Let's talk about that.
+Is this pre-image resistant, sir?
+Adam, is this pretty image resistant?
+Yes, right you cannot, you cannot.
+you cannot extremely. Yes, you cannot. You cannot recover what the what the input message was from the hash. Yes.
+is that a problem?
+That's not a problem, whether it's a feature or bug depends on your use case. If this was a cryptography thing where I want to share my public key, that's great. I cannot recover what the message was from what I share publicly.
+If this was like for recovering my save
+save position. That's not good. Yes, because it's it's ambiguous. Yeah, Luca.
+We'll talk about that later. That's a separate issue. Keep that thought for another 6 weeks.
+All right, let's not complicate things right now, but that's a good point. But keep that thought that has to do with. We'll talk about that, anyway. What about collision? Resistance? Is it collision resistant?
+It's not. Tell me more.
+Yeah, it is so. And this has to do with the granular granularity output right? What are what are the only values of the of the of the what are the only values of the
+model of 10? How many values do we have?
+10?
+So there's an infinite number of numbers, and they're all mapped onto 10 outputs. So this is extremely, not collision resistant. Yes, and, by the way, some. But let me just be very clear. And this is going to become important later, when we talk about serialization, too. Whether this is a bug or a feature
+depends on what you're trying to do. Right.
+We will, we will very soon, although soon depends. 6 weeks soonish detect cheaters with hash collisions.
+We'll do a we'll we'll do cheating detection from hash collisions all right.
+But sometimes hash collisions are a problem. So whether it's a feature or a bug, I guess if you're the cheater, that's a problem, anyway, whether that is a feature or bug.
+I will have to now put you in the future, because I just want to.
+you know, get to the Hdfs today, but we will get to it when we get to it within 5 to 6 weeks.
+Another function. This is a, this is a different function. G of X is ax plus b, MoD, p. Now A and B is on constants, for instance, 3 and 5 p. Is some prime number, for instance, 97,
+and that just hash it for you?
+Same inputs. But now, now, what if 1st of all about is this a hash function?
+Is it a hash function? Somebody else who has not somebody who's not spoken yet. Is this a hash function?
+Hmm.
+Is is a hash function, Max.
+Yes.
+Why, you're right. Why, it has all the necessary criteria. Yes.
+what about the optional ones? Is it pre-image resistant?
+No, no, it's not.
+But what about collision? Resistance relative to the 1st one
+much more so so often not not perfectly, but more so. Yes, often they do. MoD. The way you get to make something. Collision is you often MoD, with a large prime number.
+Not
+it's 97, but a prime number, for obvious reasons. Yes, because then you map map it onto different ones. Yes.
+so this is not just collision resistant, but much more collision resistant the 1st one. Yes, okay.
+all right. Now again, briefly, why do such a thing? 1st of all that's lots of use cases and which which properties you want to have depends on the use case. This one is a big one. Error, detection. Imagine you feed a whole book into some hashing hash function. And we'll do this actually, today. So this is actually something we'll use today. Keep that thought. You put the whole book in unicode characters into the hash function, and you get some number out
+and let's say somebody modifies the book a little bit. They drop a comma or something like that, or they drop a white space. You will know, because the output has changed dramatically
+that someone has tampered with the file. Yes, so maybe not intentionally. But let's say, maybe someone dropped, dropped a comma or dropped some white space or something like that. But a small input change will lead to a big change in the in the hash, in the hash file. So often we use this for checksums. And that's actually how Hdfs uses hash functions today for checksums. All right, we'll talk about what that is.
+This one I mentioned, for instance, most websites I should qualify most secure websites do not store your store, your passwords.
+They store a hashed version of your passwords.
+and it can tell that you typed in the right password, because whatever you put in matches the hash.
+but they don't know what you put in, by the way, which which property does it need to have for this to work. What property does your cryptographic have to have for that to work
+a Max collision resistance? Why? Because 2 different
+map on different values.
+Okay, I guess I'll accept that.
+And then this one also relies heavily on hash tables.
+This is you know. Often.
+If you want to create a lookup table or index, Luca and everybody else. We are not. Gonna we're not gonna like, search the whole database.
+We're not going to do that. We're going to store the keys as hashes, and that's much faster to search, as you will see shortly. So, anyway, so become friends with hashes, or at least with the concept of hashing, because we will. We will do a lot of hashes, and Csp will do even more of them. It's a kind of a standard tool.
+It's kind of like what we use greatness center, for. It's like, Hey, just hash it all right. And there's others that will, as I told our Luca, will come forthcoming later classes. There's many other uses that we'll see in this class
+and in other classes.
+anyway. So that's our 1st part. Second part is data storage. Okay, let's start with, like, from 1st principles.
+we have data, we understand. Sorry we have data. We're going to store the data. Sorry, Max.
+annoying question. That's not. That's not a good start. But keep going.
+Yeah, what about it?
+Well, it's Hdfs, right?
+Okay, I remember, I told you I have a synchronization plan.
+If your lab's on Tuesday, that will be made up next week.
+and then the people who have the lab on Tuesday next week will not have a lab next week because we have the infrastructure people. Anyway, it's fine. It's gonna be. It's I'm going to send announcement.
+Kim, why don't you email me to to make that announcement.
+anyway. So but I'll make that announcement. Where was that? So, anyway? So let's go back to 1st principles. We want to store data on disks and disk arrays.
+Why? So? It's there permanently. Yes, we don't want to
+put it all in again every time you talk to the computer. Yes.
+anyway. So let's say this again, to understand what problem Hdfs solves and why we 1st need to understand what the problem is. So let me tell you what the problem is.
+Okay? And again, this goes, this goes back to at least the 19 fifties. The 1st hard disks were
+were available in the 19 fifties.
+All right.
+So so, yeah, so we talked about this already, so conceptually, your file system has a hierarchical structure as your directories, and that the leaves are your files. Okay, that's the conceptual part.
+And there's hardware. And that means they're stored in disk. And there's at least 2
+common versions of this, at least historically, one is a floppy disk, and you've probably never seen one in real life. But I should bring one.
+It like flops around. Yes, this is a 5 and a quarter inch bisque flops. Hence floppy disk.
+and this is a hard disk, because it's made out of metal. It's hard, all right.
+and these are these disks, whether floppy or hard disk. Well, disk it's in the name spins
+spins around. Yes, these disks spin.
+There's a reader. We'll talk about the reader in a moment.
+and there are these contiguous sectors on the disk. This is also true for Cds. Although you don't know what that is, either or Dvds. They're all disks. They spin, and the data is stored in contiguous sectors that are read out by a head that's coming in a moment from your platter, from your disk in consecutive bytes. Yes.
+and I want to say this right here. A sector is the smallest
+unit of storage. You cannot store data in a unit as small than a sector. Sectors are tiny.
+So half a Kilobyte to 4. Kilobyte. Yes, and.
+as you say, here, the sector can belong to at most one file. So a file has multiple sector. But any given sector can only belong to one file. So far. So good.
+Yes, no. Okay. This is always a tiny amount of data. Yes, that's
+4,096 at most switches. Yes.
+Now, there's an interesting intermediary layer which is going to come up, come up again today, which is what this is, why it's worth mentioning. So it's a file. A file is broken up into many sectors.
+Each sector belongs to one file.
+but there is an intermediaries, intermediary
+storage unit, which is called a block.
+and a block is more more or equal to a sector. Yes, so
+so a block contains of multiple sectors. Yes, and so, for instance, a logical block could be on
+different portions on the disk. Okay, but
+meaning different sectors under this. Yes.
+obviously the more contiguous they are, the easier is to read and write, but in principle they can be split up. Yes.
+and all of this complexity is
+hidden from you by the operating system. You don't have to worry about this at all. The operating system knows where the sectors are
+and where the blocks are that correspond to the files. Yes, so far so good.
+And so you could have a file that is spread out over entire disk.
+The only what limits this. And sometimes you can see it right here. Do you see this? This is the head. This right here is the head. At any given moment you can only read out data from one part of the disk, and this head moves around and reads out the data that's right under it. Yes, and I don't want to get too much into the details. Last year, when we taught this. We had a physics major in the class, and they were really interested in the underlying magnet storage of this. We can talk about that next time, if you want, because I have to run after class. Oh, yes, you want to know. Okay, go ahead.
+Block sizes.
+Sure, you can have a file. That's just half a Kilobyte. But that's
+a good problem to have. Because then you don't have the problem you're going to have today. The problem that you have usually is that your file might not even
+this? Okay, everything. So 1st of all, this is how it works in one disk. But the problem is these days. What if your file is too big for one disk?
+Right? That's the problem we're going to address now. So, Sean, right?
+So if you have your problem that your file is tiny. Well, then, you don't.
+Then you then this class actually has a limited utility because it's a big data class, right? This is tiny data.
+I'm not sure when it was the last time I had a 4 kB data file like that's been a while, but it's possible it's possible. But anyway, the real problem is usually when when your file is bigger than your disk, let's talk about what you can do.
+Okay? So and the classic solution for that is called raid raid.
+And that's literally a nice acronym. I like acronyms, redundant array of inexpensive disks.
+Okay.
+so what what was beautiful about this is you can use commodity hardware. So that means what inexpensive means I don't have to buy some kind of special purposeful storage just for your application that costs millions of dollars. I can buy a bunch of disks
+that cost a couple 100 bucks, and I can wire them together and have what's called a raid array.
+all right.
+And here's a big flex. So what the rate array allows. And this has been going on since the eighties we're now, by the way, there's 7 raid formats raid, 0 raid, one raid, 2. Raid, 3. Raid, 4. Raid, 5. Raid, 6. Raid 6 is newest one. If you're interested. I can tell you all about the different properties of raid 0 to 6. So there's 7 unique formats that we're up to.
+But we are going to highlight 3 of them today. The other ones are kind of like.
+not as commonly used.
+but the big. The big principle is that if you have the opposite problem that Sean has. You have a gigantic file. It's literally bigger than your hard disk, which is possible right? You could have
+a need for a giant data file. Let's say you have all this genomic data. Yes, that might be bigger than your hard disk. That's possible even today.
+Let's say you take some
+crazy video file I don't know could be bigger than bigger than your heart itself. I don't know, please.
+It's a great question, but I also like Lucas Question. I'm going to defer that
+to about 3 weeks from now, because I have a whole
+lecture on compression, and there's upsides you save space. But the downside, I can tell you right now is you're going to say it's going to cost you time because you have to compress and uncompress to read and write. So there are use cases for that. But and by the interesting solution, right? Sometimes you might just compress it on your one disk. Sure you can do that. But then
+you still have to uncompress at some point to do some data storage data processing on it. So for now, we pretend data. Compression doesn't exist, although something like Per K. We'll cover this in 3 weeks.
+Has native native data compression. I'll show you how it works anyway, for now.
+what rate allows you to do is you can distribute the the what you'll call it the
+file over multiple disks.
+But from the perspective of your operating system. It looks like just 1 1 volume like one hard disk. Yes, it's not one hard disk in practice. It's it's literally multiple disks in physical storage. But to your operations it looks like one logical disk. Luca.
+no rate is a well. The the multiple disks are a like,
+a well, that's hardware, right? But how they are linked with each other. That's software. And I'll tell you about the software in a moment.
+Okay?
+And so what we want is a high capacity. So that's like more than your more than your like hard disk.
+one hard disk, high reliability means if something fails, you can still recover your data and high throughput. That means that's by the way, that's the downside. With your solution right now you could compress it.
+But then you have a problem with throughput. That's going to really, really make it very slow. And I made that mistake. Recently I had a
+problem, break my machine and decide to back up my machine kind of compressed version.
+90 plus percent of the time it took to make that image was just a compression.
+That was a bad move, all right.
+anyway. So and as I just said, there's 6, 6. So 7 levels of this rate 0 to 6,
+and they have different trade-offs of capacity, reliability and throughput. Okay, they made this trade-off in different ways. I want to just highlight some of them. So you can see how rate works. And look at this for you, how this works. Practically okay, so rate 0 is, you have 2 disks. And, by the way, not my fault. But this is how it is. Cs people count from 0. So it's usually disk 0 and disk one. Okay, it's not my fault. They don't understand the ordinal property of numbers. Okay.
+it's usually disk 0 and disk one. So you have 2 disks, 2 disks. But in raid, one seriously raid 0, they are striped together. What that means is if the yellow part is your data file, that's your data file, your data file
+and A is a block.
+The 1st piece of that block is put, or maybe the file is the yellow file, and a 1 is a block. A 2 is a block, a 3 is a block, a 4 is a block, a 5 is a block, a 6 is a block, a 7 is a block, a 8 is a block. What it means is, if someone ever asked what striping is striping means, the data blocks
+can be distributed on different on different disks. You see that
+this is rate 0. Do you see this?
+Everybody that's do you see this?
+Yes.
+it's literally what raid 0 allows you to do? Is it allows you to. Well, let me ask you something. Let's have, instead of having one disk, which we call disk 0,
+we have 2 disks.
+What does rate 2 allow you to do. Let's say they have the same size. What does it do for you? What does rate 0 allow you to do? What does it do for you? Anybody quickly. And there's a point, by the way, that I'm telling you is Mark.
+it doubles your capacity. That's it.
+If you literally just need a bigger, a bigger disk.
+You can. You can. You can stripe it together with rate 0, and you have a disk twice as big.
+Hey, mark. What if you needed 10 times as big of a disk.
+you could buy 10 disks and all, hook them up with rate 0 and have a giant disk. Yes, let's say you need 20 TB disk. You could buy. You could buy 12 TB commodity hardware for 100 bucks each, and then have a 20 TB hard disk. You could do that. Oh, yes.
+no. The blocks, the blocks, the yellow part of the file.
+and the a 1 a 2 a, and so on. That's the blocks of that file.
+Sectors to blocks, blocks to files. The whole concept of a block is something you should keep in mind, because that's how Hdfs also works. Hdfs has blocks. So so the natural unit of analysis organization is a data block.
+So so Hdfs will move blocks around block.
+I'll go back one second.
+There, see, this is a block, and this is a sector.
+you see, block sector. So do you see, this is the file. This is the file. This is the file. You see that
+the file might consist of 1, 2, 3, 4, 5, 6, 7 blocks.
+and each block might consist of
+2 or 3 sectors. Yes, by the way, as a preview, because I know people losing interest already. He's like, Tell me about hfs already. We'll get to that.
+Does anyone know what the default block size of Hdfs is?
+Anybody somebody quickly. I know somebody must know this.
+You you know
+that's correct. It's 128 MB. If you do, by the way, we'll teach you in the lab, Max, that you don't have this week, but next week
+how to configure your Hdfs cluster, but unless you touch it, the default block size will be 128 MB. Yes.
+why.
+your data file is usually not going to be that it's got to be bigger or smaller. But you can make it whatever you want. There are reasons to make it bigger or smaller. We'll get there when we get there. But let's 1st build up to the problem. So in raid, what raid seer allows you to do is literally just increasing, that it does not help with reliability. It does not help with throughput. It straight up just helps with capacity. Yes, it's just literally you want more capacity. You buy another disk. Yes, Mark.
+tell me more.
+I see if you're lucky enough that if this is striped properly that that you know you. Okay, maybe.
+But that's very unlikely to happen. That's actually. But what Mark is saying. This is actually one second, Hamza. This is something that Hdfs actually does. So in raid. Very unlikely. Hdfs, absolutely so in Hdfs. By the way, let's ask, what's your name again?
+Say that again, Haruni, do you also know what the standard replication factor in Hdfs is
+wonderful? This is the default replication factor in Hdfs. 3. What Taruni is saying is in Hdfs. We have 3 copies of every data file data block. I apologize, not the file block block
+which helps with access. Because, let's say, you're
+data, Node, or you don't know what that is yet. But let's say your data. Node is idle, and you have a copy of the data there. You can take that job, does it make sense? So this, no, but Hdfs, yes, same idea. Humza
+of a file
+blocks. And everybody gets needs to get used with the concept block, because, even though we are not going to use raid blocks in this class, the concept of block is going to reuse for Hdfs and other things. Yes.
+correct.
+A sector is a atom of data.
+It's indivisible. You cannot make it smaller than a sector. You cannot have stray bits and bytes running around. It's it's what an atom is.
+for matter, but for data, yes, the direct analogy.
+Yes, follow-up question.
+Well, as you can see here, like each. Each block consists of multiple sectors. Yes, see each sector.
+So so if you look here, you see, yeah, yes.
+no. Why would you do that?
+No.
+that would be. That would be better all right, anyway. So so is it. By the way, just this. I forgot to mention this. These are not ordinal. It's just literally normal, like they're different. So Hdfs 6 is not better than Hdf, 0 sorry a rate. A raid 6 is not better than raid 0. It just has a different trade-off of
+capacity, reliable and throughput. Okay, all right.
+So now.
+rate 0 solves the problem. If you, if you literally cannot afford a hundred terabyte hard disk. But you want a hundred terabyte hard disk in your machine. You could buy 1010 TB hard disks and do that now
+with rate 0. It's straight up. It's like capacity. Maxing. It's like, damn everything else. Which is maxing capacity. Okay, now, here's the downside.
+Let's say we do that we need to start to worry about fault, tolerance, disk failures.
+Now, why would you want to worry about that? Let's say the chance of some hard disk failing is low, one in 100. Yes.
+but what if you have a thousand drives?
+How many would we expect to fail in a given year?
+If you have a thousand drives now, chance of one failing. Assuming they're independent of each other is what
+say? What?
+10? Yes, that's correct. We would expect expect value of is 10 failures per year. And, by the way.
+how do I put this? Ask the ask the Hpc. Guys next week about their failure rate.
+they will say I'm not going to give it away. I asked them last year it was shocking higher than this.
+So why is that a problem, mark or anybody else. Let's say we stripe everything up to a giant rate 0. But we have this failure rate. Why is that a problem? If if one disk fails, I mean, the rate will just keep trucking. By the way. But what's the problem with that?
+Anybody? Yes, is it Jay or Ray Jay?
+There. If it's gone it's gone. We could do the
+it's gone, Mimi, you know it's gone right.
+It's gone. So so yes, you can have a giant disk with rate 0. But
+given that, we live in the real world and this can fail. I really don't advise that. And the Hpc. People definitely don't advise that because they see.
+I mean, this is actually awesome. It's much higher than that.
+It is shocking how high it is.
+And by the way, the failures are often not even independent. We'll talk about that, too, next time, or whenever we get to it whenever the next time is after Hpc. Guys. For that reason raid one was
+introduced.
+I've seen. Okay, look at that. This is now has a nicer, not nicer, but has a maybe this is going to explain the striping clear. Do you see how it's striped here? What do you see here? a 1, a one, a 2, a 2, a 3, a 3. So now what
+each block is, copy, replicate it copied on the other disk.
+So 1st of all, Mark, is this going to solve your problem? Now, let's say you want a bigger disk. Does this help?
+No. So you could have 10 disks with raid one, and you have no capacity increase at all.
+So this is not capacity maxing at all. What is this Maxing?
+Huh?
+Reliability on fault? Tolerance? Yes. So let's say, this is some really important data like.
+I don't know. Really, your life depends on this data. Yes.
+You might have 10 replications. Yes, so that 9 disks can fail. You still have one left. Yes.
+and this one, by the way, Mark has the actually, it's not in the slide here, but this one has the has the increased, although I have a slide on this in a moment.
+So let's do it now. So this has the property you just mentioned. So so
+1st of all, write. Speed is much slower because you have to write every twice.
+If you have raid one, your capacity does not increase.
+It's maxing fault tolerance as per grena and reliability.
+But you need to write the same file, the same block to all disks.
+but the read speed can dramatically increase, because now, now, mark, every disk has a complete file. So so do you see what I'm saying, like, it's all the blocks. So this one has this guaranteed. Yes, go ahead.
+That depends how the operating system handles that not really. It can be much slower.
+The disk might be able to handle that. But the operating system can't necessarily so don't, don't rely on that. So when when would you want to make this trade-off? Oh, sorry, by the way, don't feel, don't be shy to ask so thanks so much.
+Well, then, this is not gonna help you. Right? Which is what is, which is what?
+No, this is just okay, rate 0 and one are mostly introduced by me, but for like
+to show the principle in practice, most people use rate 5 or 6 for reasons they will see in a moment because it's a nicer trade-off. So this is rate 0 is maxing capacity, but really bad with reliability. This one is maximum reliability, and to some point throughput. But however, read throughput, but not write throughput. So it's complicated. By the way, when would this be worth it? And what kind of application?
+Again, this goes with what one of this relevant like later today.
+Hdfs has some of the problems of this for the same reason, can anyone think of an application where it's more useful. Yes.
+sure in general.
+Yes, Richie, that's it. The principle. Write once, read many.
+So we're WORM.
+That's the whole thing. When you have these very important, you know data, you write once.
+maybe the demographic data, something like that. But social security database. Yes, if that is computerized, I don't know
+so, but read many times. Yes, so far. So good.
+Okay.
+Now, those 2 were just introduced
+for principles. Yes, maximizing capacity for rate 0 and maximizing reliability for rate one. What we're actually going to use in practice is rate 5 and 6
+But to understand that we have to understand the concept of what a parity bit is.
+Parody bit. Otherwise it will make no sense.
+What a pair of bit is. It's a single binary digit a bit
+that we add to our data, such that the total number of ones is either even that's called even parity
+or odd odd parity. Yes, what that will do for us is we can do
+both error, detection, and data recovery, and and both principles are used in Hdfs, not in this way, but both principles are used in Hdfs, but not in this way.
+So, by the way, if someone ever asks you, does Hdfs use paradi bits, the answer is, no, it does not use paradi bits. There's another way of doing that. But but rain uses paradi bits.
+Okay? So if you have a single bit error, and this is actually where the magnetic storage comes in. If you store the data magnetically as you might, those magnetic spins can randomly be flipped by, say, the magnetic field of the earth
+that goes into. Where's Michael? Goes into quantum physics? Never mind, no, Michael.
+quantum. Oh, there goes into quantum physics, and I'm going to have the conversation at some other point, but quantum effects can cause single bit flips. Yes.
+thank happens all the time. Yes, exactly happens all the time. So if you have your gigantic
+array of disks.
+you might have a large number of random flips of your magnetic spins. You obviously can't have that if you have these series and one stored all right.
+So what so what you can do
+is you can apply exclusive. Or that's Xor, and we're going to represent Xor of this
+this operation symbol here.
+And let's make the Xor table. So let's say we have a disk 0 and disk one.
+and we store on a 3rd disk on a 3rd disk.
+restore the Xor of the 1st disk and the second disk, and again 1, 2. But the Csp. Will call this 0 and disk one fine.
+Why is 0 Luca we talked about earlier today. Why is 0 and 0 mapped to 0 in Xor.
+It's exclusive. Or tell me more, tell me more. We talked about this today.
+earlier today I remember the conversation.
+what this is. This is a truth. Table Y is 0 and 0 mapped to 0 and 1 1 map to 0 in Xor.
+It it like maps to true, if they're different.
+and if and only if they're different. Yes, if they're the same value. 0. Yes. So there's 2 ways to be 0. That's if they're both 0 or both one. They match. They mismatch either way you get one. Yes, this is a truth table of a X or of X, or yes
+question for you.
+Let's say we have these 3 disks, one that has the
+the the 1st bytes, and the second bytes. So bits, apologies, are bits, 1st bits, second bits, and then we have a whole disk, that match that that stores the parity bits.
+Let's say that's the case.
+and, let's say, disk one blows out the power supply blows up, and the whole thing burns to the ground. It's all destroyed
+which happens, or the the platter breaks, or something like that. The head breaks off.
+Anything can happen.
+Can we recover what this bit was if we have this left and that left anybody quickly?
+Yes, we can.
+And how, if this is 0 and this is 0. What must this have been?
+It had to be 0. There's nothing else it can be. Yes, so the idea is that parity bits allow you to recover
+missing information.
+It has a single bit failure. That is okay.
+How about? We have 3 disks? We have these 3 disks. There's all these bits. There's a true table of nest, not nested chained Xor.
+Can we recover it from the from? Let's say any of these disks goes down. Can we recover what it, what it must have been?
+Can we unambiguously recover the content from the surviving disks
+and the paradipits disk can be, or can we or can we not?
+Let's say one of these disks goes down as it might, because the whole thing is, by the way, Mark and everybody else. The whole disk fails. I mean, sometimes some sectors fail in the disk, but often the whole disk fails yes adam
+we know what this
+doesn't matter which which one it is. As long as we know that this and that
+let me look at.
+Let's say, let's say, disk 2 fails.
+and we know there's a 1 here and a 0 here, and there's a 0 here.
+Do we know what this must have been?
+Yes, so we can reconstruct it. Yes.
+Does it make sense to everybody?
+Oh, sorry up there.
+Okay. Very good. Question.
+A raid. No. Raid. 5. This is going to be for raid. 5 works for single disk failure.
+If 2 disks fail at the same time, then you need rate 6 grade 6 is literally designed.
+It has 2 disks with parity. Bits, believe it or not, so that helps you. If 2 disks fail.
+Yes.
+yes, correct all. It exhausts the entire other disks. Yes, yes, yes.
+and let me show you how rate 5 works.
+Oh, there's some other raids. 2, 3, 4.
+Let's see. Yeah. Rate 4
+raid, 4 stores all the parity bits in one disk.
+Okay.
+that's not how raid 5 works raid 5 works by storing the parity bits kind of intermixed in the distributed through the through the blocks. Do you see that
+that's not really important, but that's true.
+So if someone ever asks you, what's the difference between raid 4 and rate 5 raid 4 puts all the parallel disk on one disk raid 5 puts them onto different disks. Yes. Do you see that?
+But what's the advantage? Now, mark or everybody else. So we're now striping our file. Look at this.
+It's like like rate 0. We have them striped on different but is this a downside.
+We have to strike one different. What you will call it disks. Yes.
+but we have an extra disk with the parity bits, you see that.
+So what's the advantage of this?
+What's the advantage of this?
+Yes, and it's fault tolerant because of that. So if you have single single disk failure, any disk failure, you can recover the disk from the other ones. Yes, if you anticipate 2 disk failure, either should get a better hardware provider or use rate 6. Okay.
+I mean, that's pretty serious. If you 2 disks fail at the same time.
+How about capacity?
+Mark?
+You, just lose one. Right? So there's obviously K, minus one, yes, or N, minus one. Yes, you see that
+so far, so good.
+Oh, yeah. Up there, Skanda, how you doing?
+Okay? Which part of the truth table.
+Okay? Sure which one goes down. You you pick
+which disk this, that which disk, blows up.
+it just overheats and fails completely. Disk. 0 fails completely. Okay? And which bit are you worrying about? Which bit which which road you want to recover?
+The idea is, an entire column is taken out. It's gone!
+Burned in a fire.
+but we can recover it from the parent a bit. Yes, it had to be that.
+Did I make a mistake? In truth. Table.
+Where? Where?
+Where? Where's the? Where's the mistake in the truth table
+really make it happen? What is happening? My team and your team already?
+What's happening, true or true, is true? Where? Where? Evan? Which which row
+did I?
+0 or 0, is 0 work.
+where? Where? I don't see it?
+What Matt. Matthew.
+Which row are we talking about?
+But this is odd. You see
+something about this.
+All right. Tell you what in the interest one second Max, in the interest of time. It is possible I made a mistake in the truth table, although I don't think so. Let me review it. Okay.
+I will email you if if I did. Yes, sorry.
+Yes, okay. Maybe you can explain it. This is exclusive, or go ahead.
+Another table.
+Yes.
+that's it exactly.
+Yes, this is a chained. Okay, so let me let me rephrase what you said. This is a chained operation. So 0 and 0 should evaluate 2,
+and then 0 and 0 should have value to. And it does.
+And then 0 and 0 should evaluate 2 and 0 and one evaluates 2.
+Yeah, so I don't think I made a mistake.
+Where do you see the mistake, Max? Thank you. Thank you.
+On the next slide is a mistake.
+So that's the beauty of this. Look at this. That's exactly right. So, as Mark said, I think it was Mark, this is beautiful because it's almost linear. You just lose one disk. You could have 100 disks and 99 of them could have pure data. You just have one parity bits, and the whole thing is protected by the parity bit. Yes, and you have your gigantic disk with almost linear capacity, increase and almost perfect failure tolerance, although, as you said.
+if you have a hundred disks. I would probably go to raid 6, because that's a lot of disk. Maybe 2 of them fail at the same time. Yes.
+oh, yes, sure.
+So for example, I. So this 2 dies.
+How can I? Okay, very good. How can I recover? Block a 3?
+I can do it. How can I do it?
+Max.
+right!
+Do you take all the bits literally, one by one
+those bits had to come from somewhere? We know what those bits must have been so we can recover it.
+Beautiful thumbs up
+you might have to push a button, but it's pretty pretty straightforward. Yeah, okay? Oh, yes.
+yes.
+again. Most people use this one, because, as Mark implied, it's better if they're distributed because you can more easily access it. But again, yes, go ahead.
+That would be rate 4.
+Now you can rebuild it.
+You just buy a new disk and put the parity bits on there.
+But let's move on. People are already walking out because they're like I didn't come here to talk about raid rate in inside baseball rate. And you're right
+for this purpose for purpose of this class. Don't worry about rate 4 or 5, but let me show you something that I find very, very satisfying. There is a what I'm going to show you. Now, what I'm going to show you in the next couple slides is 2 important points. One is well, let me just show it to you if I give it away. But I promise you it's worth doing.
+Okay, imagine you're a machine learning engineer. That's where the money is these days.
+And you want to build a regression model to predict life outcomes. Yes.
+And so you want to include demographic data like ethnicity, biological sex and immigration status in your model. Yes. Is that reasonable to include that for about life outcomes to those 3 things? Is that reasonable to add them to your
+model.
+Yes, that's reasonable, because you know, that might have an impact on your life quality. Yes.
+someone just moaned. But yes, yeah, no, me, too.
+But we have a problem, it's qualitative. So let's say we do immigration status. So either you're a citizen or a resident or something else. Okay.
+why why is that problematic. If you want to put that, if you put it straight up into your regression model, why is that? Python will do it? Yes, but.
+Rebecca, what's the problem. Python will do this. But if you put a straight raw into the model, what's the problem with that?
+Given the nominal ordinal and cardinal properties of numbers. J.
+Yes, it's nominal data level. But Python has no doubt right?
+So it has none of the properties. Multi regression needs none.
+So what can we do. Does anyone know we can do it? Can you do it? Yes.
+Oh, oh HE. Yes, the one hot encoding. What does that mean in English. But it comes to us from electric engineering, one hot encoding so it's 1 life, wire all the other wires are off what what does that mean
+let's do it.
+So by the way, this is called in engineering one-hardt encoding and statistics called dummy coding.
+So this is called demicoding, okay, here, we go. Here's our immigration status table, and then we do Ohe!
+And then we get something like this. So we we as Buddy what's your name?
+As Richard said, it decodes into 3 columns. Are you a citizen? If not, we give you a 0, otherwise we give you a 1. Are you resident? We give you 0. Otherwise you won. And if it's something else, 0 1. Now, so far so good. This is beautiful
+question for you, and this might come up in your interview, and I guarantee you some of you have made this mistake already in when building a model.
+Would it be a good idea to include all K columns here, 3 in your model, so as not to lose information. So a lot of people do. One second, Rishab, a lot of people do.
+They're like, Oh, I see the problem, this is, and this is good. By the way, I'm not poo-pooing this good insight. This is not cardinal or even Ordinal, this is nominal, so you have to do 100 encoded. Great. But should you put it on your model? Lol, just like that raw second raw Darren or Jay somebody else you already know somebody else. Yes, Jay.
+no. Why not? Are you sorry we should lose information
+that'll remind you of something? It's like a parody bit.
+Yeah. So if you do that, you just found dummy variable trap. Have you heard of that before? Yeah.
+why is that a problem? What's the problem? What? What is? Why is this catastrophically bad? I would argue that your model just became a lot worse.
+So anyone know why, Max market?
+Yeah, you just created a extremely collinear
+column. It's a hundred percent collinear.
+And what's the solution?
+Worship?
+You have to only use K minus one column doesn't matter which ones.
+but you can only use K. Minus one. And
+the reason I find it satisfying is, you probably wondered, since you're taking your statistics class, why, only K, minus one, right?
+If your statistic price was like mine, they were like.
+just use K, minus one. Don't don't worry about just K minus one. This is why one of the columns functions like a paradipit. And that's not extra information. That's your parity bit. You can't do anything with that. All that does here is make your model collinear. Yes.
+very briefly, I want to go back to Hdfs. Why is that such a problem?
+Just briefly, we want to. But what what regression means is you want to like, you know, predict the outcomes from some scale predictors. Yes.
+you usually want to solve this system of linear equations by setting it to 0. So if this is your basis, vectors x, 1 and x 2
+this is your design matrix, spend some kind of like column space. Yes, of X
+problem. Is this, is there any chance? This Y, if is, you know, is in the column space. Is there any chance of that?
+Any chance?
+It's 1 moment whoops hopefully. I have it.
+Is there any chance? This is? Ha! I do
+imagine the floor is a plane.
+Is there any chance you can get there from the from the basis? Vectors?
+No. Why, but the shadow is
+the shadow. Is. Isn't that beautiful.
+That's beautiful. Look at that. The shadow is going to be in the column space, and that's what that's what regression is. It's wonderful.
+But I have a doubt, as you would say.
+this is wonderful! Yes, wonderful! Here's a problem.
+A two-dimensional multiple regression will try to project on a plane. Yes.
+but what if the basis vectors are not independent, but become become whole year?
+Oh, no!
+Still trying to fit a plane.
+But what's the problem? Mark anybody else? What?
+What's the problem and see it right here? Yes.
+they're perfectly collinear. They're literally the same. Yes, go ahead.
+There's no noise here, because we got them for the parity bits. You're basically fitting with the parody bits
+there. This is not even. There's no noise doesn't help you. Normally, data. Science noise helps you. Yes, but nowadays it's strictly ranked efficient. So now, what?
+What's the problem?
+Yes, that's for sure. But worse than that, with the projection, we're still trying to do it.
+Yeah, like it. How would like, how would you divide the betas? There's no way. So now you made a model that's objectively does not as does not capture any more variance, 0 more to variance.
+But it's a lot more variable.
+You made you made a model objectively worse. So never do that. Now you know why not? And and
+Now you know why. But you only use K minus one. So they call the demo variable trap. Basically, you can't do data, sensitive parity bits.
+Now let me tell you the meta perspective, why this matters.
+So here's the idea.
+If you're a Cs major, only
+you're like, Oh, lol, pair the bits!
+That's a nice feature to start to help with, like you know. Fault, tolerance and reliability. Yes, if you're statistics, Major, only like, Oh, that's a dummy, variable trap. It's a terrible bug. It's very, very sad. If you're a data science person.
+Then you see both perspectives. You're like. Oh, there's this redundancy over completeness. Whether it's a bug or feature depends on the use case. So so it's kind of like, you see both eyes. You see? 3D. So if someone ever asks you, Rebecca, and everybody else, why, there's a value in a data science degree. This is a slide for you.
+A Cs major might look at this from this perspective, like it's a square. Yes, a Stats person might look at this shape from this perspective may see a circle. But the data scientist sees both
+2 eyes, 2 perspectives. Isn't that wonderful? It's the same principle parody bits
+multiple dummy variable. Is it clear what I'm saying.
+Principles.
+because a lot of people, a lot of you are questioned. Why should we? Why should we not try to hire a Cs person? There's a slide. You should tell them.
+Okay, if you only get one perspective, you might miss the bigger picture.
+It's the same idea.
+Yes, any. Risha, what do you think anything? Anybody, Hamza? Anybody, mark
+quickly. We need to move on to Hdfs.
+No, if no comment.
+Nothing, Max, you're a Ufc guy. This this should, this should resonate
+what?
+Nothing, anyway. So
+so so, yeah. So if you, the striping helps only with capacity, and, as as Mark said, sometimes with throughput, if if you
+by throughput means reading, not writing.
+and the parity bits help with reliability. Okay, so far, so good.
+And this is by the way, you can still do this, you can still use this if you have.
+for many applications. This is fine. You can still use this today.
+But let's talk about? Why do we need distributed data storage
+over many computers? In other words, why wasn't rate enough?
+So 1st of all, again.
+it helps with capacity, fault, tolerance, reliability, and read throughput on a single machine. That's wonderful. Yes.
+And basically, the the answer comes from the fact, although I'm going to elaborate this as long as you do all your computation on a single machine. This is great.
+The problem comes, remember, in Mapreduce, we distributed computation.
+Yes, I hear you
+If you distribute computation.
+this is not going to be good enough. So a 1 sentence answer, why we need Hdfs distribute storage is once you distribute the computation. This is for you. By the way, with the Samantha, with the.
+with the mapping. Once you distribute that to multiple machines, you get real speedups. If you also distribute the storage all right, and you will see in a moment why.
+but as long as you
+compute on one machine you don't need to. You can just use raid. But the problem is this, and we'll show you this in a moment. It's not just saying this. I'll show it to you, but I'll just say it first.st
+If you have distributed computing.
+and you don't adequately distribute data, then to match that communication is going to kill you.
+Communication as you we discussed takes a lot of time.
+and it's going to be a serious bottleneck.
+And so what we need to do is and the access patterns. What I mean with that is, mapreduce or spark, something like that that take full advantage of that. There are certain access patterns
+and start Mapreduce. That makes certain storage principles
+more reasonable than others. Okay, just to remind you, this is very briefly, I just like this slide, because it took me so to make it.
+This is how mapreduce works. Imagine you have your document or set of documents. You split it. That's a splitting stage.
+and you split them in different
+lines, I guess in this case
+they are then fed to different mappers. Yes, yes, there it is.
+Then you applied the key shuffle.
+and then it comes to reducing step, and then you feel result. Yes, so far, so good. The reason I just remind you of that is, let's talk
+from 1st principles. Imagine if we wanted to implement mapreduce from scratch or the storage layer.
+and we have all our data on a centralized
+file server. So all the data is, is lives on some, some what you'll call it
+central machine. How about Mark? Has a giant raid?
+5. Array? Yes, 100 disks. They're all in this local machine. You can do it.
+Yes, but we distribute the computing to many, many machines with mapreduce. Yes.
+now, we would need to send the code. And that's no longer a problem that's small these days. Relative data
+to each of the processors. Yes.
+plus some data block, some, some some slice of data. Yes, usually a block, all right.
+And 1st of all, can you do this?
+Is this doable? Max says, yes, he's right. You can do it. You can do it. What bias is a problem.
+You can do it. But yes.
+correct. It's incredibly slow. Why? Absolutely right? Why, Richie.
+yeah, you, this is great. Someone could ask you this interview, what's violated? The principle of de locality has been seriously violated.
+Right? In other words, you have to send all of the data
+through the network that's going to be very, very slow. Yes. So this is my upshot. Yeah, you can do it. But this is
+honestly, it's going to eat up most of the most of the savings from the disputy processing. The the computation can be so slow that you might not see any speed up. Okay.
+might as well not dispute it. Then just buy a bigger machine like a processor. You need to move the entire data set. And, as Richie already said, if someone asks you, you violated the principle of the locality. Yes. Okay.
+How about remember we talked about the stage and the mountain. How about the other one. Let's say we distribute all the data.
+Let's say each worker gets a complete set of the data.
+can do that right, then no data has to move. Yes, that's great.
+Right?
+We have complete replication of all data on all notes.
+Right? You just send the code around. That's great.
+That's small.
+Yes, so that's does this work, Max. Anybody else does this work?
+Would it work anybody quickly?
+Sure. But what? What is? Yes.
+well, sure. But let's say you send some small results back. That's correct. You would send them back. Yeah, see? To reduce that. Sure.
+But what's the downside? If you have infinite money. That's not a problem, but yes, worship.
+You have extreme redundancy. Exactly. Yes, you like. This works only if you
+literally don't have to worry about storage, you have to replicate the entire data set.
+you know. However, many times, instead of having one giant radar, you pay as many as you have workers, you can do that, but that's ridiculous. Yes.
+in other words, we need to now remind ourselves.
+I mentioned this on day day one. There was principles of distribute work. Yes, yes.
+yes. Okay. So if some big building project you, you need to like.
+think about how that can be efficiently what you call it distributed. Yes.
+and that's where distributed file systems come in. Yes.
+So 1st of all, it's an interesting idea. So just like Mapreduce.
+this would be the processing step.
+Now we're going to distribute just the data. It needs to do that processing, not more, no less just that.
+Over the network.
+It's kind of a compromise between those 2 solutions, instead of sending all the data or none of the data
+which is a trade-off between redundancy and you know, communication.
+We're now sending just enough to do it. Yes.
+and and so, and if someone ever asks you why.
+this is what I just said, it's a better, more reasonable trade-off between redundancy and communications. There's some communication. There's some redundancy, as we just heard. There's some defaults for this. For instance, replication factor is 3, although you can set that yourself. 5 or 10 or
+one don't. Don't do that. Don't do one. But you can set it okay to to make.
+We'll talk about why, why? Why? Why not? Okay? And there's, by the way, many, many considerations. I will just go for down for a brief list.
+and then we'll talk. Then I'll tell you how Hdfs solved this problem or struck one
+one solution. Okay, so 1st of all, we want to minimize communication costs. That's the number of bytes transfer. That's literally whenever you hear communication, you're like, let's minimize that, because that's going to take a lot of time during the network. And you know, what do me a favor and ask the Hpc. Guys when they come next week, how this works in their network, like how much latency they have and what fibers they have, and all that where the server is. Ask them, please ask.
+It's better if you ask, than if I ask
+fault, tolerance, that's reliability. We want to have some degree of that I already mentioned. This
+Hdfs does not use parity bits, but they use something like that.
+But we want to have some degree of fault tolerance, because networks can fail. Yes.
+we want to have some redundancy, but we don't want to go all redundant. We don't think we have some kind of trade-off between those 2.
+This one is interesting granularity. So what I mean by that is what should. So this is what I said earlier to Grena. So for you, the block
+is the most meaningful logical unit of data. Okay, a data block.
+But but what should the size be okay. The smaller the block size is, the more
+the more like precisely we can locate the data. Just data we need for that computation. Yes.
+but we might have more communication needs, because we need to set up a lot a lot.
+If you make a larger block size, you have fewer, you know, granularity. But you might
+trouble. If you have small jobs, which is, it needs a part. So it's it's kind of a trade-off again. So setting the block size, right is, is going to be a tricky question if you don't do anything. Hdfs, as we already mentioned.
+has 128 MB, but depending on your job, they can make it smaller or larger. It makes sense depends what your job is. Your data job data analysis job or your mapreduce job. Larger or smaller blocks might make sense. Because you have to ship the whole block.
+You have to ship the whole block
+to some processor. Should that processor need just a small piece. The smallest piece you can ship is a block.
+Oh, up there it's gonna
+I'll show you in a second
+date locality. Oh, Richie, I mentioned that. What is that?
+Or somebody mentioned it here?
+I think it was you.
+So what is their locality?
+It's a principle, and the hf, has it as much as we can have it.
+Yeah, no moving of data. The processor has all the data that they are in need, and just that ideally
+common access patterns. That's what we talked about. So Mapreduce has some. Some uses a cluster in a very specific way. We'll explore this with others like spark Dask. So so typical data, science applications.
+typical access patterns of the data. Say, read once sorry. Write once, read many times that the Hdfs is up to do. And then, finally, this is why this all works in 2025. The programs are usually tiny.
+like kilobytes. Maybe megabytes. If it's a really big program.
+But the data can be terabytes petabytes if you're in a big enough company. Okay, now.
+finally, but I think it was important to go through all that
+the Hadoop distributed file system. The Hdfs is 1 1 way.
+and probably the most commonly used one. How a distributed file system does all that
+implements all these design considerations. By the way, I say this upfront, although we'll speak most of this next time we meet. Most of this will be abstracted from from you for you. It's just like an app you're using.
+But I'll tell you a little bit about the principles under the hood. Okay.
+so yeah. So 1st of all, we'll talk about this in a moment. There's more to add. Hdfs. We'll
+talk about that soon.
+But what Hdfs is is distributed in storage.
+And, as I said, as as I said already, what it works best for, like in mapreduce is single. Write multiple read patterns. Okay.
+like
+like you would use for mapreduce. It's actually not something you do for, like, say, optimization or something like that. So it's not not good for like machine learning, actually. But we'll talk about that when we get there. Briefly, just as just as a as a as a
+overview.
+So there's the hadoop framework.
+By the way, this is the actual
+yellow elephant of their of their like logo. Yes.
+So Mapreduce is their like processing engine. Okay?
+Hdfs is the distributed file system
+we covered this last time. We covered this now in a moment.
+Next time we'll cover yarn, which is the resource manager, and that's why I already mentioned much, and someone asked about this just now, like, How are these blocks sent around? And the answer is, you don't have to do any of this yarn
+makes the resources available to the processing engine as it needs it. So so much of this is completely abstracted from it's wonderful.
+And as some of you are. Know the hoop framework is part of the hadoop ecosystem, which is other things like the hive. The pig things like that. We will get to it, I promise you, but not today. Yes.
+So even though a lot of people today don't use mapreduce anymore.
+They might still use the hadoop framework and the hadoop ecosystem to do what they do. Okay, let's talk about Hdfs. So
+1st of all, there is well, and, by the way, I apologize in advance the client, the user he's represented by this dinosaur here.
+That's for historical reasons. But basically, you interact with Hdfs. And then, as I said before, Hdfs talks to all these machines. You don't have to do much of that. Okay, so so what I want to highlight here is how it differs from your file system that you have on your computer. All right. In a moment.
+As I said, your computer already already has a file system. The operating system already has a file system. So the way I think about this is is more like an application
+that you talk to. And it's like, you know, like Dropbox or Google drive that has a very controlled data access. Somebody already mentioned this last time, like, Hey, how does Google drive work? Or how does dropbox work? Because there you can have
+concurrent access sort of to the files. And this is, and this is similar to Hdfs. Yes, and
+well, practice in the lab, you can get access to your data through the Hadoop Hfs command
+that Fs stands for file system or hadoop file system. We'll practice this in Lab this week.
+all right in terms of concepts.
+There's 2 nodes to distinguish, and when I say nodes, think computers, one is the name Node, the name Node.
+and then there are the data nodes. Both those are, in my opinion, not well named, but they are what they are. We have to
+go with the convention.
+So this is called a name Node, and this and every single extra machine is called the
+the data node. Okay? All right, start with the name Node. The name Node is the way you, the client, interact with the cluster. You the user talk directly to the name Node. That's it. Everything else. All other of your commands are translated by the name node
+to the cluster. So where the name Node keeps track of which machines have which data blocks
+to execute your job
+right? But the idea is as we already discussed, and I'll tell you a moment how the data gets there. The data is already there. The data is already there. The process is idle right now. So so that's the machine that can do it. You don't have to do that. That's abstracted from you.
+So you talk to the name Node.
+That's it.
+And the name Node basically has.
+That's what I'm saying. It's not well, not well like
+named. It's like a taskmaster is an interface, but it also has the reason. It's called the name Node. It has this mapping it. And somewhere, I think it was Trina already asked about this, what the name Node knows. It knows which files have been broken to which blocks.
+and it knows where these blocks literally are which computers have which blocks.
+That's what the name Node knows.
+Say that again, you could call it metadata. Sure, if you
+sure there's there's another version of metadata, which is why I didn't want to use it here. But sure that's what helps you.
+That's fine. Yes, it also keeps a record of all the transactions, and there's reasons why we want to do that in case something goes wrong. By the way, name Node. Failure in general is pretty catastrophic. We'll talk about this more in a moment.
+Okay, so you have one name, Node, that's 1 computer that you talk to.
+It kind of orchestrates all this behind the scenes all right.
+And then there's a whole bunch of data. Notes
+could be met, you know. Do one second, Hamza, do me a favor and ask
+the Hpc. People next week. How many do they have?
+And it's going to be a shocking number.
+It's not just gonna be a handful. Oh, yes.
+it's not gonna work.
+Yes, yes. Okay. So so if you should think when you hear no, you should think computer like could be a core machine. Yes.
+but the cluster consists of one name, node hamza, and then many, many data nodes. Okay, yes, no.
+Got to be careful.
+If it goes down, it's down. That's going to be important in a moment for the capital theorem. Keep that thought.
+Okay.
+this is a single point of failure. This is the if someone ever asks you what's the biggest vulnerability of hadoop clusters? The name Node? Yes.
+then you have a real problem we'll talk about in a moment. But what you will have to do is restore, restore, restore everything from from this backup here. So let's be clear. There's a backup
+of the name Node on checkpoints. But if the name Node goes down, you're going to have a real problem we'll talk about in a moment.
+Okay, now, Hamza.
+so you have these data nodes. And this is why I don't like them. That's why I don't like to call them the data nodes, because they're also the processing nodes.
+Yes, so the data nodes are the processing nodes. Yes, they're not separate.
+I guess the reason they call them the data nodes is to highlight the idea that data locality. So the processing happens where data live, the processing happens where the data already lives. That makes sense. There's no data being sent around.
+Yes, Hamza, everybody else. Okay?
+And so so this is so this, by the way.
+so the data nodes. Also store the data metadata. That's why I wanted to be careful of that
+to avoid confusion. But importantly, they have data blocks.
+you know, and each block has 2 files. One is the actual data, and as we already discussed, 128 as the default size, but you can make it as much as big or small as you want, and then it has a checksum and a generation stamp. I'll talk about that in a moment, literally. Now. So the checksum. There's a hash. We actually get that from hashing. So we hash the data
+to make sure that there's no corruption of the data. Yes, if there's corruption
+we can detect, there's a problem. It cannot correct them. We can just flag them.
+We have to correct them by writing a new version from one of the
+copies. We'll talk about it in a moment.
+So importantly, it's analogous to comparative blocks in raid. But it's different. Insofar. As you cannot use these to to recover the data, you can just flag that there is a problem with this block.
+and you have to. Exactly. You have to. You have to overwrite that from one of the good ones. Okay?
+And then the generation stamp is literally a
+okay. This is going to be important. In a moment an hadoop cluster and Hdfs file system guarantees. And this is important guarantees that you always have access to the latest, freshest version of the data. Yes.
+and then you need you need to have a generation. When was this block written? Yes.
+so you get the latest version.
+But that's cool. That's guaranteed we'll talk about in a moment.
+So, Hamza, as you are discussed. There's going to be a division of labor. Yes, yes, hierarchical.
+Importantly, the name nodes. Don't do any physical manual labor. They do not store the data. Yes, sir.
+no, I mean, sure you know what? Yes, it is for your for purpose of this class. Yes, it's a directory. It knows where
+the data is.
+On which machine was located to do your job that you were asked for. Sure.
+It has the files. It has the file structure. So the name Node has the file structure. The data nodes, don't.
+It's kind of like a division of labor. Yes, and as I told the lady
+name, Node, failure is catastrophic. You you cannot. I mean you can. You can recover from that with a backup, but not yes.
+no, no.
+So so the the idea is that
+data node failure is is often quite sorry. Data node failure is often quite doable.
+It's unlikely that you lose your data that way. But name node failure is problematic. You can restore it.
+but you need to use a backup.
+Yes.
+yes, there it is. This is our cycle cycle to write all the steps. Yes.
+I swear, swear to you I did not plant this guy. He was just asked us natively.
+okay, let's talk about the cycle, writing all the steps. Yes, okay. So you
+ask the name, Node, is you
+as the name Node, to add a block to the to to the cluster? Yes, you gave it. You pushed a block
+onto the cluster we lose tomorrow in the lab.
+Yes, talk to the name, Node.
+so the name will recognize the client wants to add a block. Then the name Node figures out a list of data nodes that have available space, the block that the following name nodes. Sorry. The following data nodes have space available. Yes.
+that off of the size that you want to that you want to place. Yes.
+And then the client sends this block
+to the 1st data node that has a space.
+and then the data node stores that
+but then sends the block to the second one
+that it got from the name Node, and also acknowledge that it did right. Yes, and as we discussed it does this 3 times. So it's just 3 copies, all right by default.
+Okay, it's kind of daisy chaining this. Yes.
+and once all of this is done.
+you close the file one second you close the file and tell the name Node, that this happened.
+That now one second! The name Node now knows that these 3 data nodes, and I should probably add some id here, so we can see what they're different, because right now it looks all the same.
+But imagine they have different ids.
+Now, the name Node knows which data block lives. On which of these machines? Now, here's a problem. This is immutable. What's done is done.
+This cannot be changed all right. It's like writing in stone.
+It's written in stone, all right. Yes.
+Say what I think? 3 and 4,
+I guess 5 is storage, and then 5 to 5 like dollars, but yes.
+the same block, the same block, the same block, the same block.
+But it's the name Node that told us which which of them they are that makes sense
+the name, Node told the client, which
+data nodes are most suitable. They have most space available or whatever. But there's some other considerations. We'll talk about this whenever we talk next. These usually live in racks, there are different. We'll talk about the infrastructure next time we meet. There are other considerations than just space availability where they should be written. Yes.
+made way for replication. Then they will. The the checksum will fail, and we'll do it again.
+Okay, but
+we'll we'll show you. Let me just in the last 10 min show you a bunch of stuff. This is important.
+It is not the case
+that the name Node keeps asking, Hey, are you still alive? That's not how it happens. It could be that case. But if you think about it, that would not be very efficient. What happens instead is that the data nodes. Send a heartbeat signal to the name Node. And what that says is, I'm alive. Okay? And that happens at least every 3 seconds. So so it's not that the name Node asks, are you still alive?
+Not that there's not. It would not scale. Well, it's that the data notes tell you
+I am still alive. If the signal is not sent, we assume you're dead.
+and then we'll talk about what happens next in a moment. Yes.
+yeah. And then and this. So this is, by the way,
+Luca, the right here, individual application. Basically, if there's a failure in that step, I would not get that signal. That that block has been, you know, properly written, and then I can do something about it. We'll talk about it in a moment. Yes, this makes sense.
+Okay, and yes. So then you might want to fix that, hey?
+We need 3 replicates. Let's put it on some other node. Okay.
+I already mentioned this. So how do you? How do you recover from name, node failure, as I already mentioned as checkpoints that are just literally snapshots.
+And what that does it? It has, you know, a record of the directory structure.
+how the blocks were live and how they were like updated over time.
+It's like a record. Yes, and so
+the name Node keeps all this in RAM that's going to be important in a moment, but if it fails.
+the checkpoint can restore that. Yes, it just takes a while.
+And we talked about this. So they're they're they're created all the time, and this allows
+I should put it fast in quotation marks. It's not instantaneous. If you have name node failure. This could take a while. If you have a big journal and a lot of blocks, but it can be done. Yes.
+but again, just like everything else, you cannot update them. You can only make new ones. Yes, yes, yes.
+nothing is replicate.
+What about it?
+Oh.
+no, no, periodically. I need to look into database. But you can set this as as a parameter. How often you want it to like make a new checkpoint
+every every so often.
+as sooner the better, I guess. But there is, of course, limits because it takes more space. Max.
+yeah, periodically.
+Yeah, yeah, all of this is backed up. But again, you cannot update it. You can only replace it. We'll talk about this more in a moment. But let me make sure to get through something important as the cap theorem.
+So importantly.
+I'll make this brief because we're running out of time. Your file system is posix compliant. What that stands for is portable operating system interface. I triple E maintains that that basically means in English. Your operating system works like you expect it to your full read, write, update random access. Yes.
+Parsix means everything works for many decades. Now.
+the way you'd expect it on any PC. Linux or Mac operating system. Yes, unix.
+random, read, write, access, random, full read, write, access. Yes.
+and how do I say this?
+in the most important deviation from from that in in Hdfs is that
+if you make an Update to your data that is, append only cannot change all data. This is
+the principle of immutability. What's written is written. It's like A, you know. I'll show you like that. It's like a
+stone tablet. Yes, it's it's it is what it is.
+But you cannot.
+It's not a wax tab, wax tablet or tablet. It's it's it's a stone table.
+It's done. What's done is done, and this is also there's no, there's no there's no such thing as an executable. For instance, in a positive compliant system, you might have an executable like you write an executable that does not exist in Hdfs.
+It's just, you know, data files, all right and immutable data files.
+Why is that again, this is not a bug. This is a constraint that we're doing on purpose, just like mapreduce constrained computation. Here we constrained storage, and I'll show you in a moment why it has to do with the cap theorem that Max mentioned. We talked about in the paper. But basically
+this process compliance stuff.
+it's for like general purpose computing the people who make your operating system don't know how you're going to use the operating system. You could do it whatever you want. Yes.
+you might have thousands of small files that you need to update all the time. Yes.
+but if you use Hdfs with mapreduce, we kind of do know how you want to use it.
+and you have these like few large files. You want to often read from them, but only rarely
+update them. Yes, now, which brings me to my last point, and I think we can do this in the 5 min we have left
+the Cap theorem.
+This is important to know, probably going to come up in your interview. It does explain why why Hdfs
+has the limitations it has. It has to be like that.
+and it has to do with the idea of a trilemma.
+Let me just show you some popular ones very briefly.
+in project management. We know, for instance, that you have to pick between good, cheap and fast. Yes, the idea is, you can pick
+Any nodes along one edge. So if something is good and fast.
+it's not gonna be cheap. Yes, if it's good and cheap, it's not going to be
+fast. If it's cheap and fast, it's not going to be good. Yes.
+and this, by the way, in the ideal case, if there is corruption.
+then you might actually not even get to pick that. Then one of the nodes is eaten by corruption. Yes, but in principle you can have, you know, low taxes and low debt. But if you have that, you cannot have generous services. Yes, if you have low taxes and generous services, you're going to have debt and so on. Yes. Why am I telling you that? Because many others like that? But why am I telling you this? Because the Cap theorem works like that
+in the cap theorem.
+There are 3 nodes, 3 vertices, and they're called consistency.
+availability and partition tolerance. And let me just walk through them briefly.
+So consistency is a data read has to yield
+the latest version of the data. No out-of-date data, no stale data. Okay, the cluster has to guarantee
+that you're reading the latest version of data. Yes, so far, so good.
+Yes, no. Oops. Yes. No. Okay. Availability means that a hamza.
+a worker, is not allowed to ignore the request from the client.
+They have always have to be available. Yes, they are they. They are not
+allowed to refuse a client request
+that is not up to them. Yes.
+and partition tolerance is confusing. If you're a Cs major, because what what does a partition mean, Luca, in like? Say, your hard disk? What's a partition.
+You're splitting your data into a logical volume. Yes, you can still hard disk into partition. That is not the partition that we mean here what partition tolerance means. Here is a part of your network goes down.
+your network splits, let's say a bunch of nodes go bad.
+and the the network is partitioned, and, you know, divided and what partition horns means.
+We, your network can handle that. That's okay.
+Part of your network goes down. We can live off that. So those are the 3 asks. We want
+the latest version data always. We want
+our workers not to be able to refuse any request. They have to always be available, and we want to have a network that is
+tolerant to failure. Yes.
+and what the cap theorem shows you if you read the paper is that you can pick 2 out of 3 cannot have 3. The question now is, which of the 3 does
+Hdfs give up? Hdfs will have to compromise with one of them.
+And, by the way, do you already know.
+does anyone know which one he gives up? Yes.
+yes, that's right, Luca. Someone asks you, hfs gives up availability.
+It has to, and I'll show you in a moment why
+so I'm not sure what's happening here. But basically this is what I already told you just now.
+So consistency. You always get them up to date data. Your workers cannot ignore requests
+and network fails are tolerated.
+Why is this out of one moment?
+Okay, the Blue Arrow should point to partition top on my screen. This is working.
+The idea is we have to have partition tolerance. You can't have a network, doesn't have that. That's the whole point of having a network is that it has partition tolerance. Yes, so we have to have this. The only question is, which of these 2 are you going to give up? And in a moment I'll show you with the dinosaur again. Why, you have to have the
+why you have to have it so. Imagine imagine we I'm sorry, Max. I apologize.
+Imagine we we could. So let's say, we start, we have 2 machines. Hamza. These are our 2 data nodes, and they only contain a single bit.
+0.
+Okay, they have only a single data bit. This is 0. This is 0, yes, machine one and machine 2 have a single bit each.
+Then the network fails.
+Okay, network fails.
+And we say we update this one, but not this one right, because the network failed.
+But now we read from that one.
+and which one was violated. Now, which principles violated. If that's the case.
+Consistency? Yes, so we can have this. If we did not
+give up on availability, which I'll show in a moment.
+We we what you want to call it? We would be out of luck if we had network failures. We would violate consistency, and we can have that. That would be catastrophic failure. Say, Mark, updated data. But Luca is reading the old data. And now we have problems. Yes.
+yeah, we just talked about. This is a consistency. So how does Hfs do this? So we do.
+We do ensure consistency by having this
+append only data. So it always serves you
+the latest data with the latest timestamp. Yes.
+that's how I make sure it's consistent. So consistency is ensured by that.
+This is the idea is, if the name node goes out of goes offline.
+Then the network will tell you. You need to hold on until the backup has been restored. It will not serve you anything
+for reasons you just saw with the dinosaur. Yes, you just
+waits until the name Node is back up. Okay.
+But if someone ever asks you hums on everybody else that violates availability.
+The workers are not supposed to refuse requests, but they will if the name Node failed. Yes, and we talked about pressure tolerance already. That depends on the replication factor. If you're unlucky and your replacing factor is too low, you could have also failure of production tolerance. Okay? And now we're out of time. So next time we will do the big data infrastructure at Nyu. And then, after that in general. So please think of questions for that.
+We're out of time. I got to run. I'll see you next time.

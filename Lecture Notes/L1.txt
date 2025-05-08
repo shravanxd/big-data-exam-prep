@@ -1,0 +1,1733 @@
+WEBVTT
+All right.
+Great.
+So welcome
+to data science, I guess, because I was told, this is your 1st class in the program, so welcome to the program
+and welcome to the
+introduction to the introduction.
+which is the intraclass
+our class.
+And
+The idea is.
+I'm sorry for the clarity. We'll fix the lights later. But there's a dark world.
+But there's data. And you found
+you found the data.
+Let's see if we can open this wardrobe full of data
+during the semester
+make the world a brighter place, I guess.
+Yes.
+today the program is twofold.
+First, st we will talk about course logistics. The 1st half I
+we'll read and discuss the constitution of this class.
+the cinema. If you have a classic background, you will know why it's called that.
+But at the end of this block you should be fully aware
+of what is expected of you to get whatever grade you deserve desire.
+Well, I guess what he deserves out to me.
+but which grade you desire, and I will tell you what I will bring to the to the table.
+The second half is
+again.
+We had some conversations early before the before the
+before the
+plastered outside.
+You know it's an interclass. Some people are like Bro.
+I have 10 years of experience
+doing data science. Practically.
+I don't need a data into class. This is a waste of my time.
+So we'll talk about why, even if you have 10 years of experience doing this, you might still benefit from this class. And then second one. Some people were like
+data science kind of over right? I mean, we already going to the next thing which AI, I guess.
+And no, now is the time for data science. Maybe I don't have to convince you too hard for this, since you are all here. But I do want to make a formal case. Why, now, in the early 2,020 S. Is the time for
+data science, specifically
+not robotics yet. That's 2030 s.
+All right. But let's get right in there. So 1st of all.
+I'll I will be serving as your instructor. This semester
+instructor means I'm teaching the
+lecture.
+That means I will get to the conceptual.
+You know. I will teach you the concepts, things like that.
+Briefly, what? What can I tell you?
+I joined the center for data science in 2,020
+in a previous life
+that might sound like a crazy thing to say. It's true.
+In a previous life I was a neuroscientist.
+and I walked away from that
+during the Coronavirus.
+And so I am walking the walk. I I thought, data science is now. So I'm not just telling you to do data science. I myself quit
+after a 20 year career in neuroscience and psychology to do data science.
+you can call me Pascal, because that's my name.
+Do other people call me?
+What else can I? What else can I tell tell them when I? What should I say?
+Ha!
+No, not from your perspective.
+I will from your perspective. I will always be wearing green
+because he only see me Tuesday.
+That's
+green. It's going to be green, but different kind of green.
+all right. But anyway.
+if you have questions about this like, I said, I've been doing this before. I've been teaching this class for the 4th time now. So
+you know we kind of know what to expect.
+But we're very fortunate that we're joined by
+3 section leaders. Is anyone here?
+Any of them here? Oh, Will is back there raising his hand. So Will is here.
+So the section leaders will be leading the lab
+right after this class.
+and the lab will either teach some essential concepts. Sorry, not concepts skills. It's always skills. Lab is always skills.
+Sequel, how to use Github.
+how to do this or that in Python. Yes. So so the lab is always about skills.
+So lectures, concepts.
+lab is skills. So one of those
+3 pas are going to come up here after their lecture. And
+so you know, Pascal just told you about the
+theory or the concepts. Now it's implemented in the
+in the lab. And those labs start next week. So it's going to be no lab this week, for I mean, there's nothing to implement. We're just talking about the concepts today. I mean about the way the class works.
+So but next week we'll start with the
+lab lab right after
+then. I don't think Iris is here is Iris here.
+So we have a full time, 20 HA week
+class tutor.
+So the role of the constor is
+to meet with you. If you have issues like personal problems. I mean, not that kind of personal problem. But like.
+let's say, let's say you can't install anaconda or something like that.
+or your environment doesn't work, or you know that. Only you didn't get some concept.
+Iris.
+we'll be happy to meet with you.
+And, by the way, everybody here
+has either taken this class before, or another class or both. So everybody, everybody is great. These are. These are hand-picked people.
+It's wonderful.
+So they're really good. So Iris will be happy to help you one on one. So this works via calendly. You just click and you make an appointment and
+can talk about
+personalized tutoring session. It's wonderful.
+And finally.
+we'll be joined by a fairly large number actually
+fully anonymized graders. Question for you. Why is it wise
+to have the graders be a lot of classes. You have the second graders to be all the graders something like that. Why is it
+wise to?
+To this dull blind?
+There's the
+people who teach
+this this and the people who are great. Why is it wise? Yes, and remember your name. You already mentioned it. But you, Evan. Okay. Great. As I said, I have disability. Evan. Why is it wise.
+implicit bias?
+I don't wanna
+get controversial in the 1st 5 min?
+No such thing.
+Yeah.
+yes. And can you elaborate a little bit?
+Been in fear of saying something controversial? Well, but the idea is
+no, here's the idea. We want to avoid any potential for
+bias prejudice.
+Because they don't know who you are. You don't know who they are.
+Let's say you schmooze with me or the pas that's not going to help you. If they're great, they don't even know they have never seen you. They don't know you. They don't know the number.
+and the less you know about them the better, because they're to prevent any even perception of bias.
+gold standard. It's all blind.
+You don't know who they are. They don't know who you are.
+and they can all be brutally honest with you, right like, if you know who they are. Maybe you hold them accountable right? But like go to a house, but if they're fully anonymous, there's not a benefit they can. They can be honest, they can be Frank, like you failed this
+without without fearing retribution. Yes.
+What else? Yeah, that's that's anything makes sense. Yes.
+it of course, increases my my management load, because I can manage more people. But
+that's the best thing. That's the right thing to do. Okay, any discussion about this.
+so you will not
+know who's judging you silently. They're judging you silently
+behind the scenes. Kind of a back-end job. Okay?
+we will use Brightspace for everything. That's the learning management system. Everything is going to be on there. You already should have received an announcement from me.
+one about the lectures
+the after today.
+in the morning off the slides will be posted. Hamza.
+Always
+data is going to be there. Code assignments.
+animations, videos.
+complementary materials, papers.
+anything?
+All right.
+Yeah. Obviously, you know how to access it. Okay, now, let's go through this in detail before we do anything else. So if you just bear with me for one second and you switch
+years.
+Think that's it.
+Okay?
+The reason, by the way, why this Cindy Bar is also not
+posted yet. I will post it after class.
+Note that it's a word document. It's not written in stone.
+so
+you know, we could change it right now.
+It will
+be saved as a Pdf. Afterwards.
+But that's why I just want to go for it.
+All right. So the ball minds this.
+the way I think about this class is
+this class could be maybe called big ideas.
+because it's the
+1st in a sequence that we do in the spring, which is big data. So in the in this class. Intro.
+we introduce all these big ideas. Whatever cross validation. I don't know something like overfitting
+classification. You name it.
+but we'll use
+small data set smallish couple 1,000 rows
+in the
+chasing class that chases this, the big data class in spring.
+We revisit the ideas.
+But we now use
+data that's so big that it doesn't fit in your memory, or even in your hard disk. It's just too big.
+And what do you do then? So that's what that cost. So so first, st like
+foundations, does this class and scaling up, by the way, the big data class, the more also, I've been teaching this a couple of times. Now
+most people think of it as a tools glass. We learn spark. We learn Dask. We learn this or that
+hadoop.
+but it's more like a scaling class. How do you scale up processing? How do you scale up
+storage? How you scale up
+all these things algorithms so that class should be called scaling. So first, st this, this class
+foundations inauguration and then scaling into the spring. But it's like
+it's a sequence.
+Oh, one thing, as you can see here, it says Tbi.
+So I will post this after class.
+But you might want to redownload
+this sometime later this week.
+Sometime later this week
+I will. Our schedules will have like coagulated.
+and then we will offer. But all the Tas and me we're offering. I'm actually offering 2
+2 h of office hours.
+All right.
+We don't know, but not this. Not this week yet, because my schedule has not solidified yet.
+The tutor has already made.
+So that's Iris.
+If you click on this, you can schedule a tutoring session. You can also email her
+and cheese already has your office hours
+all right. What else?
+We will have a discord, a class discord.
+So you see this email here
+we are vowing that we're going to get back to you in 24 h. But honestly, it's probably faster. If you just use discord, like we're all going to be there, and just
+in real time, if possible.
+respond if you can.
+But then all doesn't exist yet.
+It will
+say Thursday.
+So you might want to download this Thursday evening. Thursday night.
+All right. What else? Yeah, obviously, you're here. The class is exactly 100 min long.
+It's chased by a lab which is 50 min long. So it's tight. I mean, there's a lot going on. It's 150 min. That's a lot.
+There is a 10 min break between the 2,
+all right. So
+0 from. So I don't presume you know I do not presume you know anything.
+I know some of you do. This is going to be one of the challenges, but I assume
+nothing.
+You're not going to go to a hundred
+or multidimensional
+but one. So it's an act of creation.
+Textbooks are suggested. You don't have to read them, but depends on your background. If this is your 1st data, anything you might want to read them.
+we will probably they should say, probably
+the Tas and I are negotiating about this right now, should we use super noticeable or not.
+we'll see
+the secret thing that I did not use the Pdf, yet.
+Okay, the grade has 7 components. There's going to be a cumulative final at the end.
+It's a cumulative capstone product. And
+there's 2 kind of waypoint data analysis projects.
+The Capstone project and today announce, project is like, we're going to give you some data.
+bring you some
+questions.
+and we want you to write code? That answers the question.
+Write a piece of
+paragraph
+answers. The question.
+you know, is X predictive of y. How much things like that?
+Yes.
+there's also problem sets. The problem sets are like.
+don't really count for much.
+But if you took the if you went to the lecture you should lose in 5 min. It's like stuff from the lecture.
+And what's what's what's statistical significance? What's the standard error of the mean things like that? So very basic question should be able to do this in 5 min.
+There is also, I'll explain in a moment the after action appraisals.
+There's also going to be intake survey.
+I will assign this this week. Basically, I want to know who you are.
+And if this was a 5 people class, I would go around the room be like, Hey, Simran.
+what's your background? Why are you here? But that doesn't scale. See? Scaling doesn't scale well to 200 people. So I'm going to have this intake survey and
+do want to know who you are. What's your major? What's your background? You come from industry.
+What do you want out of this things like that.
+and that should take 5 min, and then we do an exit survey at the end. Also
+the grade cutoffs are pretty standard.
+How about you?
+all right. So here's the bottom line.
+You need to do 12 of these. So after after each week
+after his lecture, I guess.
+I would like your reflections on the lecture.
+Not a summary. I know what I said.
+not Chat tbt.
+but your reflections on on it, and the reason I need that is
+allow us to do micro micro feedback.
+It allows me to use machine learning methods to analyze that
+it allows me to like
+course, correct
+in real time. Basically.
+So let's say you do the evaluations at the end. You can say this is all was terrible
+now. Well, now you're telling me right it was
+after the class, whereas here it's like literally after the lecture before the next one, so I can
+pretty much course correct as soon as possible if I realized that
+it didn't resonate what I was saying. Yes.
+again, as I said, problem sets. It's just literally some basic questions.
+Oh, 2 things. I will use Github to push the code. You will appreciate that. Basically, you have to get comfortable with Github in this class. So you're ready for it for the big data class.
+because in the very big data class, we just assume you know how to do that. And I know some of you are Cs majors. You're like, been using Github for 20 years.
+but not everybody, not everybody. So basically, we need everybody to get comfortable with that. And also we do allow group work here.
+You can work solo solo group.
+one person, some people not comfortable with other people. So that's fine. You can work by yourself.
+But we allow small teams for up to 3 the reason for that is
+frankly, in industry you'll probably work as a as a team. Very few people work by themselves in a
+room or something like that. There's always small teams, so get used to that. Oh, yes, Evan.
+please don't be sorry. Go ahead.
+12.
+Huh?
+Yes, you have to come to every lecture. Actually, right? Right?
+Yes. Well, I'll I'll explain more about that in a moment. I have much to say. There's some game game theory here, too. But let's just wait for Megan after that.
+anyway. Final. The final question for you
+in the age of the Chat Bot, which, by the way, you're welcome to use.
+I'm on the Nyu Committee on Chatbot using Lms. And AI.
+So right now. Policy is
+use it.
+It's going to be a part of your life
+except for the final moment. So question for all of you.
+So for Evan, he already said. Something really diversified the contribution.
+Why would you
+do a final or an exam in the Asia chat bot? Can you just create a bot and tell you
+anybody, why is this a virtue
+in a final or an exam, even in the age of Lms. And what's your name? Again? You already told me
+you, Adam? Okay.
+sure. But how is that?
+But how does that justify a final
+they're doing is now
+question for you. Would you be comfortable as, say, a surgeon
+who was like, well, I can always ask the bot or something like that.
+The idea is, there's certain skills. And, by the way, why not?
+Or pilot who just asked the bot how to fly the plane?
+There are certain skills we expect you just to have as as a
+as a data scientist that we just expected. That's the S. By the way, in
+in the final. So the idea is that certain skills you just
+look. These are all very basic questions. I said this before, but if you wake me up at 3 M. In the morning, please don't
+and ask me any of these questions, the final and I fail to answer them. I will resign that day.
+Is this just basic stuff like, you know?
+Let's say you increase. And how does the standard error
+of the mean developed things like that? It's very basic stuff, I promise you.
+But so anyway, certain skills, we should expect you have. What else? Why might you want to have these
+skills, knowledge competencies
+beyond the Chatbot? Anybody?
+Yes, and what's your name?
+You're Brian
+at Adam. No.
+Evan.
+go ahead, Brian.
+like the actual preparing for a final. It allows you to kind of
+yeah, although I would argue the capstone project. That's what the capstone project is for.
+So what about the final Adam again? Actually, no, no, Adam, what's your name?
+Mustafa? What's up?
+This absolutely not
+credibility is good. Let me ask you this. Let's say, imagine you show up with an interview.
+You think you can ask the bot at the interview.
+So that's the idea. So we all all of the questions
+are picked from questions that could come up in in an interview.
+So it's kind of interview. Prep, actually.
+and yes, no, it would look really bad if you were like. Wait a second. I have to ask.
+You know the chat button on my phone.
+Now there's certain things you you just need to know particular interviews. What if you drive Wi-fi stone in an emergency? I know people say there's no data science emergencies.
+There are data, science emergencies. Yes. So any of all of that. The final and all questions are true, false. They're all strictly from the lecture
+basic stuff, but but
+but you have to know it. Yes.
+Oh, yeah, up there.
+Very good. I mean, I don't want to get too
+critical of the chapboard right now. But you're absolutely right. I now call it 2 truths, and lie because it will tell you 2 things are true
+and one that is confidently false. Yes, and if you're not an expert, you don't know which one is which
+I mean. I have actually more and more doubts about this. I now call it artificial, like incompetence, like Lms. Are not AI.
+They mimic it. That's something maybe we can talk about in last class.
+But I have many thoughts on this. I have the one second I have the
+open AI
+bottle, right? So I'm 1 of the top 1,000 users globally of this
+big flex. But
+as a power user.
+I see the limitations.
+It's not AI yet.
+And what's your name?
+Okay.
+Jay, Jay or Jake
+Jay?
+So
+they are just both.
+That's right.
+very good. The that's 1 of my concerns. The
+intelligence in
+Llms comes from people from the training set. There's nothing that comes from the. It's just basically an algebra, as you know, we will talk about it.
+It's very sad, I mean, it's, I guess, exciting what you can do with
+that. But it's not AI yet.
+So yeah, hallucinations are a problem. Specificity is a problem. Innovation is a problem. You still have to know. As a matter of fact, I would argue
+now that everybody has access to the chat bot, it's particularly important that you actually know
+right.
+And that's what it finally was for.
+So I have to check. If you actually know it's going to be great.
+I feel very excited about this.
+all right. And then and then comes the capstone project. Several people of you said that you want to practice and
+really apply. This is a serious project. This is like
+you're going to have a month to do it.
+Work as a team again.
+There's a project report at the end.
+And frankly, I know more than a few people who have gotten a job
+just by doing a good job with the cast on product. It's like a
+portfolio. Item, you know, it's like an artist where you have a portfolio and do like I did this.
+So this is serious. This is like real life. This is like
+you, you know.
+and what we we don't know yet what we're going to do this semester. We did. We did art in the past. We did
+movies.
+music. What else did we do?
+High schools. I'm not sure what we're going to do yet. I haven't made it yet, but it's going to be something that if you do a good job there's a high chance. You're going to get a job job out of that
+right?
+But that's serious. That's like, I'm going to give you data and the questions, and then you have to write a report.
+There's extra credit.
+The 1st one is like. Tell me what you're dreaming of at night.
+and you know that helps me for long-term classic development.
+The more obscure, the better
+like that's like some weird stuff that you know because of your background. But I don't necessarily know, but I know how to answer it, maybe all right. And then here the bad data science.
+sorry. Did. Did
+did this just go? No, you can still hear me right?
+It was just out. Anyway, here's the bottom line. I will show you this on some of my next slides. I see bad data sense everywhere.
+all right, every day. It's very sad. Actually.
+you find something in the wild, maybe something you saw on social media, probably probably something you saw on social media or in the news and upload it. And that's it. So basically, you have to tell me why it's bad.
+and I'll tell you in a moment what I mean by bad data. Science?
+Right?
+All right, what else?
+Yes. Okay. So here's the bottom line. So, in my opinion, at least right now, the way the word field is there's 2 big theme blocks. Okay.
+depends on the field.
+You know, psychology has, like 7
+development psychology, personality, social, cognitive, and so on.
+Neuroscience, you know, developmental neuroscience, you have systems, neuroscience, computational neuroscience, things like that
+data. Science, as far as I know, where it is in development right now has 2
+blocks. One is inference. And we'll start with that. And one is machine learning.
+So those are the component theme blocks
+off the field as it is right now, if the field goes like any other field
+engineering, or you know neuroscience or whatever.
+then we will specialize after this. So it's going to be people who do computer vision
+or people who do. Nlp, but right now.
+that's where we are
+in the field. There's 2 big blocks that everybody needs to know if they want to be a data scientist in 20 years that might be different.
+And so this is where we are today.
+And then this is basically what the topic is.
+the date, the theme block. And then what the assignment goes with that.
+Anyway, we're going to start with. Okay, listen to me. I will need
+probability theory
+to do inference. I'm keenly aware that more than half you are enrolled in the Probability statistics class by Carlos. Yes.
+that's wonderful.
+It's just.
+I don't have time for you to finish that class because you're taking it right now.
+So I'm going to teach you in one lecture all the probability we need
+just for this
+this thing. Yes.
+we could, as you will see, when we do this class.
+anything. Any single one of these lectures can be blown up to a whole semester long class. That's obvious. Yes.
+including probability. But I'm going to focus on probability that's essential. Just for that.
+Anyway, we'll talk about what hypothesis testing is. Then we'll implement the significance tests, you know, from T tests to anovas to Chi-square tests to others.
+Then we do randomization inference. That's like, hey? What if those tests are not enough? Make your own test.
+We'll talk about power and confidence, and then we do Bayesian inference, and that ends inference.
+Then we pivot.
+We do. Then go to machine learning. We will treat regression. I know you probably all
+learned about regression in econometrics or something like that. As a statistical problem, we're going to reconceptualize regression as a machine learning problem
+and then regularization and classification and dementia reduction.
+clustering. And then we end with
+recommender systems. And
+but I'm very excited about
+time series analysis times is actually a good example of this you can legitimately take a whole
+semester long class on time to use analysis.
+I will just give you the
+essence of that. I guess.
+Arima, or something like that. We will see. I haven't made a lecture yet.
+that's the. And then and then, anyway. So here there is going to be these 2 problem.
+So project. So there's a weekly problem set except for the last 2, where you work on your capstone project and the 1st one
+we do the intake survey and the exit last one, the exit survey. And then there's these 2 where the star is there, and there, that's when the
+projects will be assigned. There's 2 projects, an inference project
+and that
+prediction project.
+and then we have no session. Oh, yeah.
+on the 15th of October
+we pretend it's Monday.
+Do we have class on Monday?
+So so we'll have no class that day.
+That's not my idea.
+That's invite policy.
+all right, and then I will release the cast and frog in October, and it's due in December.
+So you have a month to do it.
+as I said.
+Oh, the final
+all I know, for right now is during finals week.
+that's all I know. The moment the registrar tells me, Jay.
+just practicing names.
+I will tell you.
+They used to 1,000 day one. But
+I don't know. It's a complicated scheduling problem. We I don't know yet. If if you have travel
+plans for Christmas, or whatever you're going to do.
+keep that in mind. I don't know yet. It's going to be in in finals week, but I don't know yet when I really don't know.
+All right. Some rules.
+I'm going to go fast in this. We have some, some.
+some topics to cover.
+basically don't cheat.
+We have been this for a long time. We are aware of all possibility to cheat. Don't do it. I don't
+deal with that.
+I will have to report to you.
+and
+yes, one second Trina.
+One person was expelled last year.
+So because once I report to you, it's out of my hands. There's like a tribunal. Spat Grena
+a cheat sheet, no cheat sheet. Don't even call it that.
+No cheat anything.
+By the way, people who cheat in their class are more like cheating their significant other. Do you know that?
+And more like Lucina on the taxes? I do have a background in this kind of research?
+No! But you can bring one double sided
+page of notes, or something like that.
+But no cheat anything.
+Don't even think of it like that.
+Alright.
+So what else? Python, are you able to use python? But you do. SQL. By the way.
+sequel, that's how it's pronounced, not SQL. If you show up in your interview, calling it SQL, it's not looking good already. Sequel.
+Okay. If you're sick.
+do not come to class. Someone asked about remote earlier.
+If you're sick.
+watch the lecture remotely. Okay, don't make everyone else sick.
+If you, too, stick to even do it remotely.
+or you miss an assignment, we'll just prorate that. Let's say you missed one. We
+in my address these 10 assignments. We'll just grade it out of the 9 that you did not miss. Yes, if you miss too much. You have 2 choices. Either you're going to take an incomplete and you can finish it next year. Somebody just did that from last year.
+or we just upgrade the final. The final right now accounts for 35%. Maybe it comes for 40%. It's not a big deal.
+either. One of those. Yes.
+okay.
+Testing philosophy. It's criterion based. That means you do your own time. You don't your own like.
+We are not going to grade up or down, I mean, I'm never going to curve down.
+but in in my defense we never have to curve up either. It is where it is.
+so we have a certain
+criteria on what mastery of mission looks like, and if you do that you get your grade, and
+there's no curving up or down, usually
+never down, but probably not up either. As I said. AI,
+you can use AI
+for anything. However, by the way, we would like you to disclose that you did use it, not because we're going to take points off. I'm just curious, like, who
+used AI who did not use AI just to see. So basically in your in your like
+friends, they say you have a small group. You can say, Jay did the analysis?
+Evan did the figures, and Adam did the write up, or something like that? And the AI helped with all of that
+offer contributions? Page. Yes.
+so. But don't do do it during the final
+yeah. So 2 things about due dates.
+All of the weekly ones have an automatic grace day. So you can be a day late.
+Let's say the bright space doesn't work, or the wireless doesn't work, or whatever without penalty.
+However.
+here
+the projects, both data, analysis and capstone. By the way, so the weekly. Let's ask about this. Sorry about that. So the weekly projects they're due Thursday night.
+but you can send them in until Friday night without any penalty on Friday night you get instant feedback as to how you did.
+I do know. We have at least 10
+psychologist slash neuroscientist in his room.
+Why is it important to
+what's important about feedback?
+What's from a learning perspective? What's essential about feedback, anyway? Be brave.
+What's essential about feedback?
+Yes, Mustafa.
+great.
+Okay? So. Yes. So you know, they say attention is all you need.
+Feedback is all you need. That's a separate issue. But what about the feedback?
+What about the feedback.
+It's important that the feedback is
+what if I give you feedback in 10 years?
+Timely.
+I can show you a thousand papers from psychology and neuroscience
+that I argue, the most important thing about feedback is that it's really as soon as possible.
+So, in other words, no, I can't
+extend the due date, because I need to give everyone else feedback. It's unfair to everybody else.
+The exception for that is the Data Analysis capture project.
+They are not worthless. After the due date. It's just worth
+less.
+see? So they slowly decay. So we detect 1%
+every hour. That's late.
+Then you slowly go bad
+alright.
+By the way, for reasons that
+that I don't know, I'm going to guess like from past experience.
+A 3rd of you have a job already.
+So how do you
+someone tell me who has a job? Can you, great Adam? Can you ship late
+to the client?
+What happens?
+Yeah. So you you need to learn how to ship ship ship ship ship ship ship ship ship ship ship
+doesn't have to be perfect, but you have to ship. Get better. Get that in your head. Research is different. Research can take 10 years
+right? Hamza.
+Research can take
+longer than that. But in business you need to ship. Otherwise you might not have a job.
+The client expects it. You can't be late. This is already a huge concession that we we take points off over time, you know, I'm saying, like.
+no, you should ship when it's due. That's professionalism
+mission command. This is kind of operations. Research. The idea is that I will never tell you how to do something.
+This is best practices and in operations research.
+I'll tell you what we want. Here's a spec sheet of what we want.
+You figure out how to do it.
+That also is very realistic in your job. Your boss is not going to tell you. Do it
+this way.
+That's your expertise to figure out what the best way is to do it.
+And just briefly, that doesn't mean you can do whatever you want, not everything is equally valid. There's a wide berth of reasonable choices, but also a lot of
+unreasonable ones
+like I don't know. Don't forget to regularize, or something like that
+communication. As I said, there's an email for everybody we were committing to a 24 h turnaround.
+but the discord is probably better. But that comes on Thursday.
+There's a lot going on.
+There's no buffer or anything like that.
+so I will never cancel class as long as I'm alive, I guess.
+I'm not. I guess it doesn't matter.
+This makes sense.
+So I let's say, sometimes this happens there's like a storm or something like that. I might. I might zoom in remotely. But there will be class.
+all right.
+maybe if I can't talk, then there's no class
+that hasn't happened yet.
+Yeah, you can always ask questions, but just
+restricted to clarification questions.
+If you have personal questions like. And what about the squirrels, or something like that.
+ask me after class. I'm I'm happy to talk about it, but other people might be distracted by that.
+If your conduct is detrimental, I might ask you to leave or attend remotely.
+Oh, this is something that we'll talk about
+in a moment. But basically, you can obviously use your computer, but in your own interest only only use it for taking notes. Second of all, no cell phones. I'll show you in a moment why.
+no politics, nothing good can come of that in my experience.
+All right. What else? Attendance? Yeah. So look at this.
+This is for you. Evan
+is Nyu, an online school, Evan.
+and he's not on the school.
+As a matter of fact, it's not so so in-person attendance is expected and frankly essential. Why? Because we're accredited by the Middle States Commission on higher education.
+Do you want to jeopardize our accreditation
+by
+treating is like an online school.
+And, by the way, there is a background to this.
+I'll also have slides on this later. But basically Nyu data, science is the 1st in-person master's program in the world.
+So this is a big flex that we have is in person. There were online programs before you know what I'm saying.
+But we're the 1st in-person
+master program. And yes, I know the Coronavirus happened.
+But it's time to get over that okay, or move on from that.
+So I expect you to be here in person.
+As I said, if you attend remotely
+because you're sick, sure.
+But I will prioritize the in-person experience. Sometimes there's like some weird audio issues online. I have to prioritize the people who are here can hear, not the people online.
+Finally, this is the game. 3 part of it.
+I will only record a lecture
+if 80% of you are here.
+otherwise I will not.
+Yes.
+all right.
+So just be here.
+And for me to take that census. Don't be late, because otherwise I
+maybe there is 80% of people coming, but they're not here in time.
+Alright
+honestly, don't even try no one. No one's ever
+succeeded, I guess. One second.
+I don't owe you a great. You have to earn it.
+What's your name up there? Yes, what's your name.
+Helen
+Vibes.
+I had to set a threshold somewhere.
+and that's the one that worked.
+By the way, I'm not doing this for the 1st time.
+This is the one that worked well.
+I want to encourage you to come.
+And, by the way, those of you who have taken class with me.
+I assure you I'll make it worth your while.
+that's all.
+So I expect you to meet me halfway halfway.
+By the way, Helen, I already have a job. My job is to make sure you get a job.
+So so
+so I want to bring it. Yes.
+as is said, this is important. Everything that's deliverable must be entered in bright space. Don't email me or the Tas. We're going to lose it for sure. And here's why, look around you. There's 200 people
+imagine if some people start emailing me, there's no way, it's not possible. And I have other cards, too, by the way, that are also as big as this.
+So if you email me just assume it's going to be gone.
+It has to be in the bright space
+and has to be.
+Make sure that this is like in that like this, like in Brightspace. You can see if your Pdf.
+Uploaded properly. Yes.
+I know all the tricks. Yes, corrupt my Pdf website.
+I can tell if it's actually corrupt or was corrupt intentionally.
+I'm not going to tell you how.
+Look, I will treat you as professionals, because most of you are.
+and I expect Professor Behavior, and in turn I also
+commit
+promise
+to exhibit.
+I don't know as much professionals like as I can. How about that?
+We have the tutor, as I said, what else? That's it.
+Any other questions?
+What's your name? Oh, Judy.
+yes, there is pro rating.
+You can prorate.
+Okay? So
+she asked, what?
+But, Fafo, do you know, Fafo f afo?
+Not a meme? Lord.
+the idea is, can you prorate 100%? And the answer is, you can. But I don't recommend it for reasons that
+remember, you could count the final for 100%. Yes, you can. If you missed the whole class, you can just do the final.
+But I really don't recommend that.
+that has not yet worked out for anybody
+but you could
+I mean, what else are you going to do if you literally missed everything. Maybe I would, just if I was me. I was just saying incomplete
+any other questions while we're still on this
+anything. Don't be shy.
+but do speak because we have to move on. We have a lot more ground to cover
+anybody.
+Oh, sorry I it's not that bright. Go ahead.
+No.
+and the reason for that is because I can't fit it.
+There's no time
+I want to.
+but in the past I have learned how to make do the final.
+But I would love to. But there's no time.
+Do you want one?
+Okay.
+all right.
+all right. No. Midterm. Then.
+All right?
+Okay, so let me, okay, let's move, then on to the content part of the class.
+Okay? So far, the logistics. Final. Final question.
+You can see this? Right?
+Okay? Great final question. Oh, there and read your name.
+Joe Biba. Great.
+Don't be sorry. Go ahead.
+Yeah.
+I mean, this week I'm going to upload the intake tonight.
+but other than that, like
+the do the Friday before, if that makes sense.
+so it's like one
+at the end of the week.
+You have almost one week to do it.
+Final
+Joe. Veda.
+Right?
+Nothing.
+Oh, under your name.
+Aisha.
+Yeah. So I'm not sure yet, because there's a battle of will
+among the teaching staff which Ide we should commit to
+soon
+it's we'll we'll see
+not nothing yet.
+but we'll we'll we'll resolve this this week. Good question, though.
+but in general we don't presume we do not even expect you to know how to code. We'll teach you.
+Oh, yes, Evan.
+so I'll upload a white paper on who should use a textbook? And why
+depends on your background. As I said, if you've done an undergrad major in data science. You probably don't need a textbooks.
+but if you're like here from
+I recommend there's several of them that I recommended. By the way, I'll post this shortly. But if you hear from philosophy, which
+it's fine welcome.
+you might want to read the textbook.
+because you're probably going to encounter these concerts for the 1st time.
+All right. It's kind of like how much? But I'll upload a white paper and
+should use the textbook, and why and how?
+All right. So let's let's talk about this. So why do we do these 2 theme blocks? So you have inference. And you have machine learning
+all of this run by data. The bottom line is, I don't want to spend too much time on this.
+But let me just briefly tell you, when I enter data centers myself.
+I thought, data, science is machine learning.
+Right?
+So I was not surprised that data science contains a lot of a lot of machine learning. I was not surprised by
+what really shocked me.
+Surprise me. Is that a lot of companies?
+This is actually something from from Linkedin
+use hypothesis, testing, which is inference.
+But what is inference
+in English?
+It's a technical term. What is inference? What does it mean? What does inference mean up there? What's your name?
+Mina? Me not.
+Ni, nand, go ahead.
+That's good. That's not. That's not bad.
+Do the conclusions necessarily probably follow from the data?
+No, that's your choice. You have a choice. It's a choice.
+So basically, we're going beyond the data. You're absolutely right.
+And in this part of the lecture I will teach you how to make these jumps conceptual jumps to the conclusion, jumping from data to conclusions
+as best as we can.
+But what really surprised me is that companies use inference even more than we do. So I have a science background. I have a neuroscience. Phd.
+so yeah, obviously, scientists use
+hypothesis, testing and inference to make their conclusions.
+but really surprised me is that every single guest lecturer like
+actually, we also use inference. And we're using more than you say. Well, no, actually, I'll just tell you. In the interest of time. Linkedin runs 30,000 experiments every given
+day tonight.
+Tonight they're running 30,000 experiments. And the reason I know. That is because they told me.
+And that's actually one of the slides that the Linkedin Guest speaker brought.
+So
+we're actually going to start with inference, because that's kind of underrated
+like, I said, everybody knows that. You know, data. Science is now machine learning or machine data science. But there's more to it. That's inference.
+And frankly, I'll show you the next slide, probably in interviews
+more than half of questions, unless you apply for like a machine learning engineering position.
+If it's a genuine data science position.
+I would say most of the questions are coming from inference, actually.
+not from not not from machine learning.
+So the specific topics. So this is a
+the clock, the clock is on there.
+But basically, this is a histogram, I guess.
+of the topics that come up in data, science interviews.
+And
+I swear to you I did not
+design my class
+with this in mind, because this came out.
+And last year, I think.
+But this is basically a tailor conference of the class.
+So it's kind of an interesting
+match. You see that what's the most common thing that comes up? What a p-value is. Yes, now I know. You probably think you know what it is.
+I feel very confident.
+2 thirds of you do not know what it is. But you think you know what it is.
+I know there's a cache I'm going to check when you talk about p-values.
+Then linear regression. It's a basic concept that's going to come up in your interview.
+And that's why we're covering it here.
+T test, it's a basic concept. What is T, and why are we testing it? Great? Yes, I know you're like, I'm doing a T-test in my job for 5 years now. Yes, every day.
+But what is it. Why, why do we do that?
+What's a correlation?
+So if you go down the list here.
+with the possible exception of
+no
+covering, pretty much all of it.
+Anyway. So this is a good sign. Yes, this class prepares you really well for interviews. I'm not just saying that people email me
+all the time to took the class last year to say I was very skeptical, skeptical at the time. You're probably just making it up. But no.
+this did. This was my interview. It did come up so so. In other words, I know, for most of you is top of mind right now. How do I get my summer internship for next year.
+Maybe I'm biased, as Evan would say.
+But I think you could do worse.
+Then, taking this class seriously, it's basically interview prep.
+but not by design, just happens to be.
+Then why do we use SQL. By the way, so I'm not sure if you saw this in our tail. Cons, we're going to use python, although I'm not sure what the ide yet.
+But it's going to be SQL. With python
+any ideas.
+Why do we do that? Yes.
+Max, Max.
+yeah. Basically. Yes. So basically, to be to be a data scientist. And let me show you that I'm not just making this up.
+This is from some surveys.
+By the way, I apologize for the language here. This is directly from
+what was the source. Kaggle, I think
+so. I wouldn't have written like that, because they say here the job posts that specify this language as an optional requirement.
+Well, which which one is it
+that a requirement or is optional?
+You see that
+diseases down here?
+I would have not put it like that.
+an optional requirement for the role.
+But if you look here.
+data, scientists, yes.
+What do you see?
+What's what's what's 1 of the Modal values
+sequel and python? Yes, but R. Is still on here, but it's dropping fast. This is from a couple of years ago.
+but depends on the role. So if you want to be an Ml. Engineer, other things might matter more right? You want to go. Be closer to the process, or faster, or something like that. Yes.
+if you want to be just a data analyst, although sequel platform is still fine.
+Yeah, I stand by it. So that's why we that's why we use that.
+So now the question is.
+and maybe there is no point having this slide, because you're all here already. But I'm still trying to sell you on on. Why do you need a class like this.
+But basically.
+you know, you could probably take a degree in data sense online on Youtube. Yes.
+And
+what's the answer to that?
+What do you think?
+Say that again
+I have. What's your name?
+Subgroup
+certification is certainly
+valid. What I mean by that is, 10 years ago you could just show up and say, I'm a data scientist.
+and nobody would be the wiser right
+these days. You they want to see a degree. Yes.
+certification is certainly
+part of it right? Particularly if you are doing it for 10 years.
+Okay, but let me give you a more, a more like, you know.
+content-based one. The answer is because bad data science exists. That's why. In other words, yes, you can learn everything online. But how would you know what's
+legit and what's not? Let me give you an example.
+This is from one of the most popular
+blogs blogs. I don't know. Data, science sites, datasense, Dojo that has, like a million, you subscribers or more
+on various social media platforms. Have you seen David's Anto? I'm sure you have
+Twitter or Linkedin? You can't miss it.
+So look at this post 7 types of statistical distributions with examples.
+That's and, by the way, it's just a random assortment on this slide of things I saw. What do you see?
+What? What? What?
+Yeah, is this? A uniform distribution?
+Does this look like a uniform distribution?
+Are you sure?
+Is this a Poisson distribution? This looks like a time series.
+Are you sure this is an exponential distribution?
+By the way.
+there's no such thing as a T test distribution
+t distribution, not T test. Some people use it for T tests, but you can also do other things. And also that's not quite correct, either.
+Are you sure that's a normal distribution.
+In other words, I'm not sure if any of these are correct.
+not really. How do you manage to make
+7 errors in?
+I don't know.
+But this is like one of the most, the most popular data science field available
+sites there is. Yes.
+what else? Look at this one.
+This is from I think it was from Harvard. Yeah. Harvard business Review.
+They want to guide people. Okay, they have this matrix here, like, inspired by the Eisenhower matrix. The idea is.
+this is useful, this is not useful, this is time consuming, and this is not time consuming. If it's not useful and time consuming, you should probably ignore it. Yes, what do we have here? Math, statistics, data, warehousing. Okay, great.
+And let's see, this is not time consuming, but useful. So oh, no. Data, visualization, business intelligence.
+AI is up here. It's time consuming but useful
+machine learning. What do you? Why am I making fun of this? Because
+it's ridiculous. I agree. What makes it ridiculous?
+Yes. And what's your name.
+darren?
+Yeah. Good luck doing machine learning and artificial intelligence without having a very soft foundation of this.
+you're gonna
+destroy your company loss of all hands. We're actually going to give you an example of that in a moment. What could happen if you
+go. LOL. I'll just vibe with AI or something like that.
+right? But this is Harvard Business Review.
+all right. This is not like someone in the basement.
+How about this one become a data scientist in 50 days? It's like a program. They you laugh. This had like 10 million views on like Twitter, or something like that.
+So day one to 5. Learn python. Then
+next time you learn RI would argue, no pick one of them
+Daniel. Statistics, Daniel and Daniel learn calculus.
+Then you learn basic email. By the way, how are you going to do that without linear algebra?
+Then you learn this visualization.
+then data cleaning.
+They didn't talk about it.
+Oh, and then you do titanic data set.
+And then you're a data scientist.
+No, right? I mean, we could. I don't want to spend too much time on this, but this is ridiculous. Yes.
+but how would you know? Unless you have a credential credential program?
+What's real, and what's not real right?
+I mean, glad you think it's ridiculous. I don't even have to tell you why. Right?
+All right. How about this one?
+This is from towards data science, one of one of the most popular
+sites. Let's just say sites. I'm sure you're all on it. Right?
+Okay?
+So what do you think here explainability versus accuracy? What do you think?
+Apparently that's the space
+models.
+This might take more domain knowledge. But by the end of this class should be obvious to everybody by this is also
+ridiculous. But maybe some people already have some some background. Why would you have many doubts if you saw this.
+Do you have many doubts? Oh, yes, Mustafa.
+go ahead.
+Yeah. So that's a very good point. Data
+which one of these is appropriate might just be depending on the data you have. That's a very good point. But, Arden, that are you sure
+that this is by the way, accuracy versus explainability is.
+that's good. Those are kind of the 2 axes that you want to put
+models in. Right. Generally speaking.
+There is 2 basic schools.
+A good model is one that you can explain. Well, those are kind of the data scientist approach. You want to be a scientist and understand it. The other one is no, I don't care if you can explain it. Put it into a black box as long as it's accurate.
+Great! But what about this ordering?
+Are you sure that linear models are more accurate.
+but less explainable than tree-based models. Are you sure about that?
+So this is backwards? Right?
+Also? What do you mean? Probabilistic. There's multiple. BA is too much.
+and
+I don't know.
+Also, are you sure this is 1, 2, 3, 4, 5, I mean, I don't want to spend too much time. But I could think of a whole like matrix here, right?
+There's 20 models missing. Right?
+So yeah, bad data science. You see, I'm getting out of bad data science that's out there.
+What about this one?
+Well, I guess it's similar.
+Yeah, I don't know. I'm not going to even talk about it. Let's just move on. But basically
+bad data, science is everywhere.
+And it's the whole job of a
+professional that you were all becoming credential professional, that learn from experts
+that you can see, cringe immediately
+and point it out when you see it right as opposed to. If you don't do that, how would you know what's what? Right? It sounds plausible. Right?
+Ok, bottom line is the reason we need to have the classes because bad data centers everywhere.
+Let me just actually tell you how.
+how, what can go wrong?
+So one of the problems we're going to face here is that all of you have, like shards of knowledge.
+I'll tell you in a moment what I mean by that. You all know something. You all had to have a okay to be here
+you'd have either a very successful undergrad
+or a very accomplished business career. So welcome
+your
+and I think we had 2,000 applications this year, and this
+200 people here. So yes, you're you're in the 10% for sure.
+And there's already a self-selective pool.
+So, but the problem is, even though you have this background, right? You might have Cs background or business background or math background or statistics background, or a science background or engineering background.
+You also still need to be able
+to put them together properly.
+That make sense.
+even though you might have the components.
+Putting together is very, very hard.
+And you can have
+bad outcomes, unintended and unexpected
+many such cases. Yes.
+let me give you the example that I'm going to use for this as a cautionary tale.
+What happened with the Xerox auto scanners.
+which was
+1st described by David
+David Krisel.
+Question for you, does anyone here know this story?
+You notice right? One second.
+This is by the clickable link. So once I post the slides after this, you can click on the this guy, David Kesel, A. Cs Cs professional
+will tell you in an hour long. Video, what happened. By the way, you said, you know the story. By the way, don't say anything. What's your name.
+Peter? Don't say anything.
+Maybe at the end you can tell me if I rendered it accurately.
+All right.
+all right. So let's let's that's let's let's let me let me motivate this.
+Okay, so here's what can happen to you if you miss. So, by the way, data, science is all about the big picture. So math is a legitimate field, and statistics are a legitimate field, and Cs is a legitimate field.
+And business obviously is legitimate field engineering in data science. We're putting it all together.
+If you don't do this properly, you can be in deep trouble.
+And this is what happened to Xerox.
+So 1st 1st of all, what you talked about.
+This is a Xerox workstation. 7, 3, 7, 5, 3, 5.
+It's a massive
+Peter. It's a massive.
+the massive machine. Yes.
+So this is used by large organizations, corporations, national archives, the military research institutions, the court system, and so on. It's like high throughput. You can make
+10,000 copies in like
+an hour, or something like this is ridiculous. It's it's it's a huge machine.
+And this David Keasley Guy
+1st noticed this in July 2,013.
+So he received us. By the way, this thing doesn't just make copies. It also makes scans. That's where the problem starts, it scans things
+so. And here's a rendering
+of the original.
+And then this is this workstation 7, 5, 3, 5.
+I should add that the
+case happened in Germany. So it's in meters or square meters and stuff like that.
+I'm not sure. Do you see any problems? So these are original. So this is like A.
+These are blueprints of a construction plan. So a construction company scanned blueprints
+and Timmerman's room
+room.
+and
+war means one rooms or living room
+as similar as the kitchen. Right?
+Do you see these are originals?
+These are the scans that come out of different machines. Do you notice anything?
+What do you notice
+one second? The quality is not great. What else? That's always going to be the case.
+By the way, any idea, any idea, one second, any idea why the quality is going to be degrading, because
+images are very.
+Take up. A lot of
+pixels and pixels are hard, too.
+Store which we're going to be talking about in a moment. So there's going to be compression involved has to be
+so. But apart from that, what else do you see
+that 3
+SIM run.
+We all expect some degrading of quality. But now what's really freaking us out is we just scanned the original, and we rely on like authenticity, like veracity. Yes, faithfulness
+is that there's no systematic errors. Yes, just noise.
+So same room. What do you see? An error, a systematic error.
+not noise, not error. There's a difference between error.
+which is random error.
+noise, and systematic error so similar. Where do you see that
+1st line?
+Computer B.
+Oh, no, you're right. The 14.1 3 became a 17.4 2.
+Okay? What else?
+Yeah, look at that. That's 21.11 m². And this now? Oh, no.
+okay. What else?
+So how would you summarize this?
+Invited Peter. So far we're on track. Great! How would you summarize this?
+By the way, this is this is a data science cause problem
+as as a preview
+data science cause this problem.
+bad bad data. Science caused this problem. Maybe someone who didn't have the crunches.
+We'll talk about it.
+anyway. How would you summarize a problem? Someone who's not similar
+was the problem.
+Do you see? Do you see? What do you see what Simon is talking about?
+There are.
+This is the original 14.1 3, and what I see here is this is not 14 1.3, not just error noise, but a different number, looks like 17.4 2. Yes.
+then here of 21.11 for the living room.
+But apparently this was scanned as 4.1 3 by these by these machines. Yes.
+Do you see that?
+So what's the problem.
+Let's say you one second, let's say you scan like
+historical records
+from like the Greeks, and then you shred them.
+which which actually happened.
+What's what's the problem.
+No, this is not a test.
+There's no test here.
+This is what David Kris later showed as as to us, what the problem is. But they were really shocked to realize this. There's no tests here. This happened in the wild.
+The construction company sent David Krisel, who's an it expert
+like what happened here. How can it switch these numbers? Yes.
+Now, let's not talk about what the cause we'll talk about in a moment. But do you see what the problem is, does everybody here who wants to see what the problem is?
+Do you think it's a big problem or small problem?
+Yeah, you know why, it's a big problem. Who's who's using these machines? Corporations, national archives, the military? Oh, no, yes.
+there is, by the way, several court cases that might turn on this because the documents are gone, the originals they only have the scans
+all right, anyway.
+So the question is, how could that have happened? And I will, as a preview telling you
+bad data. Science
+cause this problem.
+But let me tell you specifically
+so. The 1st issue is, as you. As you already mentioned.
+it takes a lot of space to represent an image with pixels. Yes.
+is Pixel the most efficient representation of an image.
+so so a thousand by 1,000. Image has a million pixels.
+3 color channels.
+So if each pixel has 8 bits.
+so that's that's already a very big image. Yes, several megabytes.
+So you want to compress it. Yes, because neighboring pixels are not uncolored. See, Green, if this pixel is green, this is probably also be green, yes, and so on. So you can use all kinds of methods. We're actually going to learn them in this class
+to take advantage of these correlations. Yes, so far so good
+that should not be controversial. Is it clear what the issue is, and what the insight is? So far so good?
+And another insight is that different compression schemes
+have to if there's many compression schemes.
+And so the the image that now who said, we're testing, was it you?
+Okay?
+This is a test image that's often used to compress things in German. So there's a image here with a plant and a bug near fly. I don't know.
+Blowfly, what is that?
+And then there is a some text and some characters I mean the alphabet, I guess, and then there's numbers. So far so good.
+The question is what happens to this image
+if you put it through different compression algorithms.
+does Emma know about Jeff?
+So what it is is this Zumnegger's
+with Jeff, what's the pro? What's the con
+but a gif? Not
+Jeff.
+right?
+Anyway?
+What is the what is the does anyone know? Is it loss? Is it lossless or Lossy.
+It's actually not Lossy. It's not Lossy.
+But what's the but it looks Lossy. So what? What do you lose?
+No, actually, no, you use animations. You will see many animations by myself. They are gifs or gifs.
+So what what do you lose? I'll just tell you you lose the color palette, palette.
+So it's actually a very limited color range. Yes, so it's good for text, but bad for images. Yes.
+you see that.
+How about Jpeg? I don't want to go into the details of this, how it works because it involves Fourier transforms. But in general.
+does anyone know how Jpeg works in principle?
+Say, what?
+But is it Lossy or lossless?
+That is Jpeg.
+Chebek is not lossless. Chebek is Lossy, but it has high high range for colors. Yes.
+and if you know how it works seem in office hours. I I used to work with
+Fourier transforms. This is Lossy. It's called edge artifact. So it's bad for text. But it's good for images, because you do have the color range. Yes, so far so good.
+Yes, there's a reason. I'm telling you this.
+Okay.
+and this is straight up a image computer vision.
+compression, algorithm problem. Yes.
+So the engineers at Xerox realized this.
+So
+would you say they are adequate to compress the image?
+No, because they both have
+have have problems. Yes.
+so. And they realized that. So here's what they did.
+So what they realized is, text
+consists of many repeating elements
+and also images, often also.
+So
+they used to use Jbig 2.
+Does anyone know what? J, big 2 is?
+Okay, you know, gifs, you know, Jpex, do you know? Jbg, 2.
+Now it's its own standard. But
+okay, I'll tell you then.
+So jb, 2 is another compression standard, and it's good that I knew that, I guess.
+And what J. Big J. Big 2 2 does
+is it
+hassellates the image
+in 2 little regions?
+All right. That repeat. So, for instance, there's an E here, there's an E here, there's an E here, there's an E here
+the idea is, once you realize that
+you then just store
+the best one
+and every other time when you
+recognize it's the same one you just paste that one in.
+does it make sense
+and in principle.
+That is lossless, right? Because you just
+imagine, if you stored 26 perfect letters and 10 perfect digits, it's not that much right, but you could then compress entire books losslessly. Yes, isn't that amazing?
+Yes, except for what?
+What does it rely on
+someone? Someone speak up
+one second? Yes.
+no. It's actually very memory efficient. Like I said, you can. You could compress a hundred 1 million page book
+if it's in Latin alphabet
+with these 26 characters and 10 digits. Yes.
+wait just one second, are you, Adam? No, you're Adam.
+So who are you, Brian? You're Brian. Okay, absolutely.
+So. You need an image classifier.
+Our image classifier is likely to work 100% accurately.
+That's and that's the problem, as you'll see in a moment.
+So
+so the problem is, as I said, you partition this, you store the cleanest instance, and then you do this classification. Yes.
+and if the classification is perfect.
+so I guess an Rc. Curve of one
+which we'll talk about later in class.
+This will work perfectly.
+except for in real life, is classic actually going to be
+perfect.
+So but yeah. So by the way.
+the spacing is actually dramatic because we have a few symbols, you can.
+It's amazing, actually, in principle, lossless and very efficient.
+technically lost us.
+So what could go wrong? As a matter of fact, this is what they did. So so we we put our test image
+through Jpeg. Jpeg. 2. And you can already see the problem here. Do you see any problems? Anybody?
+You see? No problems. This is literally J, big. 2 version of what you saw. What do you see?
+S.
+This looks like an L. It recognized the I as an L, and pasted the L. In what else?
+Second eye. What? Second? I? Oh, no, yeah. Okay. What else?
+The queue? Oh, oh, okay.
+are you sure this should be an 8 here?
+So so yeah, basically, it pasted in.
+So it should have done this
+the way. By the way, if you took this class you could fix this. You could save this any idea how you could save this J. Big 2 star, I guess.
+Only paste it in if
+if what?
+That's Adam, right?
+Okay. So someone who's not Adam.
+this could be saved. But Jb, one second Max.
+plain vanilla Chevy, who does not know anything but it just does it across the board. But what could you do?
+Yes, threshold it. Only if classification accuracy is about a certain threshold, do we paste it in? Otherwise you just leave it.
+Yes, but anyway, isn't everyone clear who wants to understand is what caused the problem.
+So Jbg, 2 is a data science compression format. It works on classification. First, st you partition. That's computer vision, then you classify, it's beautiful, and it's in principle, lossless, except that it relies on perfect classification, accuracy, of course, in practice not doable.
+And now they have all these problems, because
+what shall we call it?
+Well, in many cases. Now let me just show you
+they. This was in the wild for 8 years before someone realized the problem.
+So so to actually even understand the problem, you need pretty deep in the domain knowledge in like image compression, computer vision and classification right to even appreciate what the problem is.
+And yeah, this, this I mean, okay, I don't want to get too deep into the Xerox situation. But there's
+several
+class action lawsuits ongoing on this.
+because
+there are hundreds of thousands of these machines in use globally.
+And by the way, these are these big workstations, so each machine might have a hundred users.
+Oh, no.
+and
+you know it took at least 8 years to find the bug.
+So this is incalculable damage.
+The only reason this was not more damaging to Sergis reputation is because most people probably don't understand what the problem is. If it makes sense. It's too subtle.
+All right. Do you see why this is problematic? If you
+kind of sort of knowledge, you actually have to understand deeply to avoid this. But Peter was this in? I know it's very fast. We didn't do. Put an hour in
+the
+thank you. Thank you. Yes, so it was an accurate rendering of the
+Xerox auto scanner's fiasco.
+Do you see how data science can get you into real trouble
+if you don't do it properly?
+Any other debate on this.
+I do want to cover other stuff. Is it clear what happened, or why it happened, or any of that?
+All right.
+Okay, so
+oops
+so. And
+yeah, so like, I said, this happened just as a lot of archives were moving to
+digitizing it and getting rid of their paper.
+So this might be
+irreparable damage. So like, let's say you have a document from Cicero, or something like that, you know it's gone
+because you were relied on perfect accuracy.
+and I don't want to spend too much time on this. But this actually happened to me.
+and by you
+offers a childcare scholarship.
+and they offer.
+And I have multiple kids. So I need, I need the money
+and imagine you've been for a long time. So you have some legacy email account, that auto forwards to your new account right
+somewhere in the last 10 years.
+institutions, switch systems. Okay?
+All right.
+And you missed scholarship because you never saw the the email.
+right? So you lost lots of thousands of dollars. And you need the money because you have a lot of kids.
+Any any idea what could have happened.
+So you have an old account and a new account.
+And because you've been at the Institute for a long time.
+any idea.
+this is more Cs problem.
+some data science
+involved any idea?
+I'll just tell you. Oh, up there.
+here's what happened.
+so
+so the idea was.
+not every email is
+legit. Some emails are spam.
+And what what about spam?
+What is Ben? Anybody?
+What is spam
+unwanted.
+soliciting messages? Yes.
+How does your email provider decide what spam.
+It's again a.
+It's a classification problem. Some emails are spam, some are not.
+So. Here's what Nyuati told me.
+so instead of forwarding everything they 1st did the spam filtering.
+So things that were classified as spam
+was not forward to the new account.
+because obviously spam is not important.
+so I never noticed anything important missing.
+So what do you think about that? What does it again presume
+anybody?
+So the idea is this, and while Uit does not forward, spam as as as a principle
+versus Penfold in 4,
+because there's no point forwarding spam.
+But yes, is it, David?
+Say again.
+Darren? Sorry
+else
+accurate classification. Yes, it's the same problem.
+So make sure. And we'll talk about classification extensively. But basically before you, a lot of this data is going to be right in classification.
+But don't be so sure that your classic is perfect, because otherwise.
+you know, we might
+missed something important. Yes.
+if classification accuracy is 100%. Yeah, sure. Then there's no problem.
+But before you put policies like that into place, never forward spam, you need to make sure that your spam classifier is
+okay.
+all right. And so
+so.
+and even academia is not spared. So like. So let me give you an example. It's a paper that came out 2 years ago. Now.
+does anyone know what Pca is? What's Pca
+principal component analysis? Anyone know what's what it's used for
+dimension reduction? Yes.
+and it's used in science ubiquitously by scientists.
+It's you know, it's all kinds of packages, have it?
+Not? Very many scientists understand how it actually works, although I will tell you in this class how it actually works.
+what could go wrong? Let's see.
+So the idea here is that
+Pca has a lot of assumptions frankly
+that if you just use this.
+you push a button and get through the Pca.
+let's just read this from the abstract.
+Well, here's the top. Here you can look it up yourself.
+Here's the idea.
+Pca. Results may not be reliable, robust, or replicable. As the field assumes.
+the field assumes that they are replicable. Okay.
+well, how big of a problem is this? We conclude that Pca may have a biasing role. There's just wording and bias
+in genetic investigations, and that 32,000 to 216,000
+genetic studies should be reevaluated.
+That's in genomics alone.
+you know.
+So in other words, be very careful using algorithms that you don't really understand. I assure you most
+scientists do not understand how the Pca works.
+at least in neuroscience. They just use it
+pushing a button or something like that.
+but they don't know the assumptions or anything like that.
+So this is
+this is a scandal. This is a disaster, because the entire field needs to be reinvaluated because
+scientists use these methods
+all the time hundreds of thousands of times, but uncritically.
+they don't even know that they have a problem.
+Does this make sense?
+So the okay? So then.
+so that's so, that's that's that motivates the whole, the whole class. And now we have
+25 min left.
+so let me make be more like specific. So
+before before I go there, is it clear to everybody why
+we need his class.
+Even as an introductory class.
+The idea is, do you need to actually and a degree, a degree in data science. So someone tell me so why is a degree in data science still, or maybe now particularly useful.
+even though there's all these free online courses out there, and social media posts and all of that. So why do we need a
+credentialization from an expert?
+Anybody? Oh, yes, go ahead.
+Credibility.
+And also.
+how do I say this? How account accountability.
+right? I mean. The Sarah's case was, it was a disaster.
+We don't even know how many people are affected by a spam, but a spam folder situation.
+And this Pca thing, hundreds of thousands of papers in genomics alone, I assure you. Neuroscience says all the hundreds of thousands of papers.
+It's a problem.
+If you get this skill set, I think you are going to be in high demand.
+because people who actually know what they're doing are in very short supply.
+All right. But let me tell you what specific high level course goals I'm going to achieve with this class.
+The 1st one is, and this is something of the next slide.
+My biggest problem is that there's something like 5 constituent groups in this class. Some people already have an undergrad degree in data. Science.
+What am I going to tell them that they don't already know? It's gonna be tough.
+We have some people with math background. They are very comfortable
+moves and derivations, but they might not be comfortable with coding. Right?
+You have Cs people who's the exact opposite. They're very good at coding and maybe algorithms. But
+maybe statistics is not your friend.
+And if you have a statistics background, who didn't know what a T-test is, but maybe not the other things
+people from business people, from engineering.
+So, in other words, for you as a group. By the way, this is your look around you, this is your cohort
+for you to proceed as a cohort. We kind of need to make sure everybody's kind of
+speaks the same language that
+you know when we talk about classification, or
+anything like that, that everyone knows what that means
+which might not have come up in your in your background.
+This is also a big one, like, I said, remember what was the problem, Betty, with the Sarah case.
+They had the components. They understand image compression. They understand
+classification.
+but putting it together
+is not trivial.
+You can have unintended consequences. Yes, so so I'm going to be trying to get you to see the big picture.
+This one is going to be particularly important.
+as you know.
+Like, there's a follow up class. That's what I'm saying like for almost every class, for almost every lecture I'm giving, there's a follow up class, you can take it and where you?
+So maybe it gets you like, Hey, I'm really interested in this or in that. So basically to give you an idea, planting a seed in your head, what you might want to pursue.
+And finally, there is a secret goal
+they're not really revealing yet.
+I'll tell you the last day.
+But I'm telling you that there is a secret goal.
+I'm also telling you there might be a
+extra secret goal.
+All right.
+So let me show you what I mean with what I just said. There's an elephant in the room.
+and here's the problem. I had my artist make this
+because it took me when I when I 1st took when I 1st taught this class, 3 years ago, it took me about 2 months to realize what even the problem is.
+The problem is that the math people
+think this is a math class.
+because we're going to be using a lot of math. We're going to
+derive the central limit theorem, or something like that. They're like, it is just like math. Yes.
+Dcs people think this is like a
+Cs, there's some python coherently.
+Yeah. Yeah.
+So to them, it looks like a C, it's just like Cs, yes.
+To a scientist.
+Oh, yeah, it's data, you know. So it's just like science.
+and by the way, this is a true story.
+this is someone from business, right?
+And no, no, in the triple A in the triple. A on this class.
+No, this is actually, I had my artist update this slide because initially, it was outcome of this elephant, and the guy wrote in the Triple A. It's true in business. We're just interested in the outcome of this cow. It's like Aha!
+That's you know your mindset.
+So what this show? So, by the way, what is the problem with this?
+As a professor and as a student, what's the problem of this situation.
+Why is this problematic? Is there a problem.
+Adam?
+And but yes, they are writing away. But what's the big? But yes, most of them
+because they have priors. Yes.
+and, by the way, you'll see this with the professors. I have a question for you.
+I'll have a later slide on this in a moment. But
+does any of your professors of data science have a degree in data science?
+Do any of your professors have a degree in data, science, any of them?
+No.
+no, because data science didn't exist when they were going to school.
+So they have math degrees or Cs degrees or science degrees or engineering degrees.
+and you can tell usually.
+where are they coming from?
+From? The class like Carlos has a math. Phd, yes, and he's teaching a probability class. It's a mathy class. He will deny this, but it's true. Yes.
+before I taught a big data class, Brian was teaching it as a Cs. Phd. And he did a wonderful job. It was a Cs class.
+Yes. So in other words, you have a strong prior.
+Yes, from your background.
+And honestly, the data fence. Yes.
+D,
+you need to get out of out of that. You need to. The whole point of this degree
+is to transcend
+wherever you came from whatever your background is.
+you need a bigger, bigger picture.
+Yes.
+right? Because data science is more than that
+data science kind of like the integration of all these things I know that sounds like a
+something you find on a hallmark card. Probably not
+just they don't talk about data science.
+but that's it's really true. One thing that attracted me to data. Science is inherently interdisciplinary. Yes.
+so neuroscience is fine
+data science. You have to be broad-minded to do it.
+You will derive things.
+You will implement in code.
+you will solve scientific questions, and at some point outcomes matter, matter, too. Yes.
+but it's more than that. More than it's more than the component parts. Okay?
+And I'm I'm inviting you. Let me just put it this way.
+If you want to be successful as a data scientist. You need to also adopt a broad mindset. There's no way there's no way around it. It's inherently broad.
+J, big 2 case also shows that
+you can't just be an image compression expert
+and ignore the other aspects of it.
+Okay.
+yes. So so, yeah. So the math we want you to prove.
+and the duration. That's fine. By the way, we will do proofs in this class. We'll do deerations
+if we can do them fast.
+If it's more than a couple minutes. I'll probably just post them.
+You know the the Cs people. They need to see. They need to do the algorithm. They need the implementation. Otherwise they don't understand it.
+Science people. They need to see where the data came from. This is, where's Finn
+to leave
+but the like?
+you know, they need to see
+the data before they believe anything
+where they came from.
+and the business person. And I'm not making fun of it.
+The business people who took this class before you told me that. That's what they care about.
+But even if you care about that, you might want to.
+the rest of the animal matters to what comes out in the end. Yes, and maybe I should change this. But the data you feed it
+depends what comes out.
+I should. Hey, Judy.
+let me tell Star
+what you feed, it matters what comes out
+all right. So basically from math, we take rigor and logic, and that gives us clarity. Okay, so that's going to be amazing.
+What we take from math
+is the amazing rigor and logic and gives us clarity that we don't see in anything else.
+What we take from Cs is their algorithms. And frankly, the implication computer systems
+that gives us the power. So, for instance, a lot of the algorithms that we'll see
+you could not have done
+20 years ago. It's just not possible.
+even if you thought of it
+in mathematically. So you have to get the power from that.
+from what we get from the science is is the we'll talk about that soon. We get the data from science.
+And then this whole engineering
+optimization focus is like that gets us to a solution based framework.
+All right.
+So what this implies is that you need to work on
+overcoming your priors. It's it's great that you have the background you do.
+But there's more to life than that.
+and maybe
+for me for teaching this
+some of whatever your background is. Maybe the math, maybe the coding, maybe the statistics, maybe the science, maybe the business aspects.
+maybe recognize that, Antiete. I'm talking about this because someone else might not know about this already.
+To my knowledge, nobody has all 5
+keys. If you do.
+maybe you don't need to do this, but I don't think I've ever met somebody like that. But it's also a lifelong thing.
+There's I mean, I'm learning more math all the time.
+and algorithms and things like that.
+So that's my advice.
+So you need to be broad-minded or
+try to become broad-minded.
+And so you're, I think we talked about in the panel.
+Your default should be intellectual humility.
+and the other 2 press agreed with me on that. Remember that the panel on Tuesday last Tuesday.
+It's nobody knows all of this.
+And even if you're the professor, there's more to learn, it's just that deep.
+So you just need to commit to lifelong learning, you know, because any of these component parts mathematics, that's a full-time job. You can be a mathematician and not do anything else and be happy, I guess. Right?
+So yes.
+let's talk about how to succeed in this class. Yes.
+and again we are running against the
+clock. But whatever
+the 1st thing to note is.
+Evan.
+What what does it say? Show up!
+You're probably too young for this, but I think it was Woody Allen who said, what showing up is
+somebody
+showing up is
+how much?
+Yeah, I think, he said, 80%. But
+she didn't show up
+to succeed.
+And this is not just vibes as a data science class. And by the way, this is going to be a clickable link.
+So this is Percenta tense in class. And this is class grade. What? What?
+What? What do you? What do you notice?
+Is this a small effect or a big effect?
+Huge effect?
+It's probably the biggest effect. We're going to see all semester.
+Why do you think it's so big?
+Why do you think it's so big?
+Anybody
+say that again?
+What?
+Yeah, I'm not. I'm not. I don't feel good about that down here.
+and there's a lot of uncertainty. But but and yet and there's a ceiling effect.
+Didn't say it's great. By the way.
+have you heard the saying? Data is beautiful.
+Have you heard the saying of that that saying? Day is beautiful?
+It's not data is always ugly.
+If if your data is beautiful, I will probably think you made it up like you. You synthesize it, or something like that.
+That's fine. But anyway, so why do you? Let's let's say we take it at face value, which I'll teach you later not to do. But let's for now date 1st class 1st Day. Why do you think this effect is so big that it's so important to show up in class
+any anyone?
+remind me.
+Joe Social, what
+show me time?
+Shall we done?
+Why.
+this might be an overfitting problem. I have a question for you.
+Where does the content of the final come from
+my head. Where do the lectures come from?
+Also my head. So in a way, we're overfitting, maybe teaching chest. What else?
+What else do you see here is this good cause to infants. By the way, I would argue, it's terrible cause of infants, because the people who do what also do? What
+did people show up to class?
+Maybe it's just go ahead.
+But that comes next just because you show up doesn't mean you pay attention.
+I
+yeah, it's just a market for like motivation exactly.
+and other issues. But as a 1st glance
+showing up makes a huge difference.
+Trust me on this. I have done this before.
+So try to show up.
+Okay. Second thing is, let's talk about attention.
+how do I say this? I don't want to spend too much time on this.
+But as a former neuroscientist.
+and I'm going to rely on the 10 psychologists neuroscience who are in the room.
+Look, I gotta be honest with you. Psychologists and neuroscience don't agree in much.
+All right, but they're going to agree on what I'm going to say next.
+Maybe I'm going to call on them out yourself. You are a psychologist, neuroscientist, can you multitask.
+Judy?
+No, no, you cannot.
+We'll talk in a moment. Why, why, it's so dangerous because you think you can.
+but I'm confident
+to say that you cannot multitask.
+and I can show you a thousand papers that core, Robert says. Let me just show you one
+in this study again. I don't want to go into details. They had people drive in a simulator.
+either just driving the simulator or or texting while they're driving.
+And the upshot of this is a clickable, clickable link. You can click, click it later.
+It is safer
+to drive drunk.
+then drive and text. Okay.
+now, I'm not suggesting you should try what?
+No, no, let's be clear. I'm not suggesting you should drive drunk. Not at all.
+It's the other way around. Would you drive drunk?
+No, that's good. I'm glad to hear that
+if you wouldn't drive drunk you should also not text
+to make sense. It's this, the logistics way.
+And you can look at any you might say, why do you care about that? It's just a dramatic example. But let's look at. Let's look at an actual experiment. It's an experiment.
+And so not not self-report. But they had people. They measured how much time they spent on their cell phone during class
+and their performance again, what do you see?
+The more time you spend on cell phones? D
+the lower your class performance. And this is a huge effect.
+I'm telling you right now. I have seen this in my own class.
+How do I say this? This is from a paper, but I saw this, you know anecdotally.
+I would argue the effects at least one full letter grade. So if you yourself
+would have gotten a b texting
+or being cell phones, you would get an A otherwise, or if it's a c, it would be a B,
+or if it was a B. If you didn't text it would be a C, otherwise, if you text, does it make sense? It's a huge effect.
+And the the problem is
+one second.
+So
+again, if you're really interested in this talk to me after class. But basically there are certain skills that you can automate. So, for instance, anyone here play the piano.
+Can you talk while you play the piano?
+No? Well, maybe you need to practice more. But but
+how about does anybody play? Drive? Stick shift?
+And when you 1st learned how to drive, stick, shift, could you do anything else?
+No, but once you learn how to do it
+now, do you even notice it.
+Not when you're
+correct.
+Let's not go with subconscious. But there are. Let me be very clear. If you want to know more about this, I can tell you right now
+when you learn them. Certain brain areas are doing this in the cortex particularly. But then, once it's a learned motor sequence, it goes into basal ganglia. It goes in cerebellum, and then you can offload it. Yes, but not for something like this. You're out of your mind. If you think you can. You can automate this?
+Yes.
+so it's very pernicious. It's
+this is maybe the most important slide in the whole class.
+You cannot do it.
+You just can't. But you think you can.
+and it's very sad.
+Right? So, in other words.
+show up.
+and if you show up, don't do anything else.
+it'd be great.
+Alright.
+What else?
+So? And like, I said, Let me just show you the. But I call this the 5.th This final final interview and skills test
+the final I call final interview and skill sets because we we test the skills
+interviews want to see in an interview final interview and skills test.
+I'll show you the actual grade distribution
+last semester.
+By the way, this is a terrible graph, but it automatically comes from our great grading software.
+What do you see
+what was the average?
+Say.
+what was the average? What do you think? Just looking at this?
+Say, what
+about 71?
+But I have a doubt.
+What was the what's so? Remember, it's all true, false. So what's the guessing percentage?
+So I did some bootstrapping to do the confidence interval?
+Oh, no.
+a good 20% of the students sort of chance a chance.
+They were not indistinguishable from chance.
+They were, they were not distinguished, they were indistinguishable chance they were not distinguishable.
+How much does this class cost you.
+you know? Are you sure you want to? Just.
+you know, spend I don't know how many thousands of dollars.
+not learning any, the master not learning anything.
+So so, yeah, so in other words, yes, I know you have an undergrad degree. I know you are in the top.
+90% don't even get here. I know you probably have worked 5 to 10 years in the industry of this.
+and this is an intraclass.
+But again, you're not too cool for this. You're not.
+as you will find out if you don't believe me right.
+So I need you to come, and I need you to
+be professional.
+when you do come. In other words, that means don't play candy. Crush
+on your cell phone
+while you're here.
+It's not a big ask. And if you do those 2 things.
+I think it's going to be great.
+Alright.
+You know what?
+There is a bunch of stuff I still wanted to mention. But give me just one second.
+If you don't mind. I I need to skip a bunch of
+bunch of slides, because I'm running out of time.
+One moment.
+Moment.
+Yeah, let's do this one.
+So
+okay, so I want to. Just briefly, in the last 10 min. Tell you
+why. Now is the time for data science? Why, I was excited to move into data science and walk away from my 20 year career.
+All right.
+briefly, let's end on that.
+So basically, in the 20th century.
+pipeline was narrow. Okay, the pipeline has the following 4 steps.
+The data needs to come from somewhere. Right? We'll talk about next time where data comes from.
+Data has to come from somewhere. Yes.
+data storage was also a thin pipe.
+You probably don't remember this, but
+cassette tapes.
+No.
+yeah, all right.
+then the processing was like, let's take a mean or something like that.
+And the modeling was very minor. So the idea was is that the insights that are are limited.
+Now let me just tell you why. Now is the time.
+So Stevenson's law. By the way, this is an example from neuroscience. Not by the way, I'm going to take most of the examples in this class, not from neuroscience.
+We're going to use law and business and engineering.
+These couple slides are from New York Times, because I know that the best I have a Phd, in that. So I know that. So Steven's law suggests that every 7 years
+the number of simultaneously recorded neurons doubles.
+So data is exponentially increasing. Yes.
+So if you're neuroscience, when I was young, when when I was your age, neuroscience was about.
+you know a few neurons at the same time that you record simultaneously. Now, you can record from
+thousands or tens of thousands of years. It's actually quite amazing.
+This is from a mouse cortex. This is 1 million neurons simultaneously from 2,021.
+So the color here represents the simultaneous activity of the neural activity of a million neurons in mouse cortex. It's amazing.
+I was doing this one electron one neuron at a time.
+So recording, the data is coming in at an exponentially increasing rate.
+By the way, again, this is just neuroscience, but we have these
+papers that I know about how much it doubles. But this is literally every field
+marketing.
+What else? Business law. My wife is a lawyer. It's crazy, I mean even law.
+and I assure you they're not friends with numbers. As a general rule.
+even now, medicine
+at Cholerav Langone.
+It's amazing, all right.
+So that's it's not so. The bottleneck is not data coming in.
+How much storage
+this is. The 1st hard disk
+that was made by Ibm. In 556. You needed a whole group of people to load in a truck.
+It had 5 MB capacity, and it cost $30,000 per month. You could not buy it. You have to rent it in $1,956.
+Right?
+This is a hard disk I have on my desk.
+It's external 5 TB, which one is bigger. The truck mounted one
+which has more data which which holds more data. The truck mounted one or the one that's on my desk.
+professionalism
+truck, or the one on my, on my, on my desk
+desk. Is it close.
+This is sorry. This is a million times larger.
+and it's much cheaper, too. Yes.
+what I was going to say. And, by the way, we'll use this in the big data class
+storage is the runaway of all these things, recording storage and process which comes next.
+Storage is unbelievable. There's no sign of slowing down at all. It's just bigger and bigger, and bigger and cheaper and cheaper and cheaper. So that's not the bottleneck.
+How about processing capabilities? As I know what Moore's law is. What's Moore's law on the axis? We have time. What do you have in the Y-axis?
+So what does Moore's law state?
+The number of transistors on a
+chip. Yeah.
+Integrated circuit does what
+doubles doubles each
+10 years
+much faster than that
+every 18 months.
+and that has been going on forever. So basically, you have this revolutionary.
+I mean, it's unbelievable. Right? I mean, this is like transformational.
+As I just said.
+we're not going to get to this in this class. But in the big data class, you can now do analysis that you could not do 10 years ago. It's just not possible. But now you have the computing power to do it
+all right.
+So the modern data pipeline looks like this. We scaled up the recording pipe
+and your storage pipe
+and processing pipe.
+So where's the bottleneck?
+But still small
+you you're the bottleneck.
+So we have to teach you
+to use these concepts properly
+to then scale up the insights. Yes.
+all right. So that's what that's what the the class is.
+And let me in the last minute just give you a very brief.
+brief overview of
+what we have done so far
+here.
+So look,
+so data science
+as its own. This is important. This is from Google trends
+its own
+field, its own discipline. It's exactly
+wow!
+Sort of 11 years now.
+11 years and one.
+But still early days. Okay, you see that.
+and it's still growing in contrast to some other.
+either stagnating or declining
+fields.
+Right.
+all right.
+And you know I was very like I said I was very excited to Tweet about this last year
+that we are the 1st ones to do this. I'm going to end on this slide. So very briefly.
+brief history of data science at Nyu. You might have already heard this in your orientation, if you have let me know, so I can
+cut this slide for the future. But basically, in 2,013 we established the first.st
+I should add, I have an in-person master's program
+in data science.
+But but it was really the 1st in the world. I looked into this. Colombia claims their first, st
+but that's not true. It took them. No, they they what they what they mean at 1st is, they were the 1st to make a press release.
+I researched this on the occasion of this 10 year Anniversary. I wrote an article on this history. And
+anyway, so it took them 2 years to preparation. They they were actually live in 2,015,
+but they did issue a press release in 2,013 in the summer. A couple months before this, the moment they got money from Bloomberg.
+in 2,015 we moved.
+We were in a totally different building before that.
+and we spent years renovating that
+Arizona I mean the iconic 65th Avenue, the Forbes building.
+You have a Wikipedia entry. Do you know know about this?
+The 65th Avenue location is an iconic
+used to be an art gallery.
+but it was completely renovated.
+Then we started a Phd program we are now actually starting to
+created our 1st
+graduates.
+you know.
+one of my former students just graduated sage.
+This year.
+that's what I'm saying, like, none of the professors in the program has a Phd. In data science, because
+this might, I'm not actually sure, but this might also be the 1st Phd program in the world.
+And then in
+she was 19. We created the undergrad major
+also the first.st I don't think Colombia has one, for instance.
+and
+Then the Coronavirus came.
+which is also, by the way, when I joined the center, like the Coronavirus, arrived, and I arrived, I guess.
+but I don't want to put them in the slide.
+And then what we're doing now is, you probably saw this. We're hiring more and more faculty. We're scaling. We're scaling the program. We are. I mean, you're you're by far the biggest class by now.
+It started in 2,013 with 30 students. 30.
+So we're scaling up
+all right.
+but it's
+generally well, I'll leave it at that beyond time. Okay, any final thoughts.
+any questions, doubts
+anything?
+No, nothing.
+You're quite years.
+Wait. Wait. Is silence bad or silence? Good.
+That's good. Okay, great. You never know. All right, I'll see you. Okay, I will make an announcement. But I'll post slides. I'll post the
+Celibar.
+make an announcement, and I'll see you for probability theory.
+On Tuesday.
+Alright.

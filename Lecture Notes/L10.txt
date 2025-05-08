@@ -1,0 +1,975 @@
+WEBVTT
+Pascal Wallisch: All right. So welcome to this makeup session of the big data class.
+Pascal Wallisch: I apologize for the technical problems on Monday.
+Pascal Wallisch: And let's catch up today do feel free to ask any questions. I will.
+Pascal Wallisch: I will have questions me know it's always interactive. And I will also monitor the chat very closely. So please don't hold back. If you have any
+Pascal Wallisch: questions all right. Today we'll do recommender systems. And, as some of you know, recommender systems are particularly dear to my heart, because I have been myself, Pascal, working on recommender systems in one way or the other for at least 20 years.
+Pascal Wallisch: Alright! So this is a topic that is particularly close to my heart, and
+Pascal Wallisch: I know we introduced a lot of the concepts already in the introduction class introduction data science. But, as you will see today.
+Pascal Wallisch: as you will see today, which we'll call it
+Pascal Wallisch: recommender systems work by far the best. If there is already a if you have big data. So while the concepts are valid that we talked about the introduction class
+Pascal Wallisch: recommended, systems will work the best. If you have a lot of data. So this actually is very topical for this class. So we'll talk about recommender systems approaches for big data systems, particularly implicit feedback. We'll talk about it all right. So we'll talk about recommender systems. We'll talk about collaborative filtering, and then we have a extended.
+Pascal Wallisch: you know, extended part on like ranking in in evaluation metrics beyond what we talked about in the introduction class. Okay?
+Pascal Wallisch: So briefly, before we go there, just very briefly, there's a lot of doubts. There's a lot of confusion. There's a lot of struggles about search, and I'll just make this as fast as I can. This is all stuff that came up in the office hours. So the 1st one is what is approximate minhash. So the idea is, we are replacing
+Pascal Wallisch: the permutations with hashes. Okay? And so the whole point was that for minhash was to get, we get some integer.
+Pascal Wallisch: given the permutation and then check for collisions, meaning 2 different documents are mapped on the same number. That's a collision, right? But we can do it with a hash just as well as we can do it with a
+Pascal Wallisch: permutation. And so, in other words, we don't need to do the permutation. We can just use a hash. The advantage of that is that the hash is usually much, much faster than the permutation is. So for big data that actually can make a difference. What the confusion is, I think, is that there's now 2 levels of hashing. There is
+Pascal Wallisch: the hashes to get the main hash.
+Pascal Wallisch: That's the 1st one. But then there's a second one second level to replace deputation with hashes, too. So it's hashes all the way down.
+Pascal Wallisch: And that's where you actually set up.
+Pascal Wallisch: So the hash function doesn't mind the large. Input, but a permutation does. It's going to be a lot slower.
+Pascal Wallisch: and you know. So I think this was the confusion last time during the lecture. Like, as I said, we use murmur, hash, and those are functions or families of functions that take parameters. So in approximate min hash, you can use random coefficients. So you hash something like that
+Pascal Wallisch: like number like that ax plus B, MoD, PX is your input, your input data
+Pascal Wallisch: and A and B are just random coefficients, and P is some large prime numbers you don't get.
+Pascal Wallisch: you know, random collisions. And then you know, that's how that's how it works. That's how that's where the numbers come. That's where the number comes from. It looks something like that.
+Pascal Wallisch: And the problem was and this came up a lot in my office hours this week is that, or last week, too.
+Pascal Wallisch: is that, you know?
+Pascal Wallisch: Obviously Minhash will detect collisions.
+Pascal Wallisch: But what if you have a lot of stop words like I, me or my, that doesn't mean I plagiarize from you. It just means we both use English and English is a lot of these short words.
+Pascal Wallisch: And so the problem was and is, that's why I'm saying this here. The whole point of doing Minhash is you reduce the overall set to a candidate set. So you do the full jakar similarity on the final candidate set. But if you have a lot of stop words you will be unable to reduce the
+Pascal Wallisch: the set to the candidate. Set. An analogy, I guess, would be if you want to interview people, and it's very cumbersome.
+Pascal Wallisch: you know. You want to reduce the
+Pascal Wallisch: set of applications 1st dramatically. But if everybody has the same same keywords, I don't know big data spark
+Pascal Wallisch: mapreduce something like that. Then you you can't reduce by that. So you have to do something else.
+Pascal Wallisch: And what we came up with was a Min Hash with lsh, so the idea is, we're dividing the data into rows
+Pascal Wallisch: and blocks.
+Pascal Wallisch: and the idea is that we only count a collision if there is a collision in all rows of a block.
+Pascal Wallisch: and that will allow us to
+Pascal Wallisch: to recover precision right? And if we increase number of blocks because you could have different collisions in a different block, you can get recall back up. So in other words, in English, you can basically have your cake and eat it too. If you calibrate the number of rows
+Pascal Wallisch: and the number of blocks. Well, it's quite amazing, actually, so that way you can avoid these random collisions from the stop words which would destroy your precision. But then, of course, if you just increase the threshold, you have low recall. But so this titration of number of rows and number of blocks is the way to go. It's quite remarkable, all right.
+Pascal Wallisch: By the way, I was long here, and it's just the few of us tonight any more questions about any of this. It's actually quite straightforward. Once you understand it, I mean, I guess you can say that for anything. But the point is that this is actually quite, quite straightforward. Let me see. Is there anyone on like, can you hear me like, can you see me in the chat?
+Pascal Wallisch: Any any anything? Good? Okay, great. Let's move on. So we we ended with search.
+Pascal Wallisch: And yeah, it is cool.
+Pascal Wallisch: And the whole point of search is that we get relevance from the content similarity between the query and the document. And I think we covered everything about search that I basically wanted to cover. Now we can go into 2 directions, and I did rearrange the
+Pascal Wallisch: order. So you can do. You can at least start your project this week, and the 1st one is recommendation. What recommendation is
+Pascal Wallisch: we are now going to build on search by personalizing, by personalizing. The idea is for search. Everybody gets the same.
+Pascal Wallisch: regardless of who does the query.
+Pascal Wallisch: Everyone gets the same results.
+Pascal Wallisch: Relevance is modeled by the content. Similarity between the query and the document, regardless of who searches.
+Pascal Wallisch: You can think of recommendation as a personalized search. In other words, what is relevant to you might be different from what's relevant to anybody else. And we'll talk about that in a moment. And it's actually a good way of thinking about it. So basically, search is like for everybody or everybody is the same. But in recommender systems, like, actually, we want to tailor the feedback, the results to you.
+Pascal Wallisch: And then what we're going to do next next week is graph algorithms. The idea is that their relevance derives from the structure of the network. We'll talk about that
+Pascal Wallisch: when we talk about it. Monday. I just want to show you where this train is going where we are right now, what we just did. We did search. Now, we do a recommender system which basically is personalization of search. And then we do a kind of different kind of search on Monday. And yeah, I feel good about all of this, because it's a logical logical progression. Okay?
+Pascal Wallisch: So briefly, how do we go from search to recommended system? I just said that so early on.
+Pascal Wallisch: it was all about indexes and searches. So basically, the user had to describe what they want.
+Pascal Wallisch: Of course, you can imagine that is not
+Pascal Wallisch: gonna work. The user does not necessarily know what they want. All right. Of course, in a early search, even if there's different users, they would get the same results. Okay? And so you can think of recommendations as search plus also personalization. You can maybe even add a different plus plus like assistance. Basically, at some point, the user
+Pascal Wallisch: gets
+Pascal Wallisch: aid from the past and from the other users. They don't necessarily have to describe it. What they're looking for, all right. And I just said that. So so your own search, your own past history informs your results. Other people do. And yeah, so so personalized relevance is a good personalized slash. Automated relevance is a good way of thinking about recommendations. There's 2 2 aspects to it. One, it's personalized. And B, it's at least partially automated. Okay, so
+Pascal Wallisch: and you probably don't believe me because you were not born yet. But the early Internet, I'm going to say, the 1st 10 years of the Internet were basically all search. It's like, it's hard to imagine today. But you had to basically go out and look for the things that you wanted. It wouldn't come to you. You had you to find it.
+Pascal Wallisch: And so early on. Say, Yahoo, you would. You would type in into your website 97, for instance, what you want.
+Pascal Wallisch: And that was it. You got what you put in. And yeah, it is where it is. Of course, this was immediately, you know. You know.
+Pascal Wallisch: weaponized. We'll talk more about that next time, like there's several several reasons we went beyond Yahoo. This this model was quickly like
+Pascal Wallisch: attacked, I would say, but I think we're going to address that aspect next week. What we'll talk about today is
+Pascal Wallisch: the need for personalization. This is very brief. From my own research. There is dramatic and genuine.
+Pascal Wallisch: You could call it diversity in preferences. I found this for movies, as you know, and for music. It was even more dramatic in English, and this is all foolish from my research. If you present people with some songs, it smells like teen spirit.
+Pascal Wallisch: Some people will think this is awesome, like literally fills them with awe. Awe. Other people makes them angry. They think it's disgusting, and it evokes anxiety. Those are not the same people they are not.
+Pascal Wallisch: And so your individual response to a
+Pascal Wallisch: stimulus of any kind. Movies music is dramatically different. In other words, you would not want to return the same item to you know everybody, because everybody is different. You do want to personalize it. And I said this, or in the introduction data science class. Luckily for us, this need to personalize coincided with an amazing
+Pascal Wallisch: fortuitous bounty that in the 21st century, for the 1st time ever in the history of humanity, most
+Pascal Wallisch: content is now, digital in other words, when I was your age.
+Pascal Wallisch: So here's like a you know, airport bookstore. You had to go to a brick and mortar store, and
+Pascal Wallisch: you know there's only so much you can do. How many books fit into a normal bookstore? Not that many, yes, records, too. And whatever else video shop Cds, you probably don't remember any of this, but there was always the problem that if you had some niche interests you're not going to find that in the bookstore it's not that well stocked. They maybe have a hundred, maybe a thousand
+Pascal Wallisch: top titles, and that's it.
+Pascal Wallisch: And with digital items you can have as many as you want, as you know, Spotify serves about a hundred 1 million songs.
+Pascal Wallisch: Netflix serves a lot a hundred 1,000 items, Amazon even more.
+Pascal Wallisch: It's amazing, all right. So so but the problem now is, you cannot
+Pascal Wallisch: browse this anymore. You could do that in a bookstore or in a video store.
+Pascal Wallisch: I,
+Pascal Wallisch: as I just said, I remember spending quite a few hours as a teenager, browsing video stores. Because you could actually do that, you could exhaustively search entire store. There's not that much content. You cannot do that with digital items. So in other words, this recommender system business is a genuinely 21st century story. It's amazing.
+Pascal Wallisch: There was no need or point in recommended systems in the 20th century. So you're welcome. So there's a reason why this is the bread and butter of the modern data scientists. So we have it all together, like we have the need for it. We have the affordance for it. We have the technology for it. And now we have the big data for it.
+Pascal Wallisch: All right, talked about in the introduction data science class a little bit. So, in other words, this concept of Long tail was popularized in 2,006. The idea is that if you rank downloads of music by their rank order.
+Pascal Wallisch: it's actually quite amazing that this is self-similar. In other words, this will keep continuing like that. This tail never reaches 0. So even if you go into track number 800,000, there's still some downloads. And so this concept emerged of the short head, which is the stuff that you can put into a video store into a bookstore or a record store because of physical strains.
+Pascal Wallisch: is now contrasting what's called the long tail, and the idea is that more and more of the sales
+Pascal Wallisch: come from the I did not.
+Pascal Wallisch: No, I did. Recording's on.
+Pascal Wallisch: Recording is on.
+Pascal Wallisch: I am recording.
+Pascal Wallisch: anyway. More and more of the sales are coming from the from the long tail, all right.
+Pascal Wallisch: And so, in other words, the late 20, th by the way, obviously, people still search
+Pascal Wallisch: even in in like search engines. However, there are kind of a misnomer if you log in to a modern
+Pascal Wallisch: search engine any, any of the modern ones, mostly Google. Of course.
+Pascal Wallisch: your mileage might vary. So if you do a search on my machine versus your machine, you might get completely different results, because it takes your previous search history into account. Your own previous search history account. And it ranks the results by relevance for you. And then this other point here.
+Pascal Wallisch: this automatic aspect. If you log into a
+Pascal Wallisch: any website like that Youtube Netflix. What you're looking at is the is the output of a recommender system. You don't have to even start to search for anything like the what auto populates the homepage is a recommendation or our recommendations. We'll talk in a moment where they come from, how this list was generated, how we evaluate, or how they evaluate a good list and things like that. So, in other words, at this point, most of the clicks
+Pascal Wallisch: on these platforms come from recommender systems. It is my claim that and this is this red part is a little bit
+Pascal Wallisch: what you will call it alludes to that.
+Pascal Wallisch: If you live in the modern world. I would argue, you cannot go a day without interacting with the outputs of a recommender system at some point you might not be aware of it.
+Pascal Wallisch: But you are. I mean, it's amazing, actually. And we'll talk about more of that in a moment.
+Pascal Wallisch: Okay, so in other words, recommendation yes, exactly, exactly, Max. So so this is something that basically every app the app now has, it's it's standard. Which is why I'm fairly confident that this is gonna be a key. It's gonna be the bread and butter of most people on this call.
+Pascal Wallisch: I mean, not everybody, but but a lot of people, because there's a recommender system layer to almost every app you have. Even if it's not primarily a recommender system app, you might not even be aware of it. It's exactly right, Max.
+Pascal Wallisch: So yeah, I feel good about this. There's a reason why I like recommender systems all right. So anyway. So it's all about personalization. So, as we said in traditional search.
+Pascal Wallisch: By the way, sometimes this is also called, if you see some literature, information, retrieval, and quite a few of the metrics, that of like, how well this is working like, for instance, we'll see later. Ndcg as an example, as a metric that comes from the information retrieval literature.
+Pascal Wallisch: So anyway, this used to be called information retrieval or search. And the idea is that you model how relevant item is in response to some query. But in recommender systems or personalized search, we are now gonna have some kind of model of the user to personalize that right.
+Pascal Wallisch: And you have to know something about the user to do that. So in other words.
+Pascal Wallisch: search straight up. Search is primarily a Cs problem, a computer science problem like all kinds of algorithms to do that. It's a Cs problem. But recommender systems
+Pascal Wallisch: is a data science problem because you need to have data about the user and their
+Pascal Wallisch: history interact with the collection to make that point. Yes, from now on we're going to call that feedback.
+Pascal Wallisch: And as I just said, this works best. If you have big data. Now.
+Pascal Wallisch: this is something we talked about already in the introduction class. And this is also something that that I want you to do for the final project that has been released now.
+Pascal Wallisch: and that is the popularity based model. Again, I will tell you in a moment why this is a misnomer. We already talked about the inter class. But I'll remind you.
+Pascal Wallisch: and that's our baseline. So, in other words, I will want you to, and you will want you to compare your recommendations
+Pascal Wallisch: to what's called the popularity based model. So that's our baseline, not random guessing. That's not an unfair baseline. The question is, can your recommender system beat the popularity based model, and the answer is often, No, you cannot, because the popularity-based models are so good, and, as it says, is here in the slide. That should be the 1st thing you try. And so the idea is for every item. And, by the way, item, is a technical term for any cultural artifact could be a record could be, a book could be whatever game video game.
+Pascal Wallisch: And so the idea is you're computing the average utility of each item as such. This is P of I. So the preference or the popularity score of I
+Pascal Wallisch: is gotten as the sum of the ratings of a given user
+Pascal Wallisch: over all users for the item over over what
+Pascal Wallisch: I keep asking this, what do the absolute value bars mean? Do they mean absolute value. That's the only confusion. Here
+Pascal Wallisch: are these bars absolute value. And the answer is, in this case, it's the cardinality. So, in other words, just how many
+Pascal Wallisch: ratings there are, and those of you who are either mathematically inclined, or
+Pascal Wallisch: remember from the introduction class. This is the equation. 4 d.
+Pascal Wallisch: 4 d.
+Pascal Wallisch: 4 d.
+Pascal Wallisch: For what?
+Pascal Wallisch: What does it look like?
+Pascal Wallisch: Some, the ratings
+Pascal Wallisch: over the number of radians? Correct. That's the average. So language is the mean. So basically compute. So it has a fancy name, popularity-based model.
+Pascal Wallisch: It's literally compute the average, then sort the items in decreasing order of what we call popularity, what I would call rating. But okay.
+Pascal Wallisch: and that's it. And then you have your short head. That's your greatest hits. That's your Starbucks mix whatever. But, importantly, that's the same ranking for all users, and then the question is always Well, that's fine. But how much does personalization help with with that? And that will depend on a lot of things. We'll talk about it. But this should always be the 1st thing you try, for many reasons. 1st of all, it's easy to compute. Second of all, it's fast.
+Pascal Wallisch: 3rd of all, it's invariant to the users over all users. And and finally, for many things that is actually fine. It's gonna be hard to beat in some things.
+Pascal Wallisch: all right.
+Pascal Wallisch: And some examples of this would be like the top movies. Let's see his intimate movie database. It's like, you know, Shawshank redemption, godfather, Dark Knight, the second part of godfather.
+Pascal Wallisch: 12 angry men, shingles list, lord of rings, pulp, fiction.
+Pascal Wallisch: more, Lord rings the good, the bad, and the ugly. But these are the highest ratings movies in the history of the world.
+Pascal Wallisch: That's a pretty good list. Good luck beating that with your own personalized list.
+Pascal Wallisch: The billboard hot 100 is a good example of that.
+Pascal Wallisch: And this is the Barnes and noble bestselling books list.
+Pascal Wallisch: Huh?
+Pascal Wallisch: All right. So anyway, that's those are examples of of
+Pascal Wallisch: the short head, the popularity-based baseline. Now let's go beyond that. The recommendations have to be based on implicit, explicit feedback. I, personally, Pascal, for reasons you'll see in a moment when I can get it strongly prefer explicit feedback.
+Pascal Wallisch: because they're hard and unambiguous signals. Stuff like you bought something that is a very, very hard signal like you don't have infinite money. So if you spend money on something that is a very, very strong signal. A star rating is a strong signal. Most things you don't bother enough to rate them
+Pascal Wallisch: up and down thumbs, subscriptions, conversions that's a strong signal. They're a very strong signal. You can't do this for everything.
+Pascal Wallisch: the downside of explicit feedback. It's usually rare like. So you have severe selection bias issues. If you look at on the rate, my Professor.
+Pascal Wallisch: something like one in 500 students leave the ratings leaves a rating, and it's usually someone who loves the class or the professor, or hates and despises the professor. Most people don't bother
+Pascal Wallisch: so. And this is true for almost everything. If you look at, I don't know Amazon
+Pascal Wallisch: Amazon ratings. Most people buy the item without rating it. Right? All right. So explicit feedback is.
+Pascal Wallisch: So this works well in stuff like what I do, which is like experiments where the user's there, anyway, so they might as well rate it. But in casual like
+Pascal Wallisch: life you don't bother to stop and give it feedback. Nobody does that.
+Pascal Wallisch: Something like
+Pascal Wallisch: 1% or less of people who interact with items online leave any kind of feedback. Most people are just lurkers.
+Pascal Wallisch: So that then the issue is like, are you like even like
+Pascal Wallisch: representative of everybody? So that's complemented with implicit feedback? It's literally stuff that happens while you are like
+Pascal Wallisch: engaging with whatever you're doing, anyway. But you're not taking out of the experience. In other words.
+Pascal Wallisch: in the you know, in the course of human affairs, browsing the Internet. You click on things, you download things, you listen to songs, you skip songs, you swipe left, you swipe right. I guess that is exclusive feedback swiping right and swiping left. But other than that, the point is that
+Pascal Wallisch: in the course of human affairs, when you just consume the consume the
+Pascal Wallisch: culture artifact as it is
+Pascal Wallisch: the website or the app, or whatever it is, records this feedback implicitly behind the scenes without taking you out of the experience. So the Downside is, and it is a huge downside. I can't even begin to start.
+Pascal Wallisch: How to describe this in this class. We talked about more in the last class. But basically, just because you click on something does not mean you like it. Maybe you have hate clicks or it's a train wreck, and you cannot believe what you're watching, or you were curious, or somebody else sent you a link, but you have actually no interest in it. So, in other words, you do not know.
+Pascal Wallisch: You do not know what it means if that makes sense. And here this is pathetic, but it's also true. There's usually no, with the exception of skipping, there's no negative feedback. It's all positive you click some stuff, you download stuff, so it's hard to tell why you did that
+Pascal Wallisch: purchase orders are different. I mean, they're also positive, but they are an explicit signal and give me one second. I want to actually jump in there, for let me just finish the thought. The reason that we do like it is usually you have orders of magnitude more
+Pascal Wallisch: implicit feedback than explicit feedback. So, as you know, because you took the class
+Pascal Wallisch: in the inter class we spent, we only talked about
+Pascal Wallisch: exactly. We only talked about the explicit feedback. But the big data systems are almost all powered with implicit feedback. So we'll talk about that. We're going to focus on that today. But it's actually a good question, where do you draw the line between implicit feedback and Xp feedback? So something like a download
+Pascal Wallisch: is, you know.
+Pascal Wallisch: just in the process of consuming the product you have to download, or you have to click on it. Where is the line between that and like a purchase? Yes, it's a fine line, right? I guess what makes a purchase a strong explicit signal and the click is not is that you cannot buy everything. It's a much stronger signal. You're endorsing something. Of course you could say, Okay, you also have not. You don't have infinite attention. You can't click on everything, either. It's a fine line. Okay, that's why I backtracked on the swipe right, swipe left. That's a perfect example.
+Pascal Wallisch: In my opinion. The genius of the swipe right and swipe left. Dynamic or cultural grammar. Is that something that is technically implicit feedback
+Pascal Wallisch: where you like to to go for a list of potential candidates of people you might want to mate with, or whatever you're trying to do.
+Pascal Wallisch: In the process of doing that, you force people to give explicit feedback.
+Pascal Wallisch: Does it make sense what I'm saying? It's actually quite, quite as a big brain move.
+Pascal Wallisch: Well, I'm not sure about that. Do you hate watching movies in the theater?
+Pascal Wallisch: I don't. I don't. But maybe I'm weird.
+Skandaa R: No, at times I think I've seen like, if, like a movie like goes viral or something on the Internet, they just go to like
+Skandaa R: like, make fun of it, or like just like laugh at it, or something like like that's why I was just wondering.
+Pascal Wallisch: I guess so it's just I would say it's much more rare. I mean, you saw what happened to the snow white movie, right? Nobody wants to see it. So yeah, I mean, maybe for the means.
+Pascal Wallisch: But most people don't do that
+Pascal Wallisch: right. But again, this is a fine line, as we just discussed. But but maybe these are like prototypes. 1 1 of these are. Maybe it's a gradient. How about that?
+Pascal Wallisch: It's a gradient. Some of them are obviously explicit, like a star rating. That's explicit. You don't have to do that to
+Pascal Wallisch: how about this? In the prototypical, explicit feedback? You cannot. You're sorry you can. You can consume the product without leaving a rating. Yes, it's like it's like you can watch a movie without rating it. Yes, that's an explicit feedback.
+Pascal Wallisch: right but implicit, would be strictly implicit, is like you. Listen to music.
+Pascal Wallisch: and we keep track of your play, count, but nobody is the wiser. You are not, and we are not that that even happened. It's just. It's unavoidable. By the very fact of you consuming the item we are racking up your play count we can count. Does that make sense kind of.
+Skandaa R: Yeah, yeah.
+Pascal Wallisch: Else there is like a gradient they're like, well, you know, you have to do it, or you can do that. So I would say, play count is a better example than click through, although if it's properly designed, you have to click. You know, as I said, I think the biggest brain moves from the app designer perspective. Come, if you can force the user to give you explicit feedback
+Pascal Wallisch: just by consuming the app without. And this is oops sorry without taking them out of the experience. So what I'm saying is that if you had to rate a musical
+Pascal Wallisch: piece right? Say on like, I'm not sure what you use, spotify
+Pascal Wallisch: before you can go to the next to the next song. Nobody would use that. It would take them out of the experience that makes sense.
+Pascal Wallisch: So this only makes sense.
+Pascal Wallisch: maybe maybe even for like books, you read a book for like a week, and then you rate it, I think. Kindle, for instance, asks you at the end of the book a pop-up comes up now that you spend a week reading the book. Would you mind rating it. Yes.
+Pascal Wallisch: or, for that matter, a course. Right? Imagine you spend the whole semester listening to Professor. Is it really too much to ask to spend
+Pascal Wallisch: 5 min to give the Professor some feedback. Maybe maybe it's too much to ask. I don't know.
+Pascal Wallisch: anyway, as I just said, listening by itself is implicit
+Pascal Wallisch: if I force you to stop, and will not play the next song unless you rate the move to Song 2. That would be explicit. But nobody's going to do that.
+Pascal Wallisch: I mean, I don't think anybody would use that or imagine yet search engine results. But look, the thing is.
+Pascal Wallisch: I mean again, these apps are trying to get explicit feedback wherever they can. So, for instance, as you saw, all of us are using the Chatbot right? And I'm sure you've noticed this at the end of the response. By the Chatbot, you could give it feedback. You can click on a thumbs up or a thumbs down. It's just that almost
+Pascal Wallisch: nobody's doing that. I'd be very surprised if they get more than one in a thousand
+Pascal Wallisch: responses that makes sense. And for every 1,000,
+Pascal Wallisch: you know response they generate. They may get one thumbs up, thumbs down. Maybe if it's a particularly egregious case.
+Pascal Wallisch: So so yeah. But again, it's it's it's a and, as Max said in the chat without implicit feedback, you couldn't run these big data recommended systems. You just don't have enough explicit feedback to a point where it's just it's just
+Pascal Wallisch: minuscule. Yes, yes, so far so good.
+Pascal Wallisch: Any questions great. All right. So we'll do all of that in a moment. But before we do that we need to improve the popularity baseline a little bit. There's several considerations. We talked about this already, before
+Pascal Wallisch: which one would you rather have a which which item would you rather buy? Item, one of a thousand ratings? But the average rating is 4 or 2 of one rating, but the average rating is 5.
+Pascal Wallisch: Which one would you prefer?
+Pascal Wallisch: Almost everybody would prefer? Item one.
+Pascal Wallisch: Before I say you're irrational, because, item 2 has a much higher rating.
+Pascal Wallisch: Why? Because because the reality is
+Pascal Wallisch: exactly the reality is that you are trying to look for the real quality of the item. And that's going to be an estimate
+Pascal Wallisch: from the ratings or the data, the sample, and with one rating the sample size is so small that this is a very unreliable estimate, and most people intuitively understand that with a thousand ratings that's a very reliable. It could still be biased, by the way.
+Pascal Wallisch: but it's going to be a reliable estimate, whereas this could change quickly. Yes. So there's a trade-off between the number of interactions.
+Pascal Wallisch: or rather a few interactions, will lead to unreliable estimates of this popularity of Ies. So what can you do? And you are already struggled with this in the final project from last semester. And what I told you there is you just honestly just drop them.
+Pascal Wallisch: Or I think I'm well, actually, it's different different versions of this.
+Pascal Wallisch: But that's 1 option. Yes.
+Pascal Wallisch: a better option is you use a prior. And and that's what I recommend you. Do
+Pascal Wallisch: let's see what's happening here. You recognize most of this equation from before. But what what was added, what is this, Beta?
+Pascal Wallisch: This Beta was added right. That's the only thing that that change is, Beta. Yes. Do you see that?
+Pascal Wallisch: You see this Beta was, Beta was added, yes.
+Pascal Wallisch: and imagine, Beta is some number, let's say
+Pascal Wallisch: 5 or 10, or 20. What will this do? And we add that to all of all of the ratings, all of the items question for you, what will this do to items with only a few interactions?
+Pascal Wallisch: What will this do to them.
+Pascal Wallisch: If you divide the rating by a denominator that is larger.
+Pascal Wallisch: let's say you have one rating and and correct.
+Pascal Wallisch: That's exactly right. So Beta is called a shrinkage term. I don't have that on the slide, as but that's that's huh. That's called a shrinkage term.
+Pascal Wallisch: It's almost like a regularization term. So the idea, or some people call it a shrinkage term. Some people call it a dampening term.
+Pascal Wallisch: but in general it's a hyperparameter, and, as you can see if you have a thousand ratings, a beta of 10 will not, will not drop the ratings a lot. Yes, the average rating. But if something has only a few items.
+Pascal Wallisch: yeah, does it make sense what I'm saying?
+Pascal Wallisch: So in other words, this will artificially lower in your recommender system. The the impact.
+Pascal Wallisch: or the rating rather of low, rated items, not low rate in terms of like. The rating was low. But there's only a few interactions, a few ratings that will, they will be impacted more. Yes.
+Pascal Wallisch: Is it clear what I'm saying? The the yes, exactly the ratings with a few.
+Pascal Wallisch: the averages of the ratings of few interactions and few ratings are most impacted are most effective. Yes, so that's a cleaner way. A more gradual way of dealing with just having a hard cut off to discard the ones that are of low rating. This takes care of that automatically and more gradually, as Max said, this is called shrinkage.
+Pascal Wallisch: This is called a damping factor. It's a prior. It's a hyperparameter.
+Pascal Wallisch: Yeah. So it's a positive integer. Yeah, it brings everywhere down.
+Pascal Wallisch: But it brings out the ratings, the average ratings of items of only a few observations. More question for you. Given that this is a hyper parameter. How do you think we're going to determine which is the best one?
+Pascal Wallisch: Any ideas?
+Pascal Wallisch: Yes, we use a bunch of them. And then what do we do?
+Pascal Wallisch: Cross belt correct.
+Pascal Wallisch: With the holdout set we have a holdout set and we cross-validate. That's exactly what we're going to do.
+Pascal Wallisch: Yes, wonderful. So we use a bunch, and we use a whole lot set. Yes, and and
+Pascal Wallisch: as kind of said like, if you have a lot of like the main knowledge in whatever recommended system you're working with. You might just use what people use. And like, I said, 10, something like that. But it depends on the industry. Yeah. But anyway. So that's 1 way of making the popularity baseline better.
+Pascal Wallisch: because you're going to have a lot of variability in number number of ratings. In other words, not all averages are
+Pascal Wallisch: are equally, you know.
+Pascal Wallisch: evidence-based, and if you don't do this, your ratings will be dominated by items that have only a few ratings. They will be like fives because you have only one rating. As a matter of fact, I can guarantee you that the Internet movie database Imdb, is doing something like that. Because, as you saw, the top rated movie was like a 9.1, there are some movies that have only one rating.
+Pascal Wallisch: and that's a 10, so that movie should technically be higher.
+Pascal Wallisch: But they don't have a strict cutoff for that. So they have some kind of dampening parameter that artificially adjusts the
+Pascal Wallisch: average by penalizing low rated items, but more gradually make sense.
+Pascal Wallisch: Yes, no.
+Pascal Wallisch: Great. Now, there's another way in which we're gonna enhance the enhance the
+Pascal Wallisch: popularity model popularity based model, and that is by decomposing the rating.
+Pascal Wallisch: which is the interaction between user and item into 3 parts. And this will make a lot of sense
+Pascal Wallisch: for those of you who understand Anova, because we're going to do something like that here, we're going to decompose this rate. This mean this global mean into
+Pascal Wallisch: or this overall mean into a global mean.
+Pascal Wallisch: a item bias and a user bias. I'll be very clear about something. This is a technical term.
+Pascal Wallisch: Why is here?
+Pascal Wallisch: And it does not mean selection bias. It doesn't mean being often reality. It does not mean the bias you see in the neural network. It also does not mean the bias variance trade-off. It means none of that. It means how much the item
+Pascal Wallisch: is off for the item bias from the baseline and how much the user is off from the global baseline by itself. So, for instance, there are some items that are better than other items. There are some items that are worse than other items across users.
+Pascal Wallisch: There are some users who just don't like anything. There are some users that, like everything.
+Pascal Wallisch: And so, in other words, we can decompose this overall rating
+Pascal Wallisch: into 3 parts, the global mean. And again, for most movies, sorry for movies. As an example.
+Pascal Wallisch: the average is not 0, and the average movie has some rating right? And the only question is, then
+Pascal Wallisch: how off
+Pascal Wallisch: is any given movie from that baseline. It's a higher or lower same thing with the users. The average user doesn't have a 0 rating. They have some global global average rating all right?
+Pascal Wallisch: And so the idea is that
+Pascal Wallisch: we can. I mean, this is literally just a global average. Right? We take the sum of all of the ratings of all users and all items over the overall number of ratings. Yes, plus, of course, our dampening factor. Yes.
+Pascal Wallisch: we have to have that.
+Pascal Wallisch: Otherwise we have issues. Okay.
+Pascal Wallisch: But then, after that, we determine that the users, you know.
+Pascal Wallisch: you know. So so in other words, so for some given item I,
+Pascal Wallisch: if we sum over the users across the users, yes, across the users. We can now compute the, you know, ratings of the users for that item, for that item from the global meeting
+Pascal Wallisch: and then only summing the ratings of that item, of course, plus our dampening factor. And that's going to be our item bias.
+Pascal Wallisch: And then,
+Pascal Wallisch: what you want to call it. And then we do the same thing for the users. So we can basically average
+Pascal Wallisch: across items for a given user. We sum the ratings of the user and the item minus the difference of the global mean, give me just one second from the item bias. And then that leaves the user bias left. Let's see, there's a question in the chat is rating. Okay, to be put on. Nova.
+Pascal Wallisch: Yes, that's a good point. That is true. So if you're worried about that, what I do, what other people do is you c-score the data first.st So, in other words, what a given number means of a rating is for C-score. So you could use it if you're concerned about it, and you should definitely be concerned about that. You can see. Score that. Yes.
+Pascal Wallisch: yes, okay, great. But you don't have to. Often. It's actually surprisingly invariant to that. But yes, if you're worried about that, you see, squared first.st Now I have a question for all of you. I have this
+Pascal Wallisch: on one of my next slides, but just looking at this? Will this make their predictions better?
+Pascal Wallisch: Will this make the predictions better?
+Pascal Wallisch: Just this decomposition? It's a linear decomposition as a hint. Will this make the recommending with the popularity, baseline better? And the answer is, no, you're right. You're right, absolutely. It will not.
+Pascal Wallisch: Any idea. Why?
+Pascal Wallisch: Why is it not getting better.
+Pascal Wallisch: Oh.
+Pascal Wallisch: yeah, exactly so. In other words, some people say I'm not using a popularity based model to make predictions. I make recommendations with the bias model right. And that's why I put it in question. Mark, it's a technical term. You can make recommendations with the bias model. It is literally a decomposed as such popularity, baseline, right? So we have the popularity here. We decompose it into this global mean, and it offsets in 2 directions.
+Pascal Wallisch: The items are not necessarily all at the mean. There are some are good, some are bad, and the users some some like everything, some don't. Okay. So in other words.
+Pascal Wallisch: again, this is a linear decomposition.
+Pascal Wallisch: So all you need to make is for any given user. You sort the items in descending order.
+Pascal Wallisch: And of course, because, like, you know U is fixed. So these are constants. In other words, only the what you'll call it the B of I is varying, but every user is going to get the same.
+Pascal Wallisch: It's going to get the same Bfi. You know what I'm saying. So there's no difference
+Pascal Wallisch: to the popularity basis. To begin with.
+Pascal Wallisch: ranking just the items and decreasing, or B of I or bias of I is going to get the same ranking as the popularity baseline, because all of the users get the same B of I, because we clamp the user, we fix the user
+Pascal Wallisch: all right. So in other words, this is not going to be more powerful. I apologize. Whatever metric you use to assess how well this works. We'll talk about that at the end will not be higher than just the straight up the straight up. Popularity baseline. It can't, for for it's in the math.
+Pascal Wallisch: But why do people do it? Because
+Pascal Wallisch: it's more interpretable? Because you basically know how much of this these 3 components is what you care about, which is the item that makes sense. So the users are what they are. They should not pollute
+Pascal Wallisch: the estimate of the item bias and the globe is what it is. So, in other words.
+Pascal Wallisch: if you want to know how much you know comes from the items being different.
+Pascal Wallisch: Then you should use a biased model that makes sense.
+Pascal Wallisch: But that will not change the order, make sense to everybody
+Pascal Wallisch: great. So now we're going to. Now, finally start with genuine like recommended systems. So, in other words, we now have talked about 3 models. One is the straight up popularity, baseline, and that is fine. You can use that. The second one is using a popularity baseline with a damping factor or a shrinkage factor or
+Pascal Wallisch: hyper beta that makes that penalizes ratings for low rated, I mean low rated as in like terms of few interactions.
+Pascal Wallisch: few feedback items.
+Pascal Wallisch: And the second one is making it more interpretable with the bias model bias decomposition. Now let's start at the
+Pascal Wallisch: straight up strict personalization, and that falls into some form usually of collaborative filtering
+Pascal Wallisch: alright. And again, as I said, this is not, you know.
+Pascal Wallisch: I didn't even know what to tell you.
+Pascal Wallisch: Not well named, maybe because there's actually no collaboration going on.
+Pascal Wallisch: neither. This stock photo. This is a stock photo that came up when I searched for collaborative filtering. This is what my AI made me.
+Pascal Wallisch: But there's actually no collaboration going on. Really, I understand we're trying to get at and going. We're going to get that in a moment. But there's actually no collaboration happening in collaborative filtering.
+Pascal Wallisch: All right. So the idea is that we have to. We have the biggest issue in collaborative filtering is this.
+Pascal Wallisch: we.
+Pascal Wallisch: We need to fill this utility matrix. And that's like the feedback matrix. I'll tell you more what I mean by that.
+Pascal Wallisch: But we usually have only very few actual data, right? So most interactions between the user and the items is just doesn't exist at all. So one here means maybe it means that they clicked on it, and 0 means that they affirmatively did not click on it, or something like that. Or maybe it gives. They give positive feedback or negative feedback.
+Pascal Wallisch: But most most cells are just not not, you know.
+Pascal Wallisch: populate at all. In other words, they didn't do anything like they did not interact with item in any way. It's kind of like dark matter of data. So there is just nothing right? So this sparsity challenge is a real problem. So most of the entries in this user and item matrix are just going to be missing. Right?
+Pascal Wallisch: So yeah,
+Pascal Wallisch: so, yeah, so the task is going to be, you need to predict the missing entries, and then we need to evaluate how well they will talk about that. Anyway, the most straightforward way to do this and this one was
+Pascal Wallisch: popular. Early on in like the 2 thousands, was neighborhood models.
+Pascal Wallisch: and there's several versions of this, there's a user-based model and an item-based model. And let's just walk through it together. Okay, so, and by the way, there is a recommendation for a paper. You can read that summarized this approach that we did in the early 2 thousands that was published in 2,009. Okay, so here's the idea.
+Pascal Wallisch: Imagine you have.
+Pascal Wallisch: You know, users. So users are rows.
+Pascal Wallisch: And you, wanna now you have a now, not so you have users.
+Pascal Wallisch: 3 users here. Now, we knew a new user, the red user.
+Pascal Wallisch: And you want to see which is the most similar user to this user. The red user
+Pascal Wallisch: and the red user is apparently new in this system. They have only interacted with 2 items. They liked this one, and they did not like this one. The question is, now, how how much would they like this? Item, the purple item, and this other purple item. Yes.
+Pascal Wallisch: by finding similar users. And here, just looking at this, which users are similar to the, to the, to the
+Pascal Wallisch: to to this user, as far as you can tell which user is similar.
+Pascal Wallisch: which the users are in rows.
+Pascal Wallisch: The 1st one, the 3rd one. Yes, okay, seems to be consensus.
+Pascal Wallisch: And now we look
+Pascal Wallisch: the 1st user. And the 3rd user liked this item, this missing that they have not consumed yet. So what would be our recommendation that the new user will?
+Pascal Wallisch: What's going to go here? Well, yeah, it was also one. Yes, we'll also like it.
+Pascal Wallisch: And this user did not enjoy the second item. But the other user that is similar to them did not like it. So our prediction is that this user will also not like
+Pascal Wallisch: like, awesome, not like it. Yes, make sense.
+Pascal Wallisch: Okay? So the idea of user-based neighborhood models is that, given the database.
+Pascal Wallisch: we're going to find your statistical twin, your statistical soulmate, the vector
+Pascal Wallisch: that is as close to you as it can be given the shared interactions you had. Yes.
+Pascal Wallisch: and then we say, Well, use a physical twin
+Pascal Wallisch: enjoyed and not enjoyed some other items that you that we have, and we'll just assume that you're going to respond to this item like they did
+Pascal Wallisch: once we have your statistical thread. Yes.
+Pascal Wallisch: So that's the idea of the user-based model makes sense.
+Pascal Wallisch: Yeah. So that's going to be an issue in a moment. Keep that thought.
+Pascal Wallisch: Okay. But let's complement this first.st It's this similar, the item based model. But it's subtly different. Okay. So now we're going to find items items that are similar to those that were consumed by the user. Yes.
+Pascal Wallisch: So, and now that looks into the columns of this utility matrix.
+Pascal Wallisch: And so, for instance, this item, yes.
+Pascal Wallisch: is very similar to this item, right
+Pascal Wallisch: in terms of the usage pattern.
+Pascal Wallisch: And so what would go into this missing missing value here.
+Pascal Wallisch: a 0, a 1. Yeah.
+Pascal Wallisch: Why? Because this item is most similar to
+Pascal Wallisch: the other. Item, blue item. Yes, the other blue item that the user has consumed.
+Pascal Wallisch: But now you're matching items you're finding you're finding. So anyway, you want to know how much the user will like.
+Pascal Wallisch: I don't know a claw hammer, and you don't know.
+Pascal Wallisch: You know how much they will enjoy the claw hammer because they have never bought a claw hammer.
+Pascal Wallisch: But no, these are columns now.
+Pascal Wallisch: but they have interacted with a
+Pascal Wallisch: mallet, and they bought a mallet. And now we look at you know, people who have
+Pascal Wallisch: bought a mallet, will they also, like the claw hammer? And the answer is, Yes, they do. And so we also predict that you will also enjoy the claw hammer. Yes.
+Pascal Wallisch: and if you
+Pascal Wallisch: have shopped on like Amazon, you know that Amazon is doing a lot of this. Yes, so if you like this item, we predict you will also like that. Item, yes.
+Pascal Wallisch: Have you done that? Have you seen that?
+Pascal Wallisch: Yes, okay. So if you like a book on support vector, machines.
+Pascal Wallisch: You probably also like a book on linear discriminant analysis, right? Things like that, or maybe
+Pascal Wallisch: by an author. Yes. So these these models were very popular in the early 2 thousands. They are very straightforward. They work really well, but there are some issues. And so I shouldn't even say that it's straightforward, because there's
+Pascal Wallisch: a whole bunch of issues.
+Pascal Wallisch: What I should say is that they're conceptual, conceptually straightforward.
+Pascal Wallisch: So so. And this, let's just talk about some of this. So, for instance, I kind of like
+Pascal Wallisch: hand waved about this with this slide, where it was kind of obvious. You know what who the most similar users are. But how would you formalize this? So, for instance.
+Pascal Wallisch: by what metric would you? Would you? Would you compute that similarity? And it does matter so, for instance, if these are sets, you could use Jakar similarity. If this is something else like ratings, maybe you use a correlation, maybe things like that. Yes.
+Pascal Wallisch: the the second one is even worse. That's like, okay, remember, we just, I just told you that we're going to find your statistical twin.
+Pascal Wallisch: and that can work really? Well. But what if there's a whole bunch of users
+Pascal Wallisch: in the database that are sort of kind of similar to you?
+Pascal Wallisch: And that's particularly particularly pernicious. If you have a big database.
+Pascal Wallisch: how would you integrate that information? In other words, like, let's say, 2 of the people who are most similar to you like the item, but one of them didn't. What do we then predict for you that you kind of sort of like it? Maybe not as much as like the 2, but not dislike it as the one it's hard to integrate that. Yes.
+Pascal Wallisch: that makes sense. So that's that's a problem like, how would you integrate that that that feedback from the from the other users.
+Pascal Wallisch: Right? And that's the feedback aggregation problem. Then for the user based models, you have scaling issues. So, for instance, you could have a gigantically big database like, I don't know. Let's say you have
+Pascal Wallisch: Facebook. And you have a billion users.
+Pascal Wallisch: you know. Good luck, finding everybody's like statistical twin like that just might not work.
+Pascal Wallisch: And then the second thing is that, well, what if the users leave and come go. So that's problem. So the item based neighborhood models are usually more stable because because, you know, you are matching by item ratings, not by users.
+Pascal Wallisch: Of course
+Pascal Wallisch: I don't know. Let's say the the company is bought by private equity, and they let's say, a supplement. You have a supplement company, and they have a lot of their very good reputation. Say Thorn, something like that very expensive.
+Pascal Wallisch: but they are acquired by private equity, and they drop the quality dramatically to make more profit. And now all the recent ratings are bad, because it's now just chalk in there.
+Pascal Wallisch: And if you have an idea based model, you might miss that
+Pascal Wallisch: right? Because these items item based ratings are, you know, Aggrave, over all time. So so the average is going to change very slowly. That makes sense. Yes.
+Pascal Wallisch: make sense.
+Pascal Wallisch: Okay?
+Pascal Wallisch: Then, of course, as I already mentioned, depending on the feedback type you use, this can be hard to scale. So if it's binary. You can use Jacquard similarity, maybe something with Minhash and Lsh.
+Pascal Wallisch: We'll talk about the spatial data structures as I promised on Monday. But, as you will see that doesn't work at all well with
+Pascal Wallisch: missing data. So we'll have to do. We'll have to use something that can handle missing data well. And so the so in. To make it. To make a long story short.
+Pascal Wallisch: the upshot is that neighborhood models have kind of fought for these reasons, because of these reasons. Neighborhood models have kind of fallen out of favor.
+Pascal Wallisch: and they have fallen out of favor in favor of latent factor models. In other words, it's no longer. 2,005. It's now 2025 and 2025 working smarter means that we're going to use a latent factor model.
+Pascal Wallisch: right? Because we remember, this is in the algorithms slash working smarter part of the lecture of the class. Yes. So what working smarter means for recommended system in 2025 is a latent factor model. Okay?
+Pascal Wallisch: So what that is is, you know.
+Pascal Wallisch: we talked about this or a little bit. So you basically can match your feedback to whatever you need. It can be implicit like play counts. It can be explicit like ratings, and we can add all kinds of terms to that. We'll talk about that in a moment.
+Pascal Wallisch: and this is obviously a big one, so we will in a moment introduce Als, so alternate least squares. It's the kind of like the
+Pascal Wallisch: standard way of doing that. And because the users are independent of each other. If you condition items and the items are independent of the users. If you condition users, you can actually parallelize Als very nicely. So you can do that. And the beauty of it that the is, the representations are usually low rank, and they are not sparse.
+Pascal Wallisch: So you can then represent that spatially, and you have a knob to trade off between complexity and efficiency. All right. So scalability is actually quite doable. Okay, so it's actually nice. So this is what we want.
+Pascal Wallisch: And as you recall the example I used in the introduction datasense class comes back. Now imagine you have some kind of streaming service, and you have 6 users, and you have 5 movies like such. And you have these ratings? The question is, can we find a low rank representation of these ratings? So the ratings matrix is a 6 by 5 matrix. We want to decompose this into a lower rank matrix
+Pascal Wallisch: between user user preferences and and and movie features basically.
+Pascal Wallisch: And you do that as follows in any moment. But basically
+Pascal Wallisch: this, this, this is not going to scale. Well, for many reasons, if you just have the ratings, we have to decompose it into user preferences. And yeah, user preferences for features and feature content of the of the movies. Okay?
+Pascal Wallisch: And so the idea is, as I just said, we're going to model our ratings matrix R as a combination of a user
+Pascal Wallisch: preference matrix. That's
+Pascal Wallisch: long. So every for every user, we're gonna have a bunch. But maybe 3, 4, 5, something like that.
+Pascal Wallisch: feature preferences. And then we have a row, row, row, like matrix. So, in other words, a very lot of columns
+Pascal Wallisch: for all of the movies, but only a few rows, the transpose matrix.
+Pascal Wallisch: And so the idea is that that we are
+Pascal Wallisch: find this vector, space in which they both live. So how do we do that? So we have this loss function here where we have the ratings. But the beauty of this, we have the ratings. We have the ratings.
+Pascal Wallisch: you have, the ratings, which is the interaction between a user and a item.
+Pascal Wallisch: And all we need to do
+Pascal Wallisch: is compute. What is this? So U of I,
+Pascal Wallisch: v of J. And there's this like, I'm putting the chat.
+Pascal Wallisch: There's this symbol here that's in between that. What is that that's a
+Pascal Wallisch: what do we take for each combination? I and J. That exists where the rating exists? What do we take? What is this note? You know this from the linear algebra class.
+Pascal Wallisch: we take D, no, not a magnitude.
+Pascal Wallisch: the dot, yeah, the inner product. But because these are real numbers always it's going to be a dot product. Correct.
+Pascal Wallisch: So, technically speaking, it's the inner product. And the top product is a special version of that, a special case. But sure top product. I accept that. So in other words, we take the ratings
+Pascal Wallisch: and we subtract the top product of these from it.
+Pascal Wallisch: and then we get some kind of deviation of the rating.
+Pascal Wallisch: We square that sum them. And we minimize that
+Pascal Wallisch: right? So that's gonna be our loss function.
+Pascal Wallisch: And this actually works amazingly well.
+Pascal Wallisch: as you can see here, if you have the feature preferences like that.
+Pascal Wallisch: and the feature of the users
+Pascal Wallisch: and the feature content of the movies like that. You can reconstruct the ratings like that. So why did Alex give
+Pascal Wallisch: the hangover a 1? Because if you take the dot product between this feature preference.
+Pascal Wallisch: vector, 0, 1 0. And this feature content vector
+Pascal Wallisch: 5, 1, 2. What number results? 0 times 5 is 0 1 times, one is 0 is 1 0 times 2 is 0. Sum. Them up is
+Pascal Wallisch: yes, one.
+Pascal Wallisch: Now you can use any of them.
+Pascal Wallisch: So in other words, this approach does work. Yes, so, in other words, if you do, the matrix multiplication, the feature preference, and the feature content matrix, you get the ratings matrix back. Yes.
+Pascal Wallisch: yes, no. Great.
+Pascal Wallisch: So, of course.
+Pascal Wallisch: How do I say this?
+Pascal Wallisch: If you already have the feature content, matrix and the feature preference matrix, you're done. You don't even have to. You don't even need the ratings matrix. If you just store those 2 skinny, thin matrices
+Pascal Wallisch: and not store even store the gigantic radiance matrix which, by the way people do. You can reconstitute it instantly if you need it.
+Pascal Wallisch: But the trick is, or the question is, how do we? How are we going to get these 2 matrices from the ratings matrix, which is going to be much sparser than than this.
+Pascal Wallisch: Yes, that is problematic.
+Pascal Wallisch: which is why this is only a teaching example, as you know. In reality, we'll do this with the Svd. And our features are going to be statistical composites. Singular vectors.
+Pascal Wallisch: Again, this one is just, yeah, you know about shark movies.
+Pascal Wallisch: All right. So how does it work? And so the idea is. And this now links in with like
+Pascal Wallisch: regression.
+Pascal Wallisch: basically. So in other words, and I, this will make more sense in in in the in the next couple slides. But basically.
+Pascal Wallisch: the idea is, we're going to do regressions.
+Pascal Wallisch: But we, we change what we treat as the data like the predictors and what we, what we, what we.
+Pascal Wallisch: what we predict and what we use as the parameters. I'll explain that in a moment. But the idea is.
+Pascal Wallisch: you usually initialize U and V at random.
+Pascal Wallisch: Then do these alternating regressions and solve for the other one until it converges.
+Pascal Wallisch: Yes. So 1st you treat the users as a data, and then the item entries as the parameters you solve for the parameters. You just treat them as the beta, and then you flip that until you converge to converge. And again, this works with the data we do have. So
+Pascal Wallisch: be minimizing the loss
+Pascal Wallisch: for the items we do have. Let's say we have 500 ratings out of 500,000 entries. That's fine. We can seed these vectors with that as long as we have at least one interaction for each user and for each item. By the way, that's going to be a
+Pascal Wallisch: gonna be a problem. Later, we'll talk about this. If you have no interactions
+Pascal Wallisch: for a new item or a new user. You cannot do this. They will not get any interactions.
+Pascal Wallisch: And it's called the user code start problem and the U and the item code start problem. We'll talk later what that is, and and how to deal deal with it. But
+Pascal Wallisch: for now again, the beauty of this is that you can paralyze doing this because
+Pascal Wallisch: each item vector V can be solved independent of the others. Right? So so this is basically just ols.
+Pascal Wallisch: just at scale.
+Pascal Wallisch: parallelizable ols, where you keep. Keep repeating what you treat as the as the data and what you treat as the parameters. So what I call this is Als via ols. Okay?
+Pascal Wallisch: So we talked about this most data is missing.
+Pascal Wallisch: So the solution is, we decompose this ratings matrix into 2 smaller matrices, that user preference and the feature content, and then we initialize them at random, as I said, or if you have some values already from Svd, that's even better.
+Pascal Wallisch: And then you use ols to alternate between
+Pascal Wallisch: between treating the Anderson, the V matrix as the parameters betas and the U matrix as the data and a step where we treat the and just U matrix as the parameters and the V matrix as data.
+Pascal Wallisch: Yes, and you just keep doing that with ols. Ordinarily squares regression until you converge
+Pascal Wallisch: and something like the human square error
+Pascal Wallisch: until they'll no longer changes. And this actually works really, well.
+Pascal Wallisch: Okay.
+Pascal Wallisch: And then, as I said, so we start with our feedback matrix, we pick some high parameter. K. How many features you want to consider
+Pascal Wallisch: again? You also can, as I said to Max already you can get some Svd, also to see how many, how many non-negotiable single values you have.
+Pascal Wallisch: And you initialize your 2, you 2
+Pascal Wallisch: your 2 what you want to call it matrices.
+Pascal Wallisch: and there's your normal equation. Ols, so the betas are X transpose X inverse X transpose y.
+Pascal Wallisch: and we have the ratings. We have the y's, so it's fine.
+Pascal Wallisch: And now you can compute U of, I
+Pascal Wallisch: is literally just V transpose V, so basically
+Pascal Wallisch: use the V as your data
+Pascal Wallisch: inverse we transpose. And then again, as I said, we use the ratings as our Y labels, and then you flip it.
+Pascal Wallisch: You say we're going to compute Dvs
+Pascal Wallisch: from the U transpose U inverse U transpose same data. So it's linked by the radius data.
+Pascal Wallisch: And that's it. And until you you are happy, and that is
+Pascal Wallisch: that is it. It's it's actually quite elegant. And it works really well. And it is paralyzable.
+Pascal Wallisch: Any questions about Als before we move on to to more more things about it. We're gonna enhance it with other other approaches.
+Pascal Wallisch: This is clear, unclear.
+Pascal Wallisch: Some of you are probably noticed to probably do this, but it is.
+Pascal Wallisch: It is the 4th algorithm. By the way, so what I mean by that?
+Pascal Wallisch: Yes, correct.
+Pascal Wallisch: What I mean by that is, in my opinion. There are 4 general purpose learning algorithms that
+Pascal Wallisch: we use in data, science in data, science for parameter estimates. Yeah, every iteration
+Pascal Wallisch: depends what you mean by iteration. But yeah, every iteration has 2 steps, one step where you do. U from V, and one from V from U,
+Pascal Wallisch: but what I'm saying is, there's basically K is the number of
+Pascal Wallisch: case. The number of features you consider
+Pascal Wallisch: case number of features you consider so usually something small, like 3 or 4 in the example from before we have 3. We had like
+Pascal Wallisch: storms, laughter, and sharks.
+Pascal Wallisch: It's something usually comes out of Svd like 5 or 10 or something like that. But what I was just saying is.
+Pascal Wallisch: there are 4 general purpose parameter learning algorithms in data science that I'm aware of that most people use.
+Pascal Wallisch: 1, st one is greater descent.
+Pascal Wallisch: Second, one is maximum likelihood. The 3rd one is em algorithm. And this Als is the 4th one.
+Pascal Wallisch: And it's particularly useful for hugely
+Pascal Wallisch: missing data matrices where most of the data is missing.
+Pascal Wallisch: Yeah.
+Pascal Wallisch: And I stand by that. By the way, those are the 4 that you know
+Pascal Wallisch: are going to work for almost everything like like once you have those 4 down, you can learn almost any parameter in almost any situation. I know there are some special situations where you need something else. But this is going to work really well.
+Pascal Wallisch: Yes, no.
+Pascal Wallisch: So those are the 4 that I would highly encourage you to have in your toolkit and have on tap for any interview. Graded descent, maximum likelihood. Em, algorithm and Als.
+Pascal Wallisch: yes, no.
+Pascal Wallisch: Great. Okay.
+Pascal Wallisch: So let's move on alright.
+Pascal Wallisch: So, as we already discussed, it's all fun and games. If you know, if if
+Pascal Wallisch: you have explicit feedback, you have ratings, modeling, implicit feedback is tricky.
+Pascal Wallisch: and what's the most tricky part of it is what's here on the slide, in other words, counts
+Pascal Wallisch: like, how often you listen to some something like some song is very hard to predict.
+Pascal Wallisch: That is, I mean, you can imagine that could have to do with.
+Pascal Wallisch: I don't know how much time do you have right
+Pascal Wallisch: cultural trends, nostalgia, availability of technology, things like that. So, in other words, of
+Pascal Wallisch: if you have implicit feedback, which is usually something like counts.
+Pascal Wallisch: it's gonna be really really hard to predict other counts from that.
+Pascal Wallisch: Yes.
+Pascal Wallisch: So, in other words, what we do do do.
+Pascal Wallisch: and what we I highly recommend is not to predict the actual count, but predict whether
+Pascal Wallisch: an interaction took place at all. But then use the counts to weigh that.
+Pascal Wallisch: Let me explain what I mean by that. It's a subtly, it's a subtly different.
+Pascal Wallisch: It's a subtle difference. Let me tell you what the subtle difference is. So, in other words, we decompose or like, we say, if there was any interactions, if there was any interactions.
+Pascal Wallisch: if it's more than none. Yes, then we say that the preference or popularity is is one. Yes, and we put that in here.
+Pascal Wallisch: You see that.
+Pascal Wallisch: So in other words, this is our real data.
+Pascal Wallisch: and we compare that to the dot product of our U. And B. Matrices for implicit feedback.
+Pascal Wallisch: and if it's if there was no interaction, we can give it a 0. But then, note, there is a little actual waiting term in front of that. In other words, if there are more counts.
+Pascal Wallisch: there are more counts than what you want to call it. Then this goes into this by the by, the weighting factor, if that makes sense what I'm saying. So in other words, items that had a lot of counts
+Pascal Wallisch: do count for more of this sum of our loss function. So, in other words, someone ever asks you, what is the gold standard way? What is the
+Pascal Wallisch: way to model counts properly with implicit feedback, because you're never going to match the exact count. And you're absolutely right, because it could be. That's due to anything, right
+Pascal Wallisch: trends, availability of time, all kinds of things that have nothing to do with how much you like the item. Necessarily
+Pascal Wallisch: the answer is, you subtly enhance the
+Pascal Wallisch: loss function by weighing, weighing your what you want to call it your loss function by items that you had a lot of interactions more.
+Pascal Wallisch: But you don't necessarily model directly.
+Pascal Wallisch: How often you did that! Oh, and there's 1 more term here, Alpha, that's a hyperparameter
+Pascal Wallisch: that you get to pick.
+Pascal Wallisch: And what will that do? By the way.
+Pascal Wallisch: if you just look at the equation. So Cij, which is our, you know, count weight.
+Pascal Wallisch: See, see, counts can't wait
+Pascal Wallisch: is one plus alpha times the number of interactions. So what what does Alpha do like if you make Alpha bigger like, what does that do, you can pick anything?
+Pascal Wallisch: 5, 10.
+Pascal Wallisch: Yes. So, in other words, this gives you a dial
+Pascal Wallisch: to tell the loss function how much more you most treasured
+Pascal Wallisch: items should should like count for. Yes.
+Pascal Wallisch: and that does make sense. If you think about it right? If you're like a power user for some
+Pascal Wallisch: artist, yeah, we probably want to get that right that you really really like that artist? Yes.
+Pascal Wallisch: no, no, no relationship no relationship. They just ran out of Greek, Greek characters after we used them.
+Pascal Wallisch: This is Alpha.
+Pascal Wallisch: Alf is used for almost anything in data science, as you know.
+Pascal Wallisch: anyway. So this is when a user should interest at all. You just say it's 1. And this is when the user did not, it's 0. And as I said, this is our call confidences.
+Pascal Wallisch: This is the Rsd raw interaction. Count Beta.
+Pascal Wallisch: one second, and that's doesn't work like a beta, you mean. Oh, oh, oh, you mean for the damping factor.
+Pascal Wallisch: Oh, yeah, almost, except it, it works in the other direction. So exactly, Max just said it. It's the opposite. It's like the beta is like it penalizes low
+Pascal Wallisch: numbers of interactions because it's unreliable. This one overweighs
+Pascal Wallisch: high high ones. If that makes sense, I guess that is kind of I don't know it's the opposite, but it's also the opposite of the opposite. So, in other words, it's the same idea you weigh. You weigh.
+Pascal Wallisch: you weigh, which we'll call it
+Pascal Wallisch: way highly interacted with items. More. Yes, but in a different way.
+Pascal Wallisch: That's why Max Swipe.
+Pascal Wallisch: And that's correct. Yes, exactly, perfectly perfectly right, exactly right.
+Pascal Wallisch: Alright. And yeah. Again, you also can just drop low counts again or do something like that. Okay, so
+Pascal Wallisch: now, we talked about this already. This is what the how would you? The biggest issue with these latent factor models is what I just said. You have to have at least one interaction
+Pascal Wallisch: for an item to be in the system. Right? But of course, let's say you, you release a new movie or a new song. There's not gonna be any any interactions in the system. Yet right?
+Pascal Wallisch: We called it the Cold Star problem.
+Pascal Wallisch: And either you have some active promotion. And Netflix does this for sure.
+Pascal Wallisch: So basically, if a a what you would call it a
+Pascal Wallisch: new movie might be might be recommended, not because we think you like it.
+Pascal Wallisch: but because it is new, and we want to get some interactions
+Pascal Wallisch: right? So a new item might be recommended just because it's new. And I think for something like
+Pascal Wallisch: something like a movie that could even work.
+Pascal Wallisch: but for something like something that Amazon sells. This is not going to work right. I mean, you'll probably be annoyed if you got recommendations about stuff that is being recommended just because it was a new item. Right? I mean.
+Pascal Wallisch: so what
+Pascal Wallisch: right, anyway? And so what people do instead in those cases is what's called content-based modeling. And the idea is that we are now going to explicitly model
+Pascal Wallisch: the item factors. In other words, right? So so genres years length, acoustic attributes.
+Pascal Wallisch: Right? So basically some, we are decomposing the the the
+Pascal Wallisch: The item item item about the item
+Pascal Wallisch: into these explicit content features, as you see here something explicitly. As you know, Brian.
+Pascal Wallisch: who used to teach this class 5 years ago.
+Pascal Wallisch: He's a music data scientist, and he created Librosa, and his whole claim to fame is
+Pascal Wallisch: creating Librosa, which decomposes a musical piece into its acoustic attributes like different frequency ranges. I'm sure half of you have used Librosa. It's very nice. Yes, but basically, you can use.
+Pascal Wallisch: you can use software like that to represent your your
+Pascal Wallisch: your features more explicitly so, instead of inferring the features from the.
+Pascal Wallisch: you know, Als, you can explicitly model it like that. The only downside of that is at least in my hands. That's often not that strong. So, in other words.
+Pascal Wallisch: I don't want to get too far afield. It's already after midnight, but basically in at least my hands. How much someone likes. Music has very little to do with the actual
+Pascal Wallisch: notes in the music. It's more like vibes, like the the emotions that are evoked by it, but it's a separate
+Pascal Wallisch: separate issue, alright. And then finally, you can also, you know.
+Pascal Wallisch: train that right? So in other words, once you have that item in the system. Once you start getting getting interactions from that, you can then overcome the code star problem.
+Pascal Wallisch: Second issue is the users imagine you have a new user in the system. And this is also the reason why most
+Pascal Wallisch: most websites want some demographic data from you. So that or ask for things you like.
+Pascal Wallisch: So that way we can put you in the collaborative filter in a situation where we map you to people with similar demographic information or or similar things. You you did like. I do. I do recall. I don't know. When you sign up for Twitter. They give you a range of people you
+Pascal Wallisch: should follow, or you could could follow, or some interest you could have in on Linkedin. I think
+Pascal Wallisch: I'm trying to remember what it was like to sign up to these websites. But basically, this is a typical thing. They ask from some of the demographic data, and they ask for some examples of things you like, and then they know where you are in this space, and then they serve you. Serve you
+Pascal Wallisch: items like that. Okay, so far, so good.
+Pascal Wallisch: Let's talk about evaluation of recommender system. So no matter what you have, you could have the bias model similarity. You could have these these products. Once you have a rank list of items like from from Collab, filtering from popularity, based, or from some search.
+Pascal Wallisch: You have to evaluate how well you're doing, and that's that's actually not as
+Pascal Wallisch: straightforward as you think. So briefly like the biggest issue is this, like, if.
+Pascal Wallisch: in other words, almost all of our statistical models, as you know.
+Pascal Wallisch: assume independence. But that's definitely not true.
+Pascal Wallisch: Like, if if the same user rates a bunch of items.
+Pascal Wallisch: those are not independent judgments, the user links them. So those are not independent judgments.
+Pascal Wallisch: And if the same item is used is is rated by different users. That's also not independent. Those those are not independent, like judgments. Right? It's the same item. So they're linked.
+Pascal Wallisch: And so
+Pascal Wallisch: it's tricky. Okay, so initially, as you know, a lot of recommender systems in the 2 thousands in particular. So 2,006, 2,007, they all used Rmses and Rumen square. So basically, the standard deviation of the residuals.
+Pascal Wallisch: To assess how well recommended systems doing.
+Pascal Wallisch: But frankly, that is not, you know,
+Pascal Wallisch: relevant. Usually most of the predictions that the or recommendations that the model would make are never seen by the by the user. So they're not relevant. Okay, so we have to.
+Pascal Wallisch: And this is something that happened in the last 20 years. We had to create metrics
+Pascal Wallisch: for ranked lists of recommended items. We'll talk more about this in a moment.
+Pascal Wallisch: And so, in other words, we have to do 2 things. We have to evaluate some recommendations for the user. But then we have to average across the users to evaluate how the whole algorithm is doing. We'll talk about it in a moment.
+Pascal Wallisch: And there's 1 more. Oh, sorry
+Pascal Wallisch: yeah, I mean, exactly. If you if you scanda as the user rates a bunch of items.
+Pascal Wallisch: They are not independent from each other anymore. Because you have some, you you have some.
+Pascal Wallisch: I don't know some quality, some characteristic that that
+Pascal Wallisch: links them, these ratings. They're not drawn from the population, they're drawn from you.
+Pascal Wallisch: So in other words, it's just not fair to assume that they're independent because you rated them. You are the rater, and they're now calling through you because you like certain things and dislikes. Other things
+Pascal Wallisch: could be. Yeah, that's a good example. Yes, that's absolutely true. So that's something to be to consider for recommender system. But we'll talk about that.
+Pascal Wallisch: And how do we even know? That's a problem? But before that I want to say one more thing, this goes to the heart of doing this with machine learning. And this, by the way, you have to be careful.
+Pascal Wallisch: It's that term again, partition. That means something else again. So we've seen this for it, meaning network partition, hard disk.
+Pascal Wallisch: partition, interaction, partition, and so on.
+Pascal Wallisch: So, in other words, we have to be careful what we mean by that here, and that is, we have to partition the data
+Pascal Wallisch: in for everything, for for validation of your hyperparameters of parameter tuning. Yes.
+Pascal Wallisch: and it's tempting to just randomly split interactions.
+Pascal Wallisch: But why would it be a bad idea? Why can't you just randomly split interactions because of what I just discussed with scandal? Yes.
+Pascal Wallisch: would that imagine you split randomly, and then some
+Pascal Wallisch: some interactions would end up in a training set, and some would end up in the test set. What would you think about that. What would you call that
+Pascal Wallisch: at? Say, read, we just randomly scramble it.
+Pascal Wallisch: and some end up in the training set, and some end in the test set. Would that be wise.
+Pascal Wallisch: based on what we've just said?
+Pascal Wallisch: That would be bad, bad. It would be very, very bad and very unwise. And why?
+Pascal Wallisch: Because the user correlates the ratings. Yes. So in other words, you have leakage. Yes, yes.
+Pascal Wallisch: no, not sampling bias, leakage, leakage, leakage?
+Pascal Wallisch: Well.
+Pascal Wallisch: let's talk about this. Does anyone here know? And, by the way, you are unmutable if you want to. So if you if you press space.
+Pascal Wallisch: if someone wants to say what leakage is in general. What's leakage in general?
+Pascal Wallisch: What's leakage in general
+Pascal Wallisch: in general data sets what's leakage? Imagine as an interviewer like, hey? Tell me what leakage is
+Pascal Wallisch: and why? It's a problem in general, this goes beyond this issue. What is leakage
+Pascal Wallisch: you could get overfitting if you if you don't understand leakage? Yes.
+Pascal Wallisch: Oh, yeah. Max, so go ahead. Just spacebar.
+Max Drogin: When?
+Max Drogin: Hello! When parts of your trainings said
+Max Drogin: kind or characteristics from there are also in your test set, and you haven't broken it up. That's cool.
+Pascal Wallisch: That's correct. Remember, that's exactly right. Remember, we, the whole reason we split into train and test set. Yes, is so we prevent overfitting. Yes. So in other words, we pretend
+Pascal Wallisch: that the data in the test set is new data that is completely new. Yes. But obviously, if you have some users data in the training test and the test set. That is not true. Then it's no longer new data. It's already correlated to the old data.
+Pascal Wallisch: In other words, it will not be biased, it will be overfitting, and if it's overfitting your model will look better than it actually is, in other words, it will
+Pascal Wallisch: look good, but we'll it will
+Pascal Wallisch: underperform for data that is genuinely new. Does that make sense what I'm saying? So, in other words, in real world? Well in lab, but not in the real world.
+Pascal Wallisch: Correct, correct new data, new data.
+Pascal Wallisch: And that's, of course, what you want. Right? You want to predict, you want to predict
+Pascal Wallisch: how well you will like an item you have not seen yet. You don't want to post dict.
+Pascal Wallisch: predict not post-dict. Yes.
+Pascal Wallisch: Okay.
+Pascal Wallisch: So so so what's the idea? It's actually actually tricky.
+Pascal Wallisch: 1st of all, we need to make sure that
+Pascal Wallisch: that you know, we have to have some history for every user. Yes.
+Pascal Wallisch: others, we can't do it at all. So what's the key for each user?
+Pascal Wallisch: Separately, we want to put some data
+Pascal Wallisch: into the train and the test set that we model in each user. Does that make sense what I'm saying? So we don't. We don't. We don't
+Pascal Wallisch: aggregate across users. We split within the user. And then we predict it just for that user.
+Pascal Wallisch: So it's new from the perspective of that user that makes sense that makes sense great. Okay?
+Pascal Wallisch: All right. So now
+Pascal Wallisch: comes to this issue. Why, why, Ruthman Square is not enough. If this was 2,006
+Pascal Wallisch: you could make.
+Pascal Wallisch: I think it was a million dollars back then.
+Pascal Wallisch: which is probably more like 2 or 3 million dollars. Now.
+Pascal Wallisch: if this is 2,006, you could make 2 million, you could 1 min make a million dollars lowering the Rubin Square error of their
+Pascal Wallisch: seen a match recommender system by 10%.
+Pascal Wallisch: It took the machine learning community 5 years to get there
+Pascal Wallisch: anyway. So what is the mean, square error? And, by the way, note that we don't root mean square here, it's just the mean square error. We have our ratings, we subtract the inner product dot product of the user and the item vector from it.
+Pascal Wallisch: We then have these differences. We square them. So we get rid of the sign and we take the expected value. It's literally mean squared error. So the error
+Pascal Wallisch: squared mean, expected value. Yes, loss. That's our loss function. Yes. Why is that no longer? So in 2,000, so 20 years ago.
+Pascal Wallisch: you could make a million dollars
+Pascal Wallisch: improving the root mean square error by 10%.
+Pascal Wallisch: And I can't believe
+Pascal Wallisch: we say in this slide early recommended systems because I was there. It's not that early.
+Pascal Wallisch: Alright. So the idea is that we have now moved on from that.
+Pascal Wallisch: And what is critical is how the recommendations are delivered. So, in other words, I'll give you
+Pascal Wallisch: 4 examples in a moment.
+Pascal Wallisch: instead of Ruben spare. So let me let me be very clear in something like regression
+Pascal Wallisch: root, mean, squared error is the name of the game. How close are your predictions to the outcomes? Great.
+Pascal Wallisch: but for recommender systems that is not what you want.
+Pascal Wallisch: which recommender system metric depends critically
+Pascal Wallisch: on what is going on with the user. So, for instance.
+Pascal Wallisch: there is a metric, and I'll show you in a moment which one that makes the most sense for a ranked list something like Netflix. Basically, you know.
+Pascal Wallisch: you know, there's I think the Netflix ones are in a in A, in a row. So the list is this way. So you scroll through the list. Yes.
+Pascal Wallisch: Google, search results are obviously from top to bottom, as are Amazon results. Yes, as a list
+Pascal Wallisch: top is higher, left is higher. What to the right is lower and down is lower. But then some things like due to autoplay or radio or Pandora? No, no, you are hearing
+Pascal Wallisch: one item at a time. Yes.
+Pascal Wallisch: and that's the only one that matters.
+Pascal Wallisch: Yes, whether that is relevant.
+Pascal Wallisch: Does this make sense what I'm saying great. So, in other words, which which
+Pascal Wallisch: evaluation metric of your rankings makes the most sense depends.
+Pascal Wallisch: The user interacts with you, with your service. Yes, and the 1st family of
+Pascal Wallisch: evolution. Metrics I want to use are called
+Pascal Wallisch: bipartite ranking relations. Now I want to be very clear.
+Pascal Wallisch: That will seem a little like impoverished.
+Pascal Wallisch: But for what? The way most people use the Internet today.
+Pascal Wallisch: it actually is is what you want.
+Pascal Wallisch: because the interaction is usually you click on something.
+Pascal Wallisch: or you listen to something, or you watch something.
+Pascal Wallisch: And then the question is, did you click on it or not? Did you watch it or not. So, in other words, it's bipartite
+Pascal Wallisch: system is is what you want for this.
+Pascal Wallisch: Okay? So the idea is, you rank your items in order of decreasing estimated relevance.
+Pascal Wallisch: And then in in a holdout set in a test set, you determine which were relevant. In other words, that's again, as you said stuff that user clicked on, or liked or
+Pascal Wallisch: watched was irrelevant, meaning they didn't click on it or they didn't like it, or they didn't watch it. So binary.
+Pascal Wallisch: Either they liked it or they didn't like it.
+Pascal Wallisch: So here, for instance, they didn't like the 1st one they liked the second one. They didn't like the 3rd one, and so on. So, in other words, this is ground truth. This is from our test set we pretend we have. That's the whole point of the test that we pretend this is new data. We pretend we don't have the labels, but we do. It was a trick we have. It's not new data. It's a test set. Okay, great.
+Pascal Wallisch: And then you need to score these sequences of positive and negative ones. And, as I said here ideally, all of the pauses come before of negatives.
+Pascal Wallisch: And this is this is why it's called bipartite ranking. This is not graded. It's like
+Pascal Wallisch: plus is plus you liked it. You clicked on it, you watched it, and negative is you didn't do it, and so on. Yes.
+Pascal Wallisch: so, as I said, this is particularly useful for any implicit feedback. So the bipartite ranking metrics are basically
+Pascal Wallisch: almost always used for the interest feedback ones.
+Pascal Wallisch: Okay? And so, so yeah, so the idea here is that the order is relevant to user experience. So the idea is that the
+Pascal Wallisch: the Auc that you already know from machine learning.
+Pascal Wallisch: or did this metric here corresponds to A to C. That's how often does a positive interaction is ahead of a negative one. So, for instance, here we have minus plus minus plus plus minus minus.
+Pascal Wallisch: So that is 3, 2, and 2. Yes. So so you see 3,
+Pascal Wallisch: 2, and 2. So this plus is ahead of 3 minuses. Yes.
+Pascal Wallisch: and this plus instead of 2. And this is a path of 2. So it's 3, 2, and 2,
+Pascal Wallisch: and then there's 3 positive ones and 4 negative ones in the denominator. That's 7 out of 12. So the Auc here is 0 point 5 8 3 3. Do you see that? That's Auc.
+Pascal Wallisch: Then the second metric, and this is the one that we've already introduced in the Introductory Science class. I think that's the only one we interested in. Introductory resistance class is the average precision.
+Pascal Wallisch: By the way, before we talk about average precision, what is precision
+Pascal Wallisch: in like machine learning? We remember there's recall there is specificity. And then there is precision which one's precision, because this is going to make make sense in a moment. If you think about it in terms of precision.
+Pascal Wallisch: Somebody, what precision
+Pascal Wallisch: about what?
+Pascal Wallisch: Yeah?
+Pascal Wallisch: So basically, out of
+Pascal Wallisch: very good. Okay, you were, how did you have that? That from my slides from last semester? So basically out of the number of calls you made.
+Pascal Wallisch: how many are out of the positive calls you made? How many are positive? Yes, yes.
+Pascal Wallisch: So okay, so that's what this is. So, in other words, for every, for every interaction that's positive.
+Pascal Wallisch: In other words, you you did like it.
+Pascal Wallisch: What fraction of items that were ranked higher were also positive. So look at this. So this is positive. Yes.
+Pascal Wallisch: but at that point what fraction is that you made 2 calls.
+Pascal Wallisch: but only one is accurate, so that is 1 1 out of I don't 1 out of
+Pascal Wallisch: the first, st plus 2. Exactly so a half, and then 1, 2, 3, 4, the second plus that's 2 out of 4. So that's another
+Pascal Wallisch: another
+Pascal Wallisch: half. The last one is 1, 2, 3, 4, 5, 3, plus so 3 out of 5. That's 3 fifths. Yes, and there's 3 of them. So 1 3.rd So that's 0 point 5 3 3. Okay, great. Okay? So that's that's average precision.
+Pascal Wallisch: And this is most. This is obviously most most useful. For like these ranked lists, so so average position is is best for ranked lists. Okay.
+Pascal Wallisch: if you have something like you predict one item.
+Pascal Wallisch: He picked one item like, I don't know autoplay. One item.
+Pascal Wallisch: something like reciprocal rank is more suitable.
+Pascal Wallisch: And it's literally just the 1st positive interactions. The 1st positive interaction is your mean reciprocal. Sorry I apologize. Is your reciprocal rank. We'll talk about the mean reciprocal rank in a moment. So let's say here, why is there a half here?
+Pascal Wallisch: Because why is the mean? Why is the reciprocal rank of this, of this of this list?
+Pascal Wallisch: A half, because the rank of the first, st so the inverse rank.
+Pascal Wallisch: Yes, so the so rank of the 1st pause. One is 2, the inverse of that is
+Pascal Wallisch: one over 2. Yes.
+Pascal Wallisch: yes.
+Pascal Wallisch: okay. Now let me tell you why this is most appropriate for these I don't know.
+Pascal Wallisch: I have a spotify. You. Listen to one song at a time. Yes.
+Pascal Wallisch: Yeah. So, Max. So remember the yeah, you could do like, I'm getting lucky Google. Search. Yes.
+Pascal Wallisch: imagine. Imagine you have to listen to
+Pascal Wallisch: 4 songs that are terrible before you get one that you like.
+Pascal Wallisch: Then the reciprocal rank will be 1. 5.th Yes, for obvious reasons. Yes.
+Pascal Wallisch: if you have 4 that are bad. Okay, so this is most appropriate for the ones there's like one shot. One thing. Yes.
+Pascal Wallisch: Now, as you can see, this, says Mrr. Here, and this should say, map. So the idea is, this is for like one sequence, but we are averaging across users and interactions to get the mean average precision and the mean reciprocal rank. Yes.
+Pascal Wallisch: of of the whole thing.
+Pascal Wallisch: Yes, so far so good.
+Pascal Wallisch: and I think the Mrr is new. This was not talked about in the in the inter class.
+Pascal Wallisch: Yes, is that right? I'm losing track myself
+Pascal Wallisch: right. But now I want to introduce one. That is, that I definitely did not cover in inter class.
+Pascal Wallisch: And there, that actually is an interesting one, because.
+Pascal Wallisch: even though bipartite ranking metrics are most, you know.
+Pascal Wallisch: useful when the feedback is binary or implicit, like clicks, likes, views, listens. Yes, there is a space
+Pascal Wallisch: for ranking version metrics that takes graded relevance like star ratings for movies into account.
+Pascal Wallisch: And there are a whole bunch of them by the interest of time.
+Pascal Wallisch: I'm only going to talk about one of them.
+Pascal Wallisch: and the one that is by far the most commonly used is, and this is a mouthful, but it will make sense in a moment? Is the Ndcg the normalized, discounted, cumulative gain?
+Pascal Wallisch: Barbara
+Pascal Wallisch: does it out of curiosity. Has anyone heard of this before, or uses it? Some of you work with recommender systems.
+Pascal Wallisch: Yes, no, I got no shame. I'm just curious.
+Pascal Wallisch: You have not okay. Great.
+Pascal Wallisch: And it seems like a mouthful right? Ndcg. I'm not even sure which is worse. Ndcg or normalized, discounted cumulative gain.
+Pascal Wallisch: I'm not sure which is worse.
+Pascal Wallisch: but it's actually very straightforward. We'll talk about it in a moment.
+Pascal Wallisch: The whole idea is that you allow
+Pascal Wallisch: your system to have this graded relevance.
+Pascal Wallisch: but at the same time, considering the ranking of the results. So it's a tall order, but it can be done. I think. This was introduced for the 1st time in 2,002. I need to find a paper.
+Pascal Wallisch: The idea is you want to reward the model for ranking good items higher or earlier.
+Pascal Wallisch: particularly the best ones.
+Pascal Wallisch: So how does it work mathematically?
+Pascal Wallisch: So consider the following list of movies.
+Pascal Wallisch: Oh, that came out in last.
+Pascal Wallisch: I don't know. 20 years avatar, big, short cats dune and Elyusium. Yes.
+Pascal Wallisch: and I have here a plausible list
+Pascal Wallisch: of ratings that a user might have given these these these movies. Yes. So I don't know. Big Short is an amazing movie. Yes.
+Pascal Wallisch: like instant classic. I'm not sure if you've seen it, it's really good.
+Pascal Wallisch: Dune is pretty good. But I wouldn't say it was great. It was alright.
+Pascal Wallisch: Yes, yes, that was that was a classic. Yes, actually one of us, one of a former student in this class last last year is friends with the actor.
+Pascal Wallisch: played the Asian quantitative actor in that show I can introduce you.
+Pascal Wallisch: Yes, it is. I can introduce you. I can introduce you if you want to. But anyway, Elysium was pretty mid.
+Pascal Wallisch: Avatar was terrible, and cats was horrific. Yes, I think this is pretty. This is pretty good. Yes, pretty plausible. Yes.
+Pascal Wallisch: so far. So good.
+Pascal Wallisch: Okay. Now, the idea is, there is an ideal order
+Pascal Wallisch: in which we should serve these, these these movies
+Pascal Wallisch: to a, to a user. Let's say this was in a Netflix list.
+Pascal Wallisch: and Netflix also has all 5 movies.
+Pascal Wallisch: In which order should we serve them? We should make sure it should be our top recommendation, then dune the next one, then at least in the 3rd one. Avatars then, and then last one. Cats. Yes.
+Pascal Wallisch: and ndzg represents that metric. How well the rank of our model reproduces that ideal order.
+Pascal Wallisch: and it ranges from one where it's perfect and 0 if it's not
+Pascal Wallisch: so. And again before you got all freaked out about the nomenclature. Just hear me out
+Pascal Wallisch: the Ndcg. So the normalized, discounted cumulative gain at item K, because you can cut this off at any point. Number 3 5. Whatever
+Pascal Wallisch: is the Dcg. At that? K. So the discounted cumulative gain over the ideal
+Pascal Wallisch: discounted cumulative gain at K, so the ideal order is big, short dune Elysium avatar cats. Yes.
+Pascal Wallisch: and the let's start from the inside out. The cumulative gain
+Pascal Wallisch: at item K is literally just the sum of the relevances from I to K. Yes. So
+Pascal Wallisch: the cumulative gain at item 3 is 5 for the big short
+Pascal Wallisch: plus 4 from dune plus 3 from Elysium is 12. Does it make sense?
+Pascal Wallisch: Yes or no?
+Pascal Wallisch: Great.
+Pascal Wallisch: let's say our recommender system outputted outputted dune in the top spot. Then cats? Oh, no, that's going to cost us
+Pascal Wallisch: then a big short, then Elysium, and then avatar.
+Pascal Wallisch: But if you look at this
+Pascal Wallisch: didn't actually cost us that much. Yes, if you just look at the cumulative gain.
+Pascal Wallisch: it didn't cost us this that much. Yes, it's pretty close to perfect. Yes, even though cats is a big miss. Yes.
+Pascal Wallisch: Do you see that?
+Pascal Wallisch: Yes, yes, no.
+Pascal Wallisch: Is cumulative. Gain by itself is pretty, is still pretty close to perfect in this case.
+Pascal Wallisch: So we have. We're not done. We have to penalize that
+Pascal Wallisch: few minutes. Game by itself is not enough to penalize this big miss. That cats was already on the second location, and the big short was even on 3rd 3rd location. Do you see that
+Pascal Wallisch: it's too cumulative gain by itself is too forgiving.
+Pascal Wallisch: We do way more punitive. That's where the discounted cumulative gain comes in.
+Pascal Wallisch: So, in addition to summing it, the presentation order should matter.
+Pascal Wallisch: so it is better to serve higher value items earlier and items later in the list should matter less. That's where this equation comes in the discounted cumulative gain at the same number of items. So 3 or 2, or whatever is the same numerator relative what you call it?
+Pascal Wallisch: Sorry, not not relative relevance.
+Pascal Wallisch: But what's in the denominator? What's the idea, can you intuit this? We take a log to the base. 2.
+Pascal Wallisch: Of what?
+Pascal Wallisch: Of what?
+Pascal Wallisch: Ofty?
+Pascal Wallisch: And then we sum that, relatively speaking, of what? Of the
+Pascal Wallisch: not just the 3rd item, not just the 3rd item for all 3, 1, 2, 3. In this case, in this case, in case 3. So not just
+Pascal Wallisch: not popularity based the ideal, the ideal, one ideal one. It is the ideal one of this
+Pascal Wallisch: ideal, not popularity, based next.
+Pascal Wallisch: But also look at this, what will log base 2, and putting the rank in there, do
+Pascal Wallisch: do you see that? So the 1st item? That's so. What's the rank? What if the rank is one? What is in the parenthesis here?
+Pascal Wallisch: What number? If the rank is? One.
+Pascal Wallisch: 2. And what's log? 2 to the base? 2.
+Pascal Wallisch: One. Right? So it's just a raw
+Pascal Wallisch: relevance. But already for the second one, what will happen already for the second one.
+Pascal Wallisch: and then this 3rd one, and so on.
+Pascal Wallisch: We were dividing by what?
+Pascal Wallisch: By number, that is, log that is larger than larger than then, what larger than one? Exactly
+Pascal Wallisch: so in English.
+Pascal Wallisch: If you have a big miss
+Pascal Wallisch: Early on that will matter more. Do you see that?
+Pascal Wallisch: So that that now takes takes the order into account in which we make the predictions
+Pascal Wallisch: later, later recommendations matter less to the song.
+Pascal Wallisch: So in other words, now we have to get
+Pascal Wallisch: higher value items right earlier. If that makes sense. Okay, makes sense. Okay, great.
+Pascal Wallisch: Now, just to be clear, that's the linear case. And some people use that. But, as I said in the last slide.
+Pascal Wallisch: you want to reward.
+Pascal Wallisch: bring high relevance items. More than that. So now you can use what's called exponential gain. So the second most common formulation of the Ndcg is what I'm showing you next. But just to be clear, they're both called Ndcg, and don't be confused. Some people use this one. That's the linear case.
+Pascal Wallisch: But some people use this one, which is the exponential keys.
+Pascal Wallisch: And what changed?
+Pascal Wallisch: We now put the relevance of the item into D into what? 2 to the power of that? Yes.
+Pascal Wallisch: everything else in the same.
+Pascal Wallisch: Why, why is this what you want to call it?
+Pascal Wallisch: Why is this what we want? Can you intuit it.
+Pascal Wallisch: Maybe I should have another slide with mathing out the example. But can you intuit it?
+Pascal Wallisch: What will this do
+Pascal Wallisch: to put this to the power of to the, to the power of like that. What will this do to the to that.
+Pascal Wallisch: or what what happens if you do a case like that where you have a
+Pascal Wallisch: low relevance item in a very early position, the second position
+Pascal Wallisch: it will more like penalize that. So the the
+Pascal Wallisch: Dcg. Will be very much less than the Idcg.
+Pascal Wallisch: For for that if that makes sense, because we we put that in the into the power of that
+Pascal Wallisch: right. If you want to try it a math it out, I should have a slide for that.
+Pascal Wallisch: Yes, exactly. They penalizes him more
+Pascal Wallisch: these early on these early early ons, you know.
+Pascal Wallisch: Yes, yes or no.
+Pascal Wallisch: Exactly. Early missteps. Perfect. Okay, so far. Ratings, metrics. Now let me tell you something else, and this is something you probably already know.
+Pascal Wallisch: How do I put this?
+Pascal Wallisch: I can tell you that Netflix pulled way back from their own recommended system a while ago, because what they learned is that people click and watch shows, not because they're good.
+Pascal Wallisch: but because they're recommended. So in a in a way, all they learned
+Pascal Wallisch: is their own recommender system, if that makes sense.
+Pascal Wallisch: And so you have to be careful. You could get into filter bubbles. There's all kinds of stuff like that going on. So you should try a B testing. If there's an actual lift in sales and engagement right?
+Pascal Wallisch: And we'll talk more about that also. Anyway, to summarize, it's not easy to do this. There's more to life than just accuracy, other things diversity and those things. And we'll talk about in the future also about that like adverse effects like filter bubbles, things like that polarization.
+Pascal Wallisch: So so what we'll do next week is we'll do graph algorithms like Pagerank and I still owe you that we didn't get to it vector databases.
+Pascal Wallisch: which is hot topic in search.
+Pascal Wallisch: And then we'll do
+Pascal Wallisch: ethics of of this like filter bubbles, polarization, privacy. And we'll do it beyond just vibes. We'll not just like
+Pascal Wallisch: bullshit about that. We'll do this as algorithmically as we can like. Actually, no, Fluff, all right.
+Pascal Wallisch: obviously, we're out of time. So I'm going to stop sharing my screen. But I'm going to open up, for
+Pascal Wallisch: there's a couple of people here. Look at that amazing.
+Pascal Wallisch: All kinds of people here. All right. So any questions about anything feel free to ask.
+Pascal Wallisch: You know you, you have to try it.
+Pascal Wallisch: Internal testing.
+Pascal Wallisch: You have to have data like that.
+Pascal Wallisch: and, by the way, feel free to unmute if you want to uncloak.
+Pascal Wallisch: But you can also put in chat if you're still here, are you still here?
+Pascal Wallisch: I'm here.
+Pascal Wallisch: So anyway, that's the lecture.
+Pascal Wallisch: You could always just leave modern user data storage. What do you mean by that?
+Max Drogin: Oh, yeah. So for a lot of different, you know, companies and services we're running into.
+Max Drogin: Generally, it's a Cdp is what's called a customer data platform. And it's built on the cloud. And it's, you know, we collect every single piece of information about every single person. It's where my beef about explicit versus. Excuse me, implicit data comes in a little because I'm like, it's all data we've been pumping in.
+Max Drogin: Yeah, it's just it's cool. How it relates to this, and how it relates to kind of creating these systems.
+Pascal Wallisch: I think we'll talk about that when we talk about the privacy lecture.
+Max Drogin: Oh, yeah, privacy is a thing we run into all the time.
+Pascal Wallisch: Exactly, but I think that's where it fits best. But you're absolutely right, like these days. It's like catch as catch can. Yes.
+Max Drogin: Oh, yeah, every single and piece of information about every single person.
+Pascal Wallisch: Anything, yes, anything. And in my opinion there's also smart ways of doing that, and less smart ways of doing that. But we'll talk about that when we talk about it. Maybe in the privacy
+Pascal Wallisch: spotify I'll
+Pascal Wallisch: I don't want to speak for them, but they what I can tell you is they use implicit feedback.
+Pascal Wallisch: implicit feedback, mostly almost exclusively, which is.
+Pascal Wallisch: I think, what here's what's fair to say. I think they use.
+Pascal Wallisch: Here's what I think they would agree with as a statement they use predominantly collaborative filtering on implicit feedback
+Pascal Wallisch: with some augmentation from content-based modeling. Sorry.
+Max Drogin: I think a fun fact about the beginning of their algorithm is apparently they tried to do a completely data science based one. And they learned that actually, people want some kind of like repetitiveness and not truly randomness in what they're listening to.
+Pascal Wallisch: That is
+Pascal Wallisch: correct. Same thing for Netflix. By the way, at some point, I think I did allude to it a little bit like their algorithms were always too good, you know. So you had to have plausible deniability and same thing with, as Max just said with spotify. So there is some
+Pascal Wallisch: cultural aspects of this where people do appreciate have some repetition in their weekly mixtape.
+Pascal Wallisch: Right?
+Pascal Wallisch: All right? Oh, no, yeah. There's there's a whole cultural level to all of this that I think I'm gonna I'm gonna
+Pascal Wallisch: not leak in blend in. When we talk about the the these ethical issues, I would argue because there is
+Pascal Wallisch: all kinds of things to be said about that. Like, how does the algorithm interact like, here's here's something interesting. We'll talk about this in 2 weeks. If if it is the case, and it is the case that most people consume the items
+Pascal Wallisch: via the recommender system. Well, doesn't put that that put a lot of responsibility on the data scientist to do that
+Pascal Wallisch: with some cultural awareness. You know what I'm saying beyond like metrics. But actually, you know what I'm saying, like you might be shaping the whole culture. You know what I mean.
+Max Drogin: And in the case of Amazon you're shaping what people are buying and what's being sold, and it's like people will pay to get Lysol wipes above other wipes. In the Amazon search results.
+Pascal Wallisch: Right livelihoods. Also, we talked about this already in ideas last year a little bit last semester. It is my opinion, although it's not just my opinion that the entire 2,010 s. Media landscape was basically driven by this and then recently driven out of business because the algorithms changed. And now nobody wanted to then go to Buzzfeed anymore. And they basically just died.
+Pascal Wallisch: So so yeah, so there's a lot of
+Pascal Wallisch: downstream effects that are maybe hard to anticipate. Maybe I or maybe people don't even care about that. But you should. There's a lot of responsibility, in my opinion. If if that's how people interact with your stuff. And this, by the way, this is only going to get more intense. So as we discussed sometimes during class or before class or after class. Some will say, data, science is like dead, it's done. No, it's not. This is, yeah, exactly. This is this is only going to get these recommended systems are probably never going to go away like this is not something that.
+Max Drogin: It's only got, it's only becoming more and more prevalent. I would argue right, Max. Oh, yeah.
+Max Drogin: I mean the the word of the day. Every day is personalization and customer stuff, and then you add, like an Llm. On top of it. And I'm not just, you know, advertising the Pascal things that people and you know
+Max Drogin: Greenwich Village will like. I'm advertising with specific Greenwich Village sounding voice.
+Pascal Wallisch: Yes. So in my opinion, Max, maybe I'm delusional. But in my opinion this is only going to get more personalized and more targeted and more like that.
+Max Drogin: Oh, yeah. Oh, well, I mean, yeah, that's my job.
+Pascal Wallisch: And many others. So what I'm saying is, Max. But that's a very that's going to be a job, in my opinion. In 50 years from now, maybe more.
+Pascal Wallisch: So. So yeah, I mean, it's still very early days again, 20 years ago this I mean 20 years, yes, but 30 years ago was not. This was not a job. So so yeah, so I stand by what I said, I don't think this is going anywhere
+Pascal Wallisch: exactly, but more data, more problems, right? But it solves the old problems which was like, we didn't have the data. And we had to have this very crude, as Max said, like, let's target Greenwich Village, or something like that. Now we can now go beyond that
+Pascal Wallisch: and do hyper micro targeting. And so there's some good and some bad. To my knowledge, no technology has been like unequivocally good or bad. It depends how it's used. Yes, I mean, the moment people discovered fire you could cook stuff, but you could also set your house on fire. So that's just.
+Max Drogin: As well.
+Pascal Wallisch: Yes. Max. Sorry.
+Max Drogin: You know, the the Facebook example is back in the day, apparently, when I started, you could target so efficiently on their platform, you could target specifically a person like your roommate and send them an ultra personalized ad like, do the dishes, which didn't seem too bad until we got to, I think.
+Max Drogin: the 1st trump election, and that whole Facebook, Cambridge Analytica.
+Pascal Wallisch: Yeah, yeah.
+Max Drogin: Where it's like. Oh, wait, if you do that on scale. Oh, my God!
+Pascal Wallisch: And yeah, I actually have some examples like that in my privacy on ethics lectures. So in 2 weeks we'll do the privacy and ethics lecture.
+Pascal Wallisch: Let's see, Nielsen data uses.
+Pascal Wallisch: yeah, in a way, I mean by the Nielsen is still around, just to be clear, and I have much beef with this. By the way.
+Pascal Wallisch: don't get me started. But basically like.
+Pascal Wallisch: How do I say this? It's still happening. But it was a crude way, a crude version of that. Yes, obviously, you have kind of all kind of
+Pascal Wallisch: yeah. Yeah. By the way, just to be clear, Nielsen.
+Pascal Wallisch: Yes.
+Max Drogin: I just can't type.
+Pascal Wallisch: Saying, I'm a stickler for that, as you know. But anyway, so
+Pascal Wallisch: so so, neither Nielsen nor Nielsen Nielsen.
+Pascal Wallisch: So anyway. So yeah, that's still in use, however.
+Pascal Wallisch: However, I don't know.
+Pascal Wallisch: I'll give you an example of how I've beefed this.
+Pascal Wallisch: Speaking of trump, Max, there was a bet on on. Was it Kulshi?
+Pascal Wallisch: There's a pattern called she like? How many people would watch the second trump inauguration. Yes, Max.
+Max Drogin: I believe you.
+Pascal Wallisch: And the fine print was as measured by Nielsen. Yes.
+Pascal Wallisch: we screwed a lot of people up because
+Pascal Wallisch: a lot of people watch that inauguration
+Pascal Wallisch: on Youtube which is not measured by Nielsen.
+Pascal Wallisch: You know what I'm saying so lovely.
+Pascal Wallisch: Obviously, you know, the boomer is still watching cable, and that is measured by Nielsen. But that's a rapidly shrinking demographic.
+Max Drogin: I mean, it's a very well known fact in the TV space that TV is very bad at attribution. It's very bad at knowing who's watching what? That's why top boxes are continuously being upgraded. So they can put in technology to do that. But even then, yeah, it's like for serving ads. You know, I can know on Youtube how many people to the person watched my ad on television. I'm just getting a Nielsen estimate.
+Pascal Wallisch: Correct. And so, personally, I think Nielsen is on its way out. But it is still very much used even today.
+Pascal Wallisch: Okay.
+Max Drogin: There's there's a Mike horror story. I have.
+Pascal Wallisch: Tell me more.
+Max Drogin: So apparently back in the day. This is before when I started advertising there, you know how, when you clicked like allow on apps, it would, you could allow, like to use my speaker, allow to use my camera whatever.
+Pascal Wallisch: Oh!
+Max Drogin: Apps you could allow to use exactly you could allow to use my microphone.
+Pascal Wallisch: Oh yes!
+Max Drogin: And there would be an inaudible tone played at the beginning of certain ads.
+Pascal Wallisch: I get. Now I see what you're saying. Yeah, you.
+Max Drogin: And it would be used for attribution, and I think it was like taken away for being highly illegal.
+Pascal Wallisch: Yeah, I think that's not right. I mean, in terms of like ethics. Yes, or what's it called this laws for that I forgot what laws are called. But yes, yes, yes, look, there's going to be a tension, and we'll talk about this more in the privacy lecture between like what is technically doable, and what is ethically permissible.
+Pascal Wallisch: But again, maybe that's always the case. But anyway, thank you so much for your participation at such a late hour. It's already now one am. So I think I'm going to go now. But thank you, and I really apologize for on Monday. But let me just say one thing.
+Pascal Wallisch: I have given 2,000 lectures at Nyu
+Pascal Wallisch: on that order, and and all kinds of crazy things have happened.
+Pascal Wallisch: but never that. So remember or imagine that nightmare where, like a hundred people
+Pascal Wallisch: watch you for like half an hour, and you just can't do it.
+Pascal Wallisch: Well, that just happened to me on Monday, so I apologize for wasting your time twice, I guess, but I but but now we did it. That was the recommended system lecture. And now, if we're back on track on Monday we'll do more on search.
+Pascal Wallisch: And yeah, say, Hi to your cat. I used to have cats.
+Pascal Wallisch: and I'll see you Monday. Okay? And I'll also make an announcement tonight. Tomorrow night
+Pascal Wallisch: about classes. Some people came to my office about
+Pascal Wallisch: classes, and I'll make a list of recommend recommendations, recommendations, my recommendations.
+Pascal Wallisch: All right.
+Pascal Wallisch: Alright. So have a good night. Okay, all right.
+Pascal Wallisch: Good night.
+Pascal Wallisch: See you.
+Pascal Wallisch: Thank you.
+Pascal Wallisch: Thank you. There you go.
+Pascal Wallisch: Let me see.
+Pascal Wallisch: So they just come to.

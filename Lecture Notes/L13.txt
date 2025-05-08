@@ -1,0 +1,902 @@
+WEBVTT
+All right. So thanks for coming for those of you who are coming. It is,
+I understand it's raining hard outside. So it is now my great pleasure to oh, Hi! Scandal! Great pleasure to welcome you to our very last lecture of the semester, at least in this class.
+all right and
+Today, today we're going to be talking about Gpu's
+cuda, and then we'll do some kind of
+brief general outlook like, Hey, now, you guys have caught up to the state of the art of big data. Where where's big data? Go next? Yes.
+And as a preview.
+Sorry.
+Okay, as a preview. Still English. Yes, as a preview. Gpu's
+are faster for many things, but not for all things. And I want you to understand today what things they are faster, for why they're faster, and how you can make your own execution of your data processing faster. And for that we have to understand how they actually work. Once you understand how they work, it will be clearer. Why, certain operations will be faster and others will not, or what will be the speed up and what will not be.
+and what problems are suitable for, briefly, the 3 main manufacturers of Gpus today are Nvidia, Intel, and Amd.
+Not entirely that order. Nvidia is by far like 80 90% of the market.
+And Amd is like
+next 8%. And the rest is is Intel. So so for the most part, we'll talk about the Nvidia framework today, which is cuda.
+because
+that is by far the most common one. Okay, it's also now, I think. Still, as of today, the world's most expensive company. So there is great money in Gpus. This actually is a very timely
+lecture. It has in this class always been the last lecture, historically, I think, because they are gaining more and more like
+traction.
+I'm going to bring it earlier in the class in the future.
+Okay, just to just do just something ahead of time. Today will be a little bit abstract. There is a lot. It's very abstract. We're going to go into cores and kernels and stuff like that.
+Cassius, but that will be important to understand how it works. There's also going to be a lot of jargon. So I want you to a pay attention. Otherwise there's no way you can understand this, and B. Try to appreciate my approach to this, I try to make it as clear and vivid as possible. We're going to use examples and metaphors throughout. It is where it is
+all right. So without further ado some announcements.
+The class is almost over. Yes, we have almost completed. This loaded, this academic year, so to speak. Yes.
+we just last week. So just to explain where we are today is our last lecture. There are no labs this week. My last office hours are tomorrow. Then the entire academic
+calendar shifts. If you look at the registrar from instruction to
+assessment, and the 1st thing that's due is the capstone project on the 7th somebody just asked me
+not sure what it went, but there is a grace day.
+and, as someone said on the discord, the deliverable is a github link. So if you just give us your Github Link, we will, then our creators will then
+coders. There is no filing like that.
+Then the next day again, this is not my fault. That's the register.
+Solve a hard scheduling problem.
+they finally. The next day at 8 PM. Here, and I will maybe make one more announcement. But it's right here on the slide. It's all true false questions exclusively, only true, false.
+And
+it's just on the lecture content. So all lecture content is fair game, including the one today, but nothing outside of that. So not
+the readings. And like that, okay, it's come.
+If someone challenged their grade. As you know, some of you know, I can usually provide the exact
+slide the question came from. I mean, actually, always, I can always provide the slide
+question came from. So if you paid attention to the lecture, this should be very straightforward.
+I'm I'm not trying to trick you.
+I'm not trying to hurt you.
+I'm trying to elevate you as usual. Yes.
+all right, we'll talk about that more at the end. By the way, speaking of which
+many of you are quite far in the Capstone project. Yes.
+and so would you say that you're actually kind of sick of the cluster right now of the Olympic cluster.
+So that's actually why it's a good idea to bring the Gpu now in the semester.
+because now you're ready for it. Because the idea is, what if the cluster is too much of a pain to deal with?
+But there is another option
+to get this done quickly, and that is the Gpu. So that's what today is about. What if it's prohibitive for your CPU on your computer?
+But you don't deal with the cluster because it's such a pain.
+and there is another opening, and that's maybe you already have a Gpu. I would bet most of you have a gpu in your
+in your heart, in your laptop. I have 2. Actually, it's not a flex. It is where it is. So many people now have Gpus locally available. Okay.
+so briefly. First, st I'll tell you. What are Gpus? How do they work?
+actually, 1st we'll talk about. Where do they come from? Because you might have a reasonable question, why are we talking about graphics at all? This is not a graphics processing class.
+right? So it's a weird thing to start with.
+But all Gpus, that we that we are using are actually general purpose. Gpus will will do that transition
+then, and we'll also talk about Cuda. Then we'll talk about how you are actually going to be interfacing with this today, because most of you are not C, plus plus programmers. I think. So you want to use python. And there's lots of wrappers around that.
+and then we'll do our brief outlook. Okay?
+All right. So maybe we started with the with the need for Gpus first.st And there's a lot there's a lot we could say about this. We could spend a whole class on just on. Why, Gpus are such a big deal.
+but I would argue that the 2,010 s. Were inofficially the the decade of the Gpu. And I'll show you in a moment why.
+I mean this is here in a slide. Deep neural networks and generative eye are, in my opinion, the 2
+reasons why we actually need Gpus. Okay, let me show. You know this paper 2012 image net classification of deep. Anyone know this paper, don't you guys take the deep, deep learning class. So you take the deep learning class. Right? So what's that paper? That is the notorious
+Alex. Nut paper? Yes.
+and look at the offer list. Look at this, Ilya Sitzkever, Jeffrey Hinton. We know these people. Yes, no?
+Well, big names. This guy's been at this for decades, and this is the open AI guy.
+But if you look at this of
+this is the abstract of the paper, but you can click on this if you want to. What's in the abstract of a paper. What's in the abstract of a scientific or technical paper? This is a technical paper, not as a scientific paper. What's in the abstract?
+What what is in the abstract
+somebody. What is in any abstract of any scientific or technical paper? What is an abstract? Again, I said earlier.
+this class will live off audience presentations. I'm insisting on it.
+There's no right or wrong answer. Actually, I mean, there is. But I will accept many things kind of what's in the abstract.
+Okay? In other words, the most
+key findings, the most important stuff. Yes. Where at a glance, you can see what's kind of said. What was the question? How was it answered, yes, the most important stuff. Everything else is a detail. The general rule is, most people read the title, but unless that's obviously relevant they will not read the abstract, then, second, most commonly will be abstract, and then only experts are usually going to read the paper, so make sure your abstract is
+good. If you write one yourself has all the key key information, all the most important version. And look at that. What did the authors put right in that abstract
+there is a term, and that is.
+that is what is the term? Is it right there? What is in there?
+There it is. It's right in the abstract. It's a Richie Gpu. Yes.
+and before you laugh at this.
+what they what they did here is they trained a deep neural network with many layers, some of which were convolution layers, which, by the way, if you guys don't know the paper revolutionized image classification it it
+was a quantum leap in image classification in 2,012, whereas it still had been stagnant for many years before. That
+point is, they could not have trained this network
+with all these layers and all these. Look at that. 650,000 neurons.
+bunch of layers, 6 million parameters.
+They wanted to do this before years before that they could not train it without
+Gpus. Yes, and I'll show you in a moment why so, in other words, Gpu really helps with the implementation level of these computations. Often the competitions are, I don't want to say, trivial but very straightforward. We'll talk about in a moment, but you can't do it unless you have a Gpu. Yes, and then this one, of course, attention is all you need. Does anyone know that paper?
+Somebody?
+Somebody? Yes.
+The transformer was introduced by Google. By the way, some people said this was the biggest blunder in the history of IP,
+because Google was sitting on a transformer, but they didn't know what they had. They just published it gave it away for free. Otherwise only Google would have AI now. But they didn't realize that they just published it. And look at that! We'll talk in a moment how it works. But what's right in the abstract? How did they? How did they do it. There is that word again, Richie. What is the word? I know, you know.
+Jpu, yes, you can read. That's great.
+Okay? So in other words, Gpu's now are like a
+it's not what's the opposite of a showstopper
+training. This network was a showstop. It couldn't be done. It's too it was too hard. Gpu made it
+work. Yes, it removed the block all right, and it's so important that that it's right in the abstract at least at that at that time. Today all of these models transformers are are trained on Gpus at at scale, thousands of them, maybe even more
+100,000 of them. Right? So so all modern transformer models are trained on Gpus. So let me just go 1st to this and then to that, just to give you an intuition of why we need why we need them.
+Does anyone know what happens in the convolution layer of a Cnn.
+This is just one example. What happens in convolution? Let's say, this is your input matrix. So we have 9, 3 by 3. Matrix. Okay. But let's be more specific. We have a 3. But let's say, these are pixels, 9 pixels, 3 by 3 matrix. These are luminous values. Let's say, gray scales, gray values. What happens in a convolutional layer of a neural network.
+Specifically, Ryan.
+Aha!
+You put a kernel which, by the way, keep that. Keep that word. That's going to come back in a moment.
+There's something that's called a kernel. Yes, and you're absolutely right, Ryan. We use it as a filter here. This comes to us from signal processing. And what do we do use our study. What do we do about with that? Say that again we
+slide it. Look at that like we, we align the filter with the input, and then what do we do? What happens here?
+At that point?
+We slide it on it. And then what
+what happens next? What do we do at that point, you know. You all know this. I know you know you still want to talk. You still want to talk to me. It's very rude. Yes.
+that comes later. Adam, dot product. Yes, and that means we multiply, yes, and divide by. This is a unit filter, right? So it's 1 just one. So it's multiplied, 1, 1, 1 1, and then we
+multiply, and then some fine.
+and then we have our output right. And in this case, by the way we want to divide by the kernel weight. So 4. This will be 12, right? 4, plus 5 is 9 plus 3 is 12, divided by 4. That's the kernel weight. And what will that amount to? A visually? What would that amount to if these are input values, these are output values. What would this operation amount to
+visually.
+It is a filter. It's a key. You have all that is in Photoshop, all of you.
+If this is the input and this is the output. After you put it through the filter, this would be.
+say it again.
+blurring, yes, this is a blurring operation. So whenever you in Photoshop call blur BLUR. It will apply a convolutional filter. This is, of course, a unit filter. So this is blurring because you also do pattern recognition. Let's say you have a ring or something like that. Yes, and as Ryan said, Here's stride one. By the way, Stride, one
+stride means how much you shift. But yeah, we shift the whole thing through the whole array. Yes, and then we have our blurred. You see, this is highly blurred. There's no more extreme values output. Yes, so far, so good. That's what a convolutional layer in a convolutional neural network does
+in this case it does blurring. And if you have a pattern in here, it will detect this pattern. So basically, the output will be maximal if the inputs align with the filter. Yes.
+okay, so far so good.
+Now, Ryan, I'm going to ask you, because you already started with sliding.
+I show this, and this is what you see in all teaching Demos, including mine. You see them slide over the image.
+Is that necessarily so? Do we have say in a for loop? Do we have to slide them one after the next. Is, is that so? That's what you see in all teaching events, jolie.
+Can you verbalize that I like? I like the head motion. Yes.
+how about we do this? From now on you shake your head or nod, and then we're going to call on you to verbalize that if you're right. How about that
+to gate your response? So, Charlie, you're right. So what happens?
+Correct? You do not have to do sequentially. In other words, we can paralyze it. Very good. Yes.
+Do you need any conditionals, or for loops, or any control flow statements?
+And the answer is, Julie, Dolly, no.
+you do not. Okay. So in other words, this right here, and you'll see in a moment why? Because the Gpu
+once you understand how the Gpu works.
+This is the this is the number one.
+Use case when the Gpu will actually make your stuff faster. Let me write it. Let me enumerate 3 things right now, because I don't have a slide for this. I'll just say it
+if it can be fully paralyzed.
+Number one, if it does not need any control, control, flow. Statements in and and conditionals in particular conditionals are the enemy
+of the Gpu, and you will see in a moment why, I mean shortly, okay.
+The 3rd one is, and this is subtle. But you all guys already mentioned, this
+is, adopt part of the complicated operation, Sean.
+It's very straightforward. Yes, you sum, and you add, it can't be much simpler than that. So those are 3. If you have paralyzed operations, simple operations, and very few controls flow statements. That's when you traditionally will get the
+get the highest. What you want to call it speed up from a Gpu, and you will see in a moment why, that is necessarily the case. Given the architecture of the Gpu. Yes, Brian.
+you're Ryan. Go ahead.
+Okay, anyone, you add will make it slower, and you will see them in a moment. Why has to
+ideally none ideally none. And this can really ruin your day. I got an email earlier today that I actually included in my presentation, where someone hoped for great speed ups in their gpu, and they got none.
+It can completely undo all the effects I mean modest speed ups.
+but it can almost completely undo it. So be very careful. But anyway, I would argue, dot product is all you need. But it's a separate conversation.
+Okay, let's talk about the attention matrix in, okay, someone already mentioned transformers somebody here. Oh.
+oh, you mentioned transformers. So the key element of a transformer is the attention matrix. And I want to give you for those of you who don't know what it is
+a 1 sentence warning. If you already know what attention is. Attention is from cognitive science.
+like Sean, might know that
+he does that. Then you're in big trouble, because that is not that kind of tension in cognitive science attention means a bottleneck.
+That's not what this is. The attention matrix actually removed the bottlenecks from Rnns and Lstms.
+You think it is more like awareness.
+But let me lay this out what this is, and why this is. Imagine you read the following sentence, and you, you, as a human, have to decide what kind of bank it is. A money bank or riverbank. Yes.
+And see, here's a statement, this, this is one of those classic textbook
+textbook sentences. He didn't go to the bank because the water was too high. He didn't go to the bank because the water was too high.
+which word or 2 words, let me 1st ask you, is this a riverbank or a money bank?
+Darren Riverbank? Okay, great.
+And which word or 2 words gave it away water.
+And
+second, that's definitely Hi, yes, those are the 2. Yes. And so the idea is, that's how you decide as a human which
+yeah, how to disambiguate that. Yes, and you need to take long term context. Yes.
+And so what? What attention weights looked like. And, by the way, we won't have time
+right now discuss how you get them. But basically you do dot products every single element. The intention matrix was gotten from a dot product by some key value projection.
+Again, leave that for the Nlu class or deep learning class. But the bottom line is this is row 6, because we have the 6 token, 1, 2. So 1, 2, 3, 4, 5, 6 bank.
+So the bank has these weights. And look at that water, and high has the highest
+attention values. What that means in English is the values that are here are modifying. How the token itself is is interpreted. Yes.
+he and didn't, and go, and to didn't matter much. Now it's in. It's taken to account, but not much. Yes.
+and this is a 13 token sense he didn't go to. There's a 13 tokens. Yes.
+By the way, this is one row of this matrix.
+and the rose thumbs up to one necessarily. So far so good. Yes, again. If you want to know how these
+entries were gotten, take another class. I give you the one sentence, overview dot products and projections.
+but you need to drop her. Every single value has come by dot product.
+The second thing in terms of purpose the purpose is is to modify the the meaning. That's why, that's why I say it should be more called awareness
+relationships.
+Basically. What are the relation between bank and water and bank and high. Okay, so far so good.
+All right.
+Now let me show you the full matrix. This is the full 30 by 30 attention matrix.
+And this is from 13 tokens. You need to do the full N by N. Matrix to do the attention for one attention, layer
+question for you from a competition perspective. What do you is this the world's?
+Yeah, I don't know. This is just an example.
+But the thing is, is this the world's most complicated sentence.
+It's the world's longest sentence, well, but what do you? What do you see? If you look at this
+just in terms of computational?
+Any Cs people here we have a 13 token cents.
+And, by the way, we also have even have to do the diagonal, because that is kind of like how, for instance, the dot look at that has most of its attention on itself, because it's kind of just sits there.
+But, anyway, what do you notice computationally?
+Very good.
+What would a Cs person say if they see N. Squared, they would give them.
+Yes, it's terrible. Give them a stomach ache.
+And yet and yet that's how it works
+for a single attention layer. You have to compute all of the
+all of them in the Inputs N squared.
+So if you have a
+I don't even do it. But if you have a 512 input token context window
+for for a single, for a single query, how many do you have to do. I mean, that's crazy, right?
+Do you understand what I'm saying?
+And now you understand why Openai needs so many Gpus?
+Because, you will have to do a lot of thought products. Yes, like a lot.
+Does that make sense? So in other words, the individual computation is simple. It's just a dot product. Lol, it's fast.
+But the problem is to do what generative AI does and what we all do with generative AI. What do you do every day?
+You need a lot of that product like make a lot of them. Yes, and so. And by the way, I should, I should clarify something. Some people think that Gpus were designed
+to say, have adding and multiplication to be the fastest operation. Yes, that's what some people say.
+but that's actually not true.
+A Gpu does not do adding and multiplication faster than a CPU in ALU, which I'll show you in a moment. But there's
+almost emergent reasons why the dot product will be the fastest. But it's not directly, because adding and multiplying is faster in a Gp. That's not true. Yes.
+but nevertheless, Gpus are the whatchamacallit
+arc the the hardware. This is a hardware solution, or the hardware that makes this possible, because this, in anything else, having to do millions and millions of
+dot products for a single query, just be prohibited. Yes, make sense.
+And just to be clear, I don't want to get too much into transformers. But this is from one attention. Matrix. Often you have. I don't know how many. Attention heads do you have? 7, 1012
+like a lot. Yes.
+So so you have to multiply this. It's it's it's crazy. How much, how many dot routes you have to take? Ok?
+And so the point of this, by the answer here was prohibitive. This is prohibitive, for until very recently this was prohibitive. It's not good or bad. It's just
+too much
+which goes with this class. Big data, big compute scale is an issue. Yes. So if you look at this, and by the way, I do want you to look at this time here.
+this is from the web, from the from the Nvidia website itself.
+Right? So
+this, this image has not updated since 2,019, but it has gone way way way up since. So there's this gap between in green are the
+gpus, and in blue are the cpus. The best gpus, or the best cpus is only only increasing. And what you see here in the box is gigaflop flop operation, floating point operations. By the way, just briefly, this is going to come up back over and over again. What's the difference in single precision and double precision that's going to come up multiple times in this class today in this lecture, what is the difference between single precision and
+double position? So, my, by the way, that's something that's good to know, anyway. Say for into for your interview, not for my final interview, but in life.
+What's the difference between single precision and double precision?
+And, by the way, by default, many modern Gpus run on single precision. It's making fast troops by default.
+Anyone. I'm sure you know this. You just again
+what is going on today? You're just not.
+Don't want to tell me. I know you all know this. This is not the 1st time in your life this has come up.
+I don't. I don't believe you
+more.
+Every number in single precision is a 32 bit word
+4 Byte in double precision. It's a 60 four-bit word. So 8 Byte. Yes.
+And and, by the way, what? What? Why, why does that matter?
+But why would you care? Why would anyone care if it's single precision or double precision.
+Well, if one is 8 bit and one is
+sorry if one is 64 bit and one is 32 bit. So 8 Byte or 4 Byte. What can you do with 8 Byte that you cannot do with 4 Byte?
+It's also indetermined. Right? Precision.
+Somebody, quickly.
+Yeah, basically, when you round.
+How? How, how?
+Let's say you have a number that's very close to 0, but not quite 0
+yet. At some point that that collapses 0. If if it gets.
+you know, beyond single precision. If you're on a single precision, same thing with infinity at some point
+there is a limit to how much you can represent with single position.
+And it's just going to be infinite.
+Yeah, it's for floats. It's for the precision of floats. Exactly.
+But for for many everyday calculations. Say, a dot product. Let's say it's contrast, or something like that. You don't need it to the last digit. You know, I'm saying it's just if it's just video or like graphics. Yes, then single precision is fine.
+which is another way to speed this up, as you can see here. But anyway, to make a long story short, this this graph cut off here in 2019. This this gap, I guess, between gpus in green and cpus in blue, has only widened since. And if you know more in details, I got this right from the Nvidia website, yeah, Nvidia website. Okay.
+let's talk about it. So 1st of all, what are Gpus? They stand for graphics, processing units, and
+they were developed for rendering CGI computer generated imagery. Yes.
+I don't know. Lord of the rings stuff like that Star wars.
+So basically, computer generated imagery. Yes.
+now, you could have a fair question. And it's a fair point.
+I'm a data scientist, not a graphics designer. Yes, why should I care about any of this? That's it. And 20 years ago this would be a completely fair point. Yes.
+Now, one thing to realize here is that sometimes solutions to problems come from unexpected sources.
+and there is actually a life lesson here. But to understand that we have to take a step back, and I'll make this as fast as I can, because we have other stuff to get through.
+But I promise you this will. Actually, this will actually be surprisingly relevant, subtle, but relevant. Okay.
+so we have to talk about Gpus, and we have to understand
+their lineage lineage where they came from a little bit, and I promise you that it actually will make sense in like 5 min.
+1st of all, I want to start in the eighties. That's when, like PC. Graphics became a thing before that we didn't have graphics at all. Yes.
+I can say. And I was there. I remember this very clearly that in the 80 s.
+We did 2 in in like Pcs.
+we did 2D graphics with graphics cards. Okay, so importantly, from the beginning the graphics card was a device
+that was extra. You had to buy it. It was not integrated on the CPU. There was always, by the way, from from now on, and for rest of this class and for rest of life, we're going to call the CPU the host.
+It's the host, because that's it lives on the motherboard.
+The graphics card is is is a device.
+and the host has to talk to the device that's going to become much more important later.
+and I'll give you a preview. So if the host has to send data to the device.
+what alarm bell should ring in your head? Given that you've already taken this class. The host has to send data to the device. Darren, this is communication. Communication is bad. Yes, very, very true, very bad. Okay. But anyway, even back then, in the eighties
+from the beginning, the video card was a add-on.
+The CPU did not come with it. You had to buy a separate device. Okay, then. And, by the way, all 4 of these represent big leaps in like evolution of this. So the 8,086 architecture was introduced in 1981 without a video card without a Graphics cards. In 1982. We called this the Hercules Standard. It was monochrome green on black.
+and I know you probably laugh at this.
+But I remember this green glow on the black screen being extremely soothing.
+because my 1st computer in 1983 had had a Hercules card.
+All right. So I but actually, this, this evolution, here is my personal backstory. I started with Hercules. It was very, very soothing, very green, all right.
+But then, you see here we render the same same games. The racing game
+with Zga, which stands for color
+graphics adapter a graphics card that has color. Now from our perspective, you'd probably be like, what is this? Because it could only do black, white, magenta, and cyan.
+Those are 4 colors.
+But from the perspective of 1982, there's a big leap, because at least we now could do color. Yes.
+you can pick any color you want as long as black, white, magenta, or cyan, but at least it's color. Yes.
+Then, in 1984, we had Ega, which was enhanced graphics adapter. We now have 16 colors, that's actually, you know.
+fairly good.
+And then, finally, and by the law of modern pixel, art is still made in an Ega standard and 87. Finally, the video graphics arrive.
+That was pretty good. 6.
+After that it was mostly increases in like resolutions. This was 60, 40 by 4, 80. And now you had 256 colors. Yes. So that was the 80 s. The entire 80 s. Went by, basically with 2D graphics that just became better and better. Yes.
+so this was before Gpus. Right
+now I want to show you a revolutionary device.
+Oh, if it comes in oops there, we almost missed it.
+So this is the 1st Gpu
+that was introduced by Nvidia in 1991.
+The yes, that's right, Adam, that's right, that's correct.
+It couldn't render them. It couldn't show them. So this was the G. Force 256, and the big advance now was, and you can see this a little bit. Do you see? This bee is flapping its wings here.
+It's what it's no longer. 2D. This is a 3D. Model. Yes.
+and you don't see this here. But you can. You can see all the elements right here.
+This rhino.
+This dinosaur furt feet under the hood is represented by a mesh, MESH. A. Mesh
+of many, many, many, many triangles, millions. Sometimes
+in modern video games could be 200 300 million triangles that triangulate the shape of the of the what you would call it, of the object.
+And then, of course, we apply all kinds of shading. You see that there's all kinds of depends on different light sources, different camera angles. We have shadows that's called shading. Yes, so, in other words, once we had 3D graphics.
+the idea the issue became rendering. In other words, these meshes of these objects
+had to be textured. So in other words, they had reflectance properties. They were like a skin or something like that. And there was a light source.
+yeah.
+yes, all of that. Yes, so this is actually Max is right, but a doom is not full of 3D. Just to be clear, doom is not full 3D.
+It's not a full 3D. Game.
+It's kind of 2 and a half d.
+but just as a fun fact, Max, there's all these fun facts. I am playing doom through
+to completion after every semester. That's my ritual.
+After the last lecture, all right.
+Yes, all these fun facts are accurate. But anyway, so the point is, once you have a 3D. Model, you have to consider light sources. You have to consider where the camera is, and you can imagine that this you know, has to
+on your screen render quickly. Yes, because what what we mean with real time constraints here is that the player? This was, by the way, again, video games, I'm telling you. Sometimes solutions come from unlikely sources. You probably think video games are like frivolous and dumb.
+But it was essential in the evolution of 3D. Graphics because you had all these real-time constraints to make this fast or as fast as possible for smooth, for smooth gameplay. Yes, if it's very laggy, nobody wants to play that. Yes, it's actually bad for a game for you.
+for the player. Yes, it has to be lag less or less less laggy as possible. All right.
+So anyway, so this is can be complex. And there's maybe a lot of pixels. So, in other words, this stuff drove the the development of Gpus. Let me show you what a Gpu does. And again, you might be like Pascal. This is inside baseball, inside baseball
+graphics rendering. But I promise you this is relevant.
+Okay, so here's the workflow. There's 4 steps in the interest of time. I'm not going to go deeply into each step.
+but I will give you the highlights. So it starts with these wire meshes. Yes, so we have a 3D. Wire mesh of these vertices that approximate the object. Yes, we overlay the object of a skin of these sometimes millions of triangles. Yes.
+that's and that's programmable. That's going to be important in a moment.
+The rasterizer is not programmable. All that does it overlays this
+triangle with the pixel mask. Yes, in other words, not as you can. As you can see, your screen has pixels. Yes. So what? So the question is because we have to do this transform
+the transform is
+the transform is we go from the scene to the output. The output is pixels. So, in other words, we have to see how much should the pixel like, you know which
+object which which vertex is? The
+is the this pixel part of yes.
+make sense, that's just, you know. Can. You can think of it as a sampling.
+These are vectors, and we have transformed into pixels. Yes.
+then the next step and this is again programmable. That's going to matter a moment. We apply all those effects, lighting, shading
+things like that. Yes, color.
+And then, of course, all of the objects have to merge, and that determines what you see on the screen. And this has been very fast, like on the order of 60 Hertz, so that you have smooth, smooth gameplay. Okay?
+And again, let's yes, exactly. So. Max just mentioned this. But I'm gonna
+we don't have to go into details here. But basically the vertex processing step is all linear algebra. You have your. It's basically all coordinate transforms, based on the perspective of the player to the objects you have to constantly recompute what that looks like. Those are all vector projections. Yes.
+vector projections. This is just this is all straight up linear algebra. You have to transform between the mesh, and where the camera is, and
+all of that field of view rotation, translation, scaling. You get them some kind of like new coordinate system.
+Yeah, I agree, but but they're not only sick. I'll show you in a moment why, it's relevant.
+Okay, for now it's like, by the way, I agree with you. By the way, in a previous life, I was studying vision, basically
+computational vision. But I want to make that that that like
+link to data processing clear. Actually, it makes sense. It came out of this.
+And anyway, the rasterizer. As I said, this is literally just scanning sampling. You get them into pixels. Okay, that's fine. Call them fragments.
+and then then you have to. In the fragment process. These are the fragments. Then you shade them. You do the texture, mapping, visual effects, blurring lens flare.
+You name it? Yes, all right. And then you have the code object.
+Some of them things that are not visible to the player might be, might be occluded, discarded. And then finally, you merge it to output. Okay, now
+these 2 steps are called shaders.
+and here's the beauty of this, and this is why the Gpu came in, or that's why we had a Gpu.
+You can easily, Rebecca. You can easily can easily paralyze this? Yes, exactly.
+So. Basically.
+do you need to process the vertices in sequence or something like that? So sequentially? And the answer is.
+no, you can impress them independently. Yes, and then you can just throw them at a Gpu. That's why they were independent and parallel, and just
+make sure they're all done in parallel. Yes, the linear transformation can be applied in parallel. That's the big insight. They're independent.
+And the same is true for the fragments. Yes.
+so in other words, the 2 shaders, yes, go ahead.
+the pixel color, the actual shades of gray or brown, or whatever.
+And I'll give you another example in a moment.
+But but the big idea is, these 2 shading steps can be done completely in parallel. Does it make sense
+or no maroon?
+Okay?
+And yeah. And that's what? And that's and this problem right here. That's why the Gpu was invented to paralyze these 2 processing steps. Yes, that's the long and short of it.
+And again, for this to be cost effective and fast, they have to be simple. Yes, all right.
+So then, okay, and this is an important lesson.
+These shaders are actually programs. Yes, that you can apply independently. Keep that thought.
+In a moment you have to be simple and short programs. But again, for linear algebra, say, a vector projection that is a simple and short program. Yes.
+look at that. Look, apply rotations like, look, if if you
+change your perspective. The author rotate. Yes, and you can do that independently. Yes.
+and detection map right? Say, there's a new sun rising, or someone turns light or something like that, the player, the player, turns on light. Now all of the Lumen
+change has to cast a shadow. Things like that. Yes.
+and this is the upshot. This should remind you of mapreduce. Right? These are busy mappers. No.
+and that's true. Shaders are mappers with some asterisks.
+The mappers, as you know, in Mapreduce are completely independent. Yes, yes,
+here sometimes. Yes, sometimes. No. So they're conditionally independent. What I mean by that is, let's say you want to do some kind of blurring operation. Blur, maybe motion blur
+then neighboring pixels do have to talk a little bit to each other to get that blur that makes sense.
+So for the most part independent, or at least mapper ish.
+But yes, and so that the idea is exactly that.
+So, in other words, when you hear shaders. You should think Mapreduce or the mappers in Mapreduce right?
+And very briefly, I don't want to spend too much time on this. This is what an early Gpu early 2,000 looked like, okay, like 2,003, I think. Yeah, there we go, 2,003. So you had a whole bunch of 1, 2, 3, 4. You had all these parallel, you see that parallel shaders. Yes.
+and then you parallel texture mappers, and all of that. So do these highly parallel parallel blenders a parallel architecture. Yes, does this make sense?
+But we don't do this anymore. So this is where this came from.
+And the reason we don't do this anymore is on this slide.
+These specialized shader unions had a big downside.
+If you look at the before I go to text. Let me just look at this. Imagine you have a
+very complex architecture. So there's a lot of like a lot going on with the vertices. Yes, you have to shade the vertices, but
+maybe there's
+not much going on with the light. Yes. So, in other words, the workload of the word of the vertical shaders will be maxed out, but the pixel shader would sit, they would sit
+idol. Yes, what about something down here? The geometry of this scene is very simple. It's just
+see right? There's like, it's a horizon.
+that's it. There's not. There's not much geometry here. Yes, maybe there's a little wave here, but that's also just
+implied. But the
+there's a lot going on with the sun. Look this, the sunlight is reflecting off the ocean. So the pixel shaders are fully.
+By the way. By the way, the way you can simplify this, the vertex shader is about the geometry
+and the pixel pixel shaders about light and optics optics, how the light reflects off the scene and basically colors the pixels. Yes.
+you see how in the in the lower
+and the lower scene, the Pixel Shader
+would be fully on and fully maxed out. But most of the vertex shaders would sit idle.
+If shaders are like Mapreduce, what does this remind you of? What problem in mapreduce does this remind you of?
+If this is mapreduce? This looks like
+key. So who said that keys queue? This is key skew.
+So this is the shading or graphics processing
+version of the keys. Queue problem exactly.
+I just said that.
+And this right here is why we don't use these early cpus anymore.
+and which is now brings us to, I think, since 2,000. 0, yeah. Key skew. Yes.
+so I don't always see the C to see the chat. Okay, which brings us now to general purpose, Gpus or Gp. Gpus.
+Now let me be very clear. This was introduced in 2,006. For this reason. Now we have only one
+unit, and I'll show you in a moment what it's called just to be clear
+today. Almost all Gpus you can commercially buy are general purpose, Gpus. So nobody says the Gp anymore. Why do you think that is
+because you can see it right there on the slide.
+Nobody wants to say cheapy cheap, you.
+we should say, Gpu. But in the modern age, in 2025, and for about 20 years. All Gpus are Gp. Gpus. Okay.
+But anyway, now you know where this comes from. And the reason this was worth doing
+some of the design architecture decisions that in a Gpu are still
+inherited from this. They're still in there.
+It came from it came from video processing graphics processing. In a moment we'll talk about
+threads and grids and blocks and warps and stuff, and you'd be like, why would you build it like that? And the answer is, it has to do with this. It has to do with the fact. It came from graphics. Okay. But anyway, in the modern age we use the cheapy Gpu. And now
+shaders became colonels.
+And I want to be very clear about this. I'm very unhappy. I'm I'm very, very unhappy that the word kernel means about 10 different things in data. Science. Okay?
+And they just added one
+we just saw, we already started convolution kernels. There's kernels in Sv Svm's. Yes, support vector machines.
+There's kernels in.
+That's so too many kernels. Yes.
+this is yet a different kernel. What they mean here. And I say this right now. So there's no confusion.
+Let me ask you what's the property of like a kernel? Let's say an apple seed kernel, or something like that, or popcorn kernel or corn kernel. It's very, very
+sure compact, that's good. What else
+I'll just say in the interest of time, small and lightweight.
+that's all they meant to say these programs. The 1st of a kernel. Okay, a kernel is a program.
+But it's a very lightweight program, all right.
+I'm not lying to you.
+So and the the metaphor was, oh, just like a curtain, like a seed, or something like that.
+Yes, so there's no more. There's no more vertex and pixel distinction. It's all just one thing.
+and look at that.
+And I just said that we don't say Gp, Gpu anymore.
+and we use them. So the idea is, the idea of people are like, wait a second. They can do everything.
+and then people are like, wait, wait, wait, wait! It can do everything.
+Well, what if they can do data processing like thought products? And the answer is, Yes, we can.
+all right.
+And that's this
+exactly. That's right. Max is right and other cryptocurrencies. Those are, by the way, the 3 big use cases for Gpus
+video. Still, graphics still cryptocurrencies. And now deep learning.
+But anyway, this this actually, probably circles in red people are like, wait a second. We can use them for other things.
+all right.
+And
+so this is where cuda comes in. And by the way, there's other frameworks, Amd has one. Intel has one. We're going to exclusively focus on Nvidia, because, again, that's 90% of the of the gpus these days, and that stands for compute unified device architecture. It's an Api that lets you talk to the Gpu. So in other words, that's a software label. Talk about this more in a moment.
+But before we go to the software to understand what modern Gpu is, how it works. And then, importantly, how to use it and how to be optimized. We have to contrast Gpu and CPU and Gpu directly before we go into the architecture. I want to show you some metaphors that people use, but that are all, in my opinion, inappropriate.
+Let's start over here. Swiss Army knife versus scalpel.
+I can understand why people use this
+metaphor. I'll also tell you in a moment why it's inappropriate. Which one do you think is the CPU, and which one is the Gpu in this metaphor.
+Somebody up there. Matthew is back.
+Yeah, but it's just a CPU
+the Swiss arm, and I for the CPU, and which one is the Gpu. Then, logically, with only one degree of freedom, the Gpu. Okay? And what's to like about this metaphor? There is one thing I see what they're trying to. But this is the stuff you see online. I saw all of these online. I was like, Ugh!
+But I saw them. This is what you commonly see what Matthew were they trying to get at? What's good about this metaphor?
+That's right. The CPU is a general purpose instruction
+operator, right? It can print it can make sounds. It can do. Video can write a paper, can play video games. You can do anything. Yes, very versatile.
+And then the Gpu is a scalpel. The idea is, Matthew, it's just good at
+one thing, and I see what you're trying to get that. Why, do you think, by the way, I don't like this metaphor. What's missing? What's what's bad about it?
+Anybody, Richie.
+not that's not true. Actually, that's not true. It's the opposite. It's the opposite. It's not obvious to me that the CPU is worse than the knife. And anything does that make sense what I'm saying? It's kind of weird. It's just bizarre. How about this fighter? Chat versus drone swarm, which is the CPU, which is the Gpu.
+Quickly, Julie?
+This fire channel CPU right, which makes the drones or the CPU. And what is good about the metaphor?
+It's more power. 1 1 CPU is more powerful. Yes, it's faster. And again, Matthew, it's more versatile. Yes, a fighter chat is, can many more in the world, particularly modern one? What about a drone swarm? The idea is, every single drone is
+every single drone is.
+Yes, Matthew.
+but that's actually good. That's that's so. That's also good about the meta. What's bad about them. So so those are 2 good things. CPU is like this one thing. It's very powerful and fast, and all that, and Gpu by itself is very puny and can't do much, but in parallel. It can do a lot. But what's bad about it? Then
+there's some something critical wrong about this, and maybe I'll just say the interest of time.
+It's actually not true that the CPU is much faster than an individual. Gpu. The individual Gpu is maybe a little slower, maybe 10%, but not not that much, and also the Gpu can also be multipurpose. So that's actually not quite true.
+And finally, container ship versus yoct, which is, which quickly say what?
+No.
+the container ship is the Arctic CPU, and the container ship is the Gpu. Again. By the way, I apologize, but I've seen all of these many times online. The idea here is you're flexible. You can do whatever you want. And the container ship, however, can
+deliver much more cargo wrong metaphor, because in reality, CPU actually has
+more resources than the Gpu per core. We'll talk about it in a moment.
+Yeah, it's weird. But anyway, so those are some metaphors. You will see that all try. Try to get to the right insight, but they all fall short.
+So let me 1st show you.
+before I show you my metaphor.
+how the CPU works. We've talked about this already on day one of the class, but it will not contrast so to reorient you. There's dynamic RAM. By the way, if you want to talk after class, it's very fascinating. It works by a capacitor where charge decays. It is constantly refreshed. It's it's very wonderful. But anyway, that's your main system memory from a functional perspective. But the physics of this is fascinating.
+Then the cache is basically the memory you have on your CPU. There's a whole bunch of it on a modern CPU. They have the control unit that sends the instructions and does the control flow of the code and all that. And then the Alus, the arithmetic, logic, units do what they do. The actual.
+what computation? Yes, so mostly adding, is best
+subtraction is second best by like adding a negative number.
+Multiplication is okay, division's terrible. But those are details. It does the actual arithmetic. Yes, computing the numbers. Okay? And this is
+a schematic. It's not extra scale, but it is what it is.
+Oh, sorry. Sean.
+again, this is this is not yeah, it is, it's not well drawn. But this is this is where there's a source here. Got it from the Nvidia website. I should make my own graph. My own graph.
+You're actually right, Sean. And, by the way, something else that is not great, you'll see in a moment.
+This is no longer a modern Gpu might have 10,000 of these if that makes sense, or more
+so. But the idea is what, let me ask you, this, does the Gpu have components that are different from the CPU,
+and the answer is, no, it's the same components. But what has changed.
+And that's basically, if you understand that it, you can understand why.
+why the Gpu does what it does, why, it's best for top products and all the downsides and all that. Anybody. What what has changed the same components. But what's different? Yes, Darren.
+right? In particular, the ALU to control unit cash ratio is dramatically different. Yes. In other words, per
+a LUA CPU actually has much more resources available than the than the than the Gpu.
+So per core per ALU core, the it's all ALU! It's like
+Max Maxed out that you, Alus, and then you see how this is kind of striped like that.
+So this is kind of we'll see this in more moment all of these Alus might have to get the same instructions. They all have to do the same thing. They all have to be in lockstep. We'll see this in a moment. We're going to flesh out a little bit. But there's a lot of like, hey? Why don't all of you guys do the same thing just on different data.
+And just a little piece of data. By the way, because that's all that fits in the local local cache
+make sense.
+So that's the big idea. And, by the way, in reality, as I said earlier.
+the CPU is the host.
+The Gpu is the device.
+It goes. It's shunted there through a Pcie express bus, and this express bus is very fast. It is, after all, called the express bus, but
+as artists that's was mentioned.
+this has to be done. This is a step of communications. In other words, you and I mean you. You have to send explicitly encode the data from the CPU to the Gpu, and then you have to. You have to pick up the results again from the from the device back to the host. Otherwise.
+yeah, you have to do it to do both. You have to send the data to the to the Gpu, and you have to retrieve it, too. Otherwise.
+otherwise. Yeah, it doesn't work. You need both. Okay.
+Now let me ask you something.
+I want to build towards a better metaphor.
+Imagine you have to prepare 10,000 omelets for a mass wedding.
+Imagine the wedding at Susa after Alexander conquered the Persian Empire, where he wedded a hundred of his senior officers to local Persian nobility. Yes.
+so far so good. It's a historical example. About 2,500 years old, about actually happened.
+And you need to make these 10,000 omelets to about equal quality in reasonable time
+for this use. Case, Kim.
+What's better, one expert world-class chef in a well-stocked kitchen that's the CPU, yes, or
+or a lot of line cooks
+that are all executing the same recipe in lockstep, which one is better
+for making the 10,000 omelets fast.
+Wait this one, this one. Yes, and so that's the that's the idea.
+Write this down. This is the. This is the accurate metaphor.
+It's not the Swiss Army knife versus the scalpel. It's not the drones form, it's not the container ship.
+It's this. In other words, what the Assembly line did for cars. Gpus do for
+information, for data processing. The idea is, there's simple instructions, a simpler, better, so that even a line cook can implement them. They all do the same thing. There's some kind of like loudspeaker in this in the thing. They're all cut. Now then, you all mix now, and they're all doing everything in lockstep, and they have some local ingredients that they're processing locally. That's the idea. That's the correct metaphor. Okay?
+Now, to get most out of the Gpu particularly for us. For data processing.
+We have to understand that the program execution is hierarchical.
+which again, I said earlier, is owed to the lineage in pixel processing or in image processing. Yes.
+and the 3 concepts to distinguish are
+threads, blocks, and grids, and I apologize in advance that the the word blocks
+is also highly overused in data, in, in big data. Yes, we have seen this, like at least in 5 or 6 different
+different guises. A block means something else here than in the other blocks we've seen before. But anyway, the execution of these cuda kernels is arranged in threads, blocks, and grids. So watch this. So a thread
+is, you can think of that as the worker
+thread is what actually executes the competition
+program is executed by the thread or in the thread. Yes.
+and it has its own local data. So it's piece, like, maybe one vector or something like that, or even one number. If you do a matrix multiplication matter of one row, whatever it has. Yes.
+but the threads are arranged in blocks. Okay, we just talked about this.
+and the block in a modern Gpu includes about
+up to up to. It's up to you a thousand, 24 threads. So a modern Gpu can
+aggregate, I guess.
+Include
+1,024 threads, and they have a shared memory. So maybe this metaphor that I asked Chatgp to make is not quite correct. The the line cooks should be
+arranged like a circle, and they're all picking ingredients from
+some central repository or something like that.
+And this idea here with blocks, that is what comes from like the graphics processing. As I said earlier, pixels are not completely independent of each other. If on a
+blur neighboring pixels, I have to have an awareness of what neighbor and pixels values are, if that makes sense.
+In other words, the block has some shared shared memory. You see that there's a per block, memory, and then
+yes, for blocks.
+but then grids and I should set this. So you have a thousand, 20,024 threads per block.
+and then grids is multiple blocks, and they have application, level memory. And they they all. The blocks are arranged like that.
+and it is all a little bit abstract.
+So why don't we do an example?
+Anti-classy sample that everybody always use is called saxp.
+and what that is is, we have some scalar a, and we have some vector x, some array of numbers.
+and we have an array of numbers. Y, and we want to do some kind of like. Scale this, add that and get the output. Yes.
+and
+And I said by default, these gpus are single precision. We already talked about what that is.
+that's 32 bits.
+and if you implement this serially saxp again, this is the. This is the classic example that is worth knowing, because in all textbook. It's all in all the cuda documentation, I would argue, since at least the seventies it's always in there, and it just demonstrates a lot of the features
+how it works with the array of threads, anyway.
+N, where's N that's coming next? Oh, actually, no, there it is. N is the number of elements. Okay?
+And so let me just show you. So this is the cuda implementation, as you can see here, cuda is c plus plus
+or written in C plus. But don't be scared. There's not much going on here, so if you see here down here, you you explain how many threads you want per block. This is the number of blocks sorry threads per block. 256. Yes.
+and then here you also tell it. This is inside of this.
+I don't know. Triple bracket thing. That's where you tell it.
+How many like what the block layout is. You want to have 256 threads per block. You want to have N over 26
+blocks in green, and we do the ceiling because we want to have more blocks in is an integer number of
+of blocks. Okay?
+And, by the way, if if you're scared by this, you will not have to do this in a moment, we'll do the number implementation which is in python in a moment. But that's raw cuda, which is c plus plus. Okay.
+Anyway, the 1st thing we have to check here. By the way, and this is why this works. Look at that. It's a little. It's a little this, this, by the way, this this is a kernel it's a very straightforward, it's a cuda kernel. This is a very straightforward function.
+It takes as inputs the number of elements in X and y, obviously this would be the same right? A. What the scalar is, what x is and what y is, and then it needs to find out what its own identity is in the interest of time. I'm actually not going to.
+Math is outright here, but I'll give you an intuition.
+I'll have to get intuition.
+If you think of an array of because it has to be with pointer logic, remember the CC C plus. Plus. This is pointer logic. It has to figure out what its own id is, and if it figure out what its own id is, we can get away without a for loop. Now watch this
+the 1st block. What's the block? Id of the 1st block? It's c plus plus. So it's indexing from
+from for what?
+No Matlab are jewel indexed from one. What are C plus plus indexed from
+0. Okay, so the block, the 1st block is going to be 0. Yes. So this whole block is going to be. This whole thing is going to be
+0. Yes, so we just do the 1st one. Our id is 0. Yes.
+Does it make sense.
+If you think of an array, an array of an array of threads. Yes, because the the array, the threads, are arranged like that. You see that.
+So the next one
+would be one and 2, and so on, and then the next row would be the block dimension, let's say.
+and 12 yes, times one. So next will be 13, 2, 24, and then
+25 to 36, and and so on. Does it make sense what I'm saying?
+And then, if we are
+not out of bounds, then we just do the computation. Note that there is no conditionals here. The, If is, is just like, don't do anything if it's not in scope. Yes.
+and at the end, what happens here with the copies?
+So 1st we have, we have to.
+What is this we have to send the data.
+This is from from from CPU to
+to device. Yes, and then at the end back.
+Okay? And in this kernel, I'm going to tell you right now. Most of the time is going to be spent here and here. This copy, this copying is going to take almost all the time.
+Okay?
+But importantly, there is no other conditional in here.
+It's not doing anything. If we are not out of if we're in scope. Okay?
+I just said that. So so this is just by thread. Id. All right.
+Okay, so far. So good or bad.
+Okay, all right.
+Now, there's more to thread execution than that. And to understand this, we have to understand what the concept of warp is.
+And, by the way, this idea doesn't come from me, you can click on this. This gives you kind of the backstory. But let me visualize this.
+What is warp speed? Does anyone know what warp speed is?
+Anyone?
+Don't be shy. What's warp?
+Warp, speed anybody quickly. I know it's not your generation. But, Darren.
+Great! What is that?
+That great? So this one? Yes, yes, I've seen this before.
+No, that's a warp core.
+But that's not the one we mean, yeah, actually faster than light. Dipali is right. Mark is right from Star Trek. Yes, the idea is, you're warping space itself, which allows you to go faster. But that's the wrong metaphor, not this one.
+believe me or not. But this actually comes to us from Rome, Rome.
+and the idea is, in Rome. We had what's called a warp weighted loom.
+And here here's what it looks like. Yes.
+So this is a wallboard loom. Do you see that?
+And look at that?
+What the look I don't know. That's what Chatgpt gave me. Okay.
+this is this is a warp weighted loom. Maybe that's the tattoo of the household. I don't know.
+But look at that parallel threads, Darren, do you see that.
+Do you see the logic?
+No, that's why it's called a warp.
+A warp is this. These are these parallel threads. And and and this comes to us from Rome. Okay.
+now, look at this.
+I should have done. I should have done some animations here. But let's just let's just talk about it in in English.
+So the idea is that within a block
+thread thread executes threads, execute within a warp
+what that means is SIMP. Single instruction, multiple threat.
+What? Where's this baseball's reference?
+What?
+Oh, sure. Okay. But anyway, so where was where was that?
+So here's the idea.
+Remember those line cooks.
+The idea is that 32 of them. By the way, I should. I apologize? 32 in Nvidia, in in. Okay, let's just hear me out in Nvidia.
+It's called a warp, and there's 32 threads parallel in lockstep in Amd.
+Gpu's a a warp which there is called a wave front wave. Front. It's actually 64.
+But the idea is that 32 of these line cooks
+can only work in lockstep. So if there, if if the control unit says Mix.
+they all have to mix.
+If it says cut, they all have to cut. If they say rinse, they all have to rinse. Okay, they all have to follow instructions together. All right
+again. This comes to us from graphics thing.
+Here's the problem.
+The warp is not done until all of them have finished. And here's the big problem. Imagine if you have some conditionals, imagine you have some conditional, some any conditional, some if statement
+and 5 of your threads in the warp, execute that instruction.
+What about the other ones? They all have to sit idle? That's the problem.
+What if you have a whole bunch of conditionals, and at the end of the day
+only one worker in the whole warp can actually work, because all the other ones are not.
+They all have to do the same thing. I mean, they have to work. They have to wait for each other. Yes.
+and so the problem is that if you don't understand this. Let's say, let's say you have a lot of conditionals in your in your code. What will that do to your to your
+speed up from Gpu. Given that they have to like.
+wait for each other. They all have to do everything synchronously, and they all have to wait for each other.
+What's the problem?
+It's it's going to get to give you a lot of speed ups.
+And the answer is, Don't be shy.
+No, no, you're not going to get my speed ups.
+Okay, does it make sense to everybody? Okay.
+now, this is not a joke. This is like real. This is the email I got today. Look at that 3 h ago, as of the writing of the my lecture. Look at this consultation on scaling. Look at this, Hi, Pascal! Blah blah!
+They ran some stuff, but when it has on the Gpu
+they only got modest improvements with the Gpu with 2,000 cores surprise them.
+but it has to do with the data access.
+Okay? And what do you think? So, yeah, this was just, I'm very excited. Very good timing.
+What do you think the problem was.
+I mean, if I'm setting up like that up there, Matthew.
+so I couldn't hear any of that. Can you say? Say I'm sure you're right, but make make it slower and louder.
+Yeah, lots of conditionals.
+Correct. The code was, okay. Here's what they did and don't do this. They took a normal program.
+Just a regular program. This. As a matter of fact, it's Nmf program. Yes, which is kind of a, it's a complex program.
+And just
+put it onto the CPU, the Gpu, right? So here's the problem with this, with this stuff. So I can tell you right now, these guys did not use cuda, and they don't understand how the Gpu works. So one of the downs, as the modern wrappers is the modern wrapper, like the number wrapper, will let you
+send your entire program just like one to one to the Gpu and
+and that's it. But it won't warn you that unless you optimize it for that
+you will not get much speed up. Does it make sense what I'm saying?
+And so that's where the kernel Id comes from again.
+This is what Chatgpt thinks is. Look, by the way, Rebecca and Darren, like I don't know like I'm just using them out of the box. This is what I asked. I asked individualized cuda kernels.
+and that's what it came out. Okay, it looks like popcorn to me.
+But the point. The point is, as I said, they have to be small and lightweight. Yes.
+and if you just chip Matthew your regular program over there, you're not going to get much. You're gonna didn't he got this guy? Said he was surprised and disappointed. Yeah, surprised and disappointed. So basically, you're not going to get much speed up.
+It works best. If you have small programs that you have a common path, and the less branching you do the better. Yes.
+and now you should know why it has to do with this warp warp structure.
+Okay, any questions about this before we move on, there's some some more stuff I want to get to
+anything clear sean anybody?
+Oh, Russ, go ahead.
+Most of them sometimes. Yeah.
+So so the whole point here is that we do multi-threaded parallel.
+Lots of alus.
+That's fine. But what if most of you, Alus, necessarily sit idle because
+they can't move until well, the problem is they're they're working in lockstep.
+But most of them can't
+do it because the conditions are not met. So just sit around until everybody's finished. Yes.
+I'm glad you asked. That's coming next.
+or in a couple of slides. Yes, Richie Walker Hood.
+Say that again. Yeah, sure. So in one block you can have up to
+a thousand 24 threads. So that's 32. You can have 32 warps in each block.
+Say what once?
+Yes. So each warp has 32 threads. That's immutable, that is, you cannot change that if you want to, if you want a bigger warp
+size integral to Amd Gpus, which have 64
+warp size, but then they call them wavefronts.
+But you get to say how many threads, and then, by definition or by like implication, warps are in your block. Remember.
+I'm not going to go all the way back. But but up to up 2,024
+threads per block. Okay?
+Oh, yes, sure.
+It's just that. If you lock up your warp.
+or most of the workers in the warp.
+correct in the warp everybody has worked. Think of it like a firing squad or something like that.
+like, there's a sergeant you have to walk in lockstep.
+You cannot proceed by yourself. You have to wait for everybody else until they're finished.
+Okay, I'm not sure if we should do this. But that's the dot product that's obviously a more important
+example than the sex. Ps, because that's the one you're actually gonna be doing under the hood is the dot product with
+c plus plus code. You see that?
+Right? So here's the mapping.
+and there's reducing. Someone just asked about this. Yeah, Adam, look in the top part. You have to reduce it here or the aggregator. So 1st you do mapping, and then you do the reducing. Yes.
+yes, so far so good.
+But here's good news.
+You don't actually have to touch this for better or for worse.
+The the in the old days you had, like, I know, 20 years ago, before cuda
+before before the rappers, you had to
+basically write it yourself in c plus plus. Yes.
+But what if you don't want to do that? And, by the way, I forgot to mention this, so this is all compiled with the Nvcc. That's the Nvidia c plus plus cuda compiler. So if you if you hear that Nvcc Nvidia
+cuda c plus plus compiler CC plus plus compiler. Okay.
+yes, that's exactly what we can do in a moment.
+Okay, so so here we go. So in practice, in practice, most of you.
+Again, I was told. A 3rd of you are Cs majors by by training. So you're probably comfortable with this. But the two-thirds are not
+so. The question is, what do we do? And this is comes importantly, complex programs. Machine learning. Yes, you know.
+might do some.
+some some stuff like that. Okay, so yeah. So as I said, the cuda kernels are simple operations.
+basic linear algebra. It works best for linear algebra, literally that all right.
+But we want to make what you just said back propagation. Yes, machine learning.
+Cnn's yes, and you know, now we have to make those before we go there.
+Like, I said, this is the big idea you to make a Gpu run. You have to keep it busy. Yes, and if you're not careful.
+many, many, most of your workers threads will be idle in the, in, the, in the Gpu, for the reasons we discussed. Yes.
+and this is another bottleneck. So the 1st one is the memory transfer.
+Okay, so try to keep as much data on there as possible. So you don't have to.
+You don't have to like you don't have to do that.
+But this is the big one. These are the 2 big ones minimize communication. And the second one is conditionals. Try not to do that. Okay?
+And so what we're going to do now.
+So 1st of all, a lot of them, a lot of the a lot of the like
+general purpose stuff like
+dot products that already exist. You can just reuse that you don't. You don't have to write your own dot product.
+there's all kinds of libraries for that
+which now brings me to the existing libraries that you can use. Okay? And here's again, we can only have
+less than 20 min left in the whole and the whole class forget the lecture, the whole class.
+So I'm not gonna be able to go
+deep into each each of them. But let me just give you some pointers.
+So if you want to do deep learning, you should probably use the what what this is.
+this this CU. Dnn that stands for cuda, deep neural network library. So most, and you can be used in both with tensorflow and with pytorch. Most of what you want to do
+say you want to do. Deep learning
+is you know, wrapped up in this library.
+and then you can use python.
+You know what I mean.
+Yeah.
+So so like, I said, we won't have much time to talk about this right now. But basically this interfaces with pytorch natively. And then you can run pytorch. By the way, probably pytorch right
+on the Gpu natively. Basically.
+you just have to send the data there and back collect the results again. Okay.
+then for basically anything else like that machine learning data frame processing.
+we'll talk about rapids in a moment. I do have a slide for that.
+There's another library that you can use for that, and then you can write your own kernels either with cuda or, if you like, writing python number. So those are kind of the 3 for you, for data scientists, the big use cases. One is a library for a library for
+deep learning. Yes, Pytorch, which is this cuda, deep neural network library, then rapids for
+machine learning in general and data frame processing rapids, by the way, also interfaces very nicely with Dask, so you could do a rapids, Dask Combo, and do most of your work there, but on a Gpu. That's the idea.
+And then, finally, a number is when you write your own
+cuda kernels. But in python, okay.
+briefly, rapids. So as you know, arrow is like this open source parquet implementation.
+right? So basically, it's internally column oriented, but on the Gpu.
+Basically, it does all the data you can click on that and go to the rapids to the Rapids Repository.
+And what's nice about rapids is, as you see here. It does this minimization of the communication for you. So you can get tremendous speed ups. So the biggest downfall is this data
+shunting and that minimizes that.
+And as I said earlier, it's it's very well integrated with with task. Okay.
+number. This is now the same code as before.
+Right?
+But it is now the number, the cuda
+thing in the number library. Yes.
+alright. And then you can basically.
+There is your Xp code.
+You can now run that natively in in in Gpu.
+One thing. So you don't. This is not. This is not c plus plus anymore. This is just python. One thing you can try yourself. If you want to.
+The larger you make N
+the bigger of a speed up, you will usually see. So if you make end like a hundred, 10,000,
+you might not get
+any speed up actually, of the Gpu versus the CPU. And the reason for that is
+sending the data to the Gpu.
+Takes a lot of time and getting it back.
+But if you put it in here like a million or 10 million. Then you will start to see
+bigger and bigger speed ups.
+You can try this yourself.
+What else can I say about this?
+Yeah.
+By the way, this is LLVM.
+Stands for a low level virtual machine. Okay?
+And that's a compiler that compiles this under the hood.
+Right.
+And this is what I just said. Let's say you don't want to deal with C, plus plus, but you know how to write it. Then you can write as a number.
+but as a general purpose.
+Cuda kernel, but written in python. Yes, Sean.
+exactly. Exactly. That's exactly right. That's exactly right.
+Okay, briefly, this is where, if you do want to go back to the cluster.
+as you can see here, just cuts off here in 2020.
+I this was supposed to say that
+that the cluster is due for a major update. So right now, we don't have that many more gpus available than just recently. But they're now. And by the way, you can see here, if you click on the link
+their current offerings, I think when they came here in February, they told us they're at the verge of a major upgrade. Remember that. And their major upgrade will be all about Gpus. And so, in other words, if you still want to deal with the cluster. But now I want to use a Gpu on the cluster, and you can also do that. Okay.
+Briefly, this is might come up. I want to just contextualize Gpus.
+So the CPU is your brain. That's why people
+call it Matthew. Where's Matthew? Call it? Call it the Swiss army knife.
+the brain of the computer where, versatile. As I said, general computing, you can do anything, video games.
+sound music.
+We're processing anything right?
+And it's fast but historically serial. So a 1 core can do one thing
+that is not entirely true anymore, because of
+predictive branching and multi-core cpus and all that, but historically.
+one CPU. Very fast, very serial it is where it is. Yes, but very versatile.
+Then the cheap you. That's what I talked about today.
+General processing unit made by Nvidia Amd. Intel comes from graphic cards for rendering, but is now used. It's actually ironic. So it's like a specialist. The the
+assembly line. But it's a generalized version of it for all kinds of parallel processing, as I think. Max said this, including cryptocurrency mining. If you're still into that.
+But there's more now. This is now 2,025. There's Tpus.
+tpus. Tpus stands for tensor processing units.
+They come to us from Google.
+And they were people were like at some point, the Google people actually, does anyone know when they were introduced
+recently? I mean, not not too long ago.
+the Google guys were like, why do we care about graphics? It has all this weirdness in there, from the
+grids and warps and blocks and all that. What if we just built something that is specialized for matrix multiplication? Only
+a high dimensional matrix multiplication. Because, frankly, that's all you need for deep learning? Yes, right?
+So that's specifically for deep learning, and it integrates directly with tensorflow.
+And maybe 5 years ago people thought this was the future. But frankly.
+to my big surprise. Actually, this has not caught on. I don't know exactly why I think it has to do with this tensorflow limitation. Most people don't use tensorflow. So they know they just want to use gpus with Nvidia Gpus. I guess I don't know. So it's more general. The Gpu is the more general
+construct and Tpu.
+But in theory the Tpu is what you want in data science, because you want to do matrix multiplication. Yes, no.
+I mean, you don't do rendering, or anything like that, do you? Or cryptocurrency mining? You don't care about that. You want to do matrix multiplication right?
+So you would think that would catch on, but it didn't not yet.
+Then Apple recently introduced the Npu. That's the neural processing unit.
+and it's like a Tpu. But it has even lower precision. I think 16 bit
+and the advantage it. It takes a lot less power, like a lot less power. So they want to put them on like iphones. Basically. So the idea is, if you want to do like, if you want to do like
+generative AI on an iphone or something like that, local locally.
+This was also very promising at a time, but
+I have not seen this go anywhere either. Most people still use just the Gpu.
+Then there's the Dpu the data processing unit. That's an interesting option. But unless you're like a data engineer and we'll talk about it in a moment unless you're a data engineer working in a data center, you will probably never see one.
+So what the Dpu is for is to minimize the complication.
+What was that is is to minimize the communication costs.
+And that's like for the data centers mostly. And then, finally, we have Qpus. That's quantum processing units.
+They're revolutionary if they work, but as far as I know, they've always been, and will always be, 5 to 10 years
+in the future in their working form.
+so I wouldn't hold my breath for those.
+but they work with qubits if they work. Yes.
+so those are now all all the acronyms that
+last time I checked. You're gonna encounter.
+But in case someone asks you, Hey, can you distinguish what a tpu is from a dpu from a Gpu? Now? No, you have a what you would probably call a cheat sheet.
+That shows them all in one slide. Okay?
+Any questions, maroon.
+No, it's true. There was a day, all right.
+So summarize. Yeah. So that's if you have simple operations, the simplest possible operation, like a dot product.
+you can get massive paralyzation.
+And in a way, as you saw a lot of these ideas came back. So basically, these are, the kernels are busy mappers. If someone asks you what's a kernel, it's like a mapper
+all right.
+And this works best if you can minimize communication.
+And it's kind of like a cost, effective solution. If it's too big for your computer or for the CPU router. But you don't want to deal with the cluster, and I don't blame you.
+Maybe you can like. And you want to do dot products. Maybe the Gpu is kind of just the niche where you
+can shine. And as you saw in the interest slide
+recently, the demand for dog products has increased dramatically because of generative AI because of deep neural networks.
+So the Gpus are becoming more and more important.
+I think in the future I'm going to bring this earlier in the class because
+more relevant. Now, okay, so some brief outlook is only 5 min left.
+Let me tell you about a bunch of stuff that I'm fairly certain of.
+The 1st one is that I believe that the trends that have been unfolding over the last 50 years will continue.
+And what are those trends?
+Data will keep getting bigger. I know some people say we're running out of data.
+It's like a running like a finite natural resource, like fossil fuels.
+If not, makes synthetic data. I don't believe that I do not believe that I think data is just going to keep getting bigger and bigger and bigger.
+And why do I believe that? Because it's been going like that for 50 years, and I have not seen any inflection points or anything like that.
+And yeah, I mean, look, as we talked earlier, you should see my 1st computer from 83.
+You I don't know. It's been just.
+if you know, exponential. Still, Moore's law still, in effect.
+all right, and in addition to that, in addition to Moore's law, we do have Gpus, we have clusters, we have cloud computing. So this is also just going to get more powerful
+as is storage getting cheaper and cheaper and
+more and more capacity. That's there's no signs of Slowdown.
+however, and you also notice the demand will also keep going up, and we saw it today, like for Ml. And AI alone.
+We need to handle this bigger and bigger data by itself.
+Forget everything else. This is just going to keep going up. And
+Looking at some of you here.
+if you know some something that's not in the slide.
+One more ad for my class. In default, neural data science.
+That's also like kind of the final frontier of this like, imagine the data that comes out of the brain.
+That's just very, very big. Yes.
+But anyway.
+so in other words. This class will probably not go anywhere, because there will always be a need, maybe even a growing need for someone
+meaning you
+to choreograph this dance. You know, more data, more storage, more compute, more need for data that has to be carefully choreographed by somebody.
+And, by the way, we you saw this hour from our guest, guest, speaker, on last Monday.
+This is not going to be automated.
+This can't be automated. This is a very it's more like art and science. There's no way, however.
+specialization will also continue. In other words, when this class was 1st offered in 2,013, everything was data science, yes.
+but just like all the other fields over time, you have specialization. So today, say, neuroscience, my old life, you're not a neuroscientist. You're a specialist. You're a developmental, neuroscientist or behavioral, neuroscientist or a cognitive neuroscientist or computational neuroscientist or a systems neuroscientist or molecular neuroscientist or something like that.
+what i've seen in the last decade, plus
+splintering of what? So data science still exist.
+But they now, as you know, mostly deal with like the stakeholders and the project managers and
+answer questions with data.
+Remember, remember what the guy on last Monday said that in his organization the data engineers do and the Ml. Engineers do anybody what the
+Scott Schaefer of Comcast? What did he say?
+Yes, because just like just like, it's just
+just like in all the fields, there's no mathematician.
+There's a topologist, there's a number theorist.
+there's a probability theorist, you know what I mean like.
+So anyway. So what? So what agents? What did the guys say? What data engineering is
+anybody. And at Comcast data science still exists.
+Oh, yeah, they do a little bit of everything. Sure, they're full stack guys. But let's say, you make these pure data centers. What was data engineer data engineers, basically making sure that the data
+reaches a data scientist. Yes.
+all right, build a pipeline. Make sure it's always full. Make sure the data flows
+as fast as you can. Make sure it's nicely organized and things like that. And then the Ml. Engineer turns what the data science does like on their bench into a product. Yes, it's always on and always can be sold. Yes, reliable. They're different consideration. But yes, the full stack person also exists, but their number is shrinking. But the point that I'm trying to make is, even though these topics don't change. Who does what will change?
+That makes sense.
+So some of these
+topics that we talk cover in this class are now running ruby of data, engineering. And Ml, engineering. Okay?
+And, by the way, this is this, splintering is going to keep
+happening. By the way, to make great chagrin, as you know, I like to be a generalist, but that's the generalists are at serious risk of extinction. So we'll see what happens
+finally.
+And this is a problem
+we might have to work even harder and even smarter to get further gains. Why? Because the low hanging fruit have already been picked.
+Those are all the embarrassing.
+Remember that
+almost all every time we were like, Oh, we're going to get a 10 x or a hundred x or a thousand x speed up.
+was by leveraging embarrassingly parallel problems and like, just distribute them. Yes, remember that.
+But there's still a lot of fruit to be had. It's just that you have to kind of learn
+to become a giraffe, metaphorically speaking, all right.
+that is all I have for this semester. So thank you for a semester, and thank you.
+The funny thing is, this class is actually the only class that I'm teaching this semester that I'm still going to be teaching in the future. The other classes. I won't be because I'm going to teach this neural data science class from from now on.
+like the I'm Teaching machine learning class this semester. I'm not going to do it again, not on another class. So I yeah, thank you guys,
+anyway. So let me know if you have any other questions, because I'm still gonna be here.
+Okay. Well, thank you.
+Oh, it's kinda all right. Let me just turn this off

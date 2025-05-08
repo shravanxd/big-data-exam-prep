@@ -1,0 +1,1125 @@
+WEBVTT
+All right. Welcome back to our lecture today. And I note that we are doing better last time I am connected to online, people online can see me and hear me. But let me be clear. Thank you. Thank you, Evan. But let me be clear.
+I since last week received emails from the university.
+That was actually not my fault, that there have been connectivity issues in the network for all kinds of users logging into Nyu, the Wi-fi authentication issues. And I emailed them like, and I was one of those people. Please make sure this doesn't happen again. Yes, so the good news is, it wasn't me. The bad news is, it wasn't me. That means I can't.
+It could happen again.
+But the way I circumvented it today is I showed up way early.
+and I logged in here locally and so and here it works. But it could happen again. Because again, this is a network, a university-wide network issue, not just my issue, if that makes sense. And there was nothing we could have done. All right.
+So I apologize again. Actually, I don't apologize again. It was not my fault, but I'm sorry about last time.
+if you have not had a chance to watch the lecture yet. We did do a makeup on Thursday night. Please do, because that's actually probably most relevant to the homework, to the, to the capstone project which I have released.
+And, by the way, I will make an announcement. Tonight about final steps in the like in semester. Like all the things that are still left to do.
+final final capstone projects things like that. So I'll make a big announcement tonight
+about how the rest of the semester will unfold.
+All right. So that's that's that. So what we'll do today
+is we're kind of backtracking a little bit.
+So we did an emergency session on recommended systems last last time, because we had to do it so you can do the capstone project. But in a way I do want to revisit where we left off with
+similarity. Search, or rather search information, retrieval.
+The overall rubric would be information retrieval.
+because that's going to be a big topic in your life for reasons that we'll see in a moment.
+And we talked a lot about set similarity
+before we left off working with recommender systems.
+Today we'll go beyond that. We'll go beyond that in 3 ways. Actually, if
+2 big ones are on this. On this slide, one is spatial similarity. The other one is graph algorithms. And there's the 3.rd One is an answer to what Adam.
+I think, asked last time, but it was just that's just one slide.
+So so keep that thought.
+anyway, the 1st thing for this for all of this to make sense is I want to revisit
+just in one slide. Lsh, because if that doesn't make sense.
+not much else will today, because we're really kind of like building on this.
+So and let's make sure we all understand this. There's actually not.
+It's actually not that hard. Once you understand. Of course you could say that about everything right? Once you understand it.
+it's not that hard. So let's make sure we understand it. So what's going on? What? What is lsh, what is lsh, anybody, or what's the point of it?
+Well, any anybody.
+I'll accept almost any answer, Evan.
+That's right. And why do we need to do. You're absolutely right. And why do we need to do that? I think this came back last time.
+Stop words right that. Say, you have a start, a lot of stop words in your
+set or new sets.
+Why is that a problem?
+Because what's the point of doing? Say, Minhash, for instance.
+So yeah, so the point of doing min hash is, you want to reduce your set to a candidate set and do the full circuit on your candid set. And and so why do? Why does?
+Why does? Why do lots of stop words?
+That's right. And in other words, you're gonna have a lot of
+false positives right? And so, instead of accepting defeat, what can you do?
+Generally speaking, what's the idea?
+Yes.
+And so so these algorithms sometimes are called amplification methods.
+You amplify the signal, and you reduce the noise
+which noise relates to both false negatives, but more commonly false positives.
+or rather, you want to avoid both false positives and false negatives.
+And so so you want to have your cake and eat it too.
+and if you don't do that, you cannot get off this, this hashed line.
+So so then, if you want to increase your threshold, you're going to lose. Actually, let's say you, Rick, you you okay
+question for you. This is going to be important in a moment when we go to beyond
+sets before we go to Sean.
+So let's say you have a lot of stop words
+without doing. Lsh, what could you do to reduce false positives? You could increase d the threshold.
+And what? That's fine. But what's the cost of doing that? If you just do that, you lose what?
+Sure. But scanda in terms of like data, science and their terminology?
+Yeah, yeah, but but in terms of precision, recall and recall. Recall is lowered. Exactly. I should make sure we're on the same page. I should make sure we're on the same page. Not just Evan and I,
+all of us. Yes, yes, okay. And so let's say, I want both high recall and high
+high. I want high recall, but low, false positives. It seems like I'm out of luck. Yes, or what could I do? You can see it on the slide.
+What can I do?
+Let's say I have a lot of stop words kind of raised this issue last time or 2 days, 2 weeks ago a lot of stop words. So you're going to have a lot of false positives. They're actually not.
+They didn't copy off each other. They're not plagiarizing. They just happen to be similar because they share a lot of stop words.
+Again, I could just raise the threshold. But that lowers. Recall. I lose a lot of real.
+true positives. And what can I do? It's on a slide.
+That's right. You increase the number of rows per block. And what does that do? Well, 1st of all. Does it mean to increase the number of rows by block?
+That means we only encountered a collision if
+all the rows collide in the block, and that's because they're in principle independent.
+an exponential, and that really drops that probability. Yes, as you can see here. Yes.
+and what if I want to bring the probability back up a little bit, because I might like drop it a lot. I can increase the number of
+day blocks. Why? Because we count a collision in in
+any block as a collision, as long as all block, all rows in that block collide. Yes, so far so good.
+This is all clear.
+Yes, literally, this is, this is a trade-off. Right there you can read. That's literally true. Like, if you increase the number of look at this, if you increase the number of rows. What happens to you? You go.
+You go like, if you just increase number of rows here from 4.
+Compare the green one to the brown one.
+What happens if you increase number of rows?
+It goes, quenches. Yes.
+Who's down? Quenches?
+Yes, yes.
+What happens if you increase number of blocks from 3 to 5 to 9 from
+yeah. Same thing. 3, 5, 9.
+Why does the probability go?
+Basically, you shift the whole curve to the left-ish
+corresponds to probably going up. Why? Because play with
+yes, so yes, it's all about trade-offs. You get to not pick the number of rows, the number of blocks.
+and
+then you can be in this space wherever you want. This is something that, again, the reason I'm showing this again is because this is really something that you might want to be familiar with
+for your own life, because someone might ask you, is it is it impossible to get both high recall and low, false positives, and a normal person would say, Yes, you're out of your mind, you can't do it.
+and you're right if you are confined to this line.
+But how can you get off this line?
+How do you get off the hashed line by introducing?
+But we just discussed. Yes.
+So if someone asks you in an elevator for the 30 second elevator pitch.
+Lsh is a signal amplification method.
+Why do you do it? So you get off. You get off this line where you, if you want more, recall, you have to accept more false positives here. You don't. You do not have to accept more false positives
+if you want to have, you know.
+If you want to have more recall.
+do you see that? Quite nice? No.
+sorry, Scanda, give me just one second. So this goes again with this whole philosophy of working smarter. If you work smarter, you can do things that you can normally not do scandal.
+Yeah, it it does. Look at that.
+If if you look at this, let's say you have only 3 blocks. You see that here this one
+only I mean, look at this only if the if the the true Jacquard similarity, maybe this should say true, Carchar similarity on the X-axis only true jakar similarity is it close to one
+are like between. Look at that point 9, maybe doesn't even go below, be above. Yeah, look at that.
+for that's what he just said, conduct. If you have 16 rows, if you ask for collisions in all rows.
+and you have only 3 blocks. Then for Jakarsimilar of 0 point 9, you only get a collision even with 0 point 5. Do you see that?
+So yeah, that's hyper specific.
+And and let's say you are concerned about that. What can you do?
+You could increase the number of
+blocks. Why? Because then you have a basically a parallel
+linear range here, you see that
+you see that. And you can slice this in anywhere you want. So basically, you can move this far to the left by adding 12 blocks or 15 blocks, or it scales. You see that.
+Do you see what I'm saying?
+So we can get to any trade-off point in this space? Let's say you want you want. You want a Jacquard similarity of 0 point 8
+to correspond to a probability of 0 point 5 or something like that.
+Yes, yes, right.
+And I, personally, would probably only want collisions for very high jar cards in there. In other words.
+if you copy the whole paper basically
+right, not just with some stop words because you can do a
+I mean, this is not on the slide, but you can probably do some simulations
+of what Jakar similarity you would get
+if people don't copy, but just use the same language English, if that makes sense.
+Given, how a how many a. EI.
+Me my, are in there if that makes sense.
+So that's what you have to calibrate for.
+But again, this is just English language.
+This doesn't generalize. As you just said, it's kind of this is specific to your use case, whatever you're looking for.
+Yes, you can. Yes, you can. It is okay. If someone ever asks you, adult age is a way for you to have your cake and eat it too.
+That might be a weird claim, but it's true.
+It is impossible.
+If you're on if you're stuck on this line.
+But with adult age you're not stuck on this line.
+Does it make sense to everybody?
+Okay.
+so that's just a review of what we already did. I have to remind you, because what we're we're now going to go beyond that, and it will literally not make sense if we don't rehash literally our.
+you know.
+Sorry I had no choice.
+All right. So let's let me orient you where we are. We did this set similarity search. Yes, and there we got relevance from the content. Similarity
+can do the current document. What we did last week was to recommend a system which basically
+relevance is a personal personal factor.
+How much something is relevant depends on you because you're you're like.
+it's basically the similarity to the to the user. Basically. And the user's history, how we model the user and what we're going to do today.
+Mostly, I mean, we'll do a bunch of other stuff first.st
+But we'll do graph algorithms. That's another way of thinking about relevance. And that's basically where the network gives you relevance. Okay? And that's something you just have to know as a data scientist.
+All right, let's go. Let's go for it. But 1st I owe Adam.
+Yes, this long law has been long in the making. I've been promising this for 2 weeks now.
+But Adam asked this question 2 weeks ago, and he said something like this, Pascal, and he's right.
+This is highly reductive.
+You probably don't want to just check off.
+The word appears once right, water appears more than once.
+and that's totally fine. We'll we'll talk about that. Now
+in in, let me just rehash a bunch of stuff before we get to this. 1st of all, it's called a multi-set. But second of all
+the concept that we are talking about here is called bags and bag similarity.
+But before we go there I want to clarify something up front. Maybe the most common point of confusion.
+What have you heard of the concept of desk bag before desk bag? What is a desk bag, Julie?
+Great! And it's most analogous to a python list. Very good. You hear task bag. Think, list.
+The reason I'm reminding you is this bag, this this confident bag has nothing whatsoever to do
+with that concept? Yes.
+Question for you. If this was a set, how would we quantify similarity? What's the metric
+jakar similarity? Very good. Today we'll introduce a new concept for bags. It's called the Rutzika similarity.
+Ruthika.
+There we go. Yeah, Lutzika Rezaika. I call it Rootsika.
+All right. So here's the idea. So the idea is that instead of just counting
+or like considering, as as long as it appears, once it's in the set. Yes.
+now we're going to consider. How often
+do you use it? And of course, this is what you really want in real life. Right? Let's say I want. I want to
+check. If your work is AI. I don't just see if you use delve. I count how often you use delve. Yes.
+Does that make sense what I'm saying, right, all right.
+So here's the idea.
+So we are. We are going to make, let's say, use dog. 3 times we are calling the instance of dog dog, one dog, 2, dog, 3. So we're basically explicitly representing how often the word repeats, yes, so far, so good.
+And then you compute the rootsika similarity
+as followed. R of abs, just like J of Ab is the sum
+of the minimum value of A of I or B of I,
+and I'll explain in a moment what that is.
+I mean, these are 2 bags A and B,
+and the over the Max of A, J, and bj, so this is obviously a little bit abstract. Yes.
+so let me give you a specific example.
+Imagine we're writing a we're writing a paper on like zoology
+and XI don't know. Say one under Savior.
+I don't know Derek Saver in his class.
+No, anyway, this is the 1st person's paper, Savior.
+Oh, and how about this. This is Yang, right, Judy. Why is Yang?
+Okay?
+And they're writing papers about anteaters, beavers, crocodiles, dogs, I know. Yes, A, BCD.
+And Xavier's paper mentions one anteater, 3 beavers, 5 crocodiles, and 7 dogs.
+Julie's paper mentions 2 anteaters, 3 beavers, one cat crocodile. I don't know crocodile and speaks dogs. Yes.
+Now, how do we compute the similarity of these 2 papers? Yes, let's do it together.
+Did this equation implemented so look at that. What's the min
+of x 1. And y. 1. What's the min of these 2 values? One and 2. What's the mean of that
+one?
+What's Max? What's the Max of that.
+That's in the denominator. What's the Max Max?
+2. Right next 1, 3, and 3. I guess it doesn't matter right. Min min is Max. Guess
+for the next one.
+Crocodiles.
+What's the min?
+Oh, and Max, you, Max! So I'm in here 5
+and then 6 and 7. Yes.
+and what do we do with those numbers? We put them in the in that equation.
+and if you sum one and 3 and one and 6 in the numerator, and 2 and 3 and 5 and 7 in the denominator you get
+about 2 thirds, and that's the rootsica similarity.
+And it's a direct analogy due to jakar similarity. But for multi sets or bags.
+That's literally all I can say about that. Sometimes this is called the tanimoto coefficient.
+But that's the same thing, tiny mortal.
+Any other questions about this or any any questions about this? I mean, it's kind of underwhelming. It is where it is.
+Sean.
+that's X is a back.
+And why is it back correct? And so is y.
+So it contains again, the mention of anteaters once, and this one twice, and so on, not just once.
+however many, that it is there
+because we are counting how often something is in there, how how many times it's in there! Does it make sense? I'm saying.
+So that number corresponds to. I guess this number.
+I should mention this, anyway. Brian or Ryan rhyme.
+Yes, sir.
+So yeah, yeah, yeah, I should probably make that more consistent.
+Okay, yeah, you're right. So listen, Judy, remind me. This should say X and y, because A and B is 2
+get confused with the anteaters and the bears.
+Yes.
+I'm so glad you mentioned that.
+That's literally coming up on the next slide.
+I swear you it's not a plant. But yeah, so so we are going from sets to bags to cosine similarity.
+But we'll do it next. Yes.
+Well, like. Denominator.
+Yeah. Well, if you have all zeros, then you're screwed up, I guess some.
+Oh, yeah.
+So yeah. So, to be completely honest with you, I have to think about a little bit, but there was a reason they defined it like that. I just don't. Don't recall. But let's look at it, and if yours is truly better. We'll call. Then you want the atom similarity, or something like that. Why not?
+By the way, just to be clear, these things are not like worked out. I mean, this is in living memory. 2,008. Is not that long ago? Right? So you can probably come. There's probably a lot of
+air daylight to get better measures. Yes, up there, it's kind of
+yeah. This is how often
+it's in there. So so that's another thing to actually add, this one becomes that one, that number. Yes.
+yeah, we just literally just count. How often does a thing repeat, yeah, that's it, jolie.
+No, I mean, not this one at least. But you can make one, not this one.
+But let's continue to cause a similarity.
+All right. So let's go talk about spatial similarity. And this, this is hot
+or hotter because of the vector database.
+Let's talk about it a little bit, because I don't really have much to say about that other than the next slide. But what's a vector database upfront? What's a vector database? What is that?
+Yes, a database that contains a bunch of vectors as trees. Yes.
+and let me tell you why this is increasingly hot. I literally just published a paper in December
+that I'm going to show you now
+in that we just we just published. So let me show you what's what's going on.
+So do you know the normal like?
+Chatgpt? Yes. So here's how the normal Chatgpt works. There's some training data. And that's literally pre-training. And Gpt stands for, you know, pre-trained
+transformer.
+transform network. And then user queries and you get a response that's clean. What's the downside of that? I mean, you're using the Chatbot every day as do I? What's the downside of that, Jolie?
+That's a good point. That's a real problem. That's 1 problem. What else is a problem? Yes.
+hallucinations. That's the biggest one. In my, in my opinion.
+the biggest problem with the currently used Gpts is House of Nations. In other words.
+you know, I mean, the latest one is just more
+defensive of its health nations. It defends them more strongly. Yes, than say, it's 3.5. It's actually quite shocking.
+It's like, no, you're wrong, like what?
+And I see them all the time, and to a to a shocking degree. I mean, I don't want to spend the whole class on like
+hallucination Llms, but that is truly shocking. And basically the way the current Lms work
+can't get rid of them, because well, the whole thing is hallucination. The thing doesn't know it's hallucinating. It's always hallucinating.
+you know.
+All right. So here's what to be done did in this paper.
+In addition to the normal thing.
+we had a teacher that was in that case me.
+We had validated learning materials, so as far as we could tell, there was no. There was no hallucinations in in the, in the material. Yes.
+and we fed my lectures, both the recording. So the audio and the slides into a preprocessing model that
+slice it up into text chunks.
+and then we render for an embedding model.
+And then when you put that.
+look at the 1st one, the 1st error. First, st we put those valid into a
+vector database. So once they're in the embedding space.
+the vectors are stored. So the concepts are stored as vectors. Yes.
+okay. Now comes something really nice.
+Now the learner can ask something like, can R squared be negative. By the way, what's the answer to that? Can it be?
+Yes, it can be so. Who said that?
+Who said, You're right, it can be negative. Yes.
+By the way, how? What would that mean
+if R. Squared was negative? Say one.
+No.
+Just be more careful. How can Arthur be negative?
+It's worse than it's worse than
+correct that that is correct. If your model is worse than the mean.
+then your R. Squared can be negative, and my validated
+personal tutor with a rag with a what is what it is
+is is, as is correctly it can be, and will tell you
+what you just said like that. If if if the if it's worse than the mean.
+the normal Gpt will say No, it cannot be
+because it's literally not possible mathematically. But it's not true. It's a hallucination, all right. But how does it work? In other words, once you put this query in, you run the query also for the embedding model.
+And then you do a similar look at that. There's a word similar research. Yes, on the vector database.
+And then you get a colored response, blue response, which means that it's like validated, less hallucinating. Yes.
+But the question should be, and there should be an error, a question mark on this arrow. How do you do a similarity search on a vector database? Yes.
+And that's what we can do now, right? So far, so good.
+And again, this is going to become increasingly important. In other words.
+old school, 1990, s. 2,000 s. Maybe even 2,010 s. Was this set similarity stuff? You search a large you search a large
+collection of words
+to look for collisions, and the collisions mean, whatever it means that it means you found the document you're looking for, or it's plagiarism or whatever.
+But in the modern age 2020 S, and going forward.
+probably going to be a lot more
+searches in a vector database. So you don't search the raw concepts. But rather, these vectors vector databases where the concept in some kind of embedding space. That's the name of the game right now.
+probably in the foreseeable future. So that's only going to grow. So let's talk about how we efficiently search
+in a vector database.
+And the 1st thing to note the 1st concept to no
+is cosine similarity. I mean, that's just the basic
+concepts kind of like jakar similarity. It's like, Okay, sure, that's how you do it. But we need to make it efficient in a moment. So so the naked, raw, cosine similarity is fine.
+It's just not going to be practical in a vector database. There's too many, too many, too many, too many of those to do. Let's just see, let's just see what it is.
+So yeah, so we just talked about that you can run your documents through some kind of
+embedding model. There's tons of them word to whack, or some transformer that that
+takes the con. The document, the concepts and
+then puts it into an embedding space. By the way, just briefly, what is that? I know half you're taking the the Nlu class or Nlp class. What is an embedding space?
+In this case?
+It's a vector resonage off.
+So some latent semantic features correct. So if you here's embedding space, think
+some location in some feature space that have the semantic meaning of the documents. Yes.
+there's many of them that's its own class, as you know. So you take the class. But let's say we have this, and that's fine.
+And so the idea is that we can characterize how similar 2 vectors are by the angle between them, and that's and we'll talk in a moment. Why, exactly, I was going to ask, why is that the right
+way to do that? And the answer is a longer document would have, or a longer vector rate
+would be
+weird. You don't want that. You want to abstract from that. You want to see in which direction it points. Not how often it points the direction. Obviously, you're going to mention more cats on average. If you have a long document
+about cats, right? You can mention more cats by the same direction. Yes.
+And so, yeah, this makes sense. So so it's literally just the cosine of the angle and look at that
+as promised before. What is the numerator dot product?
+And what's in the denominator scaled? Yeah. So these are magnitudes. Yes, but also doll products.
+no toppers all the way down.
+And so what's the cosine of 0? It's 1.
+So, in other words, if the vectors are pointing in the same direction. There's no light between them.
+exact same direction.
+Then the dark problem is maximal cannot be larger than one.
+What if they are perpendicular? They are important in orthogonal directions, 0
+and and so on. Yes, it's quite nice. Yes. So this is what you want. Oh, yeah, look, let's say you're pointing opposite direction. I know cats and dogs, what? What else?
+And whatever's opposite?
+Sure. Okay.
+Ok, then it points in opposite directions. Yeah, so this is literally what we want. This makes intuitive sense. Yes.
+the cosine is what we want, all right.
+And
+if you look and now you can determine relevance of that. So, for instance, let's say you have a document document that's pointing in this direction.
+And any of these documents?
+Which which one which one
+you know, should we retrieve in our vector database. So this could be a query.
+This could be a query.
+And these could be documents in the back database.
+And you don't just look at it.
+Well, yes, so so! Which one which one should be retrieved
+which one this one, and that the reason for that is because that's the highest, highest chosen similar ideas.
+Obviously, this is in 2 dimensions in real life.
+These vector databases have, I don't know dimensions. Yeah, easily. Yeah.
+So thousands of dimensions. So in other words, you see right there. And I have to do this next slide in principle. This is a very straightforward computation.
+trivial. It's just our products. But this can even, just for one, be computationally expensive, because you might have to do this in 1,500 dimensions or more.
+Yes, oh, yes, come down.
+No, no, no, this is the model. I mean, it could be literally anything so one could be. Has a trunk. 2 could be, has claws. 3 could be has sharp ears. 4 could be, has big ears. 5 has snout 6 has 4 legs, or whatever in our in our zoology database. Yes. And then any animal is going to be one
+direction in that database. I mean, actually.
+that might sound a little crazy. But that's literally how this works.
+Right?
+Okay, imagine you're a zoologist. And you have
+a million species. And you want to run this for a vector, database, or you want to represent them in a vector database.
+And you want to run from an embedding model.
+what dimension one could be has big ears.
+dimension 2 could be has 4 legs.
+Dimension 3 could be has clause.
+dimension 4 can fly. I'm not a zoologist, but you can imagine that you might need a thousand dimensions to represent all animals. Yes
+or not.
+All right. Oh, yes, kind of
+yes.
+no, no, they're not. They're not predefined. It's just
+how do I explain this without explaining it. So so who here took the Nlp. Class? The Nlu class?
+Nobody. Surely. What would you tell Scanda?
+How? Where, how the embedding features come from in one sentence.
+okay, sure. And then.
+okay. But the important point is, you don't handcraft these features. The features are learned to make sense.
+And there's some direction in this vector space.
+Okay?
+Trying to find a good example.
+Imagine you want to. You wanna you wanna represent
+social relations and stuff like that.
+King would be one direction. This vector space, yes.
+and male would be another direction. And Queen would be king minus male. That'd be queen.
+Right? I mean, that's a dumb example. But literally.
+yeah, that's that's that's the that's up to the
+embedding model. Yeah of the English language. Yes, but that's a whole different plus even
+like that's way beyond. No, but since you mention it, maybe for future future generations.
+maybe, Judy, I should have a slide here, just one slide
+of how the embedding works, because I just assumed you all take. You all took that class. But I was a mistake.
+But aren't you all taking that class?
+No, no fact. Later next year.
+All of the reason I'm surprised is, Nyu is particularly strong in language language, Nlp, like Sam Bowman, tell Linds, and these are like world-class Nlp people, you know, saying, and others, hey, hey?
+You know, I mean, it's literally one of one of our strongest features, I mean, not features.
+strongest offerings. That's why people come here.
+Not you, I guess. Yes.
+No, not that, I mean, sure, sure, eventually. Yes, but these chunks are. Are these chunks are representatives, these vectors.
+Okay?
+Oh, yes.
+that's exactly the problem.
+That's exactly the problem. Ok, let's talk about that. Thank you very much. So even though this is straightforward for 2 vectors.
+What? What Adam said is correct. This can, even for 2 vectors, get a little hairy. If you have a large number of D, which is the number of dimensions. And, as he said, 1,500 dimensions. Is not
+that adventurous these days? That's normal, as you said.
+What?
+Yeah, that's a but that's a good example.
+and it's only going to grow.
+That's only gonna that number is only going to grow in the future. Yes, sorry.
+please. No, please. You disagree.
+Okay, tell me more. Why, I mean, by the way, that's that's who knows no one knows the future. But what do you think? Why not?
+We just find better features?
+Yeah.
+sure, that's possible. However, as you, as you know historically, that number has only gone up because we can now refine the features more more carefully. You know what I'm saying
+like. Did you know, for instance, that
+an Asian camel has 2 humps, but a
+middle Eastern has one hump
+that might might be not need not feature.
+We'll talk about later. But anyway, but what is not in doubt, at least in my mind is that N will grow
+the number of vectors in there, because, you know, you resem the whole world like that.
+And then your pan complex is all
+of nd. And even if then, if D doesn't grow bigger, which it might not and will.
+So this is, this is not practically doable. Okay?
+And so now, the idea is the same idea as before.
+We're only gonna do the, we're only going to do the cosine similarity
+for the vectors in our candidate data set
+just like we do the Jakar similarity only for the for the
+items in the documents in the candidates just like you only interview people who, you know pass the screener.
+You know what I mean.
+The candidate data set, so to speak.
+Okay, so we need to whittle that down.
+and we just said that we'll only compute this full causal similarity for the for the candidate set.
+and if this was sets, what would we do now, so we can do same thing now. But for vectors these were sets. What would we do now
+to get this down first? st
+What did we do?
+Hashing Minhash. Yes.
+So now we need to find something that works like minhash.
+But for vectors, that's exactly right.
+So, and, by the way.
+so this Lsh for sets is valid, but in my opinion, and I think you can feel this in your own mind. It was a little bit abstract. Remember those rows and blocks like.
+But this, in my opinion, is actually more geometrically like intuitive, in my opinion.
+as opposed to what Lsh means. Locality, sensitive hashing right? All right.
+And again, this is now the old, old method, but has since become the standard method. Here's the idea. Now, by the way, if this is abstract also just write it down, for now
+just accept the big idea. I have a bunch of slides where we. I show you the geometry of this. But here's the idea.
+So the idea is we're going to group similar items. And what similar means is in vectors. Vectors are pointing in similar directions.
+We're gonna put them in the same bucket.
+And we're going to put them in the same bucket
+by dividing the vector space in half.
+And we can divide the spectral space in half
+by partitioning it with a random hyperplane.
+All right.
+That's literally it. We slice the vector space into 2 by plotting a random hyperplane.
+and that will by definition divide the space into 2 halves.
+and then which hash value it gets depends which side of the hash it falls on, and if they fall on the same side, the vectors collide.
+That's as simple as I can make it.
+And then and this is this is true.
+The probability of having collision
+depends on the similarity of the vectors or the similar orientation. It's not like in the Jacquard similarity, where it's provably
+identical.
+but it is rank order the same, so the rank order of the hash collision. Probability follows the rank order of the of the
+similarity, the directions one second.
+It's not the same. It's it's the same rank order, Brian.
+Yes, and you can see right there
+right from this slide. I don't have to go to the next slide yet
+what? That? What? What's going to be the problem with this?
+If all of them
+that even mapped in the same direction, collide that's going to be a what's going to be the problem.
+but that they are more similar than not. But
+yes, this is going to happen. Let's say you do it only once.
+What would be the analogy? This is scandal's idea.
+You're going to have a lot of
+scandal. What was the problem? With with set similarity, with
+naked, raw set similarity, or minhash naked, raw, min hash without lsh, yes, to stop words.
+This, if someone ever asks you, although they're thinking, going to ask you this. This is a little bit abstract.
+but
+This
+is like the stop words. Because what Ryan just said doing this just once, you have a very high probability of colliding anyway.
+just because you only do one slice
+similar or not. That makes sense. So that will lead to a lot of starts with an F
+false positives, and and in the old, in the sets we did
+the amplification method of the signal, which was Lsh 2D. Do that. And we do the same thing here, which means we're going to do it
+more than once.
+Yes, and that's going to build down that probability of collision to what? To manageable.
+Exactly.
+So it's lsh, but for closer similarity, literally, literally that. Okay, great.
+I forgot about this.
+All right, let's talk about it.
+So let's say you have 2 vectors U and V, and we have the angle, theta between them. And so, as we know, the this is some d-dimensional d-dimensional. Vector sure.
+the similarity between them is literally defined as the cosine of the angle between us. That is cosine similarity. And that's great. There's nothing wrong with that. It's very straightforward. It is where it is. Yes, so far, so good.
+What's the problem with this? Again?
+If you had, yeah, if you had just 2 vectors like that, and they were in 2 dimensions like that.
+A child could do this. Yes, right maybe in by hand.
+But the reality is, you're going to have a lot of them, and in many dimensions. So you cannot do this.
+So in other words, yes, it's straightforward, just like charism, never straightforward.
+But the question is, can we approximate approximate this cosimilar similarity, just like the Min Hash approximated the Jacquard similarity?
+Do you see the analogies now
+without computing them. So can we get something that maps to cosine similarity
+which is going to be this collision probability?
+Without explicitly computing cosine similarity. That's the idea.
+It's a big ask.
+But this guy Charicar, worked it out
+a long time ago. Probably when you were born, just as we were born, this was worked out.
+So here's the idea. As I said, you pick some direction. W in a space, and we are
+technically drawing this from A from a unit sphere
+in the 80 dimensional space space. And that's going to tessellate the space into 2 parts. All right.
+All right.
+So here we go. So you pick some vector W randomly from his union sphere.
+And then you do a hash. This is the hash of the input.
+And what does the hash say? There's only 2 values, and this is what Ryan R. Intuited. This is going to be terrible
+by itself by itself. This is not very.
+It's not good, low, low precision.
+Right? Yes, terrible.
+All right.
+What are the only 2 values? What is this? W transpose? X, that is what
+the dot product between this random peak vector and the input vectors either U or V, if that is what if the dot product is?
+Yeah. So it's literally just a sign test, it's not a sign test. It's a statistical test. You. You test the sign, you
+to check the sign. It's not a sign test. You check the sign. If it's positive negative, that's very fast. Yes.
+because this letter could take very long. This is fast.
+You check that sign is positive. If the sign is positive, then you allocate the number one.
+If the sign is negative, if this is a negative sign, then we allocate the number negative one.
+and if they both map to the same number, whether one or negative one. Then we say they collided.
+Now, the only thing that I still owe you is to show you, and I'll show you this next slide, or in a moment.
+Is that if this angle is smaller.
+the probability of that happening is larger.
+Right?
+I mean, maybe that's obvious. But I'll develop it a little bit.
+Okay. So here it is. So so so basically, the question is.
+what is a collision? And the collision is, if they're both getting the same hash value. So the probability that they're both hashed to the same value is, I mean largely, I guess one minus probability that they're hashed to different values. So how can we compute that
+if you look here, if they are separated with this angle, theta
+they define this geometric group. If you look at that, there's this region between them. Yes.
+and then, if you do the what you will call it the
+orthogonal to that the perpendicular direction to that which you also can get from a drop product. By the way, draw product between this and that is 0. Then you get this direction. Yes. So then you define this region between them. You see that
+there's a region between them that's mirrored here, too. Okay?
+And this randomly chosen hyperplane partitions to space. In other words, the vector W
+implies a plane. You see, remember the normal vector to a plane, a plane is defined by a normal vector.
+So double use the normal vector. To that hyperplay.
+And as I'll show you in a moment this probability that this W is between those 2 vectors
+is directly related to the angle.
+to the angle between them, as you can see in a moment.
+and there there it is. You see that?
+So in other words, this shared region is, is, is is between the 2
+orthogonals of the 2 vectors.
+Okay, so what is this saying.
+the probability of a hash collision is is one.
+If if W. Is in this region, is it going to be hashed to the same value?
+Correct.
+If it's not hashed to the same value, then it's hashed to different values. And if it's hashed to different values.
+then it's not colliding.
+I mean, that sounds all very tautological, but it's math for you.
+Okay, so now look at this.
+Would you accept that this region grows as what increases?
+And maybe I should show you that maybe you should make an animation.
+Yeah, as the angle increases what happens to that region, it gets bigger, and that's the region of
+not having collision.
+Yes, yes or no.
+Again, at this point in the class
+class itself bifurcates, half the students find that extremely intuitive.
+literally like geometrically intuitive. The other half is more confused now.
+So how can I help the part that is
+more confused, but wants to understand this?
+What can I say?
+Evan
+W is our randomly picked. Vector
+okay, so this is just like a what you'll call it a math geometric fact plane, including a hyperplane
+defined by the normal, vector that's perpendicular to it.
+So W can be seen as this normal. Vector and then this hyperplane bisects the 2 vectors. So the point is this. If W. Is in the 2 of them here, it would also be in the 2 of them here. If it's between the 2 of them, it's going to be hashing.
+The the top product between them is going to be hashed on different values.
+It's hashed on different values. It's not colliding, it's true.
+Give me just one second.
+I think this would be better illustrated by an animation, just as in such as one example. But that's all I have for today.
+That's that's the region between them. Yes.
+and if W. Falls in between them, you have a let me ask you this. You have a collision or a non-collision.
+non-collision, non-collision, because it's going to be mapped to different values.
+And yes.
+let's just take one for now we'll we'll do a bunch of them in a moment.
+But let's serve one, and then we'll revisit that.
+But for now is it clear that
+you're colliding? Only if you are not in between them.
+And do you see how that's related to the angle between them?
+And now you can by the math is out.
+So let's talk about this a little bit. We have to talk about the Comp. To understand this.
+we have to talk about the concept of Radians. Does anyone know what a radian is a radian.
+What a radian, Max!
+And why is that? Max is not wrong?
+How many degrees are in a circle? How many degrees does a normal person think are in a circle
+3 and 6 degrees.
+By the way, do you know why
+precedes even the Romans, I'm afraid to say
+a long, long time ago, 3,000 years ago, Babylonian Government mathematicians figured out that there's 360 days in a year.
+and they thought that is not a coincidence.
+because it has a lot of like factors.
+And so that's why a circle like like an annual circle, has 360 degrees.
+What? 3 and 60 days, 3 and 6 degrees
+close enough for government work, yes, even 3,000 years ago.
+That's to this day why, we have 360 degrees in a year in a circle.
+Again, before you before you knock. It has a lot of divisors, a lot of factors, 6,120,
+1, 80, 1020, I mean, it's a lot 5, 3.
+I mean, it's amazing.
+That's why we do it. But anyway, so but why would a mathematician. Take exception to that.
+Would would you have that number of days on Mars
+or on Venus, or on Jupiter, or any other planet?
+Correct
+math people hate arbitrary things, and it's arbitrary. It's just they happen to be where we are in the universe. Now let me ask you something.
+What is by definition true about a circle
+as long as you have a circle. Yes, 2 pi. What 2 pi.
+That's correct.
+What that means in English is you can take the radius, and every circle has a radius.
+and if you put 2 pi of them around the circumference in a circular arrangement.
+you are once around, so every circle has 2 pi radians. So now you know what a radian is.
+Someone ever asks you what you learned in this class. You can at least. Now know what a rating is. That's already half the battle.
+because in every scientific calculation you will see the expression of an angle in in radians, and there's 2 pi of them in a
+circle.
+Okay?
+All right.
+Now, what's what's here? Why do I? Why do I write this down? So? So this is 2 times
+the value of theta over 2 pi, right? Because we have 2,
+because we have 2 of them. Yes, one here and one here. You see that 2 of those regions.
+And so what we're expressing we're expressing here is the
+fraction of the circle that is taken up by
+by by, by, yes, by the shaded region.
+And if the twos cancel out so in other words, it's literally one minus that. And now that's it. So I guess Qed
+right what I just told you.
+It's basically not really the cosine, but it's
+rank order, the same. Okay? Which is what we wanted to.
+But now I owe you what Ryan said and what several people already said, which is
+doing it just once is a little bit
+that's gonna be a lot of that's that's that's great. But it's not gonna be very, very.
+What would you expect? Too many.
+And that's the idea.
+So in straight up Lsh set Lsh.
+Signal amplification came from rose blocks.
+Here it comes from multiple projections.
+So yeah, so we just talked about this. So the probability of not having collision
+for one projection. By the way, one projection just means it's like math, one hyperplane.
+Okay?
+All right.
+And
+the problem is that that's just very coarse. Right? I mean, it's just 2 regions. Are you serious like
+that's going to cause a ton of false positives? Yes.
+even if the vectors are not similar, right?
+And, as I said earlier. That's just like like having a lot of stop words.
+All right, and let's say it one more time. What was the solution? In in sets having many
+rows or blocks, rows of blocks.
+correct rows, rows, rows, rows, rows.
+And so here the question is, how many projections do we have, M? That's just how many random hyperplanes we have.
+And then there's just the probability of
+all projections not colliding is literally that to the power of M.
+And, as you can see here, because they're independent because they're random.
+So we're not putting the M in the exponent right.
+In other words, you can get this quantity very, very low.
+If the pro. If the angle is not very close, it's very nice.
+So basically you can the same logic.
+Yes, you can basically limit all false positives, or most of them.
+If you just do enough projections, because then the angle has to be really really similar to get a large number of collisions. Yes.
+yes, any any questions about this? Because this is.
+I think, all I'm going to say about yeah. That's all I'm going to say about
+similar search periods. Similar search in sets, similar search in bags and similarity. Search in what you'll call it in vector databases.
+Adam, please.
+I mean, this, this takes the, this takes the, this takes the.
+this takes the place of the of the rows. Any other questions.
+Somebody. Oh, Richie, also the like.
+yeah, there is. I just I just didn't bother to plot it. But it's exponential. It's like it looks like this
+same thing, same thing, same thing. Which is why I didn't even bother to plot it. But you can imagine it
+any last words. Oh, send it.
+Yeah.
+no, not really. They're implied. This is implied
+because it's just so coarse. It's like one and minus one. That's very, very coarse, you know what I mean.
+Oh, Julie!
+That is a great question. And I would argue, that comes down to simulations just like in like what you are comfortable with, if that makes sense. Like, as I said, one M. That's gonna be way. Too
+many false positives. But it depends what you were looking for.
+I would argue a lot, but that's fine. The hashes are fast. This is a very coarse hash.
+It's literally hyperplane boom top product.
+It's fast.
+Okay.
+all right, let's move on. Okay, so that's it. Let's now do something. It's not completely different, because we're going to reuse
+all of these concepts can be reused, all of them.
+It's just that we're now going to.
+instead of doing this with similarity explicitly
+to simply the relevance is implied for the structure of the graph.
+And if you came up with this 25 years ago.
+You be very rich man now or person.
+As a matter of fact, my argument is that you were probably smiling too.
+if you did that? And who that is?
+There's Larry Page.
+And why? Why was he so rich? Why is he smiling?
+One of the co-founders of Google? And what did he come up with
+Pagerank? Yes, Larry Page came up with Pagerank, all right.
+and so Pagerank is the quintessential. I mean, it's not the only one.
+but it is the foundation of the Google Empire, so to speak.
+It is worth understanding. Well, all right, let's do it together.
+As the quintessential graph algorithm.
+All right, and let me show you why this is so. Why this was such a game changer. So in 1997,
+Yahoo was the world's leading search engine, all right.
+and he was not very good, apart from being very cluttered.
+But let me, why tell me why it was not very good.
+So early. Search engines like Yahoo
+relied on matching as we just discussed the
+text in the query to text in the web page along the lines we just discussed. Okay.
+and there was these web crawlers. They were called spiders.
+I mean again, they all be. They're all being very cheeky. The web crawled by spiders. Yes, all right.
+But anyway, keep that thought. That's going to become important later, we'll talk about spiders brought this
+part of the class all right.
+So. Yes, we talked about this already, like how would, how you would do that, how you would search an index.
+And what do you think could go wrong again. This is probably before you were born, but I was there, and it was terrible.
+What could go wrong if you did that? That this is how it worked 30 years ago.
+Anybody? Yes.
+correct. Imagine you were like a engine, a web page, and you want more traffic. Why do you want more traffic, because then you can serve more ads. So literally, you get paid more
+if you can make look, your website more relevant
+than it actually is or more relevant to more queries. And how would you do that? How would you game this
+so yes, Max.
+yes, but you put all the keywords in in white, or maybe even in the HTML, yes, and then
+and then your website would be relevant to all queries, or you could maybe put the most important
+word in a thousand times. Yes, right.
+And that's what people did. It was terrible.
+Very quickly people worked out how to game Yahoo.
+And and if you do that
+you get this. It's called a spam attack.
+not the spam attack you think, with like people sending you questionable emails.
+But this, this is what we just discussed.
+You just fill your you fill your page with discretely, as we just discussed in white in the HTML, with all the most popular keywords. Yes.
+no matter what query you, you then come up as the most relevant page.
+And now there's a there's a there's a gap opening up between what is actually relevant
+and what the algorithm thinks is relevant.
+In other words, the website gets paid for bad behavior.
+But that degrades the user experience. Yes. So by 97, 98 search was basically broken again. You don't remember this because we were
+at best a baby, but I was there, and it was terrible
+which opened up this opportunity for somebody to fix this.
+And that's where Pagerank comes in.
+Okay.
+The the big insight that Larry Page had.
+And it was Larry Page.
+Was that you can use the structure of the web itself, determine relevance, not
+not the content. So so, in other words relevance from structure as opposed to content.
+and, as you will see in a moment, this is much, much, much harder to game, not impossible.
+We'll talk about how you would game it in a moment.
+But at least at the time there was a way to restore an alignment between
+relevance of the document to the user and relevance of document to the algorithm.
+And a big insight was that, again, that the network itself
+contains information. Let me just give you a brief
+overview before we go into the details. But basically, have you guys ever read a scientific paper?
+And if you've done so, what's probably the most important part of that paper.
+Okay, instead of the abstract after the abstract, the list of references.
+Who's who's being cited?
+No, I assure you that's very important.
+In other words, if you cite a paper in your own paper, you just gave that paper a vote of confidence that it's an important paper. Yes.
+so so that's the big idea. The big idea is a paper that has more citations is more, is a more important paper.
+Yes, and so, in other words, this. This insight
+from the scientific literature that a paper is more important if it has more citations, is seen here. A paper, a website is more relevant if more other websites linked to it.
+That's the that's in a nutshell.
+You accounting, I mean, by the way, going to go
+more than just counting in a moment, but effectively, we're counting how many inbound links come to your websites from your website. The idea is, if you are providing a lot of value to a lot of people. A lot of people probably link to you.
+which is, by the way, right to this day.
+Wikipedia shows up as the top hit in almost every search.
+Now you laugh, but it's true, because there's so many inbound links to Wikipedia. Yes, huh!
+Living dangerously here.
+At least you saw I didn't do anything.
+All right.
+So this is the idea. If, in other words, yes, you can spam
+all the keywords to your website. But I'm not going to link to that.
+Does that make sense? Because I don't trust you? I only link to sites, I trust, like Wikipedia, like what could go wrong. But that came later
+in 98 people only link to things that they trust.
+And that's what I just discussed. It's easy to make you. It's easy for you to make a Spani page, but it's very hard to get other people's linked.
+All right. That's the that's the key insight.
+So and if there's this, you know
+gap opening up between that. Now, we can base our website on this and not on that or algorithm.
+Let's do that. Okay, and the biggest. The biggest
+innovation of the time was the random surfer model.
+And I want to apologize in advance.
+In with modern data science. You can do a lot better than that.
+But that was the state of the art 30 years ago.
+It will not make sense from a modern perspective.
+but 30 years ago it made a lot of sense, I think, and or at least on paper.
+And it's at least easy compute.
+And the idea is that you can 1st of all. You can represent the web
+as a graph directed graph, where the nodes are pages and the edges are links, but again direct, they have a direction and not bidirectional. So there's a big difference between linking from this side to that side or from that side to this side. That's not the same.
+So and you can model the user's activity at a random walk.
+Literally, the idea is, so if you have a random user.
+So in other words, you can model the probability of going to a certain page. V. If you're if you're at some page. U, that's a conditional probability.
+As whether there is an edge or not, so 0 1 over how many
+of them there are? Yes.
+So if you have some website here, let's say you're here.
+What 2 websites. Could you go to?
+Let's let's see, every.is a website. And let's say you're here. Which 2 websites could you go to
+this one or that one.
+And if you click at random, what's the probability? And I want this one, that one
+0 point 5? Yes, exactly. So. Look here, there's either 0 or one. If there's a connection, there's a 1, there's not a connection at 0.
+And then this is just how many edges there are.
+If you're on this website.
+that here here.
+Only if you start here or here.
+right, we'll talk about that. But that is just an example. Yes.
+we'll we'll get there. There's actually many ways one involves teleportation.
+We'll talk.
+But in all seriousness, right now I just want to show you
+the the terminology. It's a random server model. We assume that.
+that people click on, click, click on sites randomly again, that that is not that is completely unrealistic.
+Obviously you don't click randomly, yes, or do you?
+So so in the modern age.
+you can replace this model with a
+conditional probability where you have like user data. And you know
+where users click preferentially, hopefully, we'll get. We're going to get there, if not today. Next time.
+basically, we have to start somewhere.
+we'll get to a point where, if you have data
+on where people actually click, you can enhance this. Yes, but for now I just want to start with the
+plain vanilla, a random server model from 30 years ago.
+And what I want to do now is just to get the nomenclature down. There's a website you want to go to a website you are at. And if you're at this website, you can either go somewhere or not. And that depends. If you click randomly of how many nodes there are. So far so good. And it's directed graphs. In other words, it's not bidirectional. It's either this way or that way. There's a big difference, right? So your site might link to Wikipedia.
+But Wikipedia is probably unlikely to link to you
+right? I mean, you couldn't change it, I guess
+all right. So yes, so, and the more the more inbound, the more inbound
+sites you have, the more likely people to land on it.
+And now the question is.
+and this is the big insight. And we'll get to this hopefully today. If we get to this today, I'll be happy.
+There is going to be a steady state distribution at which they stabilizes that.
+And that's the the state of State distribution, probability distribution. There's a there's a probability distribution at which this this like
+stabilizes. Yes, yes, we'll talk about in a moment.
+Eigenvectors will be involved all right.
+So. But the 1st thing to realize is that this can be
+model as a as a Markov matrix. What? What is a Markov matrix?
+Anybody, what is the Markov matrix atom?
+Okay, so so yeah, you have matrix where you represent states
+and transitions between States, particularly the transitions, transition probabilities.
+and what is true about the columns
+of this Markov matrix. They add up to
+one all columns in a Markov matrix. Add to one.
+okay, which is going to be relevant in a moment, because that means the Eigenvalues are going to be one.
+So in this Markov matrix, the Eigenvectors are going to be very interesting. But the Eigenvalues are all going to be one
+trustee.
+The matrix columns add up to one, okay, what else can I say here?
+So anyway, we're going to model this matrix M with these rows B and columns. U,
+as the probability of going to. V, if you are in U, so these are these transitions as we just discussed. Okay?
+And we just talked about this. So is the Markov matrix. All the columns down to 1. 0, another part of being the Markov matrix is the non-negative. But that's also given here. Can probabilities be negative.
+cannot be, cannot be. So. So this is actually what you're looking for.
+So this is the right mathematical tool.
+Okay?
+And yes. So we can compute this probability of being, we can compute that in the steady state
+the user will be at this or that website we just have to
+math is out. We'll do this in a moment.
+So, in other words, for any given step.
+we can get the probability distribution of V as the matrix multiplication of M. And P.
+Given some input state.
+and that's going to be the sum of of them. And that's going to give you next one. So this is going to be an iterative algorithm.
+The the next step, P. Prime. In this you get from the old one
+where you where you take the sum of the condition probabilities. Times the these states. Okay.
+all right.
+So let's see. So
+In other words, in the end.
+we're gonna this is not gonna change anymore. Yes, sorry. Sean.
+that's a vector, of probabilities. Correct. That's a, and and that's okay. So this is a vector
+there's 3 things that are true about this. It's a probability distribution.
+It sums up to one which gets the proper distribution.
+and every entry is a state right, and I can compute
+the probability you're going to have in this state or that state from that. So this is what we want. We need to compute this.
+because from that I can then decide how relevant your website is. Okay?
+All right. And then, in the steady state.
+it's clear by definition, why is this true? I mean, if you just look at that
+P is equal to Mp. In other words.
+this this distribution does not change anymore. Yes, so we know, we have reached a steady state
+by definition. Basically, if this distribution does not change anymore, we know we have reached it.
+Right?
+Okay?
+And so yeah, so all you need, and this is going to be an important, an important
+constraint which we'll also address. That's where the teleportation comes in.
+This will only work, if you, if your network is connected. So if you have disconnected partitions of your network, this will not. This will not converge, and this will not work all right, so it has to be fully connected.
+There has to be a finite number of steps to get from one to the next. We will, we will. We will talk about this. Yes.
+and you can show, and I'll show you this in a moment
+that this will be the Eigenvector of M.
+Alright. We'll get to this in a moment.
+Or yeah, right?
+And so, in other words, the page rank
+of some, some some website
+is the probability of the random server ending up on your site or being on your site at a given state. Yes.
+yes.
+Okay.
+Now, again, this is all. A little bit bit abstract. So let me give you very brief.
+real life example of this.
+What that looks like in real life, how a Markov matrix and a Markov process
+can model such a dynamic system.
+And then we're gonna go back to how to do this
+efficiently, because I'll give you a preview.
+This is fine for a small matrix.
+This is fine for small matrix. This is not fine for for the web, for the web. You cannot. You cannot do this, we have to do something else.
+It's kind of like minhash again.
+even though this is going to be very straightforward. This is not not going to work. If you have a billion websites
+not not possible, too too slow.
+All right.
+So let me show you something. This is just very brief, very brief illustration of how this works.
+of how the Eigenvector of a market matrix is the long-term equilibrium point of a dynamic system.
+All right, let me just show you something. Imagine you're at Enviu, as you all are.
+and in a given class, 2,500 people at Nyu are in a relationship
+all right. And let's say they're all dating each other.
+It's not entirely realistic, but
+in some places that is realistic, like, I know University of Chicago something like that. Yes.
+and 4,500 are single. Yes, yes.
+and let's this is a closed system. They're all dating each other, and that's it.
+Every month, 3% break up.
+So they transition from being in a relationship to being single
+and 5% start dating, they are going from being single to being in a relationship. Yes.
+yes, so far, so good.
+That's the that's the initial. The initial state.
+After the 1st month the number of people in a relationship went up. Yes, because more people start dating
+and the number of people but being single, went down. Yes.
+Do you think this stabilizes at some point. And do you think this depends on initial state? What do you think
+these are? 2 separate questions?
+Will this system stabilize? Actually 3 questions, will it stabilize? Does it depend on a on the initial state? And the 3rd question is, how can we model this?
+Ryan?
+Okay, you're right about the 1st 2 and the last one would be best done with a M. Mark
+Markov. Matrix. Yes.
+all right. So let me show you. So so the model is the Markov's matrix. So here's our initial state of bringing a relationship, or whatever
+whatever the state is, and this is the next one. And this is number of people who are single. And this is this this right here, this, this is our Markov matrix. Yes, and you just put these probabilities in.
+These are the people who are, you know.
+I guess, in in a relationship. Yes.
+and these are the people who are breaking up. So this adds to one. And these are the people who are single, and these are the people who are stopping single. Yes, and this also adds up to one. So you can tell, this is a Markov matrix by 2 properties. The columns add up to one.
+and it's non-negative.
+You see that.
+And the only thing that you need to do now is as what Ryan just said.
+If you take the Eigenvector of this matrix, this matrix.
+it will show you where it's devilized.
+It does not depend on where you start.
+This is the Eigenvector of the system.
+Wherever this points that that point, and it's not an it's just the Eigenvector. Yes.
+it does not depend on the, on the on the initial state.
+It just it just takes longer to get there. If you if you if you start from a weird place.
+Okay.
+I should have used different example, maybe Bumble or something like that. But I heard they are going out of business. So maybe maybe it's fine
+their stock price down 95% in the last 5 years.
+Me? Just a second.
+All right, let's go back to
+back to this. So, as I just said, this is fine, Ryan, totally fine. If you're small data, this is, if you have small data, you're done. You just take the Eigenvector of the Markov matrix. And you write down the answer. And that's it.
+Okay?
+The problem is, this does not scale. What is the OO here, O of n 2D.
+That's Faso's law!
+That's terrible. There's no shot. You cannot do this.
+This is not possible. So if someone ever asks you, Pascal,
+Why don't we just do the Eigenvector of the Markov Matrix
+for some large number of documents, a large number of data, or whatever. But this is inspired by the web. But you can do this for anything else, too, you know.
+like Pagerank for anything else like, say, some some other data center application, like, for instance, scientific papers.
+or you where you like, want to find the most relevant paper something like that
+where a citation is a link or something like that.
+But anyway, so the answer is, you cannot do
+this Eigen decomposition, because it's just not going to be fast enough.
+So we're now going to do something that is kind of like the min hash of this.
+and that's going to be.
+It's called the power method or the power iteration.
+And I want to walk you through this
+slowly, because this is a little bit I don't know.
+Strange.
+not it's not strange. It's just unfamiliar. If you've never seen this before. It's a little unfamiliar. So the idea is, we're going to approximate
+a agne decomposition with a method that's called the power iteration.
+as and as the the title implies it's got to be an iterative method. So we're going to do step by step.
+one step at a time. However.
+as you will see in a mo, as you will see in a moment, even though this is goes iteratively so. In other words.
+this is actually kind of counterintuitive
+in theory. The Eigen decomposition should be faster because it's 1 shot. You just do the Eigencomposition. But you can't do it because it's such a big matrix
+here. A iterative method that just kind of does an approximate. A linear approximation is actually faster.
+And you will see in a moment that this is much.
+The time complex is much closer to linear. It's like O of N, or something like that. It's no longer O of N to the power of 3, all right.
+And so the idea is, we are going to initialize our probabilities in our probability distribution
+as a uniform distribution.
+And then for all of these these iterative points 1, 2, however many we need.
+We're computing P of J, as
+M. This is some some transition matrix
+times. P. Of the last step, I guess.
+And again, well, we just keep doing that, and eventually that converges. If
+if if it converges, in other words, if the distribution exists at all, we'll show we'll we'll see some examples
+of when this would not exist.
+But if it exists, this will converge.
+Let's do it as as a preview.
+This is gonna be like the Min hash off.
+I need decompositions off Markov matrices.
+And before I before I go there, I just want to recap this whole thing one more time. We're looking for the steady state distribution of sites. We're looking for that because that's going to be the page rank
+weight of our sight.
+We could do that with an Eigen decomposition of the Markov matrix. We can do that because the Markov matrix represents
+how such dynamic systems develop over time and their Eigenvector represents where it ends up.
+But we can't do it because it's too big to do an Eigen decomposition. So we do the power iteration instead. So
+I'm glad I just said all that, because there's like 10
+reasoning steps of how we end up with this.
+And if you had done this in 97, you would be a billionaire, too.
+So let's let's see what happens.
+Okay, so imagine you have a very, very small network.
+This network is literally just there. So I can illustrate the this matrix here.
+So let's see. So these are transition probabilities. You see that.
+Let's say we are. Let's say we do, step by step.
+If you are in a where can you go?
+Okay, you can go to itself. So that's kind of like narcissistic, I guess.
+But some websites link to itself. Okay, that exists. That happens.
+And where else can you go to see? Okay?
+All right.
+So as you can see here.
+If you're at A
+with a probability of half, you're going to A with probability of another half. You're going to C to see that.
+Can you go to B from A,
+so we put a 0 there, do you see that?
+So I want to 1st retrace how all these numbers are put in.
+These are basically these numbers from the nodes. So if there is a node, we put a 1 in numerator, and we put in the denominator. However many, however many.
+how many out notes there are. Do you see what I'm saying?
+Because that's the random server model. The random server model is we click randomly. The probability is
+one over, however many there are.
+How about B. Let's say you're in B. Where can you go?
+You can go to A, you can go to
+B, and you can go to
+the. So what are the transition? Probabilities?
+Yes.
+and again, this is just websites. But you could do it with anything else you could use with dating and mating and buying, and whatever selling and renting, leasing.
+So this is gonna be relevant.
+How at sea, let's say you're at sea.
+Where is the only way you can go?
+And that's so. That's a 1 over one, and that's a 0. Is it clear where all these numbers come from. Is that clear?
+It's literally that equation I showed a couple slides ago, and the numerators are 0 1.
+If 0, if there's no, no shot, no link, and one, if there is a link. But if there's a link we divide by how many other links there are? Yes.
+and then what is this? That's P. Naught. That's our initial probability. I set this on the last, we said, here we initialize with with what?
+Just as a assume of distribution, however many we have. Yes, if we had 10 websites, would be one over 10. Yes, so far. So good.
+Okay.
+And how do we get? p. 1.
+What do we do?
+Right? We do matrix multiplication of this by that.
+And here's the good news. Is that gonna be so, the agony decomposition will be slow.
+Is this going to be slow, or is it going to be fast?
+Can be very fast. You can't
+be faster than that, as you know.
+that's probably the fastest thing there is. Right? We are constantly optimizing
+with Gpus with with algorithms. This operation is constantly being optimized. Yes.
+hardware and software and algorithms algorithms.
+And let me just show you how we get
+this value. The 1st entry of p. 1.
+Let's see a half times.
+So we take. We need to take this row
+times this column, this dot product? Yes.
+So what's a half times a 3? rd Do you see? Do you see one half.
+1 3.rd Yeah. Do you see this?
+Plus 1 3rd times, 1 3rd plus one times 1 3rd right, which is.
+what's a half times a 3.rd It's a 6, th yes.
+and a 3, rd and a 3rd is a 9th and one times a 3rd is
+good.
+That's you're jumping ahead.
+That's correct.
+We. But I just want to do the image media steps. We put them all in the same.
+you know. Denominator times 3 is 3, 18 times 2 is 2, 18 times 3,
+6, 6, 18. That's 1118. And that's it. That's how that's how the 1st row was was was achieved. Yes.
+and then, in fact, that's how all of them are achieved. Yes.
+right?
+And what does this add up to?
+Oh, yeah, that has to have the one.
+So that's a that's a probable distribution.
+And if we, if we were done, what would this proposal correspond to?
+We're not done yet. But if we were done, what would this correspond to
+the stable state? And which means the
+it even has a P in there
+Pagerank.
+That's gonna be the page rank.
+Now we're not there yet.
+And how do I know we're not done yet?
+Because if we do this again.
+if we do this again, what happens?
+It changes? Yes.
+So to update this. What needs to happen?
+This needs to be changed, too.
+to p. 1. This change, this stays this in.
+And now we're getting closer.
+But are we done, you know. Put this in there. Yes.
+and in the end we end up on that. Yes, and that's it.
+And that's our page rank. Vector so
+A is going to be the most important website, because, as inbound links from all of them, from B, from C, and from itself.
+wise, be the least the least relevant website
+only to itself. Maybe that's our spam farm that that nobody links to.
+We link to ourselves, and nobody cares.
+So that's how these scammers, grifters, spammers were filled out back then. Yes.
+and then C, somewhere in between gets one link from a okay, alright. So, okay.
+so briefly. What do we do now? We have 5 min left.
+so briefly you can. You can check this with python?
+But again
+I think this we should do in the lab, we should just do this. So there's there's more that I want to talk to you conceptually. So this is something I'm pushing the lab. I will tell. I'll tell. I'll tell the tas to cover in the lab.
+Let's talk about this. This is important, so this only works.
+If if you have a connected connected network, this, how? How do you know that? How can you tell that this is not a connected network?
+Because
+C is not connected to the rest of the web. So this is not not valid. So Pagerank only works.
+If you have a connected connected network, a graph connected. Graph. Yes.
+what is what?
+Well, it's not connected to anything else.
+Right?
+Yeah.
+Every vertex needs to be reached by every other one in principle, at least.
+Okay.
+But there's a bunch of such such
+considerations that I do want to finish with before I do
+other stuff. That's the concept of sync. Okay.
+so sync is something we already saw this. That's like some something that it's actually, quite, quite.
+quite, you know, nefarious. Yes.
+So this is also not give you a valid probability distribution because you have no outgoing edges. You see
+you only you stay there. You see that, and
+just the random surfer has nowhere to go right? So, in other words, once it gets there, it can never leave. It's kind of like the
+Hotel California of websites. Yes, you cannot leave. Yes.
+but the reason that's not valid is because the column has to sum to one to form a valid, probable distribution. Right?
+So, in other words, what the way we so we fix this, we add a self loop right?
+And then it works again all right.
+And now we have a transition matrix, we can at least compute that all right
+related to that. We have to talk about the cons of a spider trap
+so very quickly. After this was introduced, people people?
+well, let me ask you something.
+So imagine your old way of spamming no longer works
+right, because now we now know, don't determine relevance from the content of our website. But the link structure, how could you game the system? It's on the slide. But let's talk about before I show you mathematically started conceptually, how could you game? The system? Yes.
+a link farm.
+Okay? And what does that mean?
+Right?
+But that's more modern.
+What about this? The spider trap? How could you?
+How could you game it with a spider trap?
+Remember the spider crawls the web. Yes.
+I said, I told you it's going to come back spread across the web.
+and once it arrives here it cannot. There's no no outgoing links. Yes, so so again you cannot leave.
+So if you do, the probability, matrix, right transition matrix, and do the power iteration
+which one would end up as the most powerful website.
+well, is that? What is that? What you want?
+So what can you do?
+So what I'm trying to say is very quickly. People realized
+that they can game the system by by doing that right.
+Spider trap
+any idea what? And but then the Link Farm came later. Link Farm is already a later innovation.
+you know, beyond that. But what could you do? Anybody?
+Oh, yes, Julie, that's right.
+That's right.
+That's exactly right. So the solution is what jury just said
+basically, randomly, we start, we are teleporting randomly what?
+At at random, at random points at random times we teleport
+to get out of spider trap stochastically.
+Okay, yes, so, because the web is not strongly connected.
+because sinks exist and spider traps exist, you have to teleport, in other words.
+with probability, a. You follow the links as before.
+But antibody, this is a hyperparameter that you can set.
+Some people call this alpha like a damping parameter. That's a hyperparameter.
+You get to set a hyperparameter.
+So for most times you want to, you want to follow. You want to follow the page rank, yes.
+the the matrix, these, the the the the Markov matrix. Yes, but sometimes.
+And you get to pick, you get to pick that link.
+You're going to jump randomly. Yes.
+yes.
+And yeah.
+Although not always randomly. I think so. Actually, I'm porn.
+Should we finish the last couple slides, or what I think when I instead, I'm going to use the next. I'm going to use the 1st 10 min of next lecture to revisit this
+because I feel some attention flagging. And then what I promised you earlier, which is
+honestly jumping randomly, is not a good idea. We don't. We shouldn't jump randomly. You might end up on some strange sites.
+We should use your actual behavior
+to personalize that. We'll talk about the next time. All right.
+I think it's fine, all right now we did it.
+And we even had connection today.

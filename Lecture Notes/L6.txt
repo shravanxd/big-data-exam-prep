@@ -1,0 +1,1032 @@
+WEBVTT
+Okay, all right, everybody welcome back. So last time we had our Info Hi infrastructure week.
+we had the Hpc people.
+And today we're going to continue. Continue with that.
+Okay? So all right. In other words, I do want to finish up on the big data infrastructure. Now.
+now and then we'll talk about spark.
+Yeah, we'll see how it goes. Kind of depends on audience participation. So
+some key people who are going to call on during the presentation are not here, so I'm not going to be able to do that. But we'll see what we can do.
+All right. So 1st we'll start with infrastructure.
+So that's like actual footage of a data engineer.
+If you're a data engineer, you're going to be built building and maintaining pipelines. Okay, data pipelines that is going to be the job all right.
+and we'll talk a little bubble up with that.
+and I do want to spend a little bit of time not too much, because this there's this is this is really a no win here, and I'm gonna tell you why it's a no win.
+I already talked about Mapreduce. You know that we already talked about Hdfs. You know that
+the whole thing is the yellow elephant hadoop infrastructure, I mean, like framework. The one thing we haven't talked about is yet is yarn, and the reason yarn is no win is those of you who are Cs majors, and you use this every day. They're like, well, I learned about this in like college, and there's just no point in talking about this. Others like they're like, this is too hard to understand, and it's irrelevant. So I'm going to just zone out.
+So I'll just talk about a little a little bit about it
+as much as we need to for this class. Just so this is not some, some mysterious like big ball of yarn. Okay, like, just so you can have this conversation. If someone brings this up in an interview. So you're not scared, all right. But you're right. We could teach a whole class on this like a whole lecture on yarn. But that's too much inside baseball Cs and half you are going to be bored, and the other half are going to be like, why are you telling me this? So let's just focus on some highlights.
+Okay? 1st of all, when was this introduced? Because, as you saw, that's this yarn was not in the paper, in the, in the in the Hfs paper. It was not. You're right. So from 2,007 to 2012, when we had hadoop. 1 point X. It was literally just as we discussed already mapreduced on Hdfs. So that was not part of the original
+framework.
+The bad news is so I did not contain yarn, so
+you know. Honestly, I don't think you remember this because you're too young, but if you were there
+you had to write your programs like Ruby, or something like that. Do you remember this like you had to know? You don't remember it. But basically. So you know you had to use some kind of scripting language like Ruby to write your own mapreduce programs. The good news is you don't have to do that anymore, as you saw in the lab, right? You can now do this. All in house.
+anyway. Hadoop 2 point X
+that was around for 5 years from 2,012 to 2,017 had some big innovations.
+The 1st one was we kept mapreduce.
+So that was not new.
+By the way, in red is the processing engine, and in blue is the storage engine to go with our common theme. That processing is red hot produces heat. Yes, and like storage kind of cold just sits around right, all right.
+But now we added a bunch of stuff, and we'll talk about spark today. But there's a whole bunch of other
+processing engines that some of you told me come to office hours like like the pig or Hive or Flink. I think I'll mention them next week today we'll focus on spark. Once, you understand Spark, I think the others one are going to be more obvious. But in the big
+and like innovation was that
+yarn became basically the honestly, I think you should think of it as an operating system.
+Yarn is the operating system of hadoop.
+Just like, you know, Windows or Mac OS is the operating system of your PC. Or your Mac. Okay, so think of it as an operating system. You kind of like. By the way, what's an operating system? What is that? And you'll see in a moment why, I make that analogy. But what is an operating system, Luca. What's an operating system? You see, as major, what is an operating system?
+You took a whole class on operating systems?
+What is an operating system?
+Manages.
+Sure, I guess so, right. It keeps track of all the processes and all the threads, and how it talks. Sure talks to hardware, right?
+And I
+and that's why this is a good analogy. Basically, yarn is where you interface. And, by the way, Luca, you interface the operating system, you interface with it. Yes, and it translates what you want into like.
+you know, it keeps track of the resources, memory, right jobs, threads all of that. So that's that's a good analogy. Okay.
+so, anyway. But you see how it says it ends here in 2,017. Yes, so since then the hadoop ecosystem has grown further. Which is another reason. I'm saying we're probably not going to.
+you know. Be rid of this anytime soon, if you want to get rid of it.
+There's it's just adding more stuff it. So basically as processing engines. We now keep all the engines from 2 point X,
+but you have new ones, or at least ones that modify, enhance, how the existing ones work.
+Anyone know what that is. Has anyone heard of this before? Anybody? Somebody say what this one?
+Anyone.
+Sure.
+more than that. So we'll talk about the difference between the docker container and the pod in a moment. But basically it ships the resources directly to these engines. Yes, and so, by the way, how would you pronounce this Kubernetes?
+That's how you would pronounce it. That's good kubernetes. Anyone know where it comes from cybernetics. It's like Greek. Where's our Greek? Where's Darren? Greek? Do you know? What do you know what cybernetics stands for?
+Say that again?
+No.
+An oarsman, an oarsman.
+So it's steering
+all right, and Norbert Wiener in the fifties adopted it for control theory at Mit, as you probably know. Anyway, we keep yarn, so yarn stays unmodified.
+We keep Hdfs. But it's now a smaller role because we add cloud storage. Any idea what kind of
+platforms anyone?
+Luca? Again, you use it every day.
+Huh?
+Like what cloud storage service is like, what aws and specifically.
+s, 3. Yes, and what else? Google Cloud Storage and others. Yes. So basically, the as you can see here, the the hadoop framework is only growing. Yes.
+and today we'll talk about yarn more because we have talked about the other ones. Who knows when we'll get to cloud storage, maybe at the end last lecture, or something like that, but it is all addressable through the hadoop ecosystem. So that's nice. Yes, it's just growing. It's an ecosystem. Now, okay, lots of processing engines, lots of storage modules and increase. And also this operating system. That
+Yarnis? Yes, as I just mentioned.
+And so Oops.
+Oh, no! Why is it all coming in? So here's the components of yarn. Here we go. So this is like the top level thing. So you have a resource manager like I said. In the operating system something keeps track of your memory. Something keeps track of your hard disk, something keeps your file system, things like that. And that's kind of the resource manager.
+And then every
+data node, every data node, every data. Node has a container, and we'll talk about a moment about containers. Importantly, this is not a docker container. This is not a docker container.
+Anyway, it has a container of resources. We'll talk in a moment. What that is. It has an application, master.
+Oh, and each data. Node has one of these. So the idea is that the application master
+basically keeps track of all the jobs are executed on that node, their resource, usage, and all of that.
+The resources come in the form of a container. They're shipped to the data node up here by the research manager, the research scheduler and the application manager. And these things are we'll talk about in a moment. Rack aware. So the idea is that they know
+where in the rack is a, you know data node that has a data block that can do the job. Maybe it's available and all of that.
+So that's called rack awareness. By the way, and there's a lot
+to say about this. For instance, the Research Scheduler is responsible for allocating resources to various applications that are based on the constraints. We talked about this at length, last time. By the way, I'm not sure if Matthew is here. But Matthew had a lot of questions about this last time when the Hpc people were here like, how do you prioritize a job? Remember this?
+Who has access in the queue? Who gets priority access? Who are the stakeholders. Apparently apparently the stakeholders have, like a fast lane to their because they pay for this. All of this. Yes, how big is the job? And all of that.
+One thing to to think about is so basically resource managers. The big, high Level Manager.
+something like the the Node Manager will be like a floor, a floor, you know, a floor manager in like a company like a like who checks what
+machines resource are free and available. And the application master is like a project manager if it makes sense.
+Okay. So there's 1 of these, every every cluster is one of these one.
+But there's as many date node managers and application masters as, and containers as there's data nodes make sense. Oh, yes, Richie.
+the blue one, the blue one, has a layout, the the research man resource manager has an awareness, and this is going to be important in a moment. By the way, by the way, you might well say at this point. Hey, Pascal, why should I care about this? I have a couple of slides for you at a moment.
+Keep. Remind me in 2 or 3 slides. Why, and up there?
+Yes, I can, in 2 or 3 slides. Yes, I have made a slide for you.
+Any other questions about this?
+Oh, lots of questions. Wonderful, Jovida, I think. Totally.
+I'm so sorry. Where's Jovita
+up there? I saw you in the Ambassador Video, or something like that. Cds. Anyway, you were in my mind, anyway, Jolie, I apologize.
+Actually, it's it's a good question, and I'll show you in a moment.
+This is actual footage of the research manager and the application master.
+So in other words, it's not labels. I'll just tell you these are the application masters.
+These are application masters. Yes.
+So what's going on here?
+They request resources from the
+resource manager. That's right. And there's 1 resource resource manager that consists of a resource scheduler and an application manager. They have awareness of what applications are running
+and what resources are available that make sense.
+Does it make sense to you?
+Okay, there's another question somewhere.
+I saw it.
+Yeah, it's kinda okay. Great. So what else?
+Okay, we're good.
+Don't be shy again. Most of you are not Cs majors.
+So it's fine to ask, but anyway, so the idea is. But look at this. These application masters directly request resources
+oops from the resource manager, so they don't go through.
+They don't go through Node Manager. The Node Manager is more like a local awareness.
+Oh, yeah, sorry, Sean.
+So they they request this directly from the resource manager. Yes, go ahead.
+It's not.
+It's not. You talk to the name, Node. This is the operating system. Good question.
+You don't talk to this directly you talk to the there's levels and levels of obsession. You talk to the name Node.
+Right?
+This talk to each other. Okay? So like, I said, so the application manager say, Hey, I need more RAM or something like that. I need more resource now.
+Someone already asked about this.
+Someone asked, What's a container.
+And what are resources? Yes, and the answer is, Oh, sorry. Go ahead.
+Oh, sorry, Julian. You know you're I'm sitting here, so you're behind the screen. I didn't mean to be disrespectful. You have a big can of ripples, probably cost more than 5 bucks at this point. Go ahead.
+Yes. What does the R stand for 1st of all, going back.
+I mean I was. I made fun of it right?
+Oh, I'm sorry in everyday language.
+A ball of yarn is
+that? Yes, but it's not where it is. Does anyone know what it stands for?
+Yet? Another resource? Negotiator?
+Yeah, I know. Csp, bug cheeky.
+They are worse than me when it comes to acronyms. But it's it's true.
+right? But I'm proud of it.
+They're unapologetic.
+but I mean they and I wrongly call it that since 2,012, all right, I mean, I'm not making this up
+all right.
+And we also talked about this. What is yarn for green is
+slurm. Yes.
+So it's all acronyms all the way down.
+All right.
+So where were we?
+All right? Okay. Here someone asked, what's a container? What are resources. Great question.
+It's an analogy to a shipping container.
+So, in other words, the resources to do the job are shipped to the application by the resource
+resource manager. You see that you see this? The application, Masters requested.
+requested from the resource manager and the resource manager provides. You see, that right there actual footage. Oh, yeah, sorry, Richie.
+dumb.
+A node manager will be like a
+like a factory floor manager like a foreman, a foreman.
+No, no, no, no! They are just aware of what's going on in their node. That makes sense.
+So they're like.
+it's kind of like, look at this. It's an analogy to resource manager. It's like. But locally on the data, node, does it make sense what I'm saying?
+Like, I'm not sure but like a like a ganglion in your spinal cord locally. It's like a brain, but local.
+like a spinal cord gangion. So I'm not sure if that's a helpful analogy. But it's true.
+Okay, local local.
+All right. Okay.
+By the way, in a moment I'll tell you why. Why you should care. Because again, most of you are not Cs major, like, why are you telling me this? I'll give you a good reason in a moment.
+But, anyway, let's 1st talk about the terminology. So resource. What are they storage space CPU
+processing cores and mem and RAM.
+That was, those are the 3 resources we we consider. Okay.
+importantly. And this is this is the difference. Someone already asked about Docker somebody who asked about Docker earlier.
+Somebody asked about this already. Nobody wants to admit this. Who asked about Docker just like 5 min ago.
+Somebody somebody did. I forgot who it was, but we can rewatch the recording. We can find out who it was, so might as well, come forward now.
+Nobody wants to admit to this. Somebody asked about Docker just now, so forget who it was. But
+what's the difference between this and the docker container, because that's important important to distinguish. It's because this is not Docker. This is not a docker container. This is also, I think it was Luca. Actually, wasn't it you?
+I think it was you? Okay, listen.
+This. This is a container of resources and it and it's provided to the to the data node
+and allows to do jobs. Yes.
+but it's not a docker container. What's a docker container?
+Oh, yeah, jolie, an environment. And what does that mean?
+You're right. And what does that mean?
+Like logical software? Basically. Yes.
+that's fair, like the logical structure. Yes. So Docker container is the logical environment, the logical environment.
+This is literally hardware.
+Okay, now, look, so, yeah, you know what I will, I will. I will. I should.
+no, none of the A's are here. So Michael, email me.
+I should say, this is software. The dock container is software. This is hardware.
+But let me go back to to explain the difference to the to the Kubernetes. Part is
+sorry about that love jumping back and forth there.
+This is where you question Luka. Yes, the Kubernetes pods. Pod.
+Okay, the pod is literally both. That's a docker container and the hardware.
+So you don't have to worry about any of that in modern, in modern hadoop 3 point X.
+This is handled by Kubernetes.
+So you don't have to worry about any of that.
+Okay?
+For that reason it's both software. So the pod has 2 natures like Janus
+right there, and Janus 2 2 phases, a sorta face. That's the docker container and a hardware face. That's the resource container. Okay?
+Oh, yes, not really. It's again, by the way. So so
+you might. You might be like Pascal. What's the point of this? And the answer is here in Hadoop. 1 point X. You had to do all of this yourself. You had to keep track of all of this yourself.
+just like anaconda helps you with like dependencies, for like different packages. Yes. So this basically yarn abstracted all of that for you like this whole interaction between Hdfs and the Ramp reduce. And now the pods allow you to make sure that all of them get their resources. They need, both in terms of the hardware resources and the containers, and again correct me if I'm wrong. But the Cs people can correct me if I'm wrong.
+that's why this becomes standard, because it handles all of this natively for you, but then you have to. Then you have to know how to handle that that tool.
+So it's kind of like a
+price the price to pay for flexibility and abstraction is that you have to know what that is.
+But it's integrated now in Hadoop 3 point X.
+By the way, we're still on 3 point X, there's No. 4 yet. Oh, yes, up there. J,
+yeah. So okay, so this, okay, so let me just say something, what is bias in machine learning.
+That's going to be my answer to you. What's what's bias in machine learning?
+Aha! It depends. That's what I'm saying. And what we'll see today is, partition is going to be used in 3 or 4 different ways.
+and container has 2 different meanings. That's what I'm trying to get at.
+It means
+when you hear about. When you hear about Hdfs, what container means is hardware. That's what they mean.
+But when you hear the container in the concept of Docker. They mean software
+that that's all I'm saying. So. It's the same word using completely different context. It means something completely different.
+Okay?
+So I don't know. We'll we'll be sorted bias already, because that means 5 different things means what you want, what you want.
+and you'll see this also in in partition. But anyway, I see in some of your faces, Pascal, why, you're telling me this. I'm more into statistics and probability theory.
+Why should you care? Why should you care about implementation? And you're right. You're right. I'm trying to. I am trying to abstract as much as possible from that.
+But there is. There are reasons to care.
+and a good example of that is the interplay between Hdfs and Mapreduce.
+because, as you know, Hdfs shares, blocks over data nodes. Yes, it distributes them
+and mapreduce shares jobs over compute nodes. Yes, yes, yes. Remember, okay, ideally. What would you want?
+So that there's what's the enemy of efficiency in big data. What's the what's the common enemy of all mankind
+when it comes to efficiency? Mustafa communication? That's right.
+How do we minimize it? If what is, what?
+How do you minimize this? If the research scheduler is aware of what? What can you do then?
+Hmm, yes.
+yes, if they, if they, if they are the same
+framework, and they are in yarn. Yes, then what can you do then? What can you do
+on the same node? Yes, you know which nodes have which data blocks.
+You're like, yeah, yeah, this job should be done by this node.
+You have to be aware which nodes are available right? Which are not already busy and which have the data you need. So it's going to become important in a moment. That's actually where the replication factors come in. I'll tell you this in a moment. So replication factors also obviously help with
+redundancy and resiliency. So against these computer failures, right?
+They they talked about so the H. So the Hpc people last time said that they're losing at least one computer every week. Right?
+That's pretty serious. Right?
+No. So the replication factor helps with that.
+If this is true, what else does it help with? And I'll lay this out in a moment. But what else does it help with just logically.
+someone some someone up there.
+No, let me go back all right. I'm not sure why we're jumping around so much today.
+Not a good sign.
+But look, this resource manager knows
+what resources we have available. Let's say
+it also knows which applications are running.
+So what could you do if if this thing knows.
+Yes, Richie, that that's right. That's right. That's exactly right.
+We we identify a node that has the data and is not busy
+right now. Yes, and that's the key. So there we go.
+You don't move the data. Data just sits there.
+You just ship the program to it.
+And you didn't communicate at all.
+Right. So that's why this. And again, in the modern yarn framework modern Hadoop framework. You don't do anything yarn handles it for you. But in case you're curious, what's going on behind the hood or under the hood. That's what's going on. So that's why it's so nice. Right? You just press a button and everything. Just kind of works.
+Okay, and this is what I just said. So basically, you can schedule and optimize your splits.
+So as we just discussed. So Mapreduce runs your job on large data files.
+all right, with all these records like words lines.
+And we talked about this, it's divided into splits. Do you remember? This splits?
+Okay?
+And they map onto blocks.
+And what's optimal is that the split is done on a machine that has those blocks? So you don't have to communicate. You don't have to move data.
+No need to do anything, no communication needed, no movement of data needed. Okay, that's going to take a lot of time. Okay, you see that. So you have your input file, that is split into these splits and ideally, that corresponds to these blocks.
+and if you do that life is good means fast. Make sense.
+Okay?
+And as I just said, this jobs, Calendar knows that
+this jobscore knows, knows the layout of the blocks.
+Okay? So you can optimize that so far? So good.
+Okay?
+And yeah, let's talk about the racks. 1st of all, what's a rack. What is a rack? Somebody quickly. What's a rack? Literally. Oh, yes, Max.
+to stack off what?
+Sure, it's like a stack of, you know. Computing data nodes right? That share what we? They talked about cooling systems, power supplies
+network resources, things like that. Yes, okay.
+And so the idea is that intra rack communication is is fast. Yes.
+so the idea here is that ideally, you're going to execute the the job on a node that has a block. Yes, so far so good.
+Right? So let's say this node
+has the block. It's best, if you can execute that.
+The second best case is, if you execute the job. Maybe this one is busy. Yes.
+but it's in the same rack
+that has the block in the same rack. Yes.
+because why? Because you want to minimize communication, and
+another node in the same rack has the same block. You can do the job there. Yes.
+because again, the communication within the rack is fast, all right. Moving, you know.
+Yes. So the schedule would schedule job here
+between rack communication is slower, all right.
+and you know that's how we cut down communication costs. By the way, this is a standard. The standard is that. Let's talk about this together.
+How many replicates are. But are there by default in Hdfs.
+3, and the standard is 2 in the same rack
+and one into the other rack. Why is that?
+That's right.
+The 2 protect against node failure, and the 3rd one protects against rack failure, because sometimes the whole, the whole power supply blows up. As we discussed last week with the Hpc, people that happens.
+Okay?
+Oh, yeah. Sorry.
+No worries. Go ahead that. Okay, that's great. That's really great.
+Let's talk about this. Don't don't, don't continue. I want. I want to get points to everybody
+we talked about this last time. And oh, that actually is not true. Before the Hpc. People showed up
+data. Nodes are somewhat a misnomer. Why is that a misnomer? Why are data? Nodes a misnomer? I said this whenever we talked about them?
+Yes, say, what?
+Aha! What else do we do?
+They do all the all the compute. So I would have called them worker nodes.
+but I think people thought it was too disrespectful.
+So they call them data nodes. Yes, Hamza.
+So the name Nerd is basically the manager. They know what everybody can do, but they don't do any work themselves.
+and the data nodes are the workers that hold both the data and they do the actual work.
+But again, Humza, because Pilefire is disrespectful. They call them name nodes and data nodes. Not my doing, but that's what it is.
+But maybe we're going to go back to that. Now go ahead.
+Yeah, see? That's another thing that's even worse. They used to call the master node.
+Yeah, I don't know what to tell you.
+Okay, the data node is the compute node.
+The name note is the master note.
+Okay for for Hdfs purposes. Yes, for all for now. Yes, okay, all right.
+So oh, I have good news for you. Do you have to? Didn't? Didn't I just say that there's 2 here and one here? Yes.
+for optimal redundancy. But also speed. Okay, we have to balance redundancy and speed. Yes. So you want to have 2 and 2 different racks. So we have redundancy in case your whole rack blows up.
+But you don't want to put this too far away. You don't want to put this in another data center somewhere across the world. Right?
+The good news is, you don't have to do anything. As I said, the resource manager is
+the resource manager is called Rack aware, so it has a. It has an awareness of the network topology, the rack topology. So it'll automatically put 2 in one and one somewhere else. And if you have more replication factors even more. But of course it's going to cost more memory or hard disk makes sense.
+Oh, yes, it's gonna
+they well, it depends so it's more like as we talked about the okay, good question.
+So maybe I should make a slide for this.
+because I have. Don't have it yet. There's a logical, the logical. Sorry.
+There's a logical communication between the name Node and the what you call it. The data nodes right? So logic communication is actually, you remind me, I mean, I'll tell you in a moment. But you remind me, what does the what do all the name nodes send out? And there was questions about this last time
+it has to do with physiology or analogy. Physiology send a
+heartbeat? Exactly. So. That's what the data nodes. Send. What do the what does the name note do? That's they. They do the
+how, the commands, the actual commands, right? The jobs, yes.
+on a logical, on a logical level.
+on more of like the hardware in. It's kind of like.
+That is why I call this the operating system when you
+like. I don't know when you move files around, or something like that, or you copy files or change files.
+You don't do that by hand. The operating system does it for you? Does it make sense what I'm saying. So yarn does the mechanics of this
+behind the scenes. If that makes sense, that's why I should probably have a slide where we do the front level. That's what's
+exposed to you, which is name node versus data node communication. Yes. On the one hand, the other hand was under the hood. Which is this resource manager versus application manager communication or negotiate resources and memory and things like that. Does that make sense? It's like a dual relationship. But you were right, scandal that I have not shown you a slide on that. But it's true. It's implied, I guess. Go ahead.
+I asked.
+Tell me more. What do you mean by that? It can't remember it has to be available. It cannot refuse a request as long as the name is up, it cannot refuse it. Request
+well, as Matthew is not here today, but as as Matthew knows, if this is on a cluster, they might put you in a queue, but like we don't have the resources right now, you have to wait.
+But that's also an operation that happens all the time. Yes.
+you have to do yourself what?
+Yeah, you'll have to do yourself.
+But don't worry about that. That that is never going to happen again.
+That's kind of like, could you write your programs in assembler language? Yes, you could. But no one is doing that. There's levels and levels of abstraction.
+You would have to do it yourself.
+But now you don't.
+All right.
+So we just talked about this. So and this is this, this is
+something to write down could come up in interview.
+The question is this
+increasing your replication factor? Does it only help with redundancy, or does it also help with
+speed? Exactly. And the answer is.
+yes, both, that's good. And it's because of this
+rack awareness that we just discussed.
+So so, in other words, if you have more copies available, you increase the chance that there's an idle data Node sitting around. And by the way, Hamza, as I said.
+the data Node, it's kind of like a why would you prioritize that? But once the data node has the data we're like, Hey, you have the data, and you're idle. Right now, you could do this job? Yes, and then then you become a worker, Node.
+But the date node is the worker. Node is the processing node.
+Yes, they just call the data back. Maybe because data is king. I don't know.
+I would call the daily Worker Node. But again, that's not PC. I guess.
+But why not? I know Max wise and obviously
+no, you don't want to touch that. Okay, fine.
+all right. I don't want either.
+I don't want that either.
+But, Hamza, do you see the confusion? Okay.
+And as I said, you can set whatever you want, but the default is 3, so at least you have 2 in the same rack and one in another rack. That's why.
+just in case someone ever asks you why, it's 3 that allows you have a node failure level protection.
+for if you have a node failure, that's the 2 in the same rack it also allows you to execute in the same rack. If if you can't do the job right now, and the other one in the same rack can do the job.
+But then you have one off rack if there's rack rack failure. But if you have to do more than that, then it becomes even bigger. But again, that's not free. You have to then allocate.
+Sure. So let's okay. The default replication factor is 3 s. 3 replicates.
+2 in the same rack and one in another rack and as close together as possible in the same data center
+again. So somebody walk us through that. I already said it. So I want to. I already said this, so I want to hear from somebody else. Why is that? Why does that help that helps with 2 things? What are the 2 things?
+Replicability, redundancy redundancies? In other words, if your computer blows up. No, no, no, hate.
+no problem. You can. Just
+we can find one hasn't copy it. And that's what. By the way, where's where's humza
+the name Node, right will find out that one of them has blown up. But how will the name Node know that one of them has died. Yes.
+there will be no heartbeat
+for a while exactly, and then you can copy that to a new block. That is that a new data node comes out that has space available in hard disk. Great.
+So that's redundancy. What what else they help with.
+and it will, by the way, the name Node will know which has intact data. So we can wholesale copy an image of that onto an available data node of available space. So
+what else will help with.
+Why you write? Why, and then
+you can just ship ship the the program there. Right?
+Right?
+Great.
+Okay.
+Yes, Ethan, it's a hyperparameter that
+no, no, no, not even pay. You can just do it yourself, like like, huh!
+Of course that costs money. So let's say you make it a hundred. Then you need a lot of hard disks.
+but you can have have that if you want to. I mean.
+you saw the Hpc. People. They have gigantic
+top, gigantic top cluster resources. Yes.
+tell me more. What do you mean now? The blocks are immutable. Once they're written, they're written.
+it's what written is done. By the way, it's going to see the trade with Spark. Even in spark the blocks are immutable, immutable
+cannot change them.
+But it depends on your job. So let's talk about again. What's the Dean for? Block size?
+1, 28 MB? Why would you make that large or smaller?
+The Hpc. People said last time. But I'll say it again. Why would you like? Why would you want to make it bigger?
+Because you have. You know you have what big files.
+big data blocks, right? Big, big, you need big splits.
+Why, about small ones. You have a lot of small ones.
+So that has to go to match.
+But you have to plan ahead of time.
+Yeah, I mean, it's obvious, right?
+But if you if okay, let's talk about this, if you have 3, 1, 28 MB locks.
+How much space does that take? What's 3 times 1, 28.
+We're easier with 4. But you got the idea right.
+What about 10 times. That is a thousand 200 ads.
+Right?
+But if you can afford that, you can afford that.
+the Hpc people show you last time how many resources they have? It's tremendous, tremendous resource. Am I wrong?
+No.
+anyway. But this is something you set just to be clear. If the if they have not shown this to you in the lab yet.
+Demand that there's literally like a have they shown it to you?
+No, I'll email them
+whose day them.
+No, you only play the blocks. It's your blocks. The data block is a logical thing that's like a data thing.
+The data block live on the cluster.
+You have them in your H Hdfs account so hopefully.
+Yes.
+under the hood, maybe. But you don't have to worry about that.
+The actual implementation? Yes, because it ships it ships the resource, remember.
+But you don't have to worry about that.
+Okay.
+okay, we talked about this. Yes. Now let's let's proceed to spark because we are, we're this is this took way longer than I thought. It was just supposed to be like a warm up.
+But anyway, the good news is.
+you don't have to worry about this. This is what I just told you. Yarn will handle for you, but it's not bad news, but it helps to understand this, because it will help with the jobs. Okay.
+remember this. What was the point of that?
+What was the point of this?
+What was the point of that communication is the devil. Yes.
+all right, it's true, is it? Cursed?
+The idea is that
+we really and by the way, this is true for human humans, too. Like if you ever worked in teams, communication is your enemy. Every moment spent in communication is a wasted is waste is waste more like heat than light
+might be. Nice. Right, Max, but it's not going to help with the cause. Okay.
+the name of the game is to minimize this, and we have done so much so far. The entire class so far was about minimizing that.
+And we have done this with restrictions. First, st we restricted the data structure. Remember that with schemas.
+then we restricted the processing operation to be allowed with mapreduce.
+Then we receive the storage that we love. Hdfs. Yes.
+and now we realized. And or if we have not realized this, I'll mention this today. Maybe we have gone too far.
+Maybe we've gone too far. This is fine for, like computer science for data science, we will need to loosen some of these restrictions a little bit because we cannot do data science properly, particularly machine learning with all these restrictions. So for Cs, this class will be over, basically. But for data science, we need to loosen some of these restrictions a little bit. Okay.
+Now, basically, we're gonna go to big data where data means something like meaningful data, all right.
+And that's where spark comes in.
+And we'll see how far we get. I have a feeling that we'll. I'll need to continue this next week. But let's see how far we get.
+So spark. So to be clear.
+Mapreduce is probably not something you'll be using
+in your actual life unless you work for Google and index the web.
+But as a data scientist. You're probably going to use sparks spark or a spark derivative
+for reasons that you will see in a moment. One second I'm running out of.
+I didn't know what I'm running out of resources. I guess
+I'll rest sorry about that. I have something in my throat.
+And, by the way, this is the official spark logo, just like Apache spark, just like
+The elephant is the the yellow elephant is the hadoop logo. Okay?
+And look at that. Look at what happened.
+Mapreduce started in the as we discussed in mid 2,000 s. Along with Hdfs. Look at that! Look at that! Look at that! And then what happened? Who who ate Mapreduce's lunch
+in the in the early 2,002 around 2,012, who ate their lunch.
+spark ate the lunch. Exactly, specifically, these 2 guys. Does anyone know who they are, Luca? Who is that?
+Those are the richest Romanians in existence?
+What?
+It's true? Yeah. And who is it? It's the people who wrote the the paper I uploaded mate Sahariya Eon Stoicka. Yes.
+no, yes.
+and they're billionaires now. So if you have an idea how to optimize this further. Let me know. Okay, there's a lot of money in like coming up with new ways of doing this. Better. Okay.
+And by the way, they're they're younger than all of us. It's not true, not you. But they're younger than me.
+So what? So what did I do. And what makes it so valuable? Okay, so why did they create spark in 2,012? And they realized.
+and I don't have to imagine
+that they that they realized this because they wrote about it in the paper that are assigned for reading.
+that there's some things that are good about mapreduce like scalable right? So you can do parallel processing.
+It is. It has inherent fault, tolerance. Yes, 8.
+This was huge.
+So these clusters that the Hpc. Pill are monitoring. It's not a dedicated supercomputer that
+you know. I don't know. Ibm has to install your for you.
+It's off the shelf hardware. Yes, it's just.
+you know, you just buy them
+off the shelf hard, disks off the shelf cpus.
+And as we discussed, so you don't have to worry about any of this anymore.
+Scope
+do you see that like you, you don't have to worry about this anymore, like as of today, scheduling, all of the plumbing is, is taking care of it for you. But there are issues, and those are the by the way.
+again, the longer this class goes into the future, the less valid are these don't break charismas. The stone break prisms is that mapreduce is a bad database, and that's correct. But it's never supposed to be a database. Yes.
+but this one is big.
+What what does it mean? That mapreduce is built on an acyclic data flow model in English.
+in English, acyclic data flow.
+And this is something you should keep in mind because someone could ask you from A from a data science perspective, not from a Cs, this is the Cs perspective.
+Mapreduce is a bad database, a Cs perspective. That's fine. But it was never meant to be database.
+If someone tells you name a data science downside of mapreduce. And the answer is, yes.
+that's what it means. Acyclic data flow means one direction only.
+And let me tell you why that that. Why, that? Why, that's a problem.
+And that's basically it's too low level. And let me show you what I mean by that.
+So, as I said, that's why I made the caveat. If you work for Google
+to index the web like something like one shot thing, you build some custom giant index. That's fine you can use mapreduce. That's totally fine. That's what they did.
+But what if, like search, for instance, we'll revisit, search
+shortly, just to build off that?
+What if you want to anything of data, science, explorative data analysis.
+some complex joins or any machine learning really like any, any numerical method? Yes, any iterative numerical method. Yes.
+and let me give you an example.
+This is just review from interaction data science.
+Remember, the question was, our Kans of Red Bull can be optimized. Remember this from last semester.
+Can can we find their price?
+Do you remember this?
+Does anyone does this ring a bell? You saw this right? And the answer is.
+can you find what the optimal scalar factor is that maps the axis, which is, how many cans you bought to y? Which is what you paid overall, and we're looking for the per can price. And the answer is
+is what, yes, you define a cost function.
+Yes.
+Say what?
+Yes. Sure.
+Yeah, you don't need that for this. But but just to remind you, what's the algorithm called
+gradient descent? Yes. So in other words, you with with the in the interest of time. I'm not going to rehash all this, but with the chain rule you compute the gradient. Yes.
+you start somewhere some random point, and you go down, and you're going to get to the final final point. Do you remember this from last last semester? Do you remember this?
+Great and yes, eventually, we're going to get to 5 with some extra steps.
+Okay?
+Okay, sure.
+Now, obviously, you don't need map. You don't need creating descent for that. Yes, or let alone mapreduce.
+It's just to illustrate the concept. Yes.
+I have a question for you. Could you implement gradient descent on big data with mapreduce. So imagine you have some data X and some weights. And red would be some vector of weights. Can you minimize
+this?
+You know? So yeah, I apologize that.
+Excuse me.
+So you have some data. X, you have some weights. W,
+and you minimize some loss function.
+And you have some initial weight. Vector, W.
+Yes.
+Say again.
+tell me more. Why not?
+There's no what?
+Sure.
+5.
+Why, but like
+you cannot do it backwards, you can only do it forward. Right? You're right. That's going to be a severe limitation. So let me let me show you
+what I always had in mind, which is, you can do it, but it's super awkward, which is what you just said.
+So look so. What you could do is the mappers could take the gradient of the piece of the data that they see. Yes.
+So, in other words, they could take a look. Is it not true that we could split this input data into, however many, however many
+hamza, however many data nodes we have. Yes, could we not do that?
+And then could be the local gradient, and then emit the gradient to the just the same key. There's just one key here which is the gradient. Yes. Could we not do that?
+We could. So who said that
+great! She's right. Grena is right. We could do that.
+And could we? Then, not once we're done.
+reduce them all this into these, all of these all of these keys. You see, they all mapped in the same key. There's only one key, the gradient. Could we not
+integrate some these piecewise gradients to one overall gradient, and then like.
+emit that, and then, as you just said.
+subtract that gradient from the weights, and go in the in the opposite direction, which is what gradient descent is. Could we not do that?
+We could right?
+We can.
+But your criticism is correct, which is.
+why does it suck. You're right. You're absolutely right. Yes.
+Why, you're all of you are right. Why, Mark, mark
+every step you do have a full on mapreduce stops cascade.
+And yeah.
+and this is going to take forever.
+As a matter of fact, we're going to do this in the lab.
+and we're going to do this in. Live with mapreduce, and it's going to take forever
+we can. So the answer is, yes, you can do it.
+But this is not what you want, and let's make sure.
+Everyone same same page. Why not? So? These are all logical steps, right? You can split the data into however many pieces you want.
+Yes, and you can compute the local gradient. Yes.
+what? The problem. Somebody else. Mark
+anybody else, someone who wants to speak up speak up.
+It's gonna be important, because otherwise spark will make no sense. Spark solves this problem. The reason Spark was.
+I'm not sure if invented is is the right term for it. But
+you know the reason Spark was introduced is to solve this problem.
+You can do it. But let me just show it here.
+You see that you have to do as many because, as as you said, you can't go back
+right that you cannot go back, so you can only go forward. So you have to compute all of these local gradients.
+reduce them, and then store them, and also collect the intermediate result. This all takes time and do it again and again and again, until you've you're done. Yes, so in our words
+this is very, very wasteful, and also do all those, all those intermediate results are they interest? Are they of interest?
+No, as soon as you compute them you throw them away. Yes, so this is like the
+epitome of like waste waste data waste or like whatever you want to call that compute waste data waste. It's terrible.
+Also. We talked this before. Can any of these reduces even start until all the mappers are done, and it's not a good example of why not? Why can't the reducers not even start until all the mappers are done?
+This is a good example of this.
+Can you? Can you go to the next step before the 1st step is done?
+Mustafa? Why, you're right. Why not?
+You need each piecewise gradient. How would you do that?
+How could you possibly do this step
+until you have all of them? You wouldn't know you wouldn't know right?
+Does it make sense?
+So, as you know, great descent could have many of these until you're done. Yes, sorry. Sean.
+Yeah, I'm not good at this. But keep going.
+Yeah, sequentially, yes.
+And sequentialness is the enemy of paralyzation.
+So it's parallel here. But it's highly sequential. So basically, sequentialism is coming in through the back door. We would want to know this. Okay.
+this. This is a good good way. Thank you so much. Someone should email me that
+I need to make this point. This, the problem here is this is highly sequential. It's it's every step is parallel. But the steps are sequential.
+And there's many of them, because it's an iterative algorithm. How, by the way, how common is that iterative algorithms in in machine learning?
+Yeah, you laugh. You're right all the time.
+unless you are like doing some linear method, Pca, or something like that.
+maybe regression. You just write down the solution. It's typical. Yes. So in other words for machine learning. This will not do for you. Mapreduce will not, is not, is not your friend, which is why we don't use it in practice.
+Okay, that's what I said. Maximum likelihood, estimation, grain, descent, k-means, em, I mean, and many, many others. I mean almost
+everything that is not linear, is iterative and numerical. So so
+you, we have to do better.
+And this is from the from the paper.
+So basically, they compare just for logistic regression, which, by the way uses cross entropy loss. Right? So it's iterative cross entropy, loss, maximum likelihood, maximum likelihood, estimate of the cross entropy, loss, minimization that takes time.
+You can do it with hadoop, but when when they mean hadoop, this is from like the early 2,012 s. They mean mapreduce.
+Because, remember, this was this was, I did one.
+So they mean Mapreduce. Today. You wouldn't.
+But this is from the 2,012 paper. So basically, what they show is you can get. By the way, 10 x plus. So the more iterations you have to do, the more this delta is going to go up, so you might see a thousand x in the lab. So let's change everything like you can do it with mapreduce. But if you have a complex job that has many iterations.
+There you might get a thousand x from spark over mapreduce. And now you know why, there's 2 reasons.
+As Sean just said one, it's sequential.
+and the second one is the intermediate results. The intermediate results are thrown away.
+Spark is reusing the intermediate results if they can, and we are bringing back as much parallelization.
+but as we can anywhere.
+Anyway. You see, they say they write hadoop here. They don't mean hadoop. They mean rapid use, but that's from the actual paper.
+because back then they were synonymous. Basically, there was only one. Okay.
+so now, how did how do they do that? And I don't know. I have taught this before.
+So I know for a fact that this is not intuitive.
+So let me just do the best we can.
+We introduce a new data structure.
+An Rdd and Rd stands for resilient distributed data set.
+And there's a lot to unpack. Okay?
+Maybe 1st things. First, st it is, it is also immutable. What's written is done. It cannot
+change once it's written, and that's going to explain a lot of the ideas. But
+what you will see is with the Rdd.
+In spark, which is an abstraction. It's a large abstraction.
+You can chain things together more nicely for machine learning specifically all right.
+And the key idea is, we reuse data, as I said earlier. Do you see these these intermediaries? Intermediate steps
+in Mapreduce? They're just thrown away.
+And you know, that's just completely wasteful.
+So, and these writing these intermediate results to disk is a key, a key.
+a key source of lag latency. We want to eliminate that. And spark does.
+So basically, we want to. We want to use that. Okay, so what are they?
+So are these.
+So 1st of all, so so let me explain.
+So there's there's 3 parts to it.
+Every Rd has a data source. Every Rd has a data source.
+Then there's a lineage graph, and we'll talk about in a moment what that is
+of transformations. By the way, I know this is abstract.
+I will give you some examples in a moment.
+but the data source is the raw data
+that is partitioned in a certain way. We'll talk about the partitions in a moment.
+but then there's transformations and the transformations are kind of like
+logical transformations, logical steps that you apply the data.
+It also comes with some interfaces, as you just said, that the partitions, the data
+and iterates. We'll talk about that.
+And the key concept of the Rdd. And this is what makes it go is deferred competition.
+So in other words, if you lay out these transformations of data here, filter data here, square data, whatever the transformation is that is not actually implemented.
+It's just a plan until you call for it.
+And then so in green, we're gonna we get okay. We're gonna here, let me explain.
+We're going to from now on use data source in blue transformation is red
+partitions and stuff like logical stuff in purple, and then actions in green.
+The idea here is that once you call for an action, and you'll see in a moment what that as an example.
+Then the spark
+traces all of the transformations back to a data source kind of like a salmon streams back to the spawn point. Eventually, the idea is, you can trace a action. Yeah, you look at me like I have 2 heads. I will give you an example in a moment.
+You trace the action back to the data source, and the spark spark framework can make that efficient.
+because instead of Adam, instead of computing things over and over and over again.
+that's not happening here, it's do. This, is it? Does this lineage graph which is, it traces the action back to the data source. You can make this very, very efficient and importantly, no computation happens until you ask for it. With with the
+right to action. This is also called lazy lazy.
+All right, it's more like a. These transformations are more like a blueprint. They lay out what should happen.
+Okay, all right.
+So it's called deferred computation. So the idea is that, as I just said.
+what a transformation is by definition, that's an Rdd, it's an operation on Rdd. That yields another Rd, as as a result. So if if you apply transformation to an Rd, you see a new Rdd.
+as I just said, be lazy.
+That's not a bad thing. In this case. It's a technical term. Technical Cs term. What it means is that
+the computational steps are recorded in a lineage graph. I'll show you in a moment that looks like.
+And now you can put these are called pipelines.
+Now the data can be processed efficiently in these in these
+deeper pipelines. In other words, you don't now have to look up.
+Yeah, yeah, in a way, in a way.
+But again the mapping happens immediately. This is just waiting, waiting, waiting until you call for an action that comes in a moment. Yes, Mustafa, no.
+just.
+But yeah, map map could be. But it's not the only one. There's not other ones joins.
+Okay? So there's now more more operations are allowed.
+Okay, it's not just mappings. It's not just map functions more complex.
+Yes, yes, yes.
+yeah.
+And I'll give you a couple examples in a moment. But you have this whole lineage graph
+hopefully, we'll get to today, anyway. Then then once you call on action, then then the whole thing runs
+and the the outcome of an action is not another R&D, that's an actual result.
+Some kind of number like, I don't know 5, whatever whatever whatever. Whatever you're trying to compute yes, or like the
+gradient, I mean the optimal betas, or whatever it is.
+Okay.
+So if it's a transformation, if it just operates on the Rd. And gives you another Rd.
+and actually, it's just a plan. One second. That's just a plan. And we'll we'll by the way, in the lab tomorrow, and whenever you have your lab we'll show you how to call for the lineage graph, and all of that
+you look at it.
+This is this is what actually does the competition? Yes. Sorry.
+Yeah. Sure.
+Not. A database, a data structure, an Rly is this, you know, resilient distributed data structure.
+And you makes a new one, and I will show. I think this is best explained to an example. Hopefully, we'll get to it.
+But this is a result. This is not a data structure. It's like a number like 5, as I said, or 10, or whatever it is.
+Yes, like, for instance, look, Count, and and you're right, Luca, broadly, very broadly, but not exactly
+these. These transformations map onto mapping steps and these map onto reducing steps. But not exactly. And you'll see in a moment. Why, yes, Judy.
+Hello.
+because these are also functions right?
+But they're not executed until until one of these are used.
+Yes, no, yeah. Opposite functions.
+But but okay, here's the idea. Maybe maybe I should.
+Maybe I should.
+I don't know. Let me just explain. An action is a function.
+Sorry python functions. What's what's a function in python? What's a function? Python? It takes any input and produces
+and any output.
+Here we distinguish between 2 functions, 2 kinds of functions, transformations
+that take an Rd. And make another Rd. But are actually not run, and actions which are other functions that do trigger the computation
+and the execution of the lineage graph. So these build the lineage graph. And this runs the lineage graph.
+You look troubled.
+Yes.
+Well.
+it got it. Does it kind of on a need to know basis. Right? So it wants to count in the end. Right? But it traces backwards. Let's just do an example. How about that
+log log processing. Yes.
+So let's say you have some kind of like
+some kind of log. Yes, we have lines. If errors, we've
+okay. Do you see the code.
+Yes.
+So this is our
+data. Yes, we read in some text file. By the way, if this is completely obscure.
+please attend the lab this week, because we'll do it in the lab like tomorrow, or whenever your lab is
+so, look so we have our.
+This is an orange. Do you see that an orange is a
+Rds, so the idea is, we source our Rd
+from a data source. That's the text file. Yes.
+and that gets the data from our Hdfs storage back end. Yes.
+Okay.
+Then we filter. That's a transformation.
+The lines that's an RD.
+By some kind of like condition. Yes, some kind of error condition. Yes, we want to basically prod. This is like a systems administrator. We want to process the error logs. Yes. Do you know what a systems administrator is!
+Jay, what is that?
+Somebody else? What like? What's a sysadmin?
+Jared Darren Mark.
+like the Hpc guys? Right? Let's say bench a cluster, and they scan the log files. And then you see what went wrong today. Yes, it's a long, it's a long, long files with all the processes, and we want to know which one went wrong. Yes, it's a realistic use case. Okay? So the idea here is
+the transformation filter. We filter, we we only, and we only interested in the logs.
+They had errors, the log lines and errors. Yes, what does that yield another?
+It's also orange. It's a nutter out of the Us.
+And then that errors filter is further filtered by errors that only contain the keyword.
+My SQL. Right, and we do some kind of mapping here because we want to.
+You know, this is a this is a tab. Yes, right?
+And then at the end, oh, yeah, here's my legend. Let's see data source transformation are the end action.
+So nothing happens. It's just a plan
+until what? Until the code hits
+collect and then it traces all these back to back to the data, to the data source. Yes.
+and then computes only what it needs.
+Adam.
+basically. Yeah, all of the mappers at once. And then it reduces at the end. If you want to do it again, you have to do it again, sequentially, yes.
+yes, sure.
+Great.
+Okay.
+Okay. Well, anybody.
+What makes it special, Luca?
+Yes, you can do it in a cluster.
+The python is on your machine.
+This is not a cluster, but if you're wondering like. Hey, Pascal, what the hell! Excuse my language!
+I have good news for you
+once we're done with all the spark stuff.
+and once we've done all the column order storage stuff.
+I will show you how to do this with Pyth. I will show you how to use python on one computer. It's going to be great with Dask. Yes.
+no, no, no, they're they're existing things. They're like. As I said in the last slide of typical examples are count, collect, reduce, take, save, and the there's there's there's a whole.
+Can you make your own? Yes, of course you can make your own, but these are predefined.
+Yes.
+Well, how is the dispute?
+What makes this distributed? Max?
+Okay, on on Hdfs, yeah. The data sources on Hdfs. Yes, Saul.
+you can run the job on a cluster. Yes.
+Does it make sense what I'm saying?
+No
+great question. Let me give you an actual example. Yes, and let's skip my bad joke
+about lumberjack math professor, and who else? A sysadmin talking about logs? Because it's 3 different kind of logs.
+Just forget it. I just put it into
+to lighten the mood, but it just makes it worse. I apologize.
+All right. So let's but, Jude, I'll take your questions seriously. Let's let's let's do it together. Okay.
+so, as I just said
+it, nothing happens until the code is running into this into this code word, and then the whole thing runs backwards. Let's do it together.
+all right.
+So what's going on here? So what happened here? This got all mushed up. Do you see what I'm saying?
+All right. So let's just do do one thing at a time. So this is a, I guess, a reminder. What transformation is we talked about this
+talked about this.
+yeah, just talked about this. So basically, it's writing code. Okay, it's not doing anything. All right.
+Good examples. Look a map filter union.
+You see that you take an R&D, and you get an Rd out. You see that okay
+actions.
+They are the actual competitions. They they are. They are expensive.
+They are doing the competitions. Yes.
+and importantly, what comes out of the action is not an R&D, that's how it's defined. Okay, stuff like count, collect, reduce, save.
+you know
+all of that stuff. So that's what that was that that's what does all the work? Okay? One second, Richie.
+Yes, go ahead.
+No, no, no, they're not. They're not just an idea. No, they're very real. I'll show them in a moment. It's not just something you think about.
+Spark will make it for you. You can look at it.
+I'll show you in one of the next slides. There's a whole bunch of questions. Jay is what somebody
+I don't know what's intuitive to you. I see a lot of people look there in actual pain. So so maybe not.
+And the gentleman next to Jay. What's your name, Pravin. Yes, I apologize.
+I'm studying right
+by a deferred computation.
+Sure, it's thinking, thinking, thinking, thinking, thinking, thinking about how to do all the transformations
+in the lineage graph, Richie, that it computes that you can look at until it does anything.
+Sure you may.
+I think we should do an example. I should I think you should do an example?
+All right. So yeah. So as I just said, it works backwards through these transformations. It hits this. And then like, oh, we need to do this, we need to do mapping. To do this. We need the filtering to do this. We need to filtering. Okay, do you see that?
+So it's dependencies. Lines depends on text file. Yes.
+that's right. Do you see that lines depends on text files. So in other words, it analyzes Praveen. It analyzes its own code.
+Do you see how the lines depends on text file? Yes, yes.
+but it goes this way. It works backwards. So collect depends on the map. Yes, on the result of the map.
+The map depends on the filter. Yes.
+the filter depends on the error.
+and the error depends on lines and lines depends. Actually, once it's that once it hits a data source, we're done.
+And now it can
+optimize this. This will make. This is an example where it's not particularly useful, because it's not a machine learning example. But we'll get to this in a moment.
+Remember how Adam, remember how Mapreduce threw away all of those intermediate results. They were literally useless
+here we can reuse them.
+And that's Richie. What the lineage graph comes in particularly handy as okay.
+And, by the way, in case you ever wonder
+what what they are? The first? st No, they only are in in Rd. Stands for resilient.
+If you lose something, you can rebuild it from the lineage graphs. It's resilient again, maybe not a big deal. If you have one computer. But if you have a thousand computers, you might lose some, and you can rebuild that. Oh, I'm sorry, Luca.
+It's a chain exactly, and that chain we call a pipeline.
+And what the beauty of this is. You can go locally deeper in one pipeline
+while not waiting for the other. Pipeline.
+Yes, and I'll show you this in a moment. I have several examples prepared.
+But 1st let me show you what it looks like.
+So lineage graph is so. This Rd. Might depend on this Anthus R to VS.
+Right?
+So doesn't have to be linear.
+Right? So and by the way, is this gonna be? This could be painful.
+as you can see that that that might cost some latency. We'll talk about that.
+But it could be.
+But the the beauty of this is once you compute, one multiple descendant can reuse it can reuse it. That that, and that's what makes it fast.
+because, instead of
+sequentially recomputing and recomputing and recomputing and throwing away once it exists, you can reuse it. That's 1 of the reasons for Speedup. J,
+no, please
+say what?
+Yeah. 1 1 per action.
+Pardon me.
+sort of again. I think I'm going to defer you to to our example, which is coming up the next slide.
+But yes, so so that's the idea. These these these Rdds are very I don't know.
+Resilient, I guess they they they make it very efficient because you can reuse the intermediate results. That's 1 of the reasons. Another reason is this, pipelining, and this is what I think Lucas just asked about. So these chains of processing are called pipelines right?
+And these linears can be pipelined. So what? What? The idea is?
+Okay. And this is something that I forgot who mentioned this. But somebody stood up when we talk about Mapreduce, and somebody said, we don't have to wait for all of the Mappers to finish
+for the readers to start to remember this. Who was. That was you, Ethan.
+Who was it?
+That doesn't matter who it was? But somebody. What I told to the person is
+actually in Mapreduce. You do have to wait, because that's the way Mapreduce works. But your intuition is correct. If we change the way we represent the data with these data structures
+in spark. We don't have to wait. These pipelines can be executed in parallel. Yes, all right.
+and we don't have to store the intermediate. So so if someone ever asks you why Spark is so much faster than
+Mapreduce invites so much more appropriate from for machine learning. 2 reasons. One is, instead of throwing away the whatchamacallit, the intermediate results. We keep them around.
+And the second thing is what Sean said, it's not strictly sequential.
+These pipelines can be executed in parallel.
+Once. Once you create the pipelines, you can execute them in parallel. So let me show you something. So let's let's do the
+let's do the let's do it. So let's say, we have our
+our what you're gonna call it log processing example.
+We have a giant log file.
+This is better where this is coming from. If our giant log file from our Hpc. Cluster of everybody of all of the operations they did
+the last month. It's going to be a gigantic log file of a million lines. Yes, we want to process this on a cluster, so the that the sysadmin has only reviewed the errors. Yes.
+all right?
+So here are our lines.
+State is okay.
+Does does anything need to be done here?
+Somebody, because there was no error encounter? Okay, how about this? One
+does anything else need to be done?
+No, now, what this has now
+transition to the second Rd. Which is
+this? Rdd. Has been transitioned to the error. Rd, right? By the way, I apologize for the dinosaur theme.
+It is what it is, all right.
+How about the next one?
+Now, how about this one. Now, this one put punched all the way through to a SQL. Problem. Right? So maybe we can send this to the SQL. Person that is
+in charge of fixing SQL. Errors. Yes, but this can be patched all the way through already. Do you see what I'm saying? It doesn't have to wait for the other ones.
+Yes, it goes deeper.
+it goes deep, it can go deeper. It's not. It's not depending on anything else. It can go deeper immediately.
+Right sorry.
+That's a really good question, and I'm going to. I'm going to defer, not my computation, but my explanation to a later slide, because it has done. It has to be done with partitioning.
+Sorry I have a cramp in my leg
+it has done with because I was sitting on it. That has done I will defer to. When we talk about partitioning.
+It will make sense. We talk about that, anyway. Then there's nothing we did on here. And then this is just an error, but it's not pipe through. But do you see how this could be processed already? Where's Luca? This could be processed already before we had to wait for anything else does make sense what I'm saying. It's a pipeline. Yes.
+all right, there we go.
+and if you you could do this. And, by the way, the lab is all about that in the lab we will
+try several programs in a mapreduce framework.
+and then, with a pipeline framework in Mapreduce, you would have to 1st compute all of the lines. Yes.
+and then all of the errors, and then all of the filtered errors. Yes, that is just not true. Here you can pipeline them through.
+Yes, he said. Luca.
+yeah, because speak.
+Yes, yes.
+yes. And, by the way, how the dependent error was going to depend on the partition. Keep that, thought Judy.
+We don't. You will never touch Mapreduce again.
+The reason we introduced Mapreduce is, I said this when I introduced it, it's still useful to
+understand as a backdrop. This is basically mapreduce with extra steps. We jump right through this. We're like what?
+Yes, so it was still useful to to understand Mapreduce, how
+or can be distributed. But in practice you will be using this, not mapreduce net. Never.
+Yes, Jay.
+Say what I could. What? What now? In homework? Yes, go ahead. Sean.
+Yeah. So this is the question that Max already asked, how is this happening on the hood that's coming up. That's coming up.
+And it's a good question, because I'll give you a preview for this to work properly.
+Data has to be partitioned properly.
+but that's coming up. Yes, Mark.
+yeah, absolutely. But that again goes back to the same thing. I just said
+a lot of the for this to work properly.
+A lot of them that will have will depend on data partitioning. But that's coming up.
+But let me 1st give you an example of what a multi-parent Rd panel looks like. Yes.
+because oh, sorry. It's kind of
+yeah, you could right?
+You could.
+And but then, if it if it then, in this already goes to this earlier, you can already process that, and then that. No.
+that's the whole idea of pipelining. Let me give another example. So this is, this is kind of like a Csc example. Let me give you a data science example.
+Let's say you have your users. Yes.
+and let's say you can you filter them by zip code filter? Luca filters is a
+I already mentioned. It's it's an actual transmission.
+It's a transformation.
+So then you have our filtered users. Maybe you want to only target. Let's say you want to make some kind of ad campaign right?
+Only targeting people in a certain Zip code. Yes.
+Could you filter again by age, like only people who are not too old yet. So they're more impressionable like, you. Remember anyone here working in advertising. They want to target young people because they're more impressionable, which is definitely true.
+What somebody could do that. Yes, that's 1 lineage.
+How about you want to target people who? I don't know
+our power users. Let's say you have some app.
+and you want to filter by people who
+spend more than 10 h there in your app
+something like that. Right? You were aware of this, right? Something like 3% of the people eat 80% of the candy.
+It's highly Pareto, right?
+You want to target your power users because they're more.
+There's more. That's where most of the lift is. Yes, and you know you could filter
+you know the activities by that, too. Yes, so twice right.
+Yes, filter again.
+But now you could aggregate that right. You could filter, a specific kind of user that has these demographic properties and then has multiple like.
+you know, activities.
+Yes. And now we have our aggregated result. Excuse me like, maybe
+power users that have these demographic properties. And now we're going to send them a flyer or something like that. Yes.
+right, this is a lineage graph.
+How about? We want to organize a conference?
+And we like in Las Vegas? How about that?
+Where we invite these power users to come to our hotel right?
+We could filter like I don't know. We need to give them like this the right meal. Yes, maybe we only find vegetarians. Yes, so they don't send them the wrong food. Yes.
+and now we can
+find these people and their preference. And now we can say, Hey, why don't you? You know we send them this meal, or something like that. Yes.
+but you see, how was what was, what was, what was like
+pre-computed here and here can be reused, and that's what makes it efficient.
+Right?
+You can compute them in parallel, but then join them again again later, very fast.
+Yes.
+if you want to think about like that. But there are Rdds, these are all Rdds except for these, this and that. Those are results.
+Yes.
+data data. So data sources.
+Every action has to eventually some kind of data. Source. Yes.
+this.
+This depends on how you set it up.
+The more independent you can make the better.
+and that's going to go. It goes back to this partitioning issue that I keep talking about. Keep that thought.
+But anyway, so, as I said.
+spark keeps these intermediate intermediate results implicit in memory. Anyway, as a result of action, you can also explicitly cache it by either the cache function or the persist function. One keeps them in RAM, the other one in the disk. Yes, Mustafa.
+Well, what do you mean?
+Yeah.
+No, okay. An R. And D is the default status structure of spark.
+And it, as as we discussed it has. It has a data source. It has transformations and has an action
+like, and it allows for this pipeline.
+It's just it's a large organization.
+But since this keeps coming up.
+let's talk for a moment about partitions
+and their dependencies. And this answers your question and your question and your question.
+It's a look.
+So the idea is that if.
+by the way, well, I have a slide on that. Give me a second.
+if a pair, if the partition of a parent are the Rd. But what I mean partition here is a chunk of data logically, a logical chunk of data.
+If if this goes to at most one child, R&D,
+then like in map, see that, or filter or union. See this.
+then there is basically no need to talk.
+You can do it.
+So those are going to be, you know.
+all of that low communication, localized, easy, pipeline, easy failure, recovery. It's gonna be great.
+Ignore this for a moment. This is coming back later.
+however, what a wild, not a wild, wide dependency is
+is one where a parent already goes to multiple charities that's going to be awkward
+because it's gonna be high communication, high latency.
+All of that, because those imply a shuffle, a shuffle operation, and as you a key shuffle.
+as you, as you know, that is going to be expensive, right? Because data has to move around.
+So in English aim for this, not that narrow dependency. Are your friend.
+Why dependencies are your enemy ideally? You want to do only one wide dependency per
+action at the very end, when you collect or sum, or something like that.
+But there's 1 thing proven. Yes, at least I learned something.
+There is there tricks! Do you see where it says is co-partitioning? We'll talk about it in a moment, Pareen.
+Now you you have to set this up.
+Half of the battle in Spark is going to be. You
+have to determine how to partition your data, and yes.
+and you will see in a moment how that works out.
+and I might just thinking about it. I might have to revisit this again next week. But let's see how far we get.
+So in other words, a join
+Pareen and everybody else a joint that is not co-partitioned.
+It's going to be awkward. It's going to take a long time. You have to integrate data from all over. Yes, but if you're smart about this, and you know what you want and what you need, you can
+co-partition this
+and then and then you don't don't need to. And then it's going to be narrow. So in English a co-partitioning turns a wide dependency into a narrow, narrow dependency. And you need to do this whenever you can. It's going to speed up your data tremendously or your not your data, your data processing.
+Yes.
+But again, I recognize just by looking at you.
+This is why it's important to people coming in person. So I can see your face that this is
+not trivial. So I mean, let's give a couple of examples. Yes, so
+like I said so. So we started our initial R&D
+that? That Luca is hooking up
+to the data source. Yes. Say, maybe you paralyze the actual data sourcing you can split them into. Maybe the data source is a big lexicon or something like that, Wikipedia. How about that? And you split it into a thousand pieces
+or 1 million pieces? Yes, it's our initial R. And D,
+the initial Rd becomes filtered. Rd, by filtering. Actually, I'm going to use the example of like numbers here. So our initial Rd has data has numbers.
+And let's say we want to do something with prime. So we could filter by prime numbers. Right?
+That is a narrow, dependent filter is narrow.
+you can check if a number is prime.
+regardless of any other numbers being prime. Yes.
+you need. You don't need anything else. Yes, right?
+Right? Okay.
+Squaring. By the way, you don't have to call it that. I called it that.
+But that's also a narrow one. You can square all the numbers with a mapping function, right? You could square all those primes.
+By the way, why, you might want to do this I don't know. Number theory. There's some interesting, interesting interesting applications there. Yes, because you find the primes, if you square them. Yes.
+but then, in the end, this is our sum, our our result, which is an action something like reduce.
+that is an action.
+And now the whole thing runs in backwards. By the way, is this a multi-parent pipeline, or
+just as sinks Adam single all the way down. Yes, single. So this is yes.
+it's literally a single chain. Right?
+You start with a large number of numbers. You filter by one z prime, you square them and sum them.
+But again you have to at the end. You have to wait until they all.
+Yes, huh? Yes, yes, mark
+at 1st approximation. That's a good heuristic.
+That's a heuristic. But it's not all of it. Basically.
+Okay, there's there's 2 things to it. One is these, the actions are usually wider for sure. But again, they're the only thing that actually trigger a competition.
+Yes.
+yeah, that's what I'm saying. So the so the spark can do that. So let's say, let's say some numbers are. Let me actually give an example. This is a key to thought key that thought, because this is going to keep keep going with this. So let's say our 1st partition is the numbers from one to 15, and the second partition is 16 to 30 s.
+So our data source was was partitioned evenly. Yes, but already, after our filtering.
+this is going to be uneven. Yes, because Adam.
+right? So which which partition is going to be faster, to process this one or that one?
+This is faster, right?
+Because there's fewer primes left.
+Do. I have to wait for this to process that
+I can go deeper earlier? Yes, I can already apply the next transformation. And the way I can do that, by the way, is because the map, not the mapreduce the spark thing.
+can analyze the lineage graph and say, Hey, we can compute this piece without having to wait for the other piece.
+That's what a lazy competition is.
+Useful. Sorry, Adam.
+Oh.
+that that is. Yeah, it is predictive. That's what I'm saying so. So this will anticipate that this is going to go faster than that.
+Yes, yeah, no, it's that's why you get a thousand X speed up.
+No, that's an abstraction top of that exactly.
+It's a logical. It's a logical partitioning.
+It's a partition is a chunk of data.
+But
+and I think this is definitely something. There's only 4 min left. I will have to push into the next lecture, which is
+some examples of smart versus not so smart partitionings.
+Let me just give you a preview.
+You can save yourself a lot of pain. Pain means delay
+by smart partitioning of the data. And this is, there's a whole. Let's just do it next week. Co-partitioning. Yes, Mustafa.
+No, no, no, no, this is not SQL, yes, on Hdfs.
+You will have to let me show you. No, it's not an R. And D. No, it's not an Rd. You will have to collect them like.
+give me. Just let me just go go. Let's finish this example, and I'll talk tell. But basically, you have to collect these results.
+As a matter of fact, we'll have some exercises in the lab this this week where
+those results will live on the clusters. But you have to collect them.
+Right? The collect is an action, too.
+Yes.
+pump the data notes. Yeah, sure, sure.
+But ideally, they're not sent. They already live there. Let me let's talk about this. Let's say this partition. One lives on one data, node and partition, 2 lives on data node. Yes.
+Can this all happen in parallel on different data nodes? Exactly. That's what I'm saying. You want to partition properly. So this happens properly.
+so ideally. No communication needed, no movement. Data needed nothing like that. That's kind of
+no, you can make them as you can can make as many as you want that that's up to you. Yes, Ryan or Brian
+Brian.
+Go ahead.
+I'm glad you asked. That's 1 of the exercises in the lab.
+Yeah, anyway, let's just finish the example.
+We can square independently. Yes, okay.
+And as we discussed with Adam, I think
+this could work with like a lesser data node, but maybe a fashion node here. Yes.
+and then finally, finally, finally, finally.
+mark for you. We do some kind of reduced function summing. And now
+and this is this, this result is going to live on Hdfs. We have to collect it. Yes.
+okay. But this is a number. This is not a
+on our data structure. Okay, now let let me just say one more thing because we have only 1 min left.
+This is for you, Jay.
+Much like biased machine learning. Partition is like the favorite word of big data and oops. So in Hadoop
+cap, theorem means network partition means disconnected nodes in the network. Yes.
+here it means a logical chunk of data, a logical chunk of data. Okay
+disks. It means like a logical division of your hard disk. Yes, I have, like several partitions in my in my hard disk.
+for instance, databases, as you know, sharding
+like you can distribute a large database into chunks across nodes like in a mongodb, or something like that. And, by the way, many others. So if someone, if someone asks you
+something about partitioning. You always say, what partition do you have in mind here today? Data partition?
+But
+I think because we're out of time, I'm going to talk about the co-partitioning next time, and I think it's probably best if I bring a bunch of examples. So for this week in lab, let's implement mapreduce Brian
+and not mapreduce. It's implemented great gradient descent once with mapreduce and once with spark, and you will see tremendous speed ups. But now you understand why.
+anyways, to summarize. Someone asked about this. So as I said to the fundamental data structure.
+yeah, this deferred computation, it's lazy.
+So networks. It analyzes this lineage graph before it does anything, and it can plan ahead. Here. We need this. You need that. We can reuse this. We can reuse that.
+It's gonna be great, and we only shuffle once at the end.
+As I said, actions mark.
+usually expensive, happened at the end, usually wide. And then the transformational mapping, filtering things like that.
+And yeah, again, it's and analogous. But
+it's an analogy, it's not, it's not precise. So next week we apply it, and we'll do parquet. And we do, Dremel, and we don't have time for questions. Okay, so let's just end it here.
+Huh?

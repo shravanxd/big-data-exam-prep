@@ -1,0 +1,956 @@
+WEBVTT
+And one can talk
+all right. So welcome back. So a couple of things as some of you just mentioned. Yes, there was issues with the cluster
+at the end of the last assignment.
+what you want to call it?
+they emailed me. They mail everybody else. There was outages. This is one of the reasons why you might not want to go to a cluster. Yes, you are then at the mercy of someone else. Infrastructure that you might or might not have.
+you know, access to fixing it. It is completely out of your hands, which is why tools like Dask, which is what the last homework is.
+or Gpus, which we'll mention in the you know, in the very last lecture, are.
+you know, and a viable option. At least you have full control of your own domain. Yes, if you have a Gpu in your in your machine.
+so that's the downside, I would say it's the biggest downside of relying on outside infrastructure, including cloud stuff. It could go. It could go down by the way, I talked to the Hpc. People, and I think I already mentioned as well. I've mentioned it again.
+Cloud stuff will not be covered in this class, because I can't. They told us we cannot. We cannot support that at least not this semester, and maybe not anytime soon, either, for
+privacy reasons, I think, and which actually is topical today.
+So you know, my my my
+claim to myself is that everything I mentioned in class? You can try yourself
+so we can't offer cloud stuff, unfortunately, but I will, but I'm talking to them to rectify this for next year, although that's not going to help you.
+But I was told recently that we can't do that, so we'll see what we do.
+anyway, a couple of things if you still want to set up as a tutor for the datathon. I sent you the email information. They still looking for people who are want to be mentors, tutors, supervisors for the datathon.
+So I just met with them today. So if you want to do that. Please sign up.
+It's on the weekend. There's a rolling, rolling thing. You can do
+couple things. So today we'll talk about the impact of the things
+that we have talked about all class. So bottom line is this, we talked about this already. But the bottom line is that most people now interact with
+cultural items, movies, music books, dating, mating. You name it. Yes.
+Through systems that people like you put together recommender systems.
+information, retrieval. So it is worth
+spending at least 1 1 lecture
+on like the. So I call a sociocultural impact like, what could go wrong. Basically, if you build your society around that
+some students sometimes, you know, perceive as as a soft topic.
+and it sometimes is. But I'll try to make that as rigorous as possible. Talk about. You know, K. Anonymity, we'll talk about differential privacy, as some of you know who took the responsible data science class. This is actually fairly rigorous or can be made fairly rigorous. So we'll we'll do that all right.
+What else can I tell you? This is a stock photo. Obviously
+I will ask my artist to replace these dominoes with series and ones. But the idea is that you know
+there, there can be something going wrong just to warrant you in the class where we are. We are doing this today. Next week we'll have our guest lecture where
+Scott Shaver, senior data science manager from Comcast will tell us about doing this in the wild.
+And then the very last lecture will be like
+current topics, Gpus. Things like that as much as we can, and that's the class, all right.
+But
+but this week we'll do. We'll talk about. As I just said these. So 1st of all, we'll talk the social culture impact of this stuff.
+And then we'll spend most of the rest of the class on privacy, deanymization attacks and differential privacy. And these are kind of the hot topics.
+hot topics of you know what the or the downside the
+dark side. I don't know what you want to call it. Of all the Flip side
+of all of the things we've been talking about in the last couple of weeks, couple months, all right.
+and like I said, some people cringe every time they hear social, cultural impact.
+But, as I said, there is actually an a legitimate way of handling this respectfully and like rigorously. So let's try that. Okay, because there are real life consequences and real life concerns.
+It is kind of my claim.
+And unfortunately, this is not fully understood yet, because this just happened.
+but it's my claim that the 2,010 s. Internet was killed by implicit feedback.
+This this kind of stuff just happened. Buzzfeed went out of business.
+Huffing post is about to go to our business.
+Why do you think I'm saying that any idea I mean again, this is still
+very much a topic of active research. This is not as well understood as I would like.
+But what? What do you think? Any ideas? Why am I saying that. Yes, this is Mark.
+What's up.
+Right? So what Mark is saying is that in the 2,010 S. Internet, everybody lived and died by the algorithm.
+It was all ad based. Ad is attention. Ad is clicks ad is engagement. And and so so far, so good. So what? What could go wrong. Why, why is
+jolie
+basically basically click. So so basically, idea is, as long as I can trick you into clicking on some click clicking on something.
+Then, once you click on that.
+it's all over right, you're going to get more of that right.
+But so what? Well, I mean, I agree with you, jolie that that's the in one sentence or in 1 1 buzzword, ironically. I guess. Clickbait.
+That's that's the problem. But what what's the mechanism? Why is that bad. So let's say you click on it. You were tricked on clicking on it. What will the algorithm think
+up there is that Matthew?
+You want that correct, correct. And the problem is, the implicit idea is
+the problem of implicit feedback is that you don't know why someone clicked on it. Yes.
+and I would argue that the people who
+so what do you think was the most was the most engaging content by this metric in the 2,010 s. Mark.
+Yeah stuff about. I don't know race gender. What else stuff like that, right?
+But that doesn't mean that's what people want. It's just
+for reasons. Again, we don't fully understand this yet. It could be some tribal circuitry that's that's engaged, maybe just a maximal number of people. If you divide people like that, you know. Say, by gender, that's the maximum number of people who are like.
+you know, engaged like that.
+But that's the big difference between like what people actually want, and what they in the short term click on, maybe just to be outraged. Yes.
+And what what did we learn in the last 10 years? Yes, you can do that today and tomorrow, and maybe for a week. But what what happens eventually?
+I mean, you were there. That's what I'm saying. This is not as well researched as I would like
+yet, because research Lags is behind. But you were there. You know what happened.
+What happened after a while.
+Yeah. But why?
+Yeah? Because at some point you're like, I don't need to click on this. I know what's what it's going to say. It's just some rage, rage, bait article
+right? So, in other words, this, this presumed people can't learn.
+but people can learn. So instead of their preferences.
+it it didn't learn the preference. That's the that's the thing.
+Preferences were not learned, and you have to be very careful with recommender systems, because what you will get very quickly is what are called echo chambers and filter bubbles. In other words, as we discussed recommender system do eventually ultimately rely on similarity. Right?
+And what that means is, you might literally be radicalized by the algorithm
+that you get more and more and more of the same content.
+And the best case scenario is that just reduces like the the range of items. You see, that's the best case. Yes.
+but worse so that's that's what I'm saying. You just got only like. But worse, you get bored or you get polarized, because after a while you might literally think that. You know,
+you know.
+it's basically inconceivable that anyone could in good faith think anything else. Because, you see the same items over and over again, it's very dangerous, because the problem is, someone says on something online.
+Yes, exactly. But the problem is. And again, this is all emerging research.
+I am fairly confident that your brain is not built for this. In other words, your brain is built for sampling from a from the real environment, not this artificial environment.
+And so you have basically a gigantic sampling bias problem. The only good news that I can see in all of this is that there was diminishing returns of this. In other words, if this, if I was giving this class in 2,010, I would say, you know, there's no hope.
+It's all over like, what are you gonna do?
+But as we saw to the 2020 s. People can learn not to click on that.
+They they get more sophisticated. Maybe people who grew up with the Internet.
+I mean, you're you're not millennials. Yes, are you?
+So this is generational effect, Max. You can learn from your ancestors that not everything you see online is is for real like, it's just a sampling bias problem. And I think
+you do right. But maybe I'm maybe I'm optimistic.
+But anyway, for now I just want to highlight that that. As Evan said, this is terrifying because people on some level
+take what they sample at face value. I think a lot of bias has come down to sampling. All right.
+One thing that things are is a classic case. I'm sure you have seen this before. It's actually it's actually a legal, a legal issue?
+So let's say, Facebook got into huge trouble. They had to pay a lot of money. Why? Why is this problematic? So basically, you you target people based on for the loans and housing applications based on age gender zip code. Why is this actually problematic, dangerous?
+Anybody apart from filter bubbles. Why is targeted advertising, problematic somebody up there?
+Huh? Max, it's not problematic.
+This is a classic case.
+Anybody, it's it's illegal.
+You can actually, you can actually get in trouble for doing that like that is, that is literally from a regular perspective, illegal entropy.
+They had to pay billions of dollars. Yes.
+so a lot of this stuff is actually being pulled, pulled back now, yes, and again. This, you know.
+like again, you should think of this in terms of selection bias, right? You might not represent
+all of the user right?
+So you know.
+by the way, what kind of bias do we do we think about here. What? What what bias does this mean is what kind of bias is meant here?
+Yeah. But but sure but systematic bias. I mean, bias is by nature systematic, right?
+I don't receives error.
+So what what do you? What do you have in mind?
+What's what's the idea here?
+I mean, the problem is, most of you as data, science will be dealing with people, not stars, not
+chemical molecules and stuff like I mean, some of you. But most of you will deal with user data.
+So what's the problem with people? Max
+could or you might not even represent them. Well, right? How about atypical users. Yes, like unusual users. You might.
+Yeah, you might not do well by them. Yes.
+So you should wonder. Wonder about this. And, by the way, if if you
+can get away with not personalizing it, don't that that it goes back to like the bias model ironically.
+or the popularity baseline. But basically, because of all these legal issues and other issues, quite a few companies have actually been pulling way back on this stuff
+because you could get in trouble. Yes.
+basically. Now, in the 2,020 s, we know the downsides of this. So a lot of companies are pulling way back from recommended systems. If yeah, if they can, if they can avoid it. Because of all these downside legal, ethical, algorithmic fairness, all those other things. Yes.
+social implications. All right.
+All right, let's talk about privacy. This is even worse. So what we just talked about was like
+downsides of information, retrieval, downsides of recommended systems.
+This one is even worse.
+Oh, sorry.
+Yeah, yeah.
+Well, so, so, exactly. So, that's actually where we're going to go next. And and that is.
+even if you don't explicitly ask for these sensitive things. Yes, you can retrieve things
+like that from things that correlate with it. That's actually exactly where we're going here. That makes sense. If you see what I'm saying, keep that thought. That's where we're going. Actually.
+all right. So the idea is that. And by the way, I use scientific very loosely here this goes for any research effort, including including including anything you do, even if you're not a scientist.
+But this goes hand in hand with what we talked about last semester on the topic of reproducibility.
+And there's a conflict here.
+What? What? What's the point of reproducing? We have a copy of values here. What is the point of reproducibility? What's the point of that? Or what is that
+we talked about that last semester? Those of you who didn't take that class. You're excused. But this class is implicitly a sequence. Yes, big ideas to big data.
+Yes.
+pass the data.
+check your results, check your results. Okay. So so reproducibility means if, say, say, Max, here has some big claims about something, some big insights. And if this was 20 years ago, we would just believe at face value. Those days are long over. We now need to be able to reproduce
+what he did, using the same data encapsulating some environment. Yes.
+so that's 1 value. Reproducive value to ensure reproducibility data sharing is critical. I again, historically.
+the philosophy was, we don't need to see his data. We don't need to see his code. We just trust him.
+By the way, Max, what happened with that philosophy?
+Why is that no longer something people do?
+Yes.
+so P. Hacking is one downside. People have an incentive to produce certain results, and they're smart so they can do it. What about even if it's not intentional. What else could happen? Why do I want to see your data and your code, even if you have the purest of intentions?
+Mark
+right? Basically, as I like to say a skill issue right? You might have the best intentions, but you've made some kind of mistake. Might have a coding error. And, by the way before you dismiss this.
+This happens all the time, and the only reason we know that is now.
+That that is a problem is because now it's expected.
+In the last 5 years we have learned a lot about what could go wrong
+again, even if it's with the best of intentions, just from straight up coding errors. And we know that because now people are expected to share their data and share their code. But here and so so to do that. People share anonymized data? Yes.
+So the good news is, people now are expected to share the data routinely.
+Even companies, if they, if they if they can, if they make any generalized results.
+General general claims they're expected to to do that.
+And so that's a good thing. The downside of that is the default way people do that
+is by anonymizing the identifiable information.
+But, as you will see in a moment, this is actually believe it, or not
+surprisingly problematic. So this could well come up in an interview. Let's say you do some research as a hypothetical. And what should you do? Oh, you should share your data absolutely. That's good for why? Because of reproducibility. That's good. You're doing good so far. What should we worry about? Oh, you should worry about privacy. Yes, and then what do you do? So let me show you a whole bunch of stuff that people do do.
+and that is frankly not sufficient. I'll show you in a moment what what I mean by that.
+So the the most, the most common thing people do. I would argue
+what's called the identify the data is to obscure them. So, in other words, you have some original like name.
+and you assign some kind of like code. Yes.
+and you, as a researcher, have the code in some separate separate directory. But you don't share that. So that's called de-identified
+data, and I will show you in a moment. Why, why, that is not good enough
+this one where you perturb the data. So in other words, you have some some random variable with some average. Yes, but you add some random noise, some normal addition noise with C squared noise, I guess. Mean 0 and navigation. One
+question for you.
+what do you? What do you think about that? Let's say we could inject noise into the data and release that
+to then obscure the the original data.
+What do you think about that? What's your initial gut reaction, Adam?
+All right. First, st I mean, as a scientist, I have like stomach ache, you know, exactly like
+it goes against reproducibility. Right? You will not be able to exactly reproduce what was done.
+Because you know exactly. Also, again.
+it feels like sacrilege. Yes, you message the data. It's not the real data.
+I mean, that can cause all kinds of other problems. And as we'll discuss in a moment, you cannot do this fairly, straightforwardly, actually, so, this is not a good idea. People do that. But for many reasons.
+3 or 4 reasons depends how you count. This is a bad idea. It's bad, it's against reproducibility. It's bad. As a matter of principle, to get in the habit of messing with actual data it can be undone
+and things like that.
+This one is called Pay anonymity. And this is an interesting, interesting idea.
+and the idea is that if some feature occurs in K rows.
+You cannot distinguish K minus one rows. That makes sense. You have plausible deniability, like, let's say you have 2.
+And so that's just I'm just gonna pick on Max and Mark.
+Let's say Mark, Max and Mark are 2 people in our data set, and they're both males right
+now. We can't tell who it was. If plausible nobility you could have seen. Oh, it's Max, or it was smart. Yes.
+that's K. Anonymity
+K is the number of rows that protect you. Yes, that's the idea. If you have K rows, you basically become protected by the number of rows.
+By the way, that is
+not a good idea, as we'll see in a moment, but that that was an early attempt 23 years ago. Now, if someone ever asks you, you have to know what this is.
+What can anonymity is? K. 9 is the idea is, every row of that feature happens more than once, and you are protected by that, and and from a modern perspective is nice. Try. But you're not.
+you are. You do not have that protection, and I'll show you in a moment why
+this one is unfortunate. So basically, some people just give you the the summer statistics. And you cannot do that too.
+Also, why would that be problematic from A from a reproducibility perspective.
+Why, let's say I just released statistical summary. Sometimes the Rb will ask you that that you do not release any individual data just just
+just what you want to call it?
+Statistical summaries. Why might that be problematic?
+Anyone?
+Yeah, exactly. It goes against that like it kind of under like. There's many ways you could have gotten this this average right? I have no idea what went into the soup.
+and also, as we'll see shortly, that can still be leaky. Don't do it all right.
+By the way, before we go into what what you should actually do, and why? Why? K. Anonymity in particular is not sufficient. Let me just show you that
+that you know at least, how do I say this?
+How do I put this, if you're at least considering this, you are doing better than most. Okay.
+what? What what this paper is about is they they could identify
+every single person in this data set, because
+they just left in the personal invite environment information?
+Yes. So the 1st and last names and birthdates of every study participant was left in the paper.
+So so I would argue that if you're at least considering these things, you are doing better than average.
+you would be surprised of all the things that could go wrong.
+and that you see routinely, that's why I'm mentioning this, so don't feel bad.
+I do, however, want to tell you that if you do this.
+and if you promise people and anonymity they might sue you.
+So so there it. The stakes are high, right.
+and we'll talk about in a moment. What harm could come from that? That's kind of was kind of implying that. And we'll we'll go more on that
+another thing that you need to know about is what the anonymization attack is and how it works. And we'll we'll we will. We will talk about that in a specific example.
+so imagine you release some anonymized data set. And it has all kinds of records. Record one record, 2 record, r, 2 N, and like, it's a large data set could be a hundred 1,000 1,000 rows or more. All right.
+And the question is.
+if you have for any individual some partial information, maybe even inaccurate information. Can you figure out who was in there? This is a deanization attack? And then, if you can do that. Can you retrieve
+information that was not released from that?
+And in a nutshell the answer is yes, and the most infamous case of that
+comes from the Netflix price.
+Does anyone remember what that was? We talked about it already last semester? Does anyone remember what the Netflix price was, or is Jolie?
+That's right. If you could improve
+the rumin square error of Netflix's recommended engine cinematch in 2,006 by 10%, they gave you 1 million dollars
+and
+How do I say this? They released a hundred 1,000 records from the database.
+and I'll tell you a moment how it worked.
+There's a reason I mentioned this. So there's a reason why there was only one Netflix prize
+this. This attack was an attack on the Netflix Prize challenge.
+and it was such a reputational damage for Netflix that they never ran another one, never to this day, and nobody else did either. So I would argue, this was a very influential
+case study. So that's what we'll talk about it now in detail. But it's pretty shocking. Actually, Netflix didn't do another one, and nobody else did either, because they showed that if you're not very careful you can
+uncover things about the individuals that they might not want to be released.
+So let me give you an example. So so Netflix released these 100 million records.
+Yes, what's the intermovie database? What is that?
+It's another database? That's nothing with Netflix. Where individuals rate, what movies? Yes.
+And so we'll talk about the details of this in a moment.
+But what happened was that Netflix thought
+that they are safe behind K. Anonymity. Imagine you release a hundred 1,000 row database. What's your K for? K anonymity?
+Somebody a hundred 1,000.
+So that seems pretty safe. Yes.
+and Netflix thought it is. But what they figured out is what they did is
+very quickly using only a handful of movies. I'll show you in a moment you can actually match up people
+from the Netflix prize that are in the movie database. And then you can figure out who is who
+and maybe can then release potentially embarrassing information. Maybe that you like the Princess Pride when you didn't, or something like that, or when you don't want that to be known to to the public, or something like that, or whatever you like. Yes.
+sorry, Max.
+yeah. Basically, we'll talk about it in a moment. So we have a surprisingly small number of information items you can reverse.
+identify who it was. So this goes now into. If someone ever asks you this, what the anonymization attack is, and how it defeats anonymity. We'll talk about it now, but that's kind of the thing. It is a surprisingly small number, as we'll discuss in a moment, Max.
+But first, st does anyone know the game? Guess who?
+What is that game?
+What is that? Someone describe it? Adam.
+it's a great game. Yes. And why is it great?
+That's right. And how does it work?
+Okay? So you have to pick a secret person. Yes.
+that's an important part. So you pick some person with some attributes that
+you don't tell them what what what the person is. Yes, and the other player gets to do what?
+Based on features, and has anyone played it?
+And is it hard, like, how many features do you need?
+Usually, Max?
+Yes, we'll talk about it in a moment. But basically very quickly. With a handful of questions, you can usually narrow it down. If you ask the right questions.
+you can narrow this down very quickly.
+Yes. So, by the way, just as a brief aside, I do
+recommend in general these information gathering games to you.
+Guess who is one of them. Battleship is another one mastermind, we're code breaking. So basically.
+this goes all. It's like information, retrieval, uncertain direction. And and this one particularly guess who is basically
+learning in a playful way why canonymity does not protect you. Yes.
+and before we go into the details, the idea is that well, let's just go through it. So anyway. So the idea is that in the idea behind K anonymity was that
+in in K row, data set, no address in in, you are basically protected by the crowd. Yes, and the bigger the crowd is the better. No single address is informative.
+The problem is, the combination of attributes is
+all right? And because we usually deal with, we deal with this is basically bottom line.
+So let's say, you have a hundred 1,000 rows. That sounds like a large large number of rows. But if you have
+50 columns or something like that.
+there's no no way like the idea is that people are high, dimensional. I mean, if you can just imagine how many
+dimensions it would take to describe, you
+probably come with a hundred, maybe 200 features
+and with 200 features. If you do this binary search, there is no way. There's not enough data in the world to protect you.
+You are quickly identifiable very quickly
+from. So basically, it's number of rows versus number of columns.
+And, as I said, just said, you usually
+you know, in other words, in a high dimensional space in a high dimensional space. You have no neighbors, everybody is, is far from everybody else. So you're easy to separate.
+You're alone. You're completely alone.
+And so it's counterintuitive, I guess, because you can't think of in high dimensional space.
+But if you imagine having some data space that you cut the
+I don't know 2030, 40 hyperplanes very quickly. It's gonna be only 1 1 person left in that is part of all, all of the sets
+all right.
+And that's the idea. If you, as soon as you have people about data, if you have data about people you can quickly home in, I'll give you an example example
+of attributes. There are many others height. If I know your height that already narrows it down. Tremendously sorry, Sean.
+I mean, you tell me. How many features do you think? Here I have 20 to?
+Okay.
+You will see in a moment. You will see in a moment why, even that is dangerous.
+The Netflix prize
+you will see in a moment. But basically, once you have 20, if you look at that date of if I have your date of birth. I can basically narrow it down to like dramatic like, a lot of these are
+tremendously, you know.
+I mean, if you know the zip code.
+Yeah, correct. So there's some stuff gender that's less informative.
+Right?
+Then some like Zip code.
+But if you have the Zip code of Perth or Zip code where you are right now, you're narrowing it down to a couple 1,000 people.
+And then, if you cross-reference that with everything else very quickly, I might just it's just you, yes.
+but the down, the the you might.
+What happened now, it sounds like you might have switched to a different language.
+Yeah, that's what I just said. I don't know.
+All right. So. But
+did you see that.
+anyway, the bottom line is that you might say so. What if someone finds out about my citizenship. That is not the problem. The problem is, once you use these relatively broad features to de-identify somebody, then you might get access to information that they might not want to reveal like their values or their preferences or personality. Maximum.
+Yes, personally identifiable information. PII!
+Yes, rest.
+That's exactly right? So that's actually something that that we are building towards. So somebody did a de-identifiers act on the census
+or using census data. And they did exactly what? What Max just said. We'll get to that in a moment.
+How do you deal with Phi?
+What are you working on?
+Right?
+But yeah, so there's this is actually regulated. You're right. So. But as as I look at you, some of you, I know for a fact. Are you working with user data accounting.
+you know, records things like that.
+All right, let's talk about how the actual attack worked from the shmodykov paper.
+Okay? So 1st of all, we can define the the similarity between 2 rows, right?
+Something like that. So basically, we look at all the all the items that 2 users
+or 2 rows jointly, jointly interacted with. We define some kind of similarity
+kind of like jakar similarity, but not quite. Yes.
+it's a little bit more sophisticated because it depends on how they interacted with it. Yes, and suppose it's just a set similarity to see that.
+And then we compute the similarity of of to each of the rows of some partial observation queue, because, again, the idea is that we only release partial records in the in the in the Netflix price, for instance.
+But the the idea here is, and this, by the way, is also often used
+apart from Netflix price. I mean, this is how it 1st 1st
+was used, but I'll give you this has since been generalized. So the idea is, you do this for all the rows, and then you will see a big jump
+between the best match and the next match. Kind of like in a screen plot.
+Imagine screenplot!
+There's a best match, and then, if there's a big jump, the idea is that
+it's very likely there's that this, this is the same person. It's identical.
+Yes.
+Oh, kind of
+this is just the number of joint interactions. See that this is interactions they jointly made. So basically, let's say, you have 2 rows right? Row, one row 2.
+The idea here would be that these are all of the safest movies, all the movies they jointly saw
+right? It has to be limited by that. Yes.
+so different users would have a different joint set of movies. They'd be jointly rated. Yes.
+which is already suspicious. By the way, if you.
+apart from the fact that that you, you know, rate them. Similarly, you also read the same ones.
+You know what I mean.
+there's 1 more thing I want to say here? Yes, we'll talk about this. And, by the way, Max argued away, the answer is not much.
+only a little bit of data.
+We'll talk about it in a moment.
+But,
+let me just tell you briefly, this has since been generalized to doxing attacks. Does anyone know what a doxing attack is. Imagine I want to find out. Let's say, Max, I'm picking Max here today. I'm not sure why, it's just he's in my lunch site. Max has an official Twitter handle, and he posts all the you know.
+Normal takes on data science there, but he has a hidden twitter handle where he has all his hot takes. Yes.
+right.
+And I want to. I want to link the 2 I want to make. I want to. I want to uncloak him. I want to. I want to unmask that. He's all these
+spicy takes on his sock puppet handle. Yes.
+Does anyone know how that works? Same same idea?
+How does a doxing attack work?
+The idea is sure. That's what doxing is. But but it's the same same philosophy. What's the idea?
+One.
+Okay.
+Okay.
+Now, that's often a use case for these doxing for this, for the stock powers on right. You
+defend yourself. But how can I unmask you? The idea is, yes.
+one way.
+but but more commonly, it's the timing. Let's say, let's say I correlate the timing of everybody versus everybody else, and there's 1 account that is jointly active, yes, more than everybody else. So there's a big gap. And this is the big idea. There's 1 that is very similar. And then there's a big jump. So it's actually in the big jump that reveals that it's the same person. If that makes sense, that's the idea. It's in the jump. We'll talk about it in a moment.
+and the idea is, there is a big jump between you and everybody else, because it is you
+or your alter ego, or your your sock puppet account. Yes.
+burner account. Yes, that's what I meant. I apologize. Yes.
+And yeah, it's like, you know, you know.
+Yeah, there's just too many joint interactions to be to be a coincidence like there's a prime suspect
+all right.
+And we just talked about this. So you compute the per user similarity, right?
+As such.
+And you know. So we'll talk about this in a moment. So basically, you you quantify this if they're identical, right?
+Or if they're off by this is for movies. Specifically.
+So, the idea is, we count them as identical or off. Yes, yes.
+By the way, you don't have to this doesn't generalize doxing attacks. This is specifically for Netflix Price. Yes.
+and and now we so or not, we.
+these guys, Schmutnikov in 2,008 set up a threshold
+either of 3 days or 14 days. What I mean by that is, as I said when this happened, was it within the same time period. Yes, 3 days was the same, or 14 days was the same. And finally, this is what you said.
+There is some threshold that we that we set say like, say, 1.5, for instance.
+like. If the distance between the top score
+and the next one is larger than 1.5 centigations. Then we consider the match. That was the original Schmutnikov. Of course you can set this threshold. However, you want. This is like a hyperparameter that you can tune. Yes.
+yes, and then and then the the shocking result, which is why no one ever tried this again
+on this slide is basically, if you just take 2 movies, 2 movies, yes, data from 2 movies.
+And you count something within 3 days
+versus 14 days. How many movies do you need or like
+like, on average, if you look at this, what's the probability? You can de-identify somebody? The answer is
+so. So in other words, information from 2 movies, but might be enough to de-identify half the users.
+What if you have information from like 6 to 8 movies?
+Everybody.
+Yes. So, in other words, this kind of approach where you look for joint features
+can defeat K. And K. Anonymity.
+There's basically nobody in the data set
+that that rated all 6 movies like that the same way. No, it is. It is you.
+just one from the in the movie database and one from the Netflix price. Yes, that makes sense.
+Oh, yeah. Sorry.
+Yes.
+yeah.
+Maybe I didn't explain it right. No, you don't. You do not need to know that. But but where's the disconnect? But thanks for speaking up. So if there is a disconnect, there's probably a shared disconnect.
+But okay, so let's so they had information from the Netflix prize. Yes.
+and they had information in from the Indian movie database, and they match them.
+And the answer is, and then and the answer is, you can do this. Basically, if you have a shared number of movies as 6 to 8, you can basically do this 100% of the time.
+Oh, sorry up there.
+No, it was. It was supposedly anonymous. It was de-identified, it was anonymized, de-identified.
+The Netflix people said something like this. We will not release the identity of these people
+because they're our users.
+And why can we do this? Because we are protected by K. Anonymity?
+But the reality was Nara Yanan and Schmutnikov ran a de-anonymization attack.
+And now, what
+what was the problem with that?
+You are a user of Netflix
+with the terms of service? Did you set up for being out like that?
+No, you did not, but you were you could. We could figure out who you were, and
+I mean, let me tell you what the problem is.
+Imagine, okay, this goes like, there's like 3 steps to this. So let's Ryan. Yes, okay, are you, Brandon?
+Yeah, this is, Brian. You're Ryan. Okay, let's do it together.
+So imagine, give me just one second. Let me tell you, step by step, what the issue is. So the Netflix Prize releases a data set. Yes.
+okay.
+And it is what it is.
+And by matching that data to the to what you released
+from the in the movie database. I can now
+tell tell who that is? Yes, so your username. I don't know. Ryan, whatever. Yes, that's your username.
+Why why did I harm you now, why did Netflix harm you?
+What was the harm? There's 1 more step that I haven't explained yet. Where's the harm? Yes.
+exactly. So. That's right. So you released on in the movie movie database the movies you're comfortable with, yes.
+what if? And I'm not picking you? But let me. Just I just this just came to me. Imagine what you didn't release in the movies, but we know it's you now, because we linked it to your Netflix profile that was released, that you
+hated Schindler's list.
+What if people now think you're a Nazi, and you just lost your job
+then then was real real harm. Yes.
+do you see, I'm saying you did not release publicly that you didn't like Shindler's list, but I mean it's a hypothetical. I'm not sure if you like it or not.
+Okay. So so you released your intermoval database stuff publicly. But maybe that's carefully curated. Not your like secret takes. Yes.
+but the Netflix people released everything but de-identified. But if I link it to your profile well, now, we'll release everything.
+And do you see, I'm saying could get awkward.
+Is it?
+Their profile is public, but you know it's public. So you carefully curate it. Maybe you want to give it a certain impression, or maybe only relate to it in certain movies. Yes, but the Netflix is everything you ever rated.
+and if you we now linked it, we can now attribute it to that, and there might be embarrassing takes in there. Maybe you.
+you know, I don't know what movies you liked or didn't like. Yes.
+yeah, yeah. But now I can link it to everything else exactly.
+Mark.
+you always need to. Yes.
+but but how would you guarantee that
+like I see you were saying now, if if there's more, if there's ratings that only they have.
+then yes, but how would you know that
+like, how would that be possible?
+Okay, then that's fine.
+then it would work. But but my question to you is, how would you know that?
+Like like like, let's say.
+Oh, trust that has that, then that will work. Yeah.
+it. This, this things, this stuff gets defeated. If you can link it to something that's publicly available, like we'll, we'll talk about a another case in a moment about the census
+where you can reverse engineer who it was from the public information. This always works by having a full database that's supposedly anonymized and a partial one that is public.
+And you can basically use the the partial match.
+That's why this works with partial matches.
+Where is it? Here? The Q is the Q is the partial match. Yes, you only match what you can match.
+And again, the movie database stuff might just be a subset of the full set that was released on the Netflix price, or vice versa. But the beauty of it's not beauty. The danger of this is. As Max said, this works with a handful of movies
+perfectly. Basically. Do you see that
+that you you don't need that much overlap? Let's say Google does release their shine database of
+where everybody was at a certain time. Yes.
+maybe from the Android itself on Google Maps tracking, they have that. Yes.
+What if they thought nobody else has.
+say, 5 features that are in some other database, you can then link it up. In other words, what this shows is that these d anonymization attacks are devastatingly effective.
+and it works with only a little bit of overlapping features.
+In the shared data set in the in the partial shared data set.
+And maybe I should spell this out more. It is a public data set.
+There's a private data set, but there's a shared partial data set. And what this shows is with this approach of this big jump in the threshold. You think of it as like a market here, like a screen plot, one big match, and then a big jump. You can do it.
+Yes, no, great.
+And this is this is why nobody else has done this
+or will probably will, because it's too dangerous. Because, imagine it is Google that does. I think you work for Google that does this
+as you imagine, you release everybody's whereabouts from their android
+tracking Google Maps in the last 10 years which you could.
+And then I find out that somebody cheated on me. And now I'm getting divorced.
+And the other person sues Google for that, because it was figured out there was that person. They can't risk it. Nobody else can risk it. It's kind of
+yes, sir.
+Well, so this star ratings is explicit. Feedback.
+No, you can. You can. I mean again, the big. The big idea is not. If it's explicit or implicit feedback, you can actually, as you can see here, we were actually sort of like, almost agnostic. But similarity, feature. Yes, similarity approach, although this was a specific one. The big idea is this one.
+Imagine by whatever similarity, metric there's a big jump in the similarity similarity scores.
+How else would you explain it? It was you.
+Okay? You are right. You're absolutely right. Implicit feedback is much more ambiguous than explicit feedback. You would need much more. So this is actually why this worked so well. Because it's star ratings. And
+you know that's very explicit. However, if you have enough implicit feedback. I think you can do it.
+I bet you Google has records.
+you know, probably thousands of whereabouts.
+and if you have maybe 100
+places you were there together at the same time, I mean, how would you explain that?
+You know what I mean? Like? It's probably you.
+If there's such a close match, you know, between
+ostensibly different records. But you are right, good intuition. This will be less effective for implicit feedback.
+But again, imagine somebody listens to the exact same music you listen to.
+How do you explain that?
+It's for you any any questions about this?
+Okay, so that's how this works.
+And this is why, K.
+Anonymity is not sufficient, as Mark said. Yes, if you're sure nobody else has this stuff.
+if you're 100% sure, then it would be fine. But how would you know
+as long as there's a public database out there? And again, sometimes sometimes is, is like they will do the census. But, by the way, this is more opinion. Do you think this is a big deal? It's not a big deal. What do you think?
+Be honest?
+You don't think it's a big deal. Okay, thanks for being brave. Why not?
+That's a very I would say, very. Gen. Z. Take
+that I share. Maybe I'm honorary. Gen. Z. That is the idea is, yeah. I mean, I just assume. Honestly, Rena, I assume everything I say do
+is probably recorded anyway, and will be released anyway, and they'll probably use against me anyway. Yes.
+maybe that's a cynical take.
+But the only reason I'm asking is like, I wonder like is this, by the way, widely shared? Do you assume everything you do online is tracked and released anyway? Or do you assume privacy? Basically, what you're saying is, I don't even assume I have privacy. Is that what you're saying? Okay, Max.
+Maybe more behind, like.
+yes, fine.
+I know it's like the amateurs affecting.
+It distorts the marketplace, distorts the marketplace. Yeah.
+I mean, that's another perspective. By the way, so one question is, how much does it harm the individual. The other one is, how much does it distort the marketplace? Yes.
+interesting. I didn't even think of that
+again. This is a emerging market. Let me tell you what Schmutnikov would say, what matters. So they actually are censored. This they write about this in their paper. They basically say, yes, the average user probably doesn't care about this. If somebody knows their.
+you know. Watch history, I mean, you know. Good luck with that like, who cares right? But the question is, what would the most sensitive user.
+you know?
+Imagine you're part of a certain
+I don't know religious minority. Maybe
+maybe people would judge you if you watch certain movies, and maybe even like them. Yes, maybe you don't want, or maybe your partner. Yes, maybe you don't want them to to know that you watch that. And
+So anyway. So the question is not the average user, but the most sensitive user.
+This one is the big one. This is what goes back to what scandal said.
+There are all kinds of correlations between these innocuous looking ratings and things that do matter like political leaning, sexual orientation. You could. You can do this very quickly. You can decode particular movies, but I'll show you in a second, even with music.
+And then finally, this one is a big one. You cannot take this back
+once I de-identified you, you are basically identified
+for all time, I mean, like, this cannot be taken back once the information is out there, it's out there. Yes, so it's irrevocable, like stakes are high.
+just briefly, in terms of like net. You might. This might be obvious, for, like movies, like, if you
+you know, movies are inherently like narrative, right? Based. So if you
+like, I don't know. I mean. What I'm trying to say is, there's a political dimension to almost every movie. I don't need you to know your take on that many
+political movies to know exactly where you stand politically. That makes sense. But it's true, even from music. Look at this.
+I don't want to get too much time into this, because for some reason we're already late with time again. But we did a project recently, even with music, basically good accuracy where you stand ideologically.
+By you.
+you telling me it's not even that. Many a handful of songs, I can tell you where you stand politically.
+Yes, yes.
+oh, that's a good one. Yes.
+you should not do that anyway. By the way, use a password manager.
+Exactly.
+But yeah. So this one, by the way, it's it's not just. It's not just Netflix prize or polyculture. This is another use case from the 2,010 census.
+It's exactly what what what we just discussed. So is this guy about 2,019. So they had 2,010 sensors.
+And they basically did what Scanda said is a danger. So basically, this was released without personally information. Yes, but they could reconstruct that with commercial data, right? So they could re-identify the data.
+And then they could learn race and ethnicity from from that data
+in the interest of time. Because we're running behind. Because I do want to get to differential privacy. I'm actually not going to go into details of this, I actually have a link to a keynote that about gave on my very last slide on my very last slide is a link to a hour-long video by about where they explain exactly what they did. But basically, Skanda's concern is well
+sourced.
+You can reconstruct information from public data sets.
+They're big and a lot of features that they and that individuals might not want to disclose. All right.
+And you can do this very quickly. You don't need that much information. It's very very
+shocking. Okay, we are going to skip this one. This is something that you, of course, already know about. Basically, this is the classic case that you know, they built a model.
+the user where they predict that they're going to be pregnant.
+And you know, basically, the model knew that
+the user's daughter is pregnant before he'd heed it.
+Right?
+That's a classic case.
+Another reason why people people people are pull back on this because you know harm was done. Yes.
+all right.
+we'll talk about this later. Let's let's go differential privacy, because this is something that I do want to cover in detail. This is a little bit
+a little bit technical.
+but it's important to do question for you. I heard you have already covered isn't responsible data. Science. Is that correct?
+So, Rena, Judy, what is what is it? I know you've taken this class. Yes.
+so what is differential privacy. But am I wrong? Are you taking it? Or that you covered this underground?
+So what is it?
+okay, well, let's talk about it. But basically, if if someone ever asks you what this is and what
+how how it works. A high level view would be.
+It addresses these concerns with K. Anonymity.
+If K. Anonymity is is not enough, and it's not. But you do want to release something you want to release for reproducibility. You want to release something. Yes.
+the gold standard these days is differential privacy, and it's used an interesting feature, an interesting bug, I guess, as a feature.
+Now, this all comes to us from Dork. This is Dork at Harvard, and Dork did
+pioneers a lot a lot of synthe work.
+There's a lot of papers out there that I think I've uploaded already to our, to our, to our data, to a bright space that you can read. But but let me just let me just summarize it in like
+the last half an hour we have left. Okay, so this is an interesting idea.
+So in, instead of releasing the data, set the raw data
+which which we don't want to do because we can defeat that. Yes, so I don't think. By the way, Mark and everybody else, I don't think that's ever going to be done again, because the 2020, by the way, the 2020 census was protected by differential privacy. The 2,010 census was not.
+And then they did this de anonymization attack. But it's now 2025,
+and what they did between 2020 census was this, they use differential privacy, so that this does not happen again. So you cannot run the deanymization attack on that. Yes.
+so we're not so again, did this. So this is like a.
+so don't do that. Why, why would the identification not be a good idea? Because of all everything we just said, yes, it's like an illusion.
+Even if you de-identify the data, if you can link it with anything else.
+You don't need that much information to do that. Okay.
+we talked about that. This is made problematic.
+also problematic. And this is what differential privacy is. We're going to release an Api.
+So the data is not released at all.
+we'll be let you interact with the data through our Api.
+And of course you could say, what if that's hacked?
+Well, then you have other problems. So the idea is that that you don't get to
+you don't get to actually get the data. But you get to query the data
+all right. So this is the idea. So data, the data stays.
+If this ever comes up, the data stays private. You do not get the data, you do not get the data.
+Okay, what is released is an interface
+and and differentially, or rather a differential, differentially private algorithm, A by which you interact with the data.
+and then you get some output. You can maybe ask the to compute some average or something like that.
+But the data stays hidden.
+Okay?
+And that's going to have some interesting properties in moment.
+All right?
+So so the idea is that. And this is the big idea. The big idea is that you as an individual, will
+retain plausible deniability. You stay. You stay behind this behind this like real Vale Vail vale, real bill, vile.
+vile! No wonder he changed language probably changes Swiss to German.
+Veil of plasma ability.
+All right.
+So, in other words, whether you're
+row is in the data set or not should not change this out, this public observer output. That's the that's the big idea.
+Okay?
+And
+we're going to inject some randomness here. But this is a big difference to randomizing the data. We don't randomize the data. Data is sacred. Don't don't mess with data. We're randomizing something about the computation in a moment.
+All right. So samurai asks you
+differential privacy about the computation, the algorithm, not about the data data stays sacred, untouched but hidden.
+I actually said that and I will make this more tackling in a moment. But let me just
+1st give you the big idea. Philosophical idea. Does anyone know here what an inverse problem is what is an inverse problem.
+What is an inverse problem?
+Philosophically, because that's what's
+if someone asks you how it works. Differential privacy weaponizes an inverse problem. What is an inverse problem?
+Yeah, that's an inverse problem. You get some output.
+and you have to guess what the inputs were.
+For instance, if I tell you.
+Brian, Brian, Brian, I tell you that the output was 7.
+I tell you there was 2 inputs. Can you guess what the 2 inputs were, you cannot.
+Yes, and, generally speaking, this is a problem.
+You, as a cognitive system.
+always have to deal with inverse problems. You have only access to your own brain activity.
+Yes, your brain only has access to its own activity, and you have to infer what caused that
+from the outside world. Yes, but anything could have caused that.
+So how do you know what caused it?
+In other words, you know, something could be very
+small, but very close, or something very far away, but very big. They will be the same distance on my retina. That image. So how do you know
+that makes sense? I'm saying that's an inverse problem.
+Oh, sorry, Adam.
+Actually I see what you're saying. But this can be carefully titrated. Good concern that Kiki, that thought
+that is actually one of the key features of this of this differential privacy.
+We will carefully titrate this, so we can maybe make it as reproducible or as private as we want.
+It's kind of like having your cake and eating it, too. We'll we'll
+we'll get technical in a moment. But that's a good. That's a good point. One of another way of thinking about it is it's a way to. It's a way to be as
+as private as you want while staying as a producer as you want. It comes down to
+This randomization here, at level of the competition is done very, very.
+in a very, very calibrated way. We'll talk about it in a moment.
+But it's 1st of all, there's these inverse problems in a moment. For just one moment, one more second, normally an inverse problem in inverse problems, even called it's even in the title inverse problem.
+It's a problem, you know, it's a problem for your cognition. You have to
+determine what's out in the world from your own activity patterns. Only you cannot really do that.
+So you have to usually make assumptions about about something.
+Yes, you cannot
+figure out what the inputs were. If you only have the output here, we're going to use this as as as a feature. We want to keep the inputs private
+and only release the outputs.
+So it's basically weaponizing the philosophical property of an inverse problem
+that the inputs can remain unknown.
+Even if the outputs are known.
+Okay, all right.
+So how does it work?
+So we have 2 data sets D and D prime.
+And if they differ by one row.
+But you, you're the role you want to be.
+You want to be the role. Basically, you want to have applause. But now, Bill, that it was you.
+So, in other words, d prime is d plus a rho u.
+The idea is, and we'll talk about this in a moment we're going to run some algorithms on D and D prime.
+If D and D, prime run through the algorithm, yield the same result within noise.
+then you have plasma enabled it that you are in there or not.
+because D and D. Prime give the same result. Does that make sense logically, philosophically, before we go into details. Technical.
+The idea is, if D and d prime, which differs by only one row, euro.
+lead to the overall. Same result, then
+you have plausible ability that you were in there or not.
+which one which one it was d or d prime, and because x is any row, we are all safe.
+Make sense, Max, Mark, Matthew Truman, anybody?
+Okay?
+All right.
+Okay? And by the way, there's going to be a hyper parameter epsilon.
+And this is the idea. We're going to calibrate this, the epsilon.
+It is differential probable if the probability that a maps the data B on some set is larger, sorry, smaller equal that the and we'll talk about the exponent exponent exponential of e epsilon. Sorry
+times. The probability of A. D. Prime is the same, all right for any
+set in the range of possible outputs of a. So let's talk about this.
+Imagine Epsilon is very small.
+What would the exponential epsilon be?
+Let's say, this is close to 0, Opie one. Yes.
+and if this is one, then you have maximal
+maximal privacy, because it's the same probability. Yes.
+the closer this is to 0. The closer this term is going to be the one the closer these terms were going to be matching.
+And if that which means you're gonna have the same outcome.
+So that's going to be a trade-off. If you make Epsilon smaller.
+your privacy becomes gonna be larger.
+But the downside is going to be what you just said. It's going to be harder for reproducibility. Yes.
+so far, so good, so bad.
+Yeah, we just talked about this. Yeah. By the way, the reason we use subsets as opposed to as opposed to specific values is so we can. These can also, you know, support continuous random variables.
+Right?
+But that's the idea
+from any output. And this is discrete. Now V. We cannot tell if it was. If it came from this one or that one. That's the big idea.
+So you have forever plausible deniability.
+All right.
+Yes, okay.
+And so the idea, this, this is just a differential privacy. Theorem.
+We just talked about this. So this was, Cranja said. Then it's the same.
+and of course you can switch them, and
+of course you can make it larger. But then
+you're not going to get the same result.
+Right?
+Okay, so this, the the closer it is.
+the more privacy you have. Yes.
+any questions so far. I mean, this is just again we can now going to go into
+tuning to noise. Anyone has any question. Oh, it's kind of
+yes, but not just average. It works a Max
+Max, and average has actually different
+requirements to keep something differentiable. I will talk about in a moment.
+But yeah, something like that averages Maxes. Mins, sums
+that'd be harder.
+It works best for summary statistics.
+But again, yeah, it works best for summer statistics.
+You don't. You don't get to see the data
+mark.
+Okay.
+no. One row, one row. The idea is you. You have.
+It has to work for one row right?
+Because at worst
+it needs to be ambiguous. It came from from you a role that includes you or not.
+Yes, okay. Anything else. Something, someone something online.
+By the way, Evan, I just saw your your text from earlier, your message from earlier. Is it clear about the linking step now with the the anonymization attack
+or anybody else online.
+I don't always monitor the chat. I didn't see it earlier. Any other questions, online or question. Oh, yeah, surely.
+And speak up loud. Yeah, I can barely hear you, which means someone that no one else can, either. Right?
+I'm glad you asked. We're gonna do it now.
+So we'll we will.
+The next couple slides are about that we're going to set Epsilon.
+And so, yeah, this is this slide, and the next couple slides are about that we have to carefully pick the epsilon
+to do that. But let's do step by step.
+So yeah. So we have some function right that maps the
+data set to some result. That's d dimensional. Yes.
+And yeah, this is a good example. The average kind of some average. Yes, average average.
+I don't know income in some zip code or something like that. Yes, and
+The idea is how different this function is. If you give it d, or d. Prime
+depends on what, on what the on what the function is. Yes.
+So, for instance, something something like the Max right will be very different for something like the mean. Yes.
+and we call that the sensitivity that's the sensitivity. Sensitivity is the you know the difference
+between you know. To any diff. Any 2 rows? Yes.
+So the biggest difference, the biggest difference
+that any 2 rows can make.
+Max speaking of Max.
+Yes, okay? And so here's what we do.
+we add, and this is new.
+or at least for you. It's new.
+Have you heard this before? What? What is Laplacian noise.
+What is that?
+Because we this is how it works. You add Laplacian noise, or
+I'm going to make a case for that in a moment.
+What do you usually add?
+Gaws and noise?
+And what we'll show you in a moment is Gaussian. Noise is not enough or not good enough. It's too
+easy to defeat. Has the Laplacian noise. The noise you want to add is Laplacian noise. Gaussian noise is, too.
+is defeat, and I'll show you in a moment. Why?
+So that's the idea. So we.
+our differential private algorithm takes that function and we add some noise, and we draw the noise from a Laplace
+distribution with 0 mean.
+And look at that.
+We take our Delta F, which is our sensitivity.
+and divide by Epsilon. So, Julie, this is how you tune the epsilon. Do you see that?
+By the way, if this is confusing, we'll go through a couple examples in a moment
+where we go through different different functions like the mean and the Max.
+But that's the idea. So we define the sensitivity of the function as the maximal difference that
+that 2 rows from d and d prime make you see that.
+So this is d and d prime.
+And again, that could make a big difference like, give me just one second, imagine, imagine,
+imagine you have. You do want to compute the the average income in some Zip code.
+whether? And you say your data set includes Bill Gates or not.
+that could make a big difference. Yes. So the sensitivity of that would be high. But that depends on your specific data, Charlie.
+Defeat this somehow.
+right? Right? Right?
+The noise is added to the algorithm per query.
+So if you have some very sensitive
+query, it would add a lot of noise to be to be private.
+Keep that thought. That's going to be important in a moment.
+That's actually a big insight here. This
+sensitivity depends on the specific question. Yes, specific function, right and different
+different functions are going to have different sensitivities based on the data and the function.
+There's 2 things that make this sensitive one is the data, and one is the function.
+But so Kita thought, the amount of noise that needs to be added.
+and you can see it right now, right here.
+Well, maybe not.
+we'll we'll talk about. But but just just to to make that explicit, you can actually rate how differential priority algorithm is
+by what you said, the epsilon epsilon. 2. And this is epsilon, differential, private, and, as we said earlier, the lower, the epsilon is
+the higher the privacy. Yes, but we'll talk about that in a moment.
+What? So what is Laplacian noise? There we go. This is the probability distribution.
+What do you see? What's in the numerator?
+What's in the numerator?
+What's in numerator?
+Absolute value of the absolute value of the data point, or the I mean, and the mean. And then
+what is, what do we divide by?
+How, in other words, how does it differ from a normal distribution?
+Because the big contrast is to Gaussian noise. Let me just show it to you.
+So how does it differ? You tell me.
+what's the big? What's the big? What's the big upshot correct.
+The Laplace distribution has heavy tails. Exactly.
+and that's exciting. That is the key feature that is makes this work.
+Why is that going to matter. What's the big deal?
+Let's say we have something very, very unusual, like 4 to 6, Sigma.
+Given the Gaussian distribution. That's going to be very, very unlikely. Yes.
+but is that relatively common in Laplacian distribution?
+Yes, and so the noise is just
+strong enough to be not easy to defeat.
+because you can add quite substantial noise randomly.
+You'll see in a moment, like otherwise we do too close to real value. If that makes sense.
+The Ddd.
+The Gaussian noise
+drops off, as you know, with the double exponential. So it's very close to the original value or too close. Yes, Adam.
+in a way, yeah.
+In a y. Matthew
+for this.
+No, it's pretty heavy tailed as as visual.
+Yeah, but it's good enough. I'll show you just a moment. It's it's provably good enough.
+This is the one you want. Yes.
+there's what, by the way, this is not a standardization. Just to be clear.
+This is just a scale parameter. This is not a standard deviation. If this was a Gaussian, this would be a standard deviation, but it's not a standard deviation. It's just some scale parameter.
+no outliers. This is part of the dispution. Extreme values are more yes, which makes it heavy tilt.
+The courtesies is more than 3.
+Okay, just to be clear. What is the courtesies of a Gaussian distribution?
+3 and one. And this one is much more than 3.
+So it's heavy tail by definition. And this is what you want. You want heavy tail noise, so it's not easily feeded by the
+query, yes, I'll show you. By the way, I'll literally show this to you in a moment.
+Yes.
+yes, that's correct.
+no, no, no, no, Laplace, and because it has to be just the right kind of modes. If you use a caution distribution. What could happen
+then? Then? It's just chaos. Right? I mean, correct, correct. And the Laplace distribution
+of all distribution is the one that does that. Yes, I'll show you this in a moment. Yes.
+so far so good, just as a very brief aside as a cautionary tale.
+I recently saw a horrendous horrendous hallucination.
+Let me just show you so this is from Chatgpt. 4.
+Look at this. I asked it.
+just, you know, just to make sure I'm not missing.
+What can you tell me about the Laplace distribution relative to the yes.
+I asked her straight up, and it's what he said.
+and I wanna I wanna I wanna I wanna
+draw your draw your attention to these 2 points. What do you see?
+The Garth wiz is more symmetric. It's all symmetric, what I mean, but its tail decay more slowly compared to the Laplace distribution. Is that true?
+It's not true.
+How about this?
+The tails of the Laplace region decay exponentially versus the tails of the Gaussian decay quadratically.
+Huh!
+No right?
+So I said. Wait. I thought the garden is falling off exponentially. This is not true, said
+the rate of decay is slower than the exponential decay of the Laplace distribution tails like.
+I said, what do you mean? Slower. It's much faster. Loss in fusion has heavier tails right?
+And it says, to summarize the Laplace decision has faster, decaying lighter tails than the Gaussian distribution.
+And so I said, well, class distribution has heavier tails than the Gaussian distribution, however, and then finally admitted, I was right. So my point is.
+I know all of you learn, learn, quote, unquote with the Chatbot.
+But if you don't already know, how would you learn? That makes sense, I'm saying.
+and it was very committed to its housing nations over 5 queries.
+But if you don't already know that.
+how would you know? It's not true that makes sense, and most of it is true. If you look back here, there's like 4 things that are right, just one that's wrong. So I don't know
+just as a cautionary tale. It's just one of the most egregious
+and most heavily committed hallucinations I've seen in a while. So, to summarize the Gaussian distribution drops off of the square of the exponential.
+which is probably why I thought it means quadratically, why is the square of the exponential, not quadratically square, of the exponential? And then it got confused, which is lighter and which is heavier. And what that means. Yes.
+anyways, to summarize it for you, the la plus
+noise does drop off exponentially but not square exponentially.
+That means the tails are heavier than the Gaussian distribution, which is what you want, because it's not as heavy as the caution distribution
+which can get crazy results.
+It's just the right.
+But this is Sean's question or the answer to Sean's question, Why is this? The Goldilocks noise for differential privacy. And, by the way.
+differential privacy uses uses Laplacian noise.
+If someone ever asks you in the in an interview set.
+use cost distribution to use it to add noise.
+Does it use Gauss? You know, Laplace? Answer is Laplace. Does it add the noise to the data? No, it adds the noise to the query
+to each query.
+let's say it is your data set (809) 100-1020 whatever this is income. How about that income in 100 in
+thousands of dollars.
+And let's say you want to compute the mean
+and question is like, What's the sensitivity? If 80 is included or not? Let's say 80, is you?
+And you don't want to be. You want. You don't want to disclose that you're the poorest of your friends, I know, like maybe it's embarrassing. You tell me. Okay?
+And so this is the sensitive of this computation. So this is the line
+that if 80 is included, and this is if 80 is not excluded, how we can. Now, how can we now spice this like this like
+result, so that you have plausible liability?
+And the answer is, and there you go. This is our Laplacian noise. Yes.
+that we added to this, and now you have the right amount of overlap. Do you see that that
+that it could go either way. You cannot tell if it came from this or from that distribution. So so obviously, you will only observe one of these outcomes. Yes, not all of them, because this is just the distributions.
+But if you add this noise.
+you on average have completely plausible. Do you see that completely plausible, inevitable, because you could
+could be either one, you see.
+Yes, so it's it's hard to tell.
+Oh, yeah, sorry, Brian.
+I was going to ask, What could you do if you really want to be committed to this? And the answer is, ask more than once.
+yes. So the privacy laws aggregates. So this is differential privates for one query.
+But if you can ask many queries, you can then home in on that.
+So to defeat that you need to set the differential privacy of of the of the Api.
+But one query sensitive enough that if you ask multiple queries, it's still private enough. So did you? Okay with that, and then maybe limit the number of queries you can ask, or something like that. Per, at least per minute or something like that.
+Oh, yeah, up there, Matthew.
+the results? Yes.
+you don't give the data. You give the result.
+I see your point. But but do you see my point. I don't give you the data. I give you the result.
+and that result is now, you know, you know.
+you know, it's hard to tell where it came from, came from dessert, that distribution
+for reproducibility, because it's still, I would say, in the right ballpark.
+right? But this is this trade-off between reproducibility and privacy.
+The only question is, where do you draw that? Draw that? Let me show you on this slide. So let's say, let's say, if you only add a little bit of noise right? Then you have a large epsilon that's implied, and then you have high reproducibility, but low privacy. Yes.
+yes.
+over here you have a very small epsilon, which means that it's going to be from a reproducibility. Perspective. Terrible? Yes.
+but but
+It will be very private.
+Yes, or it's somewhere in between yes, and you trade off reproducibility and privacy.
+Max.
+Yeah.
+no. The query adds it to the query because of the sensitivity. As a matter of fact, let's do an example. Let's do an example. So I think that's going to make it clear how we set set that, or you set that, or it sets that. Yes.
+let's say the rows are 5 dimensional binary vectors, some interactions. Yes.
+0 1 1 0 0. Yes, and let's say to some.
+this sum of the over the rows in the is the is the outcome.
+What what is the possible range of this, by the way from.
+if these are 5 attributes, I don't know. Whatever. The 5 attributes are 0 2 2.
+In this case we have 2, but
+this could be 0. This could be 0. This could be 0
+0 to 2 to 5. Yes, this sum ranges from 0 to 5. Yes, so far, so good.
+Right?
+The min is 0 0 0 0, and the Max is 1, 1, 1 1. So the sensitivity is 5 of this. Yes.
+I mean, this is what we just discussed. I mean, it's in math. What? But this is what we just said. Yes.
+the sensitivity of of this is 5. Yes.
+and because because these attributes are bounded, they're bound this Boolean 0 1. Yes.
+and so our Laplace noise should be 5 over Epsilon
+to that. And that's the recommendation of the appropriate epsilon.
+This should have an epsilon of 5 over epsilon
+that makes sense to be differential. Prep. For one query.
+Yes.
+And this comes from the definition from earlier, how that sensitivity is defined and how it relates to Skanda. And then, Julie.
+No, this is a function of the data. And and okay, this is a function of the data
+and the function. Yes, in this case a sum.
+Oh.
+no, I understand from a from a sociological perspective. Some features are more, are more sensitive than others. But the question is here not about the feature. The question is given this feature. Can I identify you
+the whole, the whole person. If that makes sense.
+No, it is, it's a, it's a. The sensitivity is a function of the data that's D, and the query, which is the function in this case is sum. So both the data and this and this and and the function
+jolie
+like, what?
+Oh, great!
+It's just me. Yeah, I know. And then and then.
+right.
+say, what?
+Yeah.
+Well, all I can tell you. I have to think about a little bit. All I can tell you is that you don't be jealous of my salary. I think I should be embarrassed.
+But anyway, let me think about that. But basically, the other example that I have is is Max. And and because we're running out of time. To make a long story short, a Max, a Max.
+Sorry, Max. A Max function is a lot more sensitive than a sum, some function for obvious reasons. Yes.
+It's it's much more sensitive inherently
+to give you the math here.
+you know, you basically compare so to determine that you always think about what's the biggest
+you know, Delta, you get if you include this row or that row
+given the the data set. Okay, so let's say it has to be between minus and 10. Then then the biggest delta that it can be is 10, right? If the smallest absolute value is 0.
+If the smallest absolute value is 0,
+then the biggest delta you can have for any 2 rows is 10, if your data goes from minus 10 to 10. Yes.
+And so our sensitivity is 10.
+Sorry, Adam.
+Yes.
+okay, right?
+Okay.
+Great. Anyway. So and then the mean is less sensitive. But again, I I, this here, this in in the mean, thank you. The sample size protects you.
+Sense limit theorem. Basically. Okay.
+In other words, because we're out of time to summarize this in small samples.
+it's easy to find Waldo. Yes, right there, right?
+But in in a larger data set. It's hard. Yes. And now comes, yeah. Don't just just ask chat about where it is. Okay. So so now comes Brian's point what? What?
+And I'm glad you intuitive this. How do you defeat this? You ask multiple queries, yeah, up there
+go. But just make it quick, because we're out of time. Technically.
+No, I could. You could do a categorical then just have 0 1 set set 0 1.
+Yeah, you could.
+You could.
+Well, then, you have very high. Then you have very high sensitivity, and you would have to set Epsilon accordingly.
+But the algorithm does account for that. But here comes a big upshot. It does not say from that this is Brian's big insight which actually was.
+It's it is the biggest vulnerability of this. But in other words,
+this is a long story. I'll just give you the upshot. You
+lose so so
+How do I put this? Yes. So this is
+you lose, you lose, you lose, it accumulates. You see that the epsilon
+accumulates, and and it gets bigger and bigger. Okay.
+this is what I promised you this with the with the slide. This is this about talk about the 2020 census, about how it differs from 2 and 10 census.
+Briefly, last slide, because we're already way way over time.
+So
+so that's the idea. So so this is again. And by the way, Adam, I'm not gonna lie to you. It remains a balance. This is a balance. There's a balance between reproducibility and privacy. Yes.
+and
+removing identifiers are not going to be good enough can. And automator is not sufficient for all the reasons we discussed.
+If it's anything like that you deal with, if it's high dimensional.
+In other words, this is the big surprise that Macs are either new or intuitive. You don't need that much information to completely identify it. These anonymization attacks are surprisingly effective, even if based on just very few
+data points.
+The idea here in different privacy is we actually never get you.
+We never give it the solutions to never show you the data.
+We only let you interact via Api.
+And the Api runs the whole thing through carefully calculated Laplacian noise, and
+it has to be calibrated by the sensitivity. And we just talked about this.
+These extreme algorithms like Max, are highly sensitive.
+And then, if you, if you allow it, if you can query it multiple times, then reduce sensitive. It's a very careful dance. Yes.
+because the privacy loss aggregates all right, that's it for now.
+and I want to see what you have. Yes.
